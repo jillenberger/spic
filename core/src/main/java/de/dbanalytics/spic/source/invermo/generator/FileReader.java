@@ -19,13 +19,12 @@
 
 package de.dbanalytics.spic.source.invermo.generator;
 
-import org.apache.log4j.Logger;
-import playground.johannes.gsv.synPop.invermo.LegHandlerAdaptor;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.source.invermo.InvermoKeys;
 import de.dbanalytics.spic.source.invermo.InvermoValues;
 import de.dbanalytics.spic.source.mid2008.generator.PersonAttributeHandler;
 import de.dbanalytics.spic.source.mid2008.generator.RowHandler;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;

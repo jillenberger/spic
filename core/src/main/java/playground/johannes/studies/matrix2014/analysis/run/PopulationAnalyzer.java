@@ -19,29 +19,25 @@
 
 package playground.johannes.studies.matrix2014.analysis.run;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.matsim.contrib.common.util.XORShiftRandom;
-import org.matsim.core.config.Config;
-import org.matsim.core.config.ConfigGroup;
-import org.matsim.core.config.ConfigUtils;
-import playground.johannes.gsv.synPop.mid.Route2GeoDistance;
-import playground.johannes.gsv.synPop.sim3.ReplaceActTypes;
-import playground.johannes.studies.matrix2014.analysis.SetSeason;
-import playground.johannes.studies.matrix2014.matrix.postprocess.SeasonTask;
-import playground.johannes.studies.matrix2014.sim.ValidatePersonWeight;
-import playground.johannes.studies.matrix2014.sim.run.RefPopulationBuilder;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.DataPool;
 import de.dbanalytics.spic.gis.FacilityDataLoader;
 import de.dbanalytics.spic.gis.ZoneDataLoader;
-import de.dbanalytics.spic.processing.EpisodeTask;
-import de.dbanalytics.spic.processing.GuessMissingActTypes;
-import de.dbanalytics.spic.processing.TaskRunner;
-import de.dbanalytics.spic.processing.ValidateMissingAttribute;
+import de.dbanalytics.spic.processing.*;
 import de.dbanalytics.spic.util.Executor;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.matsim.contrib.common.util.XORShiftRandom;
+import org.matsim.core.config.Config;
+import org.matsim.core.config.ConfigGroup;
+import org.matsim.core.config.ConfigUtils;
+import playground.johannes.studies.matrix2014.analysis.SetSeason;
+import playground.johannes.studies.matrix2014.data.ReplaceActTypes;
+import playground.johannes.studies.matrix2014.matrix.postprocess.SeasonTask;
+import playground.johannes.studies.matrix2014.sim.ValidatePersonWeight;
+import playground.johannes.studies.matrix2014.sim.run.RefPopulationBuilder;
 
 import java.util.Collection;
 import java.util.Random;

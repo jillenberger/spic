@@ -18,14 +18,6 @@
  * *********************************************************************** */
 package playground.johannes.studies.matrix2014.sim.run;
 
-import gnu.trove.iterator.TObjectDoubleIterator;
-import gnu.trove.map.TObjectDoubleMap;
-import org.apache.log4j.Logger;
-import org.matsim.contrib.common.collections.ChoiceSet;
-import org.matsim.core.config.Config;
-import playground.johannes.gsv.synPop.mid.Route2GeoDistance;
-import playground.johannes.studies.matrix2014.analysis.LabeledLegHistogramBuilder;
-import playground.johannes.studies.matrix2014.sim.ValidatePersonWeight;
 import de.dbanalytics.spic.analysis.AttributeProvider;
 import de.dbanalytics.spic.analysis.NotPredicate;
 import de.dbanalytics.spic.analysis.Predicate;
@@ -33,6 +25,13 @@ import de.dbanalytics.spic.analysis.PredicateAndComposite;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.processing.*;
+import gnu.trove.iterator.TObjectDoubleIterator;
+import gnu.trove.map.TObjectDoubleMap;
+import org.apache.log4j.Logger;
+import org.matsim.contrib.common.collections.ChoiceSet;
+import org.matsim.core.config.Config;
+import playground.johannes.studies.matrix2014.analysis.LabeledLegHistogramBuilder;
+import playground.johannes.studies.matrix2014.sim.ValidatePersonWeight;
 
 import java.util.*;
 

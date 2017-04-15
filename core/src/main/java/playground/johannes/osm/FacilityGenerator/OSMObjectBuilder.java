@@ -20,8 +20,6 @@ package playground.johannes.osm.FacilityGenerator;/* ***************************
 import com.vividsolutions.jts.geom.*;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTSFactoryFinder;
-import playground.johannes.gsv.synPop.osm.OSMNode;
-import playground.johannes.gsv.synPop.osm.OSMWay;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -19,20 +19,20 @@
 
 package playground.johannes.studies.matrix2014.source.mid2008;
 
-import org.apache.log4j.Logger;
-import org.matsim.contrib.common.stats.LinearDiscretizer;
-import playground.johannes.gsv.synPop.mid.Route2GeoDistance;
-import playground.johannes.studies.matrix2014.analysis.NumericLegAnalyzer;
-import playground.johannes.studies.matrix2014.sim.Simulator;
-import playground.johannes.studies.matrix2014.sim.ValidatePersonWeight;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
+import de.dbanalytics.spic.processing.Route2GeoDistance;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.processing.ValidateMissingAttribute;
+import org.apache.log4j.Logger;
+import org.matsim.contrib.common.stats.LinearDiscretizer;
+import playground.johannes.studies.matrix2014.analysis.NumericLegAnalyzer;
+import playground.johannes.studies.matrix2014.sim.Simulator;
+import playground.johannes.studies.matrix2014.sim.ValidatePersonWeight;
 
 import java.io.IOException;
 import java.util.Set;

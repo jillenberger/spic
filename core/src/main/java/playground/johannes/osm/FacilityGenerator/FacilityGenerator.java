@@ -17,9 +17,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import playground.johannes.coopsim.utils.MatsimCoordUtils;
-import playground.johannes.gsv.synPop.osm.OSMNode;
-import playground.johannes.gsv.synPop.osm.OSMWay;
-import playground.johannes.gsv.synPop.osm.XMLParser;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
