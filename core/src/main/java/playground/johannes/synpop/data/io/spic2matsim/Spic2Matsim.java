@@ -67,7 +67,7 @@ public class Spic2Matsim {
         Write matsim xml...
          */
         logger.info("Writing population...");
-        PopulationWriter writer = new PopulationWriter(scenario.getPopulation());
+        PopulationWriter writer = new PopulationWriter(scenario.getPopulation(), null);
         writer.write(popOutFile);
 
         logger.info("Writing person attributes...");

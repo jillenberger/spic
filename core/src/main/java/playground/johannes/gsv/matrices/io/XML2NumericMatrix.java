@@ -37,7 +37,7 @@ public class XML2NumericMatrix {
         NumericMatrixXMLReader xmlReader = new NumericMatrixXMLReader();
         xmlReader.setValidating(false);
         logger.info("Loading xml matrix...");
-        xmlReader.readFile("/Users/johannes/gsv/miv-matrix/refmatrices/tomtom.de.modena.xml");
+        xmlReader.parse("/Users/johannes/gsv/miv-matrix/refmatrices/tomtom.de.modena.xml");
         NumericMatrix m = xmlReader.getMatrix();
 
         logger.info("Writing txt matrix...");

@@ -65,7 +65,7 @@ public class Proxy2Matsim {
 
 		XMLHandler parser = new XMLHandler(new PlainFactory());
 		parser.setValidating(false);
-		parser.readFile(args[0]);
+		parser.parse(args[0]);
 
 		TaskRunner.run(new Convert2MatsimModes(), parser.getPersons());
 
@@ -146,7 +146,7 @@ public class Proxy2Matsim {
 
 		logger.info(String.format("Created %s plans and %s legs.", plans, legs));
 		logger.info("Writing population...");
-		PopulationWriter writer = new PopulationWriter(pop);
+		PopulationWriter writer = new PopulationWriter(pop, null);
 		String popOutFile = args[2];
 		writer.write(popOutFile);
 

@@ -67,7 +67,7 @@ public class FacilityGenerator {
 
         XMLParser parser = new XMLParser();
         parser.setValidating(false);
-        parser.readFile(input);
+        parser.parse(input);
 
 
         Collection<OSMWay> ways = parser.getWays().values();

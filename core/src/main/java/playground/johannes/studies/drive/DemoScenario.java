@@ -30,12 +30,16 @@ import org.matsim.contrib.common.gis.CRSUtils;
 import org.matsim.contrib.common.util.XORShiftRandom;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
-import org.matsim.core.network.io.MatsimNetworkReader;
-import org.matsim.core.network.io.NetworkWriter;
+import org.matsim.core.network.MatsimNetworkReader;
+import org.matsim.core.network.NetworkWriter;
+import org.matsim.core.network.NodeImpl;
+import org.matsim.core.population.ActivityImpl;
+import org.matsim.core.population.MatsimPopulationReader;
+import org.matsim.core.population.PopulationReader;
 import org.matsim.core.population.PopulationUtils;
-import org.matsim.core.population.io.PopulationReader;
 import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.facilities.ActivityFacility;
+import org.matsim.facilities.ActivityFacilityImpl;
 import org.matsim.facilities.FacilitiesWriter;
 import org.matsim.facilities.MatsimFacilitiesReader;
 import org.opengis.referencing.FactoryException;
@@ -71,7 +75,7 @@ public class DemoScenario {
 		 * extract subsample
 		 */
 		logger.info("Loading persons...");
-		PopulationReader pReader = new PopulationReader(scenario);
+		PopulationReader pReader = new MatsimPopulationReader(scenario);
 		pReader.readFile(popFile);
 		logger.info("Done.");
 		
@@ -105,7 +109,7 @@ public class DemoScenario {
 		for(Person person : population.getPersons().values()) {
 			for (Plan plan : person.getPlans()) {
 				for(int i = 0; i < plan.getPlanElements().size(); i+=2) {
-					Activity act = (Activity) plan.getPlanElements().get(i);
+					ActivityImpl act = (ActivityImpl) plan.getPlanElements().get(i);
 					double[] points = new double[] { act.getCoord().getX(), act.getCoord().getY() };
 					try {
 						transform.transform(points, 0, points, 0, 1);
@@ -119,7 +123,7 @@ public class DemoScenario {
 		logger.info("Done.");
 
 		logger.info("Writing population...");
-		PopulationWriter pWriter = new PopulationWriter(population);
+		PopulationWriter pWriter = new PopulationWriter(population, scenario.getNetwork());
 		pWriter.write(String.format("%s/plans.xml.gz", outDir));
 		logger.info("Done.");
 		/*
@@ -151,7 +155,7 @@ public class DemoScenario {
 				e.printStackTrace();
 			}
 
-			fac.setCoord(new Coord(points[0], points[1]));
+			((ActivityFacilityImpl)fac).setCoord(new Coord(points[0], points[1]));
 		}
 		logger.info("Done.");
 		
@@ -176,7 +180,7 @@ public class DemoScenario {
 				e.printStackTrace();
 			}
 
-			node.setCoord(new Coord(points[0], points[1]));
+			((NodeImpl)node).setCoord(new Coord(points[0], points[1]));
 		}
 		logger.info("Done.");
 		

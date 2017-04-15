@@ -60,7 +60,7 @@ public class FindOneWay extends MatsimXmlParser {
         fow.writer.newLine();
 
         fow.setValidating(false);
-        fow.readFile(osmFile);
+        fow.parse(osmFile);
 
         fow.writer.close();
     }

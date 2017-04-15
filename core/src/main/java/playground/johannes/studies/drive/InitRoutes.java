@@ -28,9 +28,10 @@ import org.matsim.contrib.common.collections.CollectionUtils;
 import org.matsim.contrib.common.util.ProgressLogger;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
+import org.matsim.core.network.MatsimNetworkReader;
 import org.matsim.core.network.NetworkUtils;
-import org.matsim.core.network.io.MatsimNetworkReader;
-import org.matsim.core.population.io.PopulationReader;
+import org.matsim.core.population.MatsimPopulationReader;
+import org.matsim.core.population.PopulationReader;
 import org.matsim.core.router.PlanRouter;
 import org.matsim.core.router.TripRouter;
 import org.matsim.core.router.TripRouterFactoryBuilderWithDefaults;
@@ -62,7 +63,7 @@ public class InitRoutes {
 		Scenario scenario = ScenarioUtils.createScenario(config);
 
 		logger.info("Loading population...");
-		PopulationReader popReader = new PopulationReader(scenario);
+		PopulationReader popReader = new MatsimPopulationReader(scenario);
 		popReader.readFile(args[0]);
 
 		logger.info("Loading network...");
@@ -123,7 +124,7 @@ public class InitRoutes {
 		executor.shutdown();
 
 		logger.info("Writing population...");
-		PopulationWriter writer = new PopulationWriter(pop);
+		PopulationWriter writer = new PopulationWriter(pop, scenario.getNetwork());
 		writer.writeV5(args[2]);
 		logger.info("Done.");
 	}

@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.matsim.*
- * FacilityFromActivity.java
+ * MatsimCoordUtils.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,39 +17,27 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package playground.johannes.studies.mz2005.utils;
+package playground.johannes.coopsim.utils;
 
-import org.matsim.api.core.v01.Id;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.Population;
-import org.matsim.facilities.ActivityFacilities;
-import org.matsim.facilities.ActivityFacility;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import org.matsim.api.core.v01.Coord;
 
 /**
  * @author illenberger
  *
  */
-public class FacilityFromActivity {
+public class MatsimCoordUtils {
 
-	public static void createActivities(Population population, ActivityFacilities facilities) {
-		for(Person person : population.getPersons().values()) {
-			int k = 0;
-			for(Plan plan : person.getPlans()) {
-				for(int i = 0; i < plan.getPlanElements().size(); i += 2) {
-					Activity act = (Activity) plan.getPlanElements().get(i);
-					
-					if(act.getCoord() == null) 
-						throw new NullPointerException("Activity has no coordinate.");
-					
-					Id<ActivityFacility> id = Id.create(String.format("tmp.%1$s.%2$s.%3$s", person.getId().toString(), k, i), ActivityFacility.class);
-					ActivityFacility facility = facilities.getFactory().createActivityFacility(id, act.getCoord());
-					facilities.addActivityFacility(facility);
-					((Activity)act).setFacilityId(facility.getId());
-				}
-				k++;
-			}
-		}
+	private final static GeometryFactory geoFacctory = new GeometryFactory();
+	
+	public static Point coordToPoint(Coord coord) {
+		return geoFacctory.createPoint(new Coordinate(coord.getX(), coord.getY()));
 	}
+	
+	public static Coord pointToCoord(Point point) {
+		return new Coord(point.getX(), point.getY());
+	}
+	
 }

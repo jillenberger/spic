@@ -7,7 +7,8 @@ import org.matsim.api.core.v01.population.*;
 import org.matsim.contrib.common.util.XORShiftRandom;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
-import org.matsim.core.population.io.PopulationReader;
+import org.matsim.core.population.MatsimPopulationReader;
+import org.matsim.core.population.PopulationReader;
 import org.matsim.core.scenario.ScenarioUtils;
 
 import java.io.BufferedWriter;
@@ -39,7 +40,7 @@ public class GenerateRequestActs {
         Load persons...
          */
         logger.info("Loading population...");
-        PopulationReader popReader = new PopulationReader(scenario);
+        PopulationReader popReader = new MatsimPopulationReader(scenario);
         popReader.readFile(popInFile);
         /*
         Select trips...
@@ -92,7 +93,7 @@ public class GenerateRequestActs {
 
         logger.info(String.format("Selected %s persons, generated %s requests.", selected.size(), requests.size()));
         for(Person person : selected) {
-            scenario.getPopulation().removePerson(person.getId());
+            scenario.getPopulation().getPersons().remove(person.getId());
         }
 //        for(Person person : requests) scenario.getPopulation().addPerson(person);
 //        Scenario newScenario = ScenarioUtils.createScenario(config);
@@ -106,7 +107,7 @@ public class GenerateRequestActs {
         Write persons...
          */
         logger.info("Writing default population...");
-        PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
+        PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation(), null);
         populationWriter.writeV5(popDefaultOutFile);
 //        logger.info("Writing request population...");
 //        populationWriter = new PopulationWriter(newScenario.getPopulation());

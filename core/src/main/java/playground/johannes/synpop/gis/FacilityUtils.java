@@ -137,7 +137,7 @@ public class FacilityUtils {
         @Override
         public void run() {
             for(ActivityFacility facility : facilities) {
-                Link link = NetworkUtils.getNearestLinkExactly(network, facility.getCoord());
+                Link link = NetworkUtils.getNearestLink(network, facility.getCoord());
                 ((ActivityFacilityImpl)facility).setLinkId(link.getId());
             }
         }
