@@ -19,9 +19,9 @@
 
 package playground.johannes.gsv.synPop.mid;
 
-import playground.johannes.synpop.data.PersonUtils;
-import playground.johannes.synpop.data.PlainFactory;
-import playground.johannes.synpop.data.PlainPerson;
+import de.dbanalytics.spic.data.PersonUtils;
+import de.dbanalytics.spic.data.PlainFactory;
+import de.dbanalytics.spic.data.PlainPerson;
 
 import java.util.Collection;
 import java.util.Random;

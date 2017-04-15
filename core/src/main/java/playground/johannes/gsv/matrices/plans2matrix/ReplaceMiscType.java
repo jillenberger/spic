@@ -23,8 +23,8 @@ import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import org.matsim.contrib.common.collections.ChoiceSet;
 import org.matsim.contrib.common.util.XORShiftRandom;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.processing.PersonsTask;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.processing.PersonsTask;
 
 import java.util.Collection;
 
@@ -35,7 +35,7 @@ import java.util.Collection;
 public class ReplaceMiscType implements PersonsTask {
 
 	/* (non-Javadoc)
-	 * @see playground.johannes.synpop.processing.PersonsTask#apply(java.util.Collection)
+	 * @see de.dbanalytics.spic.processing.PersonsTask#apply(java.util.Collection)
 	 */
 	@Override
 	public void apply(Collection<? extends Person> persons) {

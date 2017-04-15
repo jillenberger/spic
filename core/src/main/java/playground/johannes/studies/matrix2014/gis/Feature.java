@@ -20,7 +20,7 @@
 package playground.johannes.studies.matrix2014.gis;
 
 import com.vividsolutions.jts.geom.Geometry;
-import playground.johannes.synpop.data.PlainElement;
+import de.dbanalytics.spic.data.PlainElement;
 
 /**
  * @author johannes

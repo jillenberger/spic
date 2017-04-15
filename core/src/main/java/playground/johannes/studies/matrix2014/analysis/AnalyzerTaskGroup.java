@@ -20,9 +20,9 @@
 package playground.johannes.studies.matrix2014.analysis;
 
 import org.apache.log4j.Logger;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.analysis.StatsContainer;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.StatsContainer;
 
 import java.util.List;
 

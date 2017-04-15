@@ -18,12 +18,12 @@
  * *********************************************************************** */
 package playground.johannes.studies.matrix2014.analysis;
 
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.matrix.NumericMatrix;
-import playground.johannes.synpop.matrix.NumericMatrixIO;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrixIO;
 
 import java.io.IOException;
 import java.util.Collection;

@@ -19,8 +19,8 @@
 
 package playground.johannes.gsv.matrices.io;
 
-import playground.johannes.synpop.matrix.NumericMatrix;
-import playground.johannes.synpop.matrix.NumericMatrixXMLReader;
+import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrixXMLReader;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

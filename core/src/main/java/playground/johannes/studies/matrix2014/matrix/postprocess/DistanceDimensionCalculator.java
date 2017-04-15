@@ -22,8 +22,8 @@ package playground.johannes.studies.matrix2014.matrix.postprocess;
 import com.vividsolutions.jts.geom.Point;
 import org.matsim.contrib.common.gis.DistanceCalculator;
 import org.matsim.contrib.common.stats.Discretizer;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.util.Map;
 

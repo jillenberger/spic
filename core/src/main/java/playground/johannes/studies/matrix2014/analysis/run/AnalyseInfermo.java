@@ -21,13 +21,13 @@ package playground.johannes.studies.matrix2014.analysis.run;
 
 import playground.johannes.studies.matrix2014.analysis.SetSeason;
 import playground.johannes.studies.matrix2014.matrix.postprocess.SeasonTask;
-import playground.johannes.synpop.analysis.AnalyzerTaskComposite;
-import playground.johannes.synpop.analysis.AnalyzerTaskRunner;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.data.io.PopulationIO;
-import playground.johannes.synpop.processing.EpisodeTask;
-import playground.johannes.synpop.processing.TaskRunner;
+import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
+import de.dbanalytics.spic.analysis.AnalyzerTaskRunner;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.io.PopulationIO;
+import de.dbanalytics.spic.processing.EpisodeTask;
+import de.dbanalytics.spic.processing.TaskRunner;
 
 import java.util.Set;
 

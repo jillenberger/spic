@@ -1,10 +1,10 @@
 package playground.johannes.gsv.synPop;
 
 import org.apache.log4j.Logger;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 import java.util.Map.Entry;
 import java.util.SortedMap;

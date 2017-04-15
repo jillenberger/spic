@@ -20,9 +20,9 @@
 package playground.johannes.gsv.synPop.invermo;
 
 import org.apache.log4j.Logger;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.processing.PersonsTask;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.processing.PersonsTask;
 
 import java.util.Collection;
 import java.util.HashSet;

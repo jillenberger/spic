@@ -19,8 +19,8 @@
 
 package playground.johannes.gsv.synPop.invermo;
 
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
  * @author johannes
@@ -29,7 +29,7 @@ import playground.johannes.synpop.processing.EpisodeTask;
 public class SetActivityTimes implements EpisodeTask {
 
 	/* (non-Javadoc)
-	 * @see playground.johannes.synpop.processing.EpisodeTask#apply(playground.johannes.synpop.data.PlainEpisode)
+	 * @see de.dbanalytics.spic.processing.EpisodeTask#apply(de.dbanalytics.spic.data.PlainEpisode)
 	 */
 	@Override
 	public void apply(Episode plan) {

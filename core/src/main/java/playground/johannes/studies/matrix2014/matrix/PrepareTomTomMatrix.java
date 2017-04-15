@@ -20,11 +20,11 @@ package playground.johannes.studies.matrix2014.matrix;
 
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.gis.DistanceCalculator;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.gis.ZoneGeoJsonIO;
-import playground.johannes.synpop.matrix.NumericMatrix;
-import playground.johannes.synpop.matrix.NumericMatrixIO;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrixIO;
 
 import java.io.IOException;
 import java.util.Set;

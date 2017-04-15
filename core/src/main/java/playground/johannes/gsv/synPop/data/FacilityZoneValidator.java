@@ -24,9 +24,9 @@ import org.matsim.contrib.socnetgen.sna.gis.Zone;
 import org.matsim.contrib.socnetgen.sna.gis.ZoneLayer;
 import org.matsim.facilities.ActivityFacility;
 import playground.johannes.coopsim.utils.MatsimCoordUtils;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.gis.FacilityData;
-import playground.johannes.synpop.gis.FacilityDataLoader;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.gis.FacilityDataLoader;
 
 import java.util.HashSet;
 import java.util.List;

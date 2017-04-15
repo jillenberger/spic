@@ -37,14 +37,14 @@ import org.matsim.facilities.Facility;
 import playground.johannes.studies.matrix2014.analysis.NumericLegAnalyzer;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonian;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonianConfigurator;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.gis.*;
-import playground.johannes.synpop.sim.AttributeChangeListener;
-import playground.johannes.synpop.sim.Hamiltonian;
-import playground.johannes.synpop.sim.HamiltonianLogger;
-import playground.johannes.synpop.sim.UnivariatFrequency;
-import playground.johannes.synpop.sim.data.*;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.Hamiltonian;
+import de.dbanalytics.spic.sim.HamiltonianLogger;
+import de.dbanalytics.spic.sim.UnivariatFrequency;
+import de.dbanalytics.spic.sim.data.*;
 
 import java.util.*;
 
@@ -95,7 +95,7 @@ public class GeoDistanceZoneDensityHamiltonian {
 
 //        TObjectIntIterator<Zone> it = indices.iterator();
 
-//        playground.johannes.synpop.sim.HamiltonianComposite composite = new playground.johannes.synpop.sim.HamiltonianComposite();
+//        de.dbanalytics.spic.sim.HamiltonianComposite composite = new de.dbanalytics.spic.sim.HamiltonianComposite();
 //        AttributeChangeListenerComposite listenerComposite = new AttributeChangeListenerComposite();
         int emptyZones = 0;
 

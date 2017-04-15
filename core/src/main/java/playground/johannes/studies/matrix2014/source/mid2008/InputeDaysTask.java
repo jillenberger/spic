@@ -23,9 +23,9 @@ import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import org.matsim.contrib.common.collections.ChoiceSet;
 import org.matsim.contrib.common.util.XORShiftRandom;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.processing.PersonTask;
-import playground.johannes.synpop.source.mid2008.MiDValues;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.processing.PersonTask;
+import de.dbanalytics.spic.source.mid2008.MiDValues;
 
 import java.util.Collection;
 import java.util.HashMap;

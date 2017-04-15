@@ -23,11 +23,11 @@ import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import org.matsim.contrib.common.stats.Correlations;
 import org.matsim.contrib.common.stats.StatsWriter;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Person;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
 
 import java.io.IOException;
 import java.util.Collection;

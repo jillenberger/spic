@@ -18,8 +18,8 @@
  * *********************************************************************** */
 package playground.johannes.studies.matrix2014.sim;
 
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.sim.data.CachedSegment;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.sim.data.CachedSegment;
 
 /**
  * @author jillenberger

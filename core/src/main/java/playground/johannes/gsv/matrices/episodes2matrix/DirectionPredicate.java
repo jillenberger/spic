@@ -19,9 +19,9 @@
 
 package playground.johannes.gsv.matrices.episodes2matrix;
 
-import playground.johannes.synpop.data.ActivityTypes;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.data.ActivityTypes;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Segment;
 
 /**
  * @author johannes

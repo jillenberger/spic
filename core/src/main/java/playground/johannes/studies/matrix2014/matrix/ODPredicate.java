@@ -18,7 +18,7 @@
  * *********************************************************************** */
 package playground.johannes.studies.matrix2014.matrix;
 
-import playground.johannes.synpop.matrix.Matrix;
+import de.dbanalytics.spic.matrix.Matrix;
 
 /**
  * @author jillenberger

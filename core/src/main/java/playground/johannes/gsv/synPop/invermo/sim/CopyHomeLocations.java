@@ -22,7 +22,7 @@ package playground.johannes.gsv.synPop.invermo.sim;
 import org.matsim.facilities.ActivityFacility;
 import playground.johannes.gsv.synPop.sim3.SamplerListener;
 import playground.johannes.gsv.synPop.sim3.SwitchHomeLocation;
-import playground.johannes.synpop.data.*;
+import de.dbanalytics.spic.data.*;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicLong;

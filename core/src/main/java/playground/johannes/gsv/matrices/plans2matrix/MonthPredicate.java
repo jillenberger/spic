@@ -19,9 +19,9 @@
 
 package playground.johannes.gsv.matrices.plans2matrix;
 
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.data.PlainPerson;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.PlainPerson;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
 
 /**
  * @author johannes

@@ -20,7 +20,7 @@ package playground.johannes.studies.matrix2014.analysis;
 
 import playground.johannes.studies.matrix2014.gis.ActivityLocationLayer;
 import playground.johannes.studies.matrix2014.matrix.DefaultMatrixBuilder;
-import playground.johannes.synpop.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneCollection;
 
 /**
  * @author jillenberger

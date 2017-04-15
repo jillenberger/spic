@@ -20,8 +20,8 @@
 package playground.johannes.studies.matrix2014.sim;
 
 import org.matsim.contrib.common.collections.Composite;
-import playground.johannes.synpop.sim.Hamiltonian;
-import playground.johannes.synpop.sim.data.CachedPerson;
+import de.dbanalytics.spic.sim.Hamiltonian;
+import de.dbanalytics.spic.sim.data.CachedPerson;
 
 import java.util.ArrayList;
 import java.util.Collection;

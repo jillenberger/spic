@@ -24,10 +24,10 @@ import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
 import playground.johannes.studies.matrix2014.gis.ZoneSetLAU2Class;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.gis.*;
-import playground.johannes.synpop.processing.PersonTask;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.processing.PersonTask;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
 
 /**
  * @author johannes

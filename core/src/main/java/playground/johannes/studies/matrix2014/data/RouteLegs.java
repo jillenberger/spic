@@ -31,14 +31,14 @@ import org.matsim.core.router.util.LeastCostPathCalculatorFactory;
 import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.facilities.ActivityFacilitiesImpl;
 import org.matsim.facilities.MatsimFacilitiesReader;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.data.io.PopulationIO;
-import playground.johannes.synpop.gis.FacilityData;
-import playground.johannes.synpop.gis.FacilityUtils;
-import playground.johannes.synpop.processing.EpisodeTask;
-import playground.johannes.synpop.processing.RouteLeg;
-import playground.johannes.synpop.processing.TaskRunner;
-import playground.johannes.synpop.util.Executor;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.io.PopulationIO;
+import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.gis.FacilityUtils;
+import de.dbanalytics.spic.processing.EpisodeTask;
+import de.dbanalytics.spic.processing.RouteLeg;
+import de.dbanalytics.spic.processing.TaskRunner;
+import de.dbanalytics.spic.util.Executor;
 
 import java.util.Set;
 

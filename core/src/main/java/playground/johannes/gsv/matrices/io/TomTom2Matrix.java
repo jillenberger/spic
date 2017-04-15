@@ -23,11 +23,11 @@ import org.matsim.contrib.common.util.ProgressLogger;
 import org.matsim.matrices.Entry;
 import org.matsim.matrices.Matrix;
 import org.matsim.visum.VisumMatrixReader;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.gis.ZoneGeoJsonIO;
-import playground.johannes.synpop.matrix.NumericMatrix;
-import playground.johannes.synpop.matrix.NumericMatrixXMLWriter;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrixXMLWriter;
 
 import java.io.IOException;
 import java.nio.file.Files;

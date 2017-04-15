@@ -19,11 +19,11 @@
 
 package playground.johannes.studies.matrix2014.analysis;
 
-import playground.johannes.synpop.analysis.AbstractCollector;
-import playground.johannes.synpop.analysis.ValueProvider;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.analysis.AbstractCollector;
+import de.dbanalytics.spic.analysis.ValueProvider;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -20,12 +20,12 @@
 package playground.johannes.studies.matrix2014.matrix;
 
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.analysis.StratifiedDiscretizerBuilder;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.gis.ZoneGeoJsonIO;
-import playground.johannes.synpop.matrix.NumericMatrix;
-import playground.johannes.synpop.matrix.NumericMatrixIO;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.StratifiedDiscretizerBuilder;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrixIO;
 
 import java.io.IOException;
 

@@ -19,11 +19,11 @@
 
 package playground.johannes.gsv.synPop.invermo;
 
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.data.PlainSegment;
-import playground.johannes.synpop.source.invermo.generator.AttributeHandler;
-import playground.johannes.synpop.source.invermo.generator.LegAttributeHandler;
-import playground.johannes.synpop.source.invermo.generator.VariableNames;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.PlainSegment;
+import de.dbanalytics.spic.source.invermo.generator.AttributeHandler;
+import de.dbanalytics.spic.source.invermo.generator.LegAttributeHandler;
+import de.dbanalytics.spic.source.invermo.generator.VariableNames;
 
 import java.util.ArrayList;
 import java.util.List;

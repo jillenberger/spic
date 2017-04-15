@@ -19,8 +19,8 @@
 
 package playground.johannes.gsv.synPop.sim3;
 
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.gis.DataPool;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.gis.DataPool;
 
 import java.io.File;
 import java.util.Collection;

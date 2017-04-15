@@ -22,11 +22,11 @@ package playground.johannes.studies.matrix2014.analysis;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TObjectDoubleMap;
 import org.apache.commons.lang3.tuple.Pair;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.HistogramWriter;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.matrix.MatrixOperations;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.HistogramWriter;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.matrix.MatrixOperations;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.util.HashSet;
 import java.util.List;

@@ -25,13 +25,13 @@ import org.matsim.core.config.ConfigGroup;
 import playground.johannes.studies.matrix2014.analysis.*;
 import playground.johannes.studies.matrix2014.gis.ActivityLocationLayer;
 import playground.johannes.studies.matrix2014.gis.ActivityLocationLayerLoader;
-import playground.johannes.synpop.analysis.AnalyzerTaskComposite;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.analysis.HistogramWriter;
-import playground.johannes.synpop.analysis.PassThroughDiscretizerBuilder;
-import playground.johannes.synpop.gis.*;
-import playground.johannes.synpop.matrix.NumericMatrix;
-import playground.johannes.synpop.matrix.NumericMatrixIO;
+import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.HistogramWriter;
+import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
+import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrixIO;
 
 /**
  * @author johannes

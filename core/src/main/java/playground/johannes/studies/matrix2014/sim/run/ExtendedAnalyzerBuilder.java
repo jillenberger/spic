@@ -27,13 +27,13 @@ import playground.johannes.studies.matrix2014.matrix.MatrixSamplerFactory;
 import playground.johannes.studies.matrix2014.matrix.ODPredicate;
 import playground.johannes.studies.matrix2014.matrix.ZoneDistancePredicate;
 import playground.johannes.studies.matrix2014.sim.GSVMatrixSampler;
-import playground.johannes.synpop.analysis.AnalyzerTaskComposite;
-import playground.johannes.synpop.analysis.ConcurrentAnalyzerTask;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.gis.ZoneData;
-import playground.johannes.synpop.gis.ZoneDataLoader;
-import playground.johannes.synpop.sim.PopulationWriter;
+import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
+import de.dbanalytics.spic.analysis.ConcurrentAnalyzerTask;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneData;
+import de.dbanalytics.spic.gis.ZoneDataLoader;
+import de.dbanalytics.spic.sim.PopulationWriter;
 
 import java.util.Collection;
 

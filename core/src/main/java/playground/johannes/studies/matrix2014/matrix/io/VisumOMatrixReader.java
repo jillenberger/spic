@@ -19,7 +19,7 @@
 
 package playground.johannes.studies.matrix2014.matrix.io;
 
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.io.*;
 import java.util.Set;

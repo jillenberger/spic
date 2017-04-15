@@ -33,9 +33,9 @@ import org.matsim.facilities.ActivityFacility;
 import org.matsim.facilities.FacilitiesReaderMatsimV1;
 import org.matsim.utils.objectattributes.AttributeConverter;
 import org.matsim.utils.objectattributes.ObjectAttributesXmlWriter;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.data.io.XMLHandler;
-import playground.johannes.synpop.processing.TaskRunner;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.io.XMLHandler;
+import de.dbanalytics.spic.processing.TaskRunner;
 
 import java.util.ArrayList;
 import java.util.List;

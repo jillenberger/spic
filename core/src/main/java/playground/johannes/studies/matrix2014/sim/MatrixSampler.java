@@ -21,13 +21,13 @@ package playground.johannes.studies.matrix2014.sim;
 
 import org.apache.log4j.Logger;
 import playground.johannes.studies.matrix2014.analysis.MatrixBuilder;
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.matrix.NumericMatrix;
-import playground.johannes.synpop.sim.MarkovEngineListener;
-import playground.johannes.synpop.sim.data.CachedPerson;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.data.CachedPerson;
 
 import java.util.Collection;
 import java.util.Set;

@@ -22,11 +22,11 @@ package playground.johannes.studies.matrix2014.analysis;
 import gnu.trove.map.TDoubleDoubleMap;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.sim.LegAttributeHistogramBuilder;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.sim.LegAttributeHistogramBuilder;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

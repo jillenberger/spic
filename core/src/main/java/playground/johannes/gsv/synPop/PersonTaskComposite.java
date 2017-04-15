@@ -20,8 +20,8 @@
 package playground.johannes.gsv.synPop;
 
 import org.matsim.contrib.common.collections.Composite;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.processing.PersonTask;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.processing.PersonTask;
 
 /**
  * @author johannes
@@ -30,7 +30,7 @@ import playground.johannes.synpop.processing.PersonTask;
 public class PersonTaskComposite extends Composite<PersonTask> implements PersonTask {
 
 	/* (non-Javadoc)
-	 * @see playground.johannes.synpop.processing.PersonTask#apply(playground.johannes.synpop.data.PlainPerson)
+	 * @see de.dbanalytics.spic.processing.PersonTask#apply(de.dbanalytics.spic.data.PlainPerson)
 	 */
 	@Override
 	public void apply(Person person) {

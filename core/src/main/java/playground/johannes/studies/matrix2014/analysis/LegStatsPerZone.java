@@ -24,10 +24,10 @@ import org.matsim.api.core.v01.Id;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
 
 import java.util.Collection;
 import java.util.HashMap;

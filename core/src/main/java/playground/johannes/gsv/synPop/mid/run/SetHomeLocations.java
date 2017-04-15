@@ -30,12 +30,12 @@ import playground.johannes.gsv.synPop.mid.PersonCloner;
 import playground.johannes.gsv.synPop.mid.sim.PersonLau2Inhabitants;
 import playground.johannes.gsv.synPop.mid.sim.PersonNuts1Name;
 import playground.johannes.gsv.synPop.sim3.*;
-import playground.johannes.synpop.data.ActivityTypes;
-import playground.johannes.synpop.data.PlainFactory;
-import playground.johannes.synpop.data.PlainPerson;
-import playground.johannes.synpop.data.io.XMLHandler;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.gis.FacilityDataLoader;
+import de.dbanalytics.spic.data.ActivityTypes;
+import de.dbanalytics.spic.data.PlainFactory;
+import de.dbanalytics.spic.data.PlainPerson;
+import de.dbanalytics.spic.data.io.XMLHandler;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.gis.FacilityDataLoader;
 
 import java.io.IOException;
 import java.util.Random;

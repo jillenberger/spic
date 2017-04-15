@@ -27,12 +27,12 @@ import org.matsim.core.config.ConfigUtils;
 import playground.johannes.studies.matrix2014.analysis.AnalyzerTaskGroup;
 import playground.johannes.studies.matrix2014.sim.CopyPersonAttToLeg;
 import playground.johannes.studies.matrix2014.sim.FacilityMutatorBuilder;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.processing.TaskRunner;
-import playground.johannes.synpop.sim.*;
-import playground.johannes.synpop.util.Executor;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.processing.TaskRunner;
+import de.dbanalytics.spic.sim.*;
+import de.dbanalytics.spic.util.Executor;
 
 import java.util.*;
 

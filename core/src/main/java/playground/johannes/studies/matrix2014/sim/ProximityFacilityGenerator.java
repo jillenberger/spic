@@ -25,16 +25,16 @@ import org.matsim.contrib.common.collections.CollectionUtils;
 import org.matsim.contrib.common.util.ProgressLogger;
 import org.matsim.facilities.ActivityFacility;
 import org.matsim.facilities.ActivityOption;
-import playground.johannes.synpop.data.ActivityTypes;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.gis.FacilityData;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.sim.ValueGenerator;
-import playground.johannes.synpop.sim.data.*;
-import playground.johannes.synpop.util.Executor;
+import de.dbanalytics.spic.data.ActivityTypes;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.sim.ValueGenerator;
+import de.dbanalytics.spic.sim.data.*;
+import de.dbanalytics.spic.util.Executor;
 
 import java.util.*;
 

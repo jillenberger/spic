@@ -35,17 +35,17 @@ import org.matsim.facilities.Facility;
 import playground.johannes.studies.matrix2014.analysis.NumericLegAnalyzer;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonian;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonianConfigurator;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.HistogramWriter;
-import playground.johannes.synpop.analysis.PassThroughDiscretizerBuilder;
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.gis.*;
-import playground.johannes.synpop.sim.AttributeChangeListener;
-import playground.johannes.synpop.sim.Hamiltonian;
-import playground.johannes.synpop.sim.HamiltonianLogger;
-import playground.johannes.synpop.sim.UnivariatFrequency;
-import playground.johannes.synpop.sim.data.*;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.HistogramWriter;
+import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.Hamiltonian;
+import de.dbanalytics.spic.sim.HamiltonianLogger;
+import de.dbanalytics.spic.sim.UnivariatFrequency;
+import de.dbanalytics.spic.sim.data.*;
 
 import java.util.*;
 

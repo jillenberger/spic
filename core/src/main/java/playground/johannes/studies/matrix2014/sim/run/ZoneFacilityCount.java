@@ -25,9 +25,9 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 import org.matsim.contrib.common.collections.CollectionUtils;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.util.Executor;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.util.Executor;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -21,7 +21,7 @@ package playground.johannes.gsv.matrices.io;
 
 import org.apache.log4j.Logger;
 import org.matsim.core.utils.io.IOUtils;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.io.BufferedReader;
 import java.io.IOException;

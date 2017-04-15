@@ -24,8 +24,8 @@ import gnu.trove.map.TObjectDoubleMap;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.ProgressLogger;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.data.io.PopulationIO;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.io.PopulationIO;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

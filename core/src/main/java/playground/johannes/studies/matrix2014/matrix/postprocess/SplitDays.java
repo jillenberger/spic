@@ -27,9 +27,9 @@ import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.gis.DistanceCalculator;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.FixedBordersDiscretizer;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
 
 import java.io.IOException;
 import java.util.List;

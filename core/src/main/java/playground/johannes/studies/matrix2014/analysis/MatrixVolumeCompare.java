@@ -23,12 +23,12 @@ import gnu.trove.list.array.TDoubleArrayList;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.stats.StatsWriter;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.analysis.HistogramWriter;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.matrix.MatrixOperations;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.HistogramWriter;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.matrix.MatrixOperations;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.io.IOException;
 import java.util.List;

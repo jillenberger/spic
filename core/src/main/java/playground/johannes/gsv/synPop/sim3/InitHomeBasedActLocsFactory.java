@@ -21,8 +21,8 @@ package playground.johannes.gsv.synPop.sim3;
 
 import org.matsim.contrib.common.util.XORShiftRandom;
 import playground.johannes.gsv.synPop.ProxyPlanTaskFactory;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 import java.util.Random;
 

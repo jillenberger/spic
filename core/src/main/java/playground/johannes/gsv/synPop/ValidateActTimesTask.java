@@ -19,10 +19,10 @@
 
 package playground.johannes.gsv.synPop;
 
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
  * @author johannes
@@ -31,7 +31,7 @@ import playground.johannes.synpop.processing.EpisodeTask;
 public class ValidateActTimesTask implements EpisodeTask {
 
 	/* (non-Javadoc)
-	 * @see playground.johannes.synpop.processing.EpisodeTask#apply(playground.johannes.synpop.data.PlainEpisode)
+	 * @see de.dbanalytics.spic.processing.EpisodeTask#apply(de.dbanalytics.spic.data.PlainEpisode)
 	 */
 	@Override
 	public void apply(Episode plan) {

@@ -28,12 +28,12 @@ import org.matsim.api.core.v01.Id;
 import org.matsim.contrib.common.util.ProgressLogger;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.gis.*;
-import playground.johannes.synpop.util.Executor;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.util.Executor;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

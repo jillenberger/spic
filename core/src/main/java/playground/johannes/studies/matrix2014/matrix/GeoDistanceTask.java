@@ -29,10 +29,10 @@ import org.matsim.contrib.common.gis.OrthodromicDistanceCalculator;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.Histogram;
 import org.matsim.contrib.common.stats.StatsWriter;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.io.IOException;
 import java.util.HashSet;

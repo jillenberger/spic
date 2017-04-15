@@ -25,16 +25,16 @@ import org.matsim.contrib.common.stats.LinearDiscretizer;
 import org.matsim.core.config.Config;
 import playground.johannes.studies.matrix2014.analysis.*;
 import playground.johannes.studies.matrix2014.matrix.postprocess.SeasonTask;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.gis.ZoneData;
-import playground.johannes.synpop.gis.ZoneDataLoader;
-import playground.johannes.synpop.processing.TaskRunner;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
-import playground.johannes.synpop.source.mid2008.MiDValues;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneData;
+import de.dbanalytics.spic.gis.ZoneDataLoader;
+import de.dbanalytics.spic.processing.TaskRunner;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.source.mid2008.MiDValues;
 
 import java.util.Collection;
 

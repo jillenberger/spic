@@ -20,9 +20,9 @@
 package playground.johannes.gsv.matrices.io;
 
 import org.apache.log4j.Logger;
-import playground.johannes.synpop.matrix.NumericMatrix;
-import playground.johannes.synpop.matrix.NumericMatrixTxtIO;
-import playground.johannes.synpop.matrix.NumericMatrixXMLReader;
+import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrixTxtIO;
+import de.dbanalytics.spic.matrix.NumericMatrixXMLReader;
 
 import java.io.IOException;
 

@@ -19,13 +19,13 @@
 package playground.johannes.studies.matrix2014.analysis;
 
 import gnu.trove.map.TObjectDoubleMap;
-import playground.johannes.synpop.analysis.LegCollector;
-import playground.johannes.synpop.analysis.NumericAttributeProvider;
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.analysis.ValueProvider;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.analysis.LegCollector;
+import de.dbanalytics.spic.analysis.NumericAttributeProvider;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.analysis.ValueProvider;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
 
 import java.util.Collection;
 

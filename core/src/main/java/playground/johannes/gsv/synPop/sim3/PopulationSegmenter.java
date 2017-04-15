@@ -19,7 +19,7 @@
 
 package playground.johannes.gsv.synPop.sim3;
 
-import playground.johannes.synpop.data.Person;
+import de.dbanalytics.spic.data.Person;
 
 import java.util.Collection;
 import java.util.List;

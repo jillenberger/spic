@@ -19,11 +19,11 @@
 
 package playground.johannes.studies.matrix2014.source.mid2008;
 
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.CommonValues;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.CommonValues;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
  * @author johannes

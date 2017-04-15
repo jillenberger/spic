@@ -19,8 +19,8 @@
 
 package playground.johannes.studies.matrix2014.analysis;
 
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.data.Segment;
 
 /**
  * @author johannes

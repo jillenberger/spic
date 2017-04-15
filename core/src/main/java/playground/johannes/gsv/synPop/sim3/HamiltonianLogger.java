@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 import org.matsim.contrib.common.stats.FixedSampleSizeDiscretizer;
 import org.matsim.contrib.common.stats.Histogram;
 import org.matsim.contrib.common.stats.StatsWriter;
-import playground.johannes.synpop.data.Person;
+import de.dbanalytics.spic.data.Person;
 
 import java.io.BufferedWriter;
 import java.io.File;

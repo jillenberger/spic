@@ -19,9 +19,9 @@
 
 package playground.johannes.gsv.synPop.mid.run;
 
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.processing.PersonTask;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.processing.PersonTask;
 
 /**
  * @author johannes

@@ -17,8 +17,8 @@ import org.matsim.facilities.FacilitiesReaderMatsimV1;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.data.io.PopulationIO;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.io.PopulationIO;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

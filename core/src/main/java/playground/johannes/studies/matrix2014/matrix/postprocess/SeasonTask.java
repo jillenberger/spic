@@ -29,11 +29,11 @@ import org.matsim.contrib.common.stats.FixedBordersDiscretizer;
 import playground.johannes.studies.matrix2014.analysis.LegPersonCollector;
 import playground.johannes.studies.matrix2014.analysis.SetSeason;
 import playground.johannes.studies.matrix2014.stats.Histogram;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.CommonValues;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.CommonValues;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

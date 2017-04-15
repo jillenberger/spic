@@ -23,9 +23,9 @@ import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
-import playground.johannes.synpop.analysis.ValueProvider;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.analysis.ValueProvider;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Segment;
 
 /**
  * @author johannes

@@ -19,10 +19,10 @@
 
 package playground.johannes.studies.matrix2014.analysis;
 
-import playground.johannes.synpop.analysis.ModePredicate;
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.analysis.PredicateAndComposite;
-import playground.johannes.synpop.data.*;
+import de.dbanalytics.spic.analysis.ModePredicate;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.analysis.PredicateAndComposite;
+import de.dbanalytics.spic.data.*;
 
 import java.util.*;
 

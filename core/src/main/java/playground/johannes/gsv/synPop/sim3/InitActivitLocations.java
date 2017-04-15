@@ -21,14 +21,14 @@ package playground.johannes.gsv.synPop.sim3;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacility;
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.data.PlainElement;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.gis.FacilityData;
-import playground.johannes.synpop.gis.FacilityDataLoader;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.PlainElement;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.gis.FacilityDataLoader;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 public class InitActivitLocations implements EpisodeTask {
 

@@ -27,12 +27,12 @@ import playground.johannes.studies.matrix2014.gis.ActivityLocationLayer;
 import playground.johannes.studies.matrix2014.matrix.DefaultMatrixBuilder;
 import playground.johannes.studies.matrix2014.matrix.ODPredicate;
 import playground.johannes.studies.matrix2014.matrix.VolumePredicate;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.matrix.MatrixOperations;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.matrix.MatrixOperations;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.io.IOException;
 import java.util.Collection;

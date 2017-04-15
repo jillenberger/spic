@@ -21,7 +21,7 @@ package playground.johannes.studies.matrix2014.matrix.io;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.core.utils.io.IOUtils;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

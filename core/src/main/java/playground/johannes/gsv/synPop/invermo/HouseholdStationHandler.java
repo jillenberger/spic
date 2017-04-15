@@ -19,10 +19,10 @@
 
 package playground.johannes.gsv.synPop.invermo;
 
-import playground.johannes.synpop.data.PlainElement;
-import playground.johannes.synpop.source.invermo.InvermoKeys;
-import playground.johannes.synpop.source.invermo.generator.AttributeHandler;
-import playground.johannes.synpop.source.invermo.generator.VariableNames;
+import de.dbanalytics.spic.data.PlainElement;
+import de.dbanalytics.spic.source.invermo.InvermoKeys;
+import de.dbanalytics.spic.source.invermo.generator.AttributeHandler;
+import de.dbanalytics.spic.source.invermo.generator.VariableNames;
 
 import java.util.Map;
 

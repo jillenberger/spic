@@ -1,7 +1,7 @@
 package playground.johannes.gsv.synPop.sim3;
 
 import org.matsim.contrib.common.util.XORShiftRandom;
-import playground.johannes.synpop.gis.DataPool;
+import de.dbanalytics.spic.gis.DataPool;
 
 import java.util.Random;
 

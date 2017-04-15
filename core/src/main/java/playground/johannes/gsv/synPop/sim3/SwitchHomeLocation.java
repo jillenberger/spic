@@ -20,8 +20,8 @@
 package playground.johannes.gsv.synPop.sim3;
 
 import org.matsim.facilities.ActivityFacility;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.PlainPerson;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.PlainPerson;
 
 /**
  * @author johannes

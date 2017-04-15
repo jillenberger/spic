@@ -19,8 +19,8 @@
 
 package playground.johannes.studies.matrix2014.sim.run;
 
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
 
 /**
  * @author johannes

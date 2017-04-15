@@ -22,10 +22,10 @@ package playground.johannes.studies.matrix2014.analysis;
 import gnu.trove.iterator.TObjectDoubleIterator;
 import gnu.trove.map.TObjectDoubleMap;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.matrix.MatrixOperations;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.matrix.MatrixOperations;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.util.List;
 

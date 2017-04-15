@@ -20,10 +20,10 @@
 package playground.johannes.studies.matrix2014.sim;
 
 import playground.johannes.studies.matrix2014.matrix.io.GSVMatrixWriter;
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.data.ActivityTypes;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.data.ActivityTypes;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Segment;
 
 import java.util.Random;
 

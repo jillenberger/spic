@@ -27,11 +27,11 @@ import org.matsim.core.config.ConfigGroup;
 import playground.johannes.studies.matrix2014.analysis.NumericLegAnalyzer;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonian;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonianConfigurator;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.sim.HamiltonianLogger;
-import playground.johannes.synpop.sim.UnivariatFrequency;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.sim.HamiltonianLogger;
+import de.dbanalytics.spic.sim.UnivariatFrequency;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
 
 import java.util.Collection;
 import java.util.HashSet;

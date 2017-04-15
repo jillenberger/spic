@@ -20,7 +20,7 @@
 package playground.johannes.gsv.synPop.sim3;
 
 import org.matsim.contrib.common.collections.Composite;
-import playground.johannes.synpop.data.Person;
+import de.dbanalytics.spic.data.Person;
 
 import java.util.ArrayList;
 import java.util.List;

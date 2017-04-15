@@ -24,7 +24,7 @@ import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import org.matsim.contrib.common.stats.DummyDiscretizer;
 import org.matsim.contrib.common.stats.Histogram;
-import playground.johannes.synpop.source.mid2008.generator.RowHandler;
+import de.dbanalytics.spic.source.mid2008.generator.RowHandler;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -21,10 +21,10 @@ package playground.johannes.studies.matrix2014.analysis;
 
 import gnu.trove.map.TObjectDoubleMap;
 import org.apache.commons.lang3.tuple.Pair;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.FileIOContext;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

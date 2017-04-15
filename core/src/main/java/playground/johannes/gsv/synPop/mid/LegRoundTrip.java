@@ -19,10 +19,10 @@
 
 package playground.johannes.gsv.synPop.mid;
 
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.source.mid2008.generator.LegAttributeHandler;
-import playground.johannes.synpop.source.mid2008.generator.VariableNames;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.source.mid2008.generator.LegAttributeHandler;
+import de.dbanalytics.spic.source.mid2008.generator.VariableNames;
 
 import java.util.Map;
 
@@ -34,7 +34,7 @@ import java.util.Map;
 public class LegRoundTrip implements LegAttributeHandler {
 
 	/* (non-Javadoc)
-	 * @see playground.johannes.synpop.source.mid2008.generator.LegAttributeHandler#handle(playground.johannes.gsv.synPop.ProxyLeg, java.util.Map)
+	 * @see de.dbanalytics.spic.source.mid2008.generator.LegAttributeHandler#handle(playground.johannes.gsv.synPop.ProxyLeg, java.util.Map)
 	 */
 	@Override
 	public void handle(Segment leg, Map<String, String> attributes) {

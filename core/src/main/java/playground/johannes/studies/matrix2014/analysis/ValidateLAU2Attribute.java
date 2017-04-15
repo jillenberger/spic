@@ -23,11 +23,11 @@ import org.apache.log4j.Logger;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
 import playground.johannes.studies.matrix2014.data.PersonAttributeUtils;
-import playground.johannes.synpop.analysis.AnalyzerTask;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.gis.*;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.analysis.AnalyzerTask;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
 
 import java.util.Collection;
 import java.util.List;

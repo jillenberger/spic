@@ -20,10 +20,10 @@
 package playground.johannes.studies.matrix2014.sim;
 
 import org.apache.log4j.Logger;
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.sim.Hamiltonian;
-import playground.johannes.synpop.sim.MarkovEngineListener;
-import playground.johannes.synpop.sim.data.CachedPerson;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.sim.Hamiltonian;
+import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.data.CachedPerson;
 
 import java.util.Collection;
 

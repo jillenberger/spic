@@ -20,7 +20,7 @@
 package playground.johannes.gsv.synPop.sim3;
 
 import org.apache.log4j.Logger;
-import playground.johannes.synpop.data.Person;
+import de.dbanalytics.spic.data.Person;
 
 import java.util.Collection;
 import java.util.Locale;

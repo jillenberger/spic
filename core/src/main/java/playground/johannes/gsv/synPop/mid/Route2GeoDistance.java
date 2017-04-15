@@ -20,10 +20,10 @@ package playground.johannes.gsv.synPop.mid;
 
 import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
  * @author jillenberger

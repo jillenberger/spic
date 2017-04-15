@@ -19,7 +19,7 @@
 
 package playground.johannes.gsv.matrices.episodes2matrix;
 
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.data.Segment;
 
 /**
  * @author johannes

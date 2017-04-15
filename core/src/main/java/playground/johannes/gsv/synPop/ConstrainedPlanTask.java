@@ -19,8 +19,8 @@
 
 package playground.johannes.gsv.synPop;
 
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
  * @author johannes

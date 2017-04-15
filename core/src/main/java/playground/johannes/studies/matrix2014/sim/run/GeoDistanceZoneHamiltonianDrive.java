@@ -37,12 +37,12 @@ import playground.johannes.studies.matrix2014.analysis.HistogramComparator;
 import playground.johannes.studies.matrix2014.analysis.NumericLegAnalyzer;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonian;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonianConfigurator;
-import playground.johannes.synpop.analysis.*;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.gis.*;
-import playground.johannes.synpop.sim.*;
-import playground.johannes.synpop.sim.data.*;
-import playground.johannes.synpop.util.Executor;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.sim.*;
+import de.dbanalytics.spic.sim.data.*;
+import de.dbanalytics.spic.util.Executor;
 
 import java.util.*;
 

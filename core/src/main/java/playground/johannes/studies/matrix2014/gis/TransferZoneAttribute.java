@@ -21,10 +21,10 @@ package playground.johannes.studies.matrix2014.gis;
 
 import com.vividsolutions.jts.index.strtree.STRtree;
 import org.apache.log4j.Logger;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.gis.ZoneGeoJsonIO;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
 
 import java.io.IOException;
 import java.nio.file.Files;

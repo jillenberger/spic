@@ -27,16 +27,16 @@ import playground.johannes.gsv.synPop.mid.Route2GeoDistance;
 import playground.johannes.gsv.synPop.sim3.ReplaceActTypes;
 import playground.johannes.studies.matrix2014.analysis.LabeledLegHistogramBuilder;
 import playground.johannes.studies.matrix2014.sim.ValidatePersonWeight;
-import playground.johannes.synpop.analysis.AttributeProvider;
-import playground.johannes.synpop.analysis.NotPredicate;
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.analysis.PredicateAndComposite;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.data.io.PopulationIO;
-import playground.johannes.synpop.processing.EpisodeTask;
-import playground.johannes.synpop.processing.GuessMissingActTypes;
-import playground.johannes.synpop.processing.TaskRunner;
-import playground.johannes.synpop.processing.ValidateMissingAttribute;
+import de.dbanalytics.spic.analysis.AttributeProvider;
+import de.dbanalytics.spic.analysis.NotPredicate;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.analysis.PredicateAndComposite;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.io.PopulationIO;
+import de.dbanalytics.spic.processing.EpisodeTask;
+import de.dbanalytics.spic.processing.GuessMissingActTypes;
+import de.dbanalytics.spic.processing.TaskRunner;
+import de.dbanalytics.spic.processing.ValidateMissingAttribute;
 
 import java.util.*;
 

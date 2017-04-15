@@ -21,10 +21,10 @@ package playground.johannes.studies.matrix2014.gis;
 
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.FixedBordersDiscretizer;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.gis.ZoneData;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneData;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
 
 /**
  * @author johannes

@@ -29,13 +29,13 @@ import org.matsim.facilities.ActivityFacility;
 import playground.johannes.coopsim.utils.MatsimCoordUtils;
 import playground.johannes.gsv.synPop.data.LandUseData;
 import playground.johannes.gsv.synPop.data.LandUseDataLoader;
-import playground.johannes.synpop.data.ActivityTypes;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.PlainPerson;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.gis.FacilityData;
-import playground.johannes.synpop.gis.FacilityDataLoader;
-import playground.johannes.synpop.processing.PersonsTask;
+import de.dbanalytics.spic.data.ActivityTypes;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.PlainPerson;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.gis.FacilityDataLoader;
+import de.dbanalytics.spic.processing.PersonsTask;
 
 import java.util.*;
 

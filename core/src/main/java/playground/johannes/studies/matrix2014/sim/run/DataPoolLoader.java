@@ -23,7 +23,7 @@ import org.matsim.core.config.ConfigGroup;
 import playground.johannes.studies.matrix2014.gis.ActivityLocationLayerLoader;
 import playground.johannes.studies.matrix2014.gis.ValidateFacilities;
 import playground.johannes.studies.matrix2014.gis.ZoneSetLAU2Class;
-import playground.johannes.synpop.gis.*;
+import de.dbanalytics.spic.gis.*;
 
 /**
  * @author jillenberger

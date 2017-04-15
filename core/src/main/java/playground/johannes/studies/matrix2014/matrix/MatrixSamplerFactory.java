@@ -22,8 +22,8 @@ import playground.johannes.studies.matrix2014.analysis.MatrixBuilder;
 import playground.johannes.studies.matrix2014.analysis.MatrixBuilderFactory;
 import playground.johannes.studies.matrix2014.gis.ActivityLocationLayer;
 import playground.johannes.studies.matrix2014.sim.MatrixSampler;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.sim.MarkovEngineListenerComposite;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
 
 /**
  * @author jillenberger

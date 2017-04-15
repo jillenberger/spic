@@ -22,7 +22,7 @@ package playground.johannes.gsv.synPop.sim3;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.collections.CollectionUtils;
 import org.matsim.contrib.common.util.XORShiftRandom;
-import playground.johannes.synpop.data.Person;
+import de.dbanalytics.spic.data.Person;
 
 import java.util.Collection;
 import java.util.List;

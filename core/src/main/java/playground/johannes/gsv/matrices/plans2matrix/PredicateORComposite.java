@@ -20,8 +20,8 @@
 package playground.johannes.gsv.matrices.plans2matrix;
 
 import org.matsim.contrib.common.collections.Composite;
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.data.PlainPerson;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.PlainPerson;
 
 /**
  * @author johannes
@@ -30,7 +30,7 @@ import playground.johannes.synpop.data.PlainPerson;
 public class PredicateORComposite extends Composite<Predicate> implements Predicate {
 
 	/* (non-Javadoc)
-	 * @see playground.johannes.gsv.matrices.LegPredicate#test(playground.johannes.synpop.data.PlainElement, playground.johannes.synpop.data.PlainElement, playground.johannes.synpop.data.PlainElement)
+	 * @see playground.johannes.gsv.matrices.LegPredicate#test(de.dbanalytics.spic.data.PlainElement, de.dbanalytics.spic.data.PlainElement, de.dbanalytics.spic.data.PlainElement)
 	 */
 	@Override
 	public boolean test(PlainPerson person, Attributable leg, Attributable prev, Attributable next) {

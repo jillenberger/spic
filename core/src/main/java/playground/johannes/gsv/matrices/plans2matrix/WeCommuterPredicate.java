@@ -19,7 +19,7 @@
 
 package playground.johannes.gsv.matrices.plans2matrix;
 
-import playground.johannes.synpop.data.*;
+import de.dbanalytics.spic.data.*;
 
 /**
  * @author johannes

@@ -18,13 +18,13 @@
  * *********************************************************************** */
 package playground.johannes.studies.matrix2014.sim;
 
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.gis.FacilityData;
-import playground.johannes.synpop.gis.FacilityDataLoader;
-import playground.johannes.synpop.sim.*;
-import playground.johannes.synpop.sim.data.ActivityFacilityConverter;
-import playground.johannes.synpop.sim.data.Converters;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.gis.FacilityDataLoader;
+import de.dbanalytics.spic.sim.*;
+import de.dbanalytics.spic.sim.data.ActivityFacilityConverter;
+import de.dbanalytics.spic.sim.data.Converters;
 
 import java.util.ArrayList;
 import java.util.List;

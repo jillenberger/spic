@@ -19,10 +19,10 @@
 
 package playground.johannes.studies.matrix2014.analysis;
 
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.processing.PersonTask;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
-import playground.johannes.synpop.source.mid2008.MiDValues;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.processing.PersonTask;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.source.mid2008.MiDValues;
 
 /**
  * @author johannes

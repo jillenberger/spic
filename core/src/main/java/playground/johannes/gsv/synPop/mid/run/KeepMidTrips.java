@@ -21,13 +21,13 @@ package playground.johannes.gsv.synPop.mid.run;
 
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.data.PlainFactory;
-import playground.johannes.synpop.data.PlainPerson;
-import playground.johannes.synpop.data.io.XMLHandler;
-import playground.johannes.synpop.data.io.XMLWriter;
-import playground.johannes.synpop.source.mid2008.MiDValues;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.PlainFactory;
+import de.dbanalytics.spic.data.PlainPerson;
+import de.dbanalytics.spic.data.io.XMLHandler;
+import de.dbanalytics.spic.data.io.XMLWriter;
+import de.dbanalytics.spic.source.mid2008.MiDValues;
 
 import java.util.HashSet;
 import java.util.Random;

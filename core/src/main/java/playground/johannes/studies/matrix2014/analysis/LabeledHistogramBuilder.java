@@ -20,8 +20,8 @@ package playground.johannes.studies.matrix2014.analysis;
 
 import gnu.trove.map.TObjectDoubleMap;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
-import playground.johannes.synpop.analysis.Collector;
-import playground.johannes.synpop.data.Person;
+import de.dbanalytics.spic.analysis.Collector;
+import de.dbanalytics.spic.data.Person;
 
 import java.util.Collection;
 import java.util.List;

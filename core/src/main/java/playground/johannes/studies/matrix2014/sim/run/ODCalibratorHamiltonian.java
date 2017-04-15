@@ -25,9 +25,9 @@ import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonian;
 import playground.johannes.studies.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import playground.johannes.studies.matrix2014.sim.CachedModePredicate;
 import playground.johannes.studies.matrix2014.sim.ODCalibrator;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.CommonValues;
-import playground.johannes.synpop.sim.HamiltonianLogger;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.CommonValues;
+import de.dbanalytics.spic.sim.HamiltonianLogger;
 
 /**
  * @author jillenberger

@@ -28,8 +28,8 @@ import org.apache.log4j.Logger;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.Histogram;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.processing.PersonsTask;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.processing.PersonsTask;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

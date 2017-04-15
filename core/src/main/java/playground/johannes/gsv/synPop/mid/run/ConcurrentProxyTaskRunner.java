@@ -22,9 +22,9 @@ package playground.johannes.gsv.synPop.mid.run;
 import org.matsim.contrib.common.collections.CollectionUtils;
 import org.matsim.contrib.common.util.ProgressLogger;
 import playground.johannes.gsv.synPop.ProxyPlanTaskFactory;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.data.PlainPerson;
-import playground.johannes.synpop.processing.EpisodeTask;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.PlainPerson;
+import de.dbanalytics.spic.processing.EpisodeTask;
 
 import java.util.Collection;
 import java.util.List;

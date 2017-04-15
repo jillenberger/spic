@@ -23,10 +23,10 @@ import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
 import playground.johannes.gsv.synPop.ApplySampleProbas;
 import playground.johannes.gsv.synPop.mid.PersonCloner;
-import playground.johannes.synpop.data.PlainFactory;
-import playground.johannes.synpop.data.PlainPerson;
-import playground.johannes.synpop.data.io.XMLHandler;
-import playground.johannes.synpop.data.io.XMLWriter;
+import de.dbanalytics.spic.data.PlainFactory;
+import de.dbanalytics.spic.data.PlainPerson;
+import de.dbanalytics.spic.data.io.XMLHandler;
+import de.dbanalytics.spic.data.io.XMLWriter;
 
 import java.util.Random;
 import java.util.Set;

@@ -22,15 +22,15 @@ package playground.johannes.studies.matrix2014.analysis;
 import gnu.trove.iterator.TObjectDoubleIterator;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import playground.johannes.studies.matrix2014.stats.Histogram;
-import playground.johannes.synpop.analysis.AttributeProvider;
-import playground.johannes.synpop.analysis.Collector;
-import playground.johannes.synpop.analysis.LegCollector;
-import playground.johannes.synpop.analysis.StatsContainer;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.source.mid2008.MiDKeys;
-import playground.johannes.synpop.source.mid2008.MiDValues;
+import de.dbanalytics.spic.analysis.AttributeProvider;
+import de.dbanalytics.spic.analysis.Collector;
+import de.dbanalytics.spic.analysis.LegCollector;
+import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.source.mid2008.MiDValues;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ import java.util.Map;
 /**
  * @author johannes
  */
-public class DaySeasonTask implements playground.johannes.synpop.analysis.AnalyzerTask<Collection<? extends Person>> {
+public class DaySeasonTask implements de.dbanalytics.spic.analysis.AnalyzerTask<Collection<? extends Person>> {
 
     @Override
     public void analyze(Collection<? extends Person> persons, List<StatsContainer> containers) {

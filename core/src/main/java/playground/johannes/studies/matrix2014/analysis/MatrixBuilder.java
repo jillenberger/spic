@@ -19,10 +19,10 @@
 
 package playground.johannes.studies.matrix2014.analysis;
 
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.Segment;
-import playground.johannes.synpop.matrix.NumericMatrix;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.util.Collection;
 

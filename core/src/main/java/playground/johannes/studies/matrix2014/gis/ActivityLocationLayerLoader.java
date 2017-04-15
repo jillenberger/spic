@@ -19,10 +19,10 @@
 
 package playground.johannes.studies.matrix2014.gis;
 
-import playground.johannes.synpop.gis.DataLoader;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.gis.FacilityData;
-import playground.johannes.synpop.gis.FacilityDataLoader;
+import de.dbanalytics.spic.gis.DataLoader;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.gis.FacilityDataLoader;
 
 /**
  * @author johannes

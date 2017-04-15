@@ -21,8 +21,8 @@ package playground.johannes.studies.matrix2014.matrix;
 import com.vividsolutions.jts.geom.Point;
 import org.matsim.contrib.common.gis.DistanceCalculator;
 import org.matsim.contrib.common.gis.OrthodromicDistanceCalculator;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.matrix.Matrix;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.matrix.Matrix;
 
 /**
  * @author jillenberger

@@ -27,10 +27,10 @@ import playground.johannes.coopsim.utils.MatsimCoordUtils;
 import playground.johannes.gsv.synPop.data.LandUseData;
 import playground.johannes.gsv.synPop.data.LandUseDataLoader;
 import playground.johannes.gsv.synPop.sim3.SwitchHomeLocation;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.PlainPerson;
-import playground.johannes.synpop.gis.DataPool;
-import playground.johannes.synpop.processing.PersonTask;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.PlainPerson;
+import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.processing.PersonTask;
 
 import java.util.Map;
 

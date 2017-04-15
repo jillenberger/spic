@@ -20,7 +20,7 @@
 package playground.johannes.gsv.matrices.episodes2matrix;
 
 import org.matsim.contrib.common.collections.Composite;
-import playground.johannes.synpop.data.Segment;
+import de.dbanalytics.spic.data.Segment;
 
 /**
  * @author johannes

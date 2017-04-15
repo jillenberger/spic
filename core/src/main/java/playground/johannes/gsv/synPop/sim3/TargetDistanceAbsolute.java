@@ -21,10 +21,10 @@ package playground.johannes.gsv.synPop.sim3;
 
 import org.matsim.api.core.v01.Coord;
 import org.matsim.facilities.ActivityFacility;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Person;
-import playground.johannes.synpop.data.PlainElement;
-import playground.johannes.synpop.data.PlainPerson;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.PlainElement;
+import de.dbanalytics.spic.data.PlainPerson;
 
 /**
  * @author johannes

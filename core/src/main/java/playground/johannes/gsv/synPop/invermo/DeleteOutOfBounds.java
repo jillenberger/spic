@@ -30,11 +30,11 @@ import org.matsim.contrib.common.gis.CRSUtils;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.data.CommonKeys;
-import playground.johannes.synpop.data.Episode;
-import playground.johannes.synpop.processing.EpisodeTask;
-import playground.johannes.synpop.source.invermo.InvermoKeys;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.processing.EpisodeTask;
+import de.dbanalytics.spic.source.invermo.InvermoKeys;
 
 /**
  * @author johannes

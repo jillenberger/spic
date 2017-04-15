@@ -19,12 +19,12 @@
 
 package playground.johannes.studies.matrix2014.sim.run;
 
-import playground.johannes.synpop.analysis.Predicate;
-import playground.johannes.synpop.data.Attributable;
-import playground.johannes.synpop.sim.AttributeChangeListener;
-import playground.johannes.synpop.sim.Hamiltonian;
-import playground.johannes.synpop.sim.data.CachedElement;
-import playground.johannes.synpop.sim.data.CachedPerson;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.Hamiltonian;
+import de.dbanalytics.spic.sim.data.CachedElement;
+import de.dbanalytics.spic.sim.data.CachedPerson;
 
 import java.util.Collection;
 import java.util.List;

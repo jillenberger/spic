@@ -21,7 +21,7 @@ package playground.johannes.studies.matrix2014.data;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
-import playground.johannes.synpop.data.*;
+import de.dbanalytics.spic.data.*;
 
 /**
  * @author jillenberger

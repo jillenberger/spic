@@ -19,8 +19,8 @@
 
 package playground.johannes.gsv.synPop.invermo;
 
-import playground.johannes.synpop.data.*;
-import playground.johannes.synpop.processing.PersonTask;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.processing.PersonTask;
 
 import java.util.HashSet;
 import java.util.Map.Entry;

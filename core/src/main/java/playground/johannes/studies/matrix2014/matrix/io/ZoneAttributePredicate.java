@@ -21,9 +21,9 @@ package playground.johannes.studies.matrix2014.matrix.io;
 
 import org.apache.log4j.Logger;
 import playground.johannes.studies.matrix2014.matrix.ODPredicate;
-import playground.johannes.synpop.gis.Zone;
-import playground.johannes.synpop.gis.ZoneCollection;
-import playground.johannes.synpop.matrix.Matrix;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.matrix.Matrix;
 
 /**
  * @author johannes

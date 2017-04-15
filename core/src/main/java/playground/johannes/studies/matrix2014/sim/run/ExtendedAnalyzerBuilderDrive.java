@@ -20,8 +20,8 @@ package playground.johannes.studies.matrix2014.sim.run;
 
 import org.matsim.core.config.Config;
 import playground.johannes.studies.matrix2014.sim.GSVMatrixSampler;
-import playground.johannes.synpop.analysis.AnalyzerTaskComposite;
-import playground.johannes.synpop.data.Person;
+import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
+import de.dbanalytics.spic.data.Person;
 
 import java.util.Collection;
 
