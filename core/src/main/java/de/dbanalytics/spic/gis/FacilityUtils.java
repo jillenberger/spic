@@ -1,25 +1,26 @@
-/* *********************************************************************** *
- * project: org.matsim.*
- *                                                                         *
- * *********************************************************************** *
- *                                                                         *
- * copyright       : (C) 2016 by the members listed in the COPYING,        *
- *                   LICENSE and WARRANTY file.                            *
- * email           : info at matsim dot org                                *
- *                                                                         *
- * *********************************************************************** *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *   See also COPYING, LICENSE and WARRANTY file                           *
- *                                                                         *
- * *********************************************************************** */
+/*
+ * (c) Copyright 2017 Johannes Illenberger
+ *
+ * Project de.dbanalytics.spic.*
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package de.dbanalytics.spic.gis;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import de.dbanalytics.spic.util.Executor;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.contrib.common.collections.CollectionUtils;
@@ -29,7 +30,6 @@ import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacilitiesImpl;
 import org.matsim.facilities.ActivityFacility;
 import org.matsim.facilities.ActivityFacilityImpl;
-import de.dbanalytics.spic.util.Executor;
 
 import java.util.*;
 
