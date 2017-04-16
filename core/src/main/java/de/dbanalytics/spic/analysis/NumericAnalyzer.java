@@ -18,8 +18,8 @@
  * *********************************************************************** */
 package de.dbanalytics.spic.analysis;
 
-import org.matsim.contrib.common.collections.CollectionUtils;
 import de.dbanalytics.spic.data.Person;
+import org.matsim.contrib.common.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,7 +71,7 @@ public class NumericAnalyzer implements AnalyzerTask<Collection<? extends Person
             containers.add(new StatsContainer(dimension, values, weights));
 
             if (histogramWriter != null) {
-                List<double[]> valuesList = playground.johannes.studies.matrix2014.analysis.CollectionUtils.toNativeArray(values, weights);
+                List<double[]> valuesList = de.dbanalytics.devel.matrix2014.analysis.CollectionUtils.toNativeArray(values, weights);
                 histogramWriter.writeHistograms(valuesList.get(0), valuesList.get(1), dimension);
             }
         }

@@ -16,14 +16,12 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.devel.matrix2014.analysis;
 
-import de.dbanalytics.devel.matrix2014.analysis.CollectionUtils;
 import de.dbanalytics.spic.analysis.Collector;
 import de.dbanalytics.spic.data.Person;
-import gnu.trove.map.TDoubleDoubleMap;
-import org.matsim.contrib.common.stats.Discretizer;
-import org.matsim.contrib.common.stats.Histogram;
+import gnu.trove.map.TObjectDoubleMap;
+import gnu.trove.map.hash.TObjectDoubleHashMap;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,32 +29,30 @@ import java.util.List;
 /**
  * @author jillenberger
  */
-public class DefaultHistogramBuilder implements HistogramBuilder {
+public class LabeledHistogramBuilder {
 
-    private Collector<Double> valueCollector;
+    private Collector<String> valueCollector;
 
     private Collector<Double> weightsCollector;
 
-    private Discretizer discretizer;
-
-    private boolean reweight;
-
-    public DefaultHistogramBuilder(Collector<Double> valueCollector, Collector<Double> weightsCollector, Discretizer discretizer) {
+    public LabeledHistogramBuilder(Collector<String> valueCollector, Collector<Double> weightsCollector) {
         this.valueCollector = valueCollector;
         this.weightsCollector = weightsCollector;
-        this.discretizer = discretizer;
-        setReweight(false);
+
     }
 
-    public void setReweight(boolean reweight) {
-        this.reweight = reweight;
-    }
-
-    public TDoubleDoubleMap build(Collection<? extends Person> persons) {
-        List<Double> values = valueCollector.collect(persons);
+    public TObjectDoubleMap<String> build(Collection<? extends Person> persons) {
+        List<String> values = valueCollector.collect(persons);
         List<Double> weights = weightsCollector.collect(persons);
-        List<double[]> nativeValues = CollectionUtils.toNativeArray(values, weights);
-        TDoubleDoubleMap hist = Histogram.createHistogram(nativeValues.get(0), nativeValues.get(1), discretizer, reweight);
+
+        TObjectDoubleMap<String> hist = new TObjectDoubleHashMap<>();
+
+        if(values.size() != weights.size()) throw new RuntimeException("Values and weights have to have equal length.");
+
+        for(int i = 0; i < values.size(); i++) {
+            hist.adjustOrPutValue(values.get(i), weights.get(i), weights.get(i));
+        }
+
         return hist;
     }
 

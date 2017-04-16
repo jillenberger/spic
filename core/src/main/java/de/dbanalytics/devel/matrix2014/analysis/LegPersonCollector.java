@@ -3,7 +3,7 @@
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2016 by the members listed in the COPYING,       *
+ * copyright       : (C) 2015 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           : info at matsim dot org                                *
  *                                                                         *
@@ -16,45 +16,44 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package de.dbanalytics.spic.sim;
 
-import de.dbanalytics.devel.matrix2014.analysis.LegPersonCollector;
-import de.dbanalytics.spic.analysis.LegCollector;
-import de.dbanalytics.spic.analysis.NumericAttributeProvider;
-import de.dbanalytics.spic.analysis.Predicate;
+package de.dbanalytics.devel.matrix2014.analysis;
+
+import de.dbanalytics.spic.analysis.AbstractCollector;
 import de.dbanalytics.spic.analysis.ValueProvider;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
-import gnu.trove.map.TDoubleDoubleMap;
-import org.matsim.contrib.common.stats.Discretizer;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
- * @author jillenberger
+ * @author johannes
  */
-public class LegHistogramBuilder implements HistogramBuilder {
+public class LegPersonCollector<T> extends AbstractCollector<T, Person, Segment> {
 
-    private DefaultHistogramBuilder builder;
-
-    private LegCollector<Double> valueCollector;
-
-    private LegPersonCollector<Double> weightsCollector;
-
-    public LegHistogramBuilder(ValueProvider<Double, Segment> provider, Discretizer discretizer) {
-        valueCollector = new LegCollector<>(provider);
-        weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.PERSON_WEIGHT));
-        builder = new DefaultHistogramBuilder(valueCollector, weightsCollector, discretizer);
-    }
-
-    public void setPredicate(Predicate<Segment> predicate) {
-        valueCollector.setPredicate(predicate);
-        weightsCollector.setPredicate(predicate);
+    public LegPersonCollector(ValueProvider<T, Person> provider) {
+        super(provider);
     }
 
     @Override
-    public TDoubleDoubleMap build(Collection<? extends Person> persons) {
-        return builder.build(persons);
+    public List<T> collect(Collection<? extends Person> persons) {
+        ArrayList<T> values = new ArrayList<>(persons.size() * 10);
+
+        for (Person p : persons) {
+            for (Episode e : p.getEpisodes()) {
+                for (Segment leg : e.getLegs()) {
+                    if (predicate == null || predicate.test(leg)) {
+                        values.add(provider.get(p));
+                    }
+                }
+            }
+        }
+
+        values.trimToSize();
+
+        return values;
     }
 }

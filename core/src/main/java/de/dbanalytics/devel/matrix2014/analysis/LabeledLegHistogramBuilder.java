@@ -16,49 +16,42 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.devel.matrix2014.analysis;
 
-import de.dbanalytics.devel.matrix2014.analysis.CollectionUtils;
-import de.dbanalytics.spic.analysis.Collector;
+import de.dbanalytics.spic.analysis.LegCollector;
+import de.dbanalytics.spic.analysis.NumericAttributeProvider;
+import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.analysis.ValueProvider;
+import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
-import gnu.trove.map.TDoubleDoubleMap;
-import org.matsim.contrib.common.stats.Discretizer;
-import org.matsim.contrib.common.stats.Histogram;
+import de.dbanalytics.spic.data.Segment;
+import gnu.trove.map.TObjectDoubleMap;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author jillenberger
  */
-public class DefaultHistogramBuilder implements HistogramBuilder {
+public class LabeledLegHistogramBuilder {
 
-    private Collector<Double> valueCollector;
+    private LabeledHistogramBuilder builder;
 
-    private Collector<Double> weightsCollector;
+    private LegCollector<String> valueCollector;
 
-    private Discretizer discretizer;
+    private LegPersonCollector<Double> weightsCollector;
 
-    private boolean reweight;
-
-    public DefaultHistogramBuilder(Collector<Double> valueCollector, Collector<Double> weightsCollector, Discretizer discretizer) {
-        this.valueCollector = valueCollector;
-        this.weightsCollector = weightsCollector;
-        this.discretizer = discretizer;
-        setReweight(false);
+    public LabeledLegHistogramBuilder(ValueProvider<String, Segment> provider) {
+        valueCollector = new LegCollector<>(provider);
+        weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.PERSON_WEIGHT));
+        builder = new LabeledHistogramBuilder(valueCollector, weightsCollector);
     }
 
-    public void setReweight(boolean reweight) {
-        this.reweight = reweight;
+    public void setPredicate(Predicate<Segment> predicate) {
+        valueCollector.setPredicate(predicate);
+        weightsCollector.setPredicate(predicate);
     }
 
-    public TDoubleDoubleMap build(Collection<? extends Person> persons) {
-        List<Double> values = valueCollector.collect(persons);
-        List<Double> weights = weightsCollector.collect(persons);
-        List<double[]> nativeValues = CollectionUtils.toNativeArray(values, weights);
-        TDoubleDoubleMap hist = Histogram.createHistogram(nativeValues.get(0), nativeValues.get(1), discretizer, reweight);
-        return hist;
+    public TObjectDoubleMap<String> build(Collection<? extends Person> persons) {
+        return builder.build(persons);
     }
-
-
 }

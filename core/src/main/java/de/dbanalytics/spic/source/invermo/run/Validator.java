@@ -19,9 +19,7 @@
 
 package de.dbanalytics.spic.source.invermo.run;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import playground.johannes.studies.matrix2014.sim.ValidatePersonWeight;
+import de.dbanalytics.devel.matrix2014.sim.ValidatePersonWeight;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
@@ -32,6 +30,8 @@ import de.dbanalytics.spic.processing.ValidateNoPlans;
 import de.dbanalytics.spic.source.invermo.processing.CalcGeoDistance;
 import de.dbanalytics.spic.source.invermo.processing.GeocodeLocationsTask;
 import de.dbanalytics.spic.source.invermo.processing.ValidateNoLegs;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import java.util.Set;
 

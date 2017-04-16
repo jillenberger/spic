@@ -1,0 +1,66 @@
+/* *********************************************************************** *
+ * project: org.matsim.*
+ *                                                                         *
+ * *********************************************************************** *
+ *                                                                         *
+ * copyright       : (C) 2016 by the members listed in the COPYING,       *
+ *                   LICENSE and WARRANTY file.                            *
+ * email           : info at matsim dot org                                *
+ *                                                                         *
+ * *********************************************************************** *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *   See also COPYING, LICENSE and WARRANTY file                           *
+ *                                                                         *
+ * *********************************************************************** */
+package de.dbanalytics.devel.matrix2014.sim.run;
+
+import de.dbanalytics.devel.matrix2014.config.ODCalibratorConfigurator;
+import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonian;
+import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
+import de.dbanalytics.devel.matrix2014.sim.CachedModePredicate;
+import de.dbanalytics.devel.matrix2014.sim.ODCalibrator;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.CommonValues;
+import de.dbanalytics.spic.sim.HamiltonianLogger;
+import org.matsim.core.config.Config;
+import org.matsim.core.config.ConfigGroup;
+
+/**
+ * @author jillenberger
+ */
+public class ODCalibratorHamiltonian {
+
+    private static final String MODULE_NAME = "odCalibratorHamiltonian";
+
+    public static void build(Simulator engine, Config config) {
+        ConfigGroup configGroup = config.getModule(MODULE_NAME);
+        ODCalibrator hamiltonian = new ODCalibratorConfigurator(
+                engine.getDataPool())
+                .configure(configGroup);
+
+        hamiltonian.setUseWeights(engine.getUseWeights());
+        hamiltonian.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
+
+        AnnealingHamiltonian annealingHamiltonian = AnnealingHamiltonianConfigurator.configure(hamiltonian,
+                configGroup);
+        engine.getHamiltonian().addComponent(annealingHamiltonian);
+        engine.getAttributeListeners().get(CommonKeys.ACTIVITY_FACILITY).addComponent(hamiltonian);
+        engine.getEngineListeners().addComponent(annealingHamiltonian);
+        /*
+        Add a hamiltonian logger.
+         */
+        long start = 0;
+        String value = configGroup.getValue("startIteration");
+        if(value != null) start = (long)Double.parseDouble(value);
+
+        engine.getEngineListeners().addComponent(new HamiltonianLogger(hamiltonian,
+                engine.getLoggingInterval(),
+                "odCalibrator",
+                engine.getIOContext().getRoot(),
+                start));
+    }
+}
