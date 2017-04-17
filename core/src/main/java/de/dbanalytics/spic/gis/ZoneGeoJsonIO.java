@@ -19,6 +19,7 @@
 
 package de.dbanalytics.spic.gis;
 
+import org.wololo.geojson.Feature;
 import org.wololo.geojson.*;
 import org.wololo.jts2geojson.GeoJSONReader;
 import org.wololo.jts2geojson.GeoJSONWriter;
@@ -48,9 +49,9 @@ public class ZoneGeoJsonIO {
 		GeoJSON json = writer.write(zone.getGeometry());
 
 		Geometry geometry = (Geometry) GeoJSONFactory.create(json.toString());
-		Feature feature = new Feature(geometry, new HashMap<String, Object>(zone.attributes()));
+		org.wololo.geojson.Feature feature = new org.wololo.geojson.Feature(geometry, new HashMap<String, Object>(zone.attributes()));
 
-		List<Feature> features = new ArrayList<>(1);
+		List<org.wololo.geojson.Feature> features = new ArrayList<>(1);
 		features.add(feature);
 		return writer.write(features).toString();
 	}
@@ -62,7 +63,7 @@ public class ZoneGeoJsonIO {
 		for (Zone zone : zones) {
 			GeoJSON json = writer.write(zone.getGeometry());
 			Geometry geometry = (Geometry) GeoJSONFactory.create(json.toString());
-			Feature feature = new Feature(geometry, new HashMap<String, Object>(zone.attributes()));
+			org.wololo.geojson.Feature feature = new org.wololo.geojson.Feature(geometry, new HashMap<String, Object>(zone.attributes()));
 			features.add(feature);
 		}
 
@@ -76,7 +77,7 @@ public class ZoneGeoJsonIO {
 			GeoJSONReader reader = new GeoJSONReader();
 			Set<Zone> zones = new HashSet<>();
 			FeatureCollection features = (FeatureCollection) json;
-			for (Feature feature : features.getFeatures()) {
+			for (org.wololo.geojson.Feature feature : features.getFeatures()) {
 				Zone zone = new Zone(reader.read(feature.getGeometry()));
 				for (Entry<String, Object> prop : feature.getProperties().entrySet()) {
 					Object value = prop.getValue();

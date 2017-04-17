@@ -11,6 +11,8 @@
     <modules>
         <module>core</module>
         <module>mid</module>
+        <module>matrix</module>
+        <module>devel</module>
     </modules>
 
     <build>

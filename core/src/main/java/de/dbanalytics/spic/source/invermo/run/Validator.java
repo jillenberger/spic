@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.source.invermo.run;
 
-import de.dbanalytics.devel.matrix2014.sim.ValidatePersonWeight;
+
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
@@ -27,6 +27,7 @@ import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.processing.ValidateMissingAttribute;
 import de.dbanalytics.spic.processing.ValidateNoPlans;
+import de.dbanalytics.spic.processing.ValidatePersonWeight;
 import de.dbanalytics.spic.source.invermo.processing.CalcGeoDistance;
 import de.dbanalytics.spic.source.invermo.processing.GeocodeLocationsTask;
 import de.dbanalytics.spic.source.invermo.processing.ValidateNoLegs;
