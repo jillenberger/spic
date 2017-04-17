@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.analysis;
+package de.dbanalytics.spic.matrix;
 
 import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.StatsContainer;
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.matrix.NumericMatrix;
-import de.dbanalytics.spic.matrix.NumericMatrixIO;
 
 import java.io.IOException;
 import java.util.Collection;

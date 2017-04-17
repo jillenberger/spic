@@ -12,17 +12,16 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ *  
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.analysis;
+package de.dbanalytics.spic.matrix;
 
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.matrix.NumericMatrix;
 
 import java.util.Collection;
 

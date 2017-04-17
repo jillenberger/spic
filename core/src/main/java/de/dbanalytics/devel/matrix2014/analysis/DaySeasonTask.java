@@ -19,11 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.analysis;
 
-import de.dbanalytics.devel.matrix2014.stats.Histogram;
-import de.dbanalytics.spic.analysis.AttributeProvider;
-import de.dbanalytics.spic.analysis.Collector;
-import de.dbanalytics.spic.analysis.LegCollector;
-import de.dbanalytics.spic.analysis.StatsContainer;
+import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;

@@ -16,18 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.spic.matrix;
 
-import de.dbanalytics.spic.analysis.NumericAttributeProvider;
-import de.dbanalytics.spic.data.Segment;
-import org.matsim.contrib.common.stats.Discretizer;
+import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
+import de.dbanalytics.spic.gis.ZoneCollection;
 
 /**
  * @author jillenberger
  */
-public class LegAttributeHistogramBuilder extends LegHistogramBuilder {
+public class DefaultMatrixBuilderFactory implements MatrixBuilderFactory {
 
-    public LegAttributeHistogramBuilder(String key, Discretizer discretizer) {
-        super(new NumericAttributeProvider<Segment>(key), discretizer);
+    @Override
+    public MatrixBuilder create(ActivityLocationLayer locations, ZoneCollection zones) {
+        return new DefaultMatrixBuilder(locations, zones);
     }
 }

@@ -19,8 +19,6 @@
 
 package de.dbanalytics.devel.matrix2014.sim;
 
-import de.dbanalytics.devel.matrix2014.analysis.AnalyzerTaskGroup;
-import de.dbanalytics.devel.matrix2014.analysis.NumericLegAnalyzer;
 import de.dbanalytics.devel.matrix2014.analysis.ZoneMobilityRate;
 import de.dbanalytics.devel.matrix2014.config.ODCalibratorConfigurator;
 import de.dbanalytics.devel.matrix2014.data.ReplaceActTypes;
@@ -31,6 +29,7 @@ import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.matrix.ODCalibrator;
 import de.dbanalytics.spic.processing.*;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.sim.data.Converters;

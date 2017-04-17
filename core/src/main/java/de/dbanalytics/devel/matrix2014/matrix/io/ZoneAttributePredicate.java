@@ -19,10 +19,10 @@
 
 package de.dbanalytics.devel.matrix2014.matrix.io;
 
-import de.dbanalytics.devel.matrix2014.matrix.ODPredicate;
 import de.dbanalytics.spic.gis.Zone;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.matrix.Matrix;
+import de.dbanalytics.spic.matrix.ODPredicate;
 import org.apache.log4j.Logger;
 
 /**

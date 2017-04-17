@@ -75,7 +75,7 @@ public class StatsContainer {
 
     public StatsContainer(String name, List<Double> values, List<Double> weights) {
         this(name);
-        List<double[]> valuesList = de.dbanalytics.devel.matrix2014.analysis.CollectionUtils.toNativeArray(values, weights);
+        List<double[]> valuesList = de.dbanalytics.spic.util.CollectionUtils.toNativeArray(values, weights);
         init(valuesList.get(0), valuesList.get(1));
 
         nullValues = new Integer(0);

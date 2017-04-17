@@ -16,19 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.analysis;
 
-import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
-import de.dbanalytics.devel.matrix2014.matrix.DefaultMatrixBuilder;
-import de.dbanalytics.spic.gis.ZoneCollection;
+package de.dbanalytics.spic.analysis;
+
+import de.dbanalytics.spic.data.Segment;
 
 /**
- * @author jillenberger
+ * @author johannes
  */
-public class DefaultMatrixBuilderFactory implements MatrixBuilderFactory {
+public class LegNextPredicate implements Predicate<Segment> {
+
+    private final Predicate<Segment> nextPredicate;
+
+    public LegNextPredicate(Predicate<Segment> nextPredicate) {
+        this.nextPredicate = nextPredicate;
+    }
 
     @Override
-    public MatrixBuilder create(ActivityLocationLayer locations, ZoneCollection zones) {
-        return new DefaultMatrixBuilder(locations, zones);
+    public boolean test(Segment segment) {
+        return nextPredicate.test(segment.next());
     }
 }

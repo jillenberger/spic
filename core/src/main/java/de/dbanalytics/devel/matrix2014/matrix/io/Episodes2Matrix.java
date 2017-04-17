@@ -20,12 +20,12 @@
 package de.dbanalytics.devel.matrix2014.matrix.io;
 
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
-import de.dbanalytics.devel.matrix2014.matrix.DefaultMatrixBuilder;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.matrix.DefaultMatrixBuilder;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
 import de.dbanalytics.spic.util.Executor;

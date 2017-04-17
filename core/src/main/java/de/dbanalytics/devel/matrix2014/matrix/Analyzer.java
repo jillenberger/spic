@@ -23,6 +23,7 @@ import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.StratifiedDiscretizerBuilder;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.matrix.GeoDistanceTask;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;

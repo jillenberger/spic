@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.stats;
+package de.dbanalytics.spic.analysis;
 
 import gnu.trove.function.TDoubleFunction;
 import gnu.trove.map.TObjectDoubleMap;

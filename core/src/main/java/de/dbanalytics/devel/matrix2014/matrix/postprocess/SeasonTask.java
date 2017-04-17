@@ -19,9 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.matrix.postprocess;
 
-import de.dbanalytics.devel.matrix2014.analysis.LegPersonCollector;
 import de.dbanalytics.devel.matrix2014.analysis.SetSeason;
-import de.dbanalytics.devel.matrix2014.stats.Histogram;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.CommonValues;

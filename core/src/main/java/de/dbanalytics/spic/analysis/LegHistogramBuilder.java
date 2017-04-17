@@ -16,34 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.analysis;
+package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.analysis.LegCollector;
-import de.dbanalytics.spic.analysis.NumericAttributeProvider;
-import de.dbanalytics.spic.analysis.Predicate;
-import de.dbanalytics.spic.analysis.ValueProvider;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
-import gnu.trove.map.TObjectDoubleMap;
+import de.dbanalytics.spic.sim.HistogramBuilder;
+import gnu.trove.map.TDoubleDoubleMap;
+import org.matsim.contrib.common.stats.Discretizer;
 
 import java.util.Collection;
 
 /**
  * @author jillenberger
  */
-public class LabeledLegHistogramBuilder {
+public class LegHistogramBuilder implements HistogramBuilder {
 
-    private LabeledHistogramBuilder builder;
+    private DefaultHistogramBuilder builder;
 
-    private LegCollector<String> valueCollector;
+    private LegCollector<Double> valueCollector;
 
     private LegPersonCollector<Double> weightsCollector;
 
-    public LabeledLegHistogramBuilder(ValueProvider<String, Segment> provider) {
+    public LegHistogramBuilder(ValueProvider<Double, Segment> provider, Discretizer discretizer) {
         valueCollector = new LegCollector<>(provider);
         weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.PERSON_WEIGHT));
-        builder = new LabeledHistogramBuilder(valueCollector, weightsCollector);
+        builder = new DefaultHistogramBuilder(valueCollector, weightsCollector, discretizer);
     }
 
     public void setPredicate(Predicate<Segment> predicate) {
@@ -51,7 +49,8 @@ public class LabeledLegHistogramBuilder {
         weightsCollector.setPredicate(predicate);
     }
 
-    public TObjectDoubleMap<String> build(Collection<? extends Person> persons) {
+    @Override
+    public TDoubleDoubleMap build(Collection<? extends Person> persons) {
         return builder.build(persons);
     }
 }

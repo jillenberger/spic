@@ -16,25 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package de.dbanalytics.spic.analysis;
 
-package de.dbanalytics.devel.matrix2014.analysis;
-
-import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.Segment;
+import org.matsim.contrib.common.stats.Discretizer;
 
 /**
- * @author johannes
+ * @author jillenberger
  */
-public class LegPurposePredicate implements Predicate<Segment> {
+public class LegAttributeHistogramBuilder extends LegHistogramBuilder {
 
-    private final Predicate<Segment> actTypePredicate;
-
-    public LegPurposePredicate(Predicate<Segment> actTypePredicate) {
-        this.actTypePredicate = actTypePredicate;
-    }
-
-    @Override
-    public boolean test(Segment segment) {
-        return actTypePredicate.test(segment.next());
+    public LegAttributeHistogramBuilder(String key, Discretizer discretizer) {
+        super(new NumericAttributeProvider<Segment>(key), discretizer);
     }
 }

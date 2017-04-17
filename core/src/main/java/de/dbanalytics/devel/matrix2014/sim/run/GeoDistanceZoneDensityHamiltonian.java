@@ -19,16 +19,11 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import de.dbanalytics.devel.matrix2014.analysis.NumericLegAnalyzer;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonian;
 import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.*;
-import de.dbanalytics.spic.sim.AttributeChangeListener;
-import de.dbanalytics.spic.sim.Hamiltonian;
-import de.dbanalytics.spic.sim.HamiltonianLogger;
-import de.dbanalytics.spic.sim.UnivariatFrequency;
+import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.sim.data.*;
 import gnu.trove.impl.Constants;
 import gnu.trove.list.array.TDoubleArrayList;

@@ -18,15 +18,12 @@
  */
 package de.dbanalytics.devel.matrix2014.analysis;
 
-import de.dbanalytics.devel.matrix2014.matrix.ODPredicate;
-import de.dbanalytics.devel.matrix2014.matrix.VolumePredicate;
 import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.analysis.StatsContainer;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.matrix.MatrixOperations;
-import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;

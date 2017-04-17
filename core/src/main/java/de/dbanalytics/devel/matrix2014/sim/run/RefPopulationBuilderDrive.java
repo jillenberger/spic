@@ -18,12 +18,8 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.analysis.LabeledLegHistogramBuilder;
 import de.dbanalytics.devel.matrix2014.sim.ValidatePersonWeight;
-import de.dbanalytics.spic.analysis.AttributeProvider;
-import de.dbanalytics.spic.analysis.NotPredicate;
-import de.dbanalytics.spic.analysis.Predicate;
-import de.dbanalytics.spic.analysis.PredicateAndComposite;
+import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.processing.*;
@@ -166,7 +162,7 @@ public class RefPopulationBuilderDrive {
         private Predicate<Segment> distancePredicate;
 
         public GuessMissingPurposes(Collection<? extends Person> refPersons, Predicate<Segment> predicate, Random random) {
-            LabeledLegHistogramBuilder builder = new LabeledLegHistogramBuilder(new AttributeProvider<Segment>(CommonKeys.LEG_PURPOSE));
+            FactorLegHistogramBuilder builder = new FactorLegHistogramBuilder(new AttributeProvider<Segment>(CommonKeys.LEG_PURPOSE));
             /*
             short distances
              */

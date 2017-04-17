@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.devel.matrix2014.analysis.CollectionUtils;
-import de.dbanalytics.spic.analysis.Collector;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.sim.HistogramBuilder;
+import de.dbanalytics.spic.util.CollectionUtils;
 import gnu.trove.map.TDoubleDoubleMap;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.Histogram;

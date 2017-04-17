@@ -17,9 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.matrix;
+package de.dbanalytics.spic.matrix;
 
-import de.dbanalytics.devel.matrix2014.analysis.MatrixBuilder;
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
 import de.dbanalytics.devel.matrix2014.gis.Feature;
 import de.dbanalytics.spic.analysis.Predicate;
@@ -29,8 +28,6 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Zone;
 import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.matrix.MatrixOperations;
-import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;
 
@@ -88,16 +85,6 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                 }
             }
             zoneIds.put(facilityId, zoneId);
-
-//            Id<ActivityFacility> facilityObjId = Id.create(facilityId, ActivityFacility.class);
-//            ActivityFacility facility = facilities.getFacilities().get(facilityObjId);
-//            Coordinate c = new Coordinate(facility.getCoord().getX(), facility.getCoord().getY());
-//
-//            Zone zone = zones.get(c);
-//            if(zone != null) {
-//                zoneId = zone.getAttribute(zones.getPrimaryKey());
-//                zoneIds.put(facilityId, zoneId);
-//            }
         }
 
         return zoneId;
@@ -108,7 +95,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
         logger.debug("Start building matrix...");
         int n = persons.size() / 10000;
         n = Math.min(n, Executor.getFreePoolSize());
-        n = Math.max(2, n);
+        //n = Math.max(2, n);
         List<? extends Person>[] segments = org.matsim.contrib.common.collections.CollectionUtils.split(persons, n);
 
         List<RunThread> runnables = new ArrayList<>(n);

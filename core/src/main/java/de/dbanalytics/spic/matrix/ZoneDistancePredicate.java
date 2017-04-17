@@ -16,11 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.matrix;
+package de.dbanalytics.spic.matrix;
 
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.matrix.Matrix;
 import org.matsim.contrib.common.gis.DistanceCalculator;
 import org.matsim.contrib.common.gis.OrthodromicDistanceCalculator;
 

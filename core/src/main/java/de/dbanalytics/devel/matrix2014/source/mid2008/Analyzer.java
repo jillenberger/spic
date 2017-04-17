@@ -19,7 +19,6 @@
 
 package de.dbanalytics.devel.matrix2014.source.mid2008;
 
-import de.dbanalytics.devel.matrix2014.analysis.NumericLegAnalyzer;
 import de.dbanalytics.devel.matrix2014.sim.Simulator;
 import de.dbanalytics.devel.matrix2014.sim.ValidatePersonWeight;
 import de.dbanalytics.spic.analysis.*;

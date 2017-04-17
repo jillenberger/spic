@@ -20,7 +20,6 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.analysis.HistogramComparator;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonian;
 import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.CommonKeys;
@@ -29,9 +28,9 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import de.dbanalytics.spic.processing.TaskRunner;
+import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.AttributeChangeListener;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
-import de.dbanalytics.spic.sim.LegAttributeHistogramBuilder;
 import de.dbanalytics.spic.sim.UnivariatFrequency2;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.Converters;

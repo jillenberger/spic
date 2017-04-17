@@ -19,7 +19,6 @@
 
 package de.dbanalytics.spic.matrix;
 
-import de.dbanalytics.devel.matrix2014.matrix.ODPredicate;
 import gnu.trove.map.TObjectDoubleMap;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 

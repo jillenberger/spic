@@ -19,6 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.analysis;
 
+import de.dbanalytics.spic.analysis.LegNextPredicate;
 import de.dbanalytics.spic.analysis.ModePredicate;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.analysis.PredicateAndComposite;
@@ -67,7 +68,7 @@ public class Predicates {
         Map<String, Predicate<Segment>> legPredicates = new HashMap<>();
 
         for(Map.Entry<String, Predicate<Segment>> entry : actPredicates.entrySet()) {
-            legPredicates.put(entry.getKey(), new LegPurposePredicate(entry.getValue()));
+            legPredicates.put(entry.getKey(), new LegNextPredicate(entry.getValue()));
         }
 
         return legPredicates;
@@ -105,7 +106,7 @@ public class Predicates {
 
         for(Map.Entry<String, Predicate<Segment>> modeEntry : legModePredicates.entrySet()) {
             for(Map.Entry<String, Predicate<Segment>> actEntry : actTypePredicates.entrySet()) {
-                LegPurposePredicate purposePredicate = new LegPurposePredicate(actEntry.getValue());
+                LegNextPredicate purposePredicate = new LegNextPredicate(actEntry.getValue());
 
                 PredicateAndComposite<Segment> composite = new PredicateAndComposite<>();
                 composite.addComponent(modeEntry.getValue());

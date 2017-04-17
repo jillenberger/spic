@@ -22,19 +22,26 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <!--<showWarnings>false</showWarnings>-->
-                    <!--<showDeprecation>false</showDeprecation>-->
                     <encoding>UTF-8</encoding>
-                    <!--&lt;!&ndash; configure initial and maximal memory for compiling &ndash;&gt;-->
-                    <!--<fork>true</fork>-->
-                    <!--<meminitial>128m</meminitial>-->
-                    <!--<maxmem>512m</maxmem>-->
-                    <!--<compilerArguments>-->
-                        <!--<Xmaxwarns>4000</Xmaxwarns>-->
-                        <!--<Xmaxerrs>100</Xmaxerrs>-->
-                    <!--</compilerArguments>-->
                 </configuration>
             </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <configuration>
+                            <!-- put your configurations here -->
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
         </plugins>
     </build>
     <repositories>
@@ -43,12 +50,8 @@
             <name>matsim</name>
             <url>http://dl.bintray.com/matsim/matsim</url>
         </repository>
-        <!--<repository>-->
-            <!--<id>matsim-devel</id>-->
-            <!--<name>matsim-devel</name>-->
-            <!--<url>http://oss.jfrog.org/libs-snapshot</url>-->
-        <!--</repository>-->
     </repositories>
+
 
 
     <dependencies>

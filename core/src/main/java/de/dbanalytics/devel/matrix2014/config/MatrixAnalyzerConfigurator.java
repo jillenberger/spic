@@ -19,7 +19,10 @@
 
 package de.dbanalytics.devel.matrix2014.config;
 
-import de.dbanalytics.devel.matrix2014.analysis.*;
+import de.dbanalytics.devel.matrix2014.analysis.MatrixComparator;
+import de.dbanalytics.devel.matrix2014.analysis.MatrixDistanceCompare;
+import de.dbanalytics.devel.matrix2014.analysis.MatrixMarginalsCompare;
+import de.dbanalytics.devel.matrix2014.analysis.MatrixVolumeCompare;
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayerLoader;
 import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
@@ -27,6 +30,7 @@ import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.HistogramWriter;
 import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
 import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.matrix.MatrixBuilderFactory;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
 import org.apache.commons.lang3.tuple.Pair;

@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.analysis;
+package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.analysis.Collector;
 import de.dbanalytics.spic.data.Person;
 import gnu.trove.map.TObjectDoubleMap;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
@@ -29,13 +28,13 @@ import java.util.List;
 /**
  * @author jillenberger
  */
-public class LabeledHistogramBuilder {
+public class FactorHistogramBuilder {
 
     private Collector<String> valueCollector;
 
     private Collector<Double> weightsCollector;
 
-    public LabeledHistogramBuilder(Collector<String> valueCollector, Collector<Double> weightsCollector) {
+    public FactorHistogramBuilder(Collector<String> valueCollector, Collector<Double> weightsCollector) {
         this.valueCollector = valueCollector;
         this.weightsCollector = weightsCollector;
 

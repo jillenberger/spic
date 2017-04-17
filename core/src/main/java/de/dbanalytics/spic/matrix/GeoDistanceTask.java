@@ -17,13 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.matrix;
+package de.dbanalytics.spic.matrix;
 
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.gis.Zone;
 import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.matrix.NumericMatrix;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TDoubleDoubleMap;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;

@@ -16,15 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.matrix;
+package de.dbanalytics.spic.matrix;
 
-import de.dbanalytics.spic.matrix.Matrix;
+import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
+import de.dbanalytics.spic.gis.ZoneCollection;
 
 /**
  * @author jillenberger
  */
-public interface ODPredicate<K, V> {
+public interface MatrixBuilderFactory {
 
-    boolean test(K row, K col, Matrix<K, V> matrix);
+    MatrixBuilder create(ActivityLocationLayer locations, ZoneCollection zones);
 
 }

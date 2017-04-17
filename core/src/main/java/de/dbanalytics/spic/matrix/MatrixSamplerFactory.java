@@ -16,12 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.matrix;
+package de.dbanalytics.spic.matrix;
 
-import de.dbanalytics.devel.matrix2014.analysis.MatrixBuilder;
-import de.dbanalytics.devel.matrix2014.analysis.MatrixBuilderFactory;
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
-import de.dbanalytics.devel.matrix2014.sim.MatrixSampler;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
 

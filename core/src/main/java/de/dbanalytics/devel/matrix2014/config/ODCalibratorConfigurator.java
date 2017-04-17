@@ -18,10 +18,10 @@
  */
 package de.dbanalytics.devel.matrix2014.config;
 
-import de.dbanalytics.devel.matrix2014.sim.ODCalibrator;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixTxtIO;
+import de.dbanalytics.spic.matrix.ODCalibrator;
 import org.matsim.core.config.ConfigGroup;
 
 import java.io.IOException;

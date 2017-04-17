@@ -16,27 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.matrix;
-
-import de.dbanalytics.spic.matrix.Matrix;
+package de.dbanalytics.spic.matrix;
 
 /**
  * @author jillenberger
  */
-public class VolumePredicate implements ODPredicate<String, Double> {
+public interface ODPredicate<K, V> {
 
-    private final double threshold;
+    boolean test(K row, K col, Matrix<K, V> matrix);
 
-    public VolumePredicate(double threshold) {
-        this.threshold = threshold;
-    }
-
-    @Override
-    public boolean test(String row, String col, Matrix<String, Double> matrix) {
-        Double vol = matrix.get(row, col);
-        if(vol == null)
-            return false;
-        else
-            return (vol >= threshold);
-    }
 }

@@ -17,10 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.analysis;
+package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.analysis.AbstractCollector;
-import de.dbanalytics.spic.analysis.ValueProvider;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
@@ -32,9 +30,9 @@ import java.util.List;
 /**
  * @author johannes
  */
-public class PrevCollector<T> extends AbstractCollector<T, Segment, Segment> {
+public class LegNextCollector<T> extends AbstractCollector<T, Segment, Segment> {
 
-    public PrevCollector(ValueProvider<T, Segment> provider) {
+    public LegNextCollector(ValueProvider<T, Segment> provider) {
         super(provider);
     }
 
@@ -46,7 +44,7 @@ public class PrevCollector<T> extends AbstractCollector<T, Segment, Segment> {
             for (Episode e : p.getEpisodes()) {
                 for (Segment leg : e.getLegs()) {
                     if (predicate == null || predicate.test(leg)) {
-                        values.add(provider.get(leg.previous()));
+                        values.add(provider.get(leg.next()));
                     }
                 }
             }

@@ -20,8 +20,6 @@ package de.dbanalytics.devel.matrix2014.sim.run;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import de.dbanalytics.devel.matrix2014.analysis.HistogramComparator;
-import de.dbanalytics.devel.matrix2014.analysis.NumericLegAnalyzer;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonian;
 import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;

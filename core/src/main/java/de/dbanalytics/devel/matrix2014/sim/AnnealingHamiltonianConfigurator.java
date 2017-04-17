@@ -19,6 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.sim;
 
+import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import org.matsim.core.config.ConfigGroup;
 

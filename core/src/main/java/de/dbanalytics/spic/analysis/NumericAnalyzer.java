@@ -71,7 +71,7 @@ public class NumericAnalyzer implements AnalyzerTask<Collection<? extends Person
             containers.add(new StatsContainer(dimension, values, weights));
 
             if (histogramWriter != null) {
-                List<double[]> valuesList = de.dbanalytics.devel.matrix2014.analysis.CollectionUtils.toNativeArray(values, weights);
+                List<double[]> valuesList = de.dbanalytics.spic.util.CollectionUtils.toNativeArray(values, weights);
                 histogramWriter.writeHistograms(valuesList.get(0), valuesList.get(1), dimension);
             }
         }

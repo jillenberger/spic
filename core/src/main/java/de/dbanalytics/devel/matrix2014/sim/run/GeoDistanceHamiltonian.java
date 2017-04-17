@@ -18,14 +18,10 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.analysis.NumericLegAnalyzer;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonian;
 import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
-import de.dbanalytics.spic.analysis.AnalyzerTask;
-import de.dbanalytics.spic.analysis.HistogramWriter;
-import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
-import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.UnivariatFrequency;
 import gnu.trove.list.array.TDoubleArrayList;

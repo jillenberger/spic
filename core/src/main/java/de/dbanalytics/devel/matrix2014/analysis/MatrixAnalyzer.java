@@ -20,15 +20,11 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
-import de.dbanalytics.devel.matrix2014.matrix.DefaultMatrixBuilder;
-import de.dbanalytics.devel.matrix2014.matrix.ODPredicate;
-import de.dbanalytics.devel.matrix2014.matrix.VolumePredicate;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.matrix.MatrixOperations;
-import de.dbanalytics.spic.matrix.NumericMatrix;
+import de.dbanalytics.spic.matrix.*;
 import gnu.trove.list.array.TDoubleArrayList;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.stats.LinearDiscretizer;

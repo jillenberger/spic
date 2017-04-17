@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.sim;
+package de.dbanalytics.spic.matrix;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
@@ -27,7 +27,6 @@ import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.gis.Zone;
 import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.sim.AttributeChangeListener;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.data.*;

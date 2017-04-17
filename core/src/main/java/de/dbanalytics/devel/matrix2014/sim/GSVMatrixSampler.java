@@ -19,10 +19,8 @@
 
 package de.dbanalytics.devel.matrix2014.sim;
 
-import de.dbanalytics.devel.matrix2014.analysis.MatrixBuilder;
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayerLoader;
-import de.dbanalytics.devel.matrix2014.matrix.DefaultMatrixBuilder;
 import de.dbanalytics.devel.matrix2014.matrix.io.GSVMatrixWriter;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
@@ -30,6 +28,9 @@ import de.dbanalytics.spic.gis.DataPool;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.gis.ZoneData;
 import de.dbanalytics.spic.gis.ZoneDataLoader;
+import de.dbanalytics.spic.matrix.DefaultMatrixBuilder;
+import de.dbanalytics.spic.matrix.MatrixBuilder;
+import de.dbanalytics.spic.matrix.MatrixSampler;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.sim.MarkovEngineListener;
 import de.dbanalytics.spic.sim.data.CachedPerson;

@@ -17,11 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.sim;
+package de.dbanalytics.spic.sim;
 
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.sim.Hamiltonian;
-import de.dbanalytics.spic.sim.MarkovEngineListener;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import org.apache.log4j.Logger;
 

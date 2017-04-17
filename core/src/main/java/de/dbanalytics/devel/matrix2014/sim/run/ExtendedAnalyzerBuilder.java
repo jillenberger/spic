@@ -18,20 +18,19 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.analysis.*;
+import de.dbanalytics.devel.matrix2014.analysis.MatrixComparator;
 import de.dbanalytics.devel.matrix2014.config.MatrixAnalyzerConfigurator;
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
 import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayerLoader;
-import de.dbanalytics.devel.matrix2014.matrix.MatrixSamplerFactory;
-import de.dbanalytics.devel.matrix2014.matrix.ODPredicate;
-import de.dbanalytics.devel.matrix2014.matrix.ZoneDistancePredicate;
 import de.dbanalytics.devel.matrix2014.sim.GSVMatrixSampler;
 import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
+import de.dbanalytics.spic.analysis.AnalyzerTaskGroup;
 import de.dbanalytics.spic.analysis.ConcurrentAnalyzerTask;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.gis.ZoneData;
 import de.dbanalytics.spic.gis.ZoneDataLoader;
+import de.dbanalytics.spic.matrix.*;
 import de.dbanalytics.spic.sim.PopulationWriter;
 import org.matsim.core.config.Config;
 

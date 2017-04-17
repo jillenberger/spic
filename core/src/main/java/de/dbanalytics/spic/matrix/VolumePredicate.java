@@ -16,16 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.analysis;
-
-import de.dbanalytics.devel.matrix2014.gis.ActivityLocationLayer;
-import de.dbanalytics.spic.gis.ZoneCollection;
+package de.dbanalytics.spic.matrix;
 
 /**
  * @author jillenberger
  */
-public interface MatrixBuilderFactory {
+public class VolumePredicate implements ODPredicate<String, Double> {
 
-    MatrixBuilder create(ActivityLocationLayer locations, ZoneCollection zones);
+    private final double threshold;
 
+    public VolumePredicate(double threshold) {
+        this.threshold = threshold;
+    }
+
+    @Override
+    public boolean test(String row, String col, Matrix<String, Double> matrix) {
+        Double vol = matrix.get(row, col);
+        if(vol == null)
+            return false;
+        else
+            return (vol >= threshold);
+    }
 }

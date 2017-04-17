@@ -17,11 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.analysis;
+package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.analysis.AnalyzerTask;
-import de.dbanalytics.spic.analysis.FileIOContext;
-import de.dbanalytics.spic.analysis.StatsContainer;
 import org.apache.log4j.Logger;
 
 import java.util.List;
