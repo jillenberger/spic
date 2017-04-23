@@ -31,128 +31,126 @@ import java.util.*;
 
 /**
  * @author johannes
- * 
  */
 public class ZoneCollection {
 
-	private static final Logger logger = Logger.getLogger(ZoneCollection.class);
+    private static final Logger logger = Logger.getLogger(ZoneCollection.class);
 
-	private final String id;
+    private final String id;
 
-	private final Set<Zone> zones;
+    private final Set<Zone> zones;
 
-	private SpatialIndex spatialIndex;
+    private SpatialIndex spatialIndex;
 
-	private Map<String, Zone> keyIndex;
+    private Map<String, Zone> keyIndex;
 
-	private String primaryKey;
+    private String primaryKey;
 
-	public ZoneCollection(String id) {
-		this.id = id;
-		zones = new LinkedHashSet<>();
-	}
+    public ZoneCollection(String id) {
+        this.id = id;
+        zones = new LinkedHashSet<>();
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setPrimaryKey(String key) {
-		this.primaryKey = key;
-		buildKeyIndex();
-	}
+    public String getPrimaryKey() {
+        return primaryKey;
+    }
 
-	public String getPrimaryKey() {
-		return primaryKey;
-	}
+    public void setPrimaryKey(String key) {
+        this.primaryKey = key;
+        buildKeyIndex();
+    }
 
-	public void add(Zone zone) {
-		this.zones.add(zone);
-		buildIndex();
-	}
-	
-	public void addAll(Collection<Zone> zones) {
-		this.zones.addAll(zones);
-		buildIndex();
-	}
+    public void add(Zone zone) {
+        this.zones.add(zone);
+        buildIndex();
+    }
 
-	private void buildIndex() {
-		buildKeyIndex();
-		buildSpatialIndex();
-	}
+    public void addAll(Collection<Zone> zones) {
+        this.zones.addAll(zones);
+        buildIndex();
+    }
 
-	private void buildKeyIndex() {
-		keyIndex = new HashMap<>();
-		if (primaryKey != null) {
-			for (Zone zone : zones) {
-				String key = zone.getAttribute(primaryKey);
-				if(key == null)
-					throw new NullPointerException();
-				if(null != keyIndex.put(key, zone)) {
-					logger.warn(String.format("Overwriting key %s.", zone.getAttribute(primaryKey)));
+    private void buildIndex() {
+        buildKeyIndex();
+        buildSpatialIndex();
+    }
+
+    private void buildKeyIndex() {
+        keyIndex = new HashMap<>();
+        if (primaryKey != null) {
+            for (Zone zone : zones) {
+                String key = zone.getAttribute(primaryKey);
+                if (key == null)
+                    throw new NullPointerException();
+                if (null != keyIndex.put(key, zone)) {
+                    logger.warn(String.format("Overwriting key %s.", zone.getAttribute(primaryKey)));
 //					throw new RuntimeException("Overwriting key " + zone.getAttribute(primaryKey));
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 
-	private void buildSpatialIndex() {
-		//TODO check SRID fields
-		//TODO check for overlapping polygons
-		
-		STRtree tree = new STRtree();
-		for (Zone zone : zones) {
-			tree.insert(zone.getGeometry().getEnvelopeInternal(), new IndexEntry(zone));
-		}
+    private void buildSpatialIndex() {
+        //TODO check SRID fields
+        //TODO check for overlapping polygons
 
-		tree.build();
+        STRtree tree = new STRtree();
+        for (Zone zone : zones) {
+            tree.insert(zone.getGeometry().getEnvelopeInternal(), new IndexEntry(zone));
+        }
 
-		spatialIndex = tree;
+        tree.build();
 
-	}
+        spatialIndex = tree;
 
-	public Set<Zone> getZones() {
-		return Collections.unmodifiableSet(zones);
-	}
-	
-	public Zone get(String key) {
-		return keyIndex.get(key);
-	}
+    }
 
-	public Zone get(Coordinate c) {
-		List<IndexEntry> candidates = spatialIndex.query(new Envelope(c));
+    public Set<Zone> getZones() {
+        return Collections.unmodifiableSet(zones);
+    }
+
+    public Zone get(String key) {
+        return keyIndex.get(key);
+    }
+
+    public Zone get(Coordinate c) {
+        List<IndexEntry> candidates = spatialIndex.query(new Envelope(c));
 
 //		if (candidates.size() == 1) {
 //			return candidates.get(0).zone;
 //		}
 
-		for (IndexEntry entry : candidates) {
-			if (entry.contains(c)) {
-				return entry.zone;
-			}
-		}
+        for (IndexEntry entry : candidates) {
+            if (entry.contains(c)) {
+                return entry.zone;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	private class IndexEntry {
+    private class IndexEntry {
 
-		private IndexedPointInAreaLocator locator;
+        private final Zone zone;
+        private IndexedPointInAreaLocator locator;
 
-		private final Zone zone;
+        private IndexEntry(Zone zone) {
+            this.zone = zone;
+        }
 
-		private IndexEntry(Zone zone) {
-			this.zone = zone;
-		}
+        private boolean contains(Coordinate c) {
+            if (locator == null) {
+                locator = new IndexedPointInAreaLocator(zone.getGeometry());
+            }
 
-		private boolean contains(Coordinate c) {
-			if (locator == null) {
-				locator = new IndexedPointInAreaLocator(zone.getGeometry());
-			}
-
-			if (locator.locate(c) == Location.INTERIOR)
-				return true;
-			else
-				return false;
-		}
-	}
+            if (locator.locate(c) == Location.INTERIOR)
+                return true;
+            else
+                return false;
+        }
+    }
 }
