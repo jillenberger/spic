@@ -147,10 +147,7 @@ public class ZoneCollection {
                 locator = new IndexedPointInAreaLocator(zone.getGeometry());
             }
 
-            if (locator.locate(c) == Location.INTERIOR)
-                return true;
-            else
-                return false;
+            return locator.locate(c) == Location.INTERIOR;
         }
     }
 }
