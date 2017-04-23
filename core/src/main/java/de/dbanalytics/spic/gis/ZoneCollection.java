@@ -121,9 +121,9 @@ public class ZoneCollection {
 	public Zone get(Coordinate c) {
 		List<IndexEntry> candidates = spatialIndex.query(new Envelope(c));
 
-		if (candidates.size() == 1) {
-			return candidates.get(0).zone;
-		}
+//		if (candidates.size() == 1) {
+//			return candidates.get(0).zone;
+//		}
 
 		for (IndexEntry entry : candidates) {
 			if (entry.contains(c)) {
