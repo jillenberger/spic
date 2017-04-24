@@ -22,7 +22,6 @@ package de.dbanalytics.spic.processing;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.routing.AlgorithmOptions;
 import com.graphhopper.routing.Path;
-import com.graphhopper.routing.QueryGraph;
 import com.graphhopper.routing.RoutingAlgorithm;
 import com.graphhopper.routing.ch.PrepareContractionHierarchies;
 import com.graphhopper.routing.util.DefaultEdgeFilter;
@@ -31,6 +30,7 @@ import com.graphhopper.routing.util.FlagEncoder;
 import com.graphhopper.routing.util.TraversalMode;
 import com.graphhopper.routing.weighting.FastestWeighting;
 import com.graphhopper.storage.CHGraphImpl;
+import com.graphhopper.storage.Graph;
 import com.graphhopper.storage.GraphHopperStorage;
 import com.graphhopper.storage.index.LocationIndex;
 import com.graphhopper.storage.index.QueryResult;
@@ -51,42 +51,43 @@ public class RouteLegGH implements SegmentTask {
 
     private static final String SEPARATOR = " ";
 
-//    private RoutingAlgorithm router;
-
     private final FacilityData facilityData;
 
-    private final LocationIndex index;
+    private final LocationIndex locationIndex;
 
     private final MathTransform transform;
 
-    private final PrepareContractionHierarchies pch;
+    private final PrepareContractionHierarchies chAlgoFactory;
 
-    private final AlgorithmOptions algoOpts;
+    private final AlgorithmOptions options;
 
     private final GraphHopperStorage graph;
 
     private final EdgeFilter edgeFilter;
 
+    private final Graph chGraph;
+
     public RouteLegGH(GraphHopper graphHopper, FlagEncoder encoder, FacilityData facilityData, MathTransform transform) {
-
         this.facilityData = facilityData;
-        this.index = graphHopper.getLocationIndex();
+        this.locationIndex = graphHopper.getLocationIndex();
         this.transform = transform;
+        this.graph = graphHopper.getGraphHopperStorage();
 
-        graph = graphHopper.getGraphHopperStorage();
-        pch = new PrepareContractionHierarchies(graph.getDirectory(),
+        chAlgoFactory = new PrepareContractionHierarchies(graph.getDirectory(),
                 graph,
                 graph.getGraph(CHGraphImpl.class),
                 new FastestWeighting(encoder),
                 TraversalMode.NODE_BASED);
 
-        algoOpts = AlgorithmOptions.start().algorithm(Parameters.Algorithms.ASTAR_BI).
-//        algoOpts = AlgorithmOptions.start().algorithm(Parameters.Algorithms.DIJKSTRA_BI).
+        options = AlgorithmOptions.start().algorithm(Parameters.Algorithms.ASTAR_BI).
                 traversalMode(TraversalMode.NODE_BASED).
                 weighting(new FastestWeighting(encoder)).
                 build();
 
         edgeFilter = new DefaultEdgeFilter(encoder);
+
+        chGraph = graph.getGraph(CHGraphImpl.class);
+
     }
 
     @Override
@@ -105,17 +106,14 @@ public class RouteLegGH implements SegmentTask {
                 double[] fromCoord = calcWGS84Coords(startFac);
                 double[] toCoord = calcWGS84Coords(endFac);
 
-                QueryResult fromQuery = index.findClosest(fromCoord[1], fromCoord[0], edgeFilter);
-                QueryResult toQuery = index.findClosest(toCoord[1], toCoord[0], edgeFilter);
+                QueryResult fromQuery = locationIndex.findClosest(fromCoord[1], fromCoord[0], edgeFilter);
+                QueryResult toQuery = locationIndex.findClosest(toCoord[1], toCoord[0], edgeFilter);
 
                 if(!fromQuery.isValid() || !toQuery.isValid()) {
                     return;
                 }
 
-                QueryGraph queryGraph = new QueryGraph(graph.getGraph(CHGraphImpl.class));
-                queryGraph.lookup(fromQuery, toQuery);
-
-                RoutingAlgorithm algorithm = pch.createAlgo(queryGraph, algoOpts);
+                RoutingAlgorithm algorithm = chAlgoFactory.createAlgo(chGraph, options);
                 Path path = algorithm.calcPath(fromQuery.getClosestNode(), toQuery.getClosestNode());
                 TIntList nodes = path.calcNodes();
 
@@ -127,8 +125,6 @@ public class RouteLegGH implements SegmentTask {
                         builder.append(String.valueOf(nodes.get(i)));
                     }
                     segment.setAttribute(CommonKeys.LEG_ROUTE, builder.toString());
-                } else {
-                    System.err.println("Ooops");
                 }
             }
         }

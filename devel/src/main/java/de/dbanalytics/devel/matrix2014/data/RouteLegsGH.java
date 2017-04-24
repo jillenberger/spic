@@ -86,13 +86,14 @@ public class RouteLegsGH {
         Preprocess...
          */
         logger.info("Prerocess routing...");
-//        int nThreads = Executor.getFreePoolSize();
-        int nThreads = 1;
+        int nThreads = Executor.getFreePoolSize();
+//        int nThreads = 1;
 
         FlagEncoder encoder = new CarFlagEncoder();
         EncodingManager em = new EncodingManager(encoder);
 
         GraphHopper hopper = new GraphHopperOSM().forDesktop();
+
         hopper.setDataReaderFile(group.getParams().get(OSM_FILE));
         hopper.setGraphHopperLocation(group.getParams().get(GH_DIR));
         hopper.setEncodingManager(em);
