@@ -63,23 +63,26 @@
         <dependency>
             <groupId>org.matsim</groupId>
             <artifactId>matsim</artifactId>
-            <version>0.8.0-SNAPSHOT</version>
+            <version>0.8.1</version>
         </dependency>
         <dependency>
             <groupId>org.matsim.contrib</groupId>
             <artifactId>socnetgen</artifactId>
-            <version>0.8.0-SNAPSHOT</version>
+            <version>0.8.1</version>
         </dependency>
         <dependency>
             <groupId>org.matsim.contrib</groupId>
             <artifactId>cadytsIntegration</artifactId>
-            <version>0.8.0-SNAPSHOT</version>
+            <version>0.8.1</version>
         </dependency>
         <dependency>
             <groupId>org.matsim.contrib</groupId>
             <artifactId>common</artifactId>
-            <version>0.8.0-SNAPSHOT</version>
+            <version>0.8.1</version>
         </dependency>
+        <!--
+        other dependencies
+        -->
         <dependency>
             <groupId>com.graphhopper</groupId>
             <artifactId>graphhopper-core</artifactId>
