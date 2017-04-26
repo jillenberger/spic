@@ -20,6 +20,8 @@
 package de.dbanalytics.spic.osm.places;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.core.dataset.InMemoryMapDataSet;
 import de.topobyte.osm4j.core.dataset.MapDataSetLoader;
@@ -31,6 +33,7 @@ import de.topobyte.osm4j.geometry.GeometryBuilder;
 import gnu.trove.iterator.TLongObjectIterator;
 import gnu.trove.map.TLongObjectMap;
 import org.apache.log4j.Logger;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -77,25 +80,31 @@ public class OsmFeatureBuilder {
         InMemoryMapDataSet data = MapDataSetLoader.read(osmIterator, true, true, true);
 
         logger.info("Creating geometries from ways...");
+        GeometryFactory factory = JTSFactoryFinder.getGeometryFactory();
         TLongObjectMap<OsmWay> ways = data.getWays();
         TLongObjectIterator<OsmWay> wayIterator = ways.iterator();
         while (wayIterator.hasNext()) {
             wayIterator.advance();
 
             try {
-                Geometry geometry = builder.build(wayIterator.value(), data);
-                Map<String, String> tags = OsmModelUtil.getTagsAsMap(wayIterator.value());
+                Geometry ring = builder.build(wayIterator.value(), data);
+                if (ring instanceof LinearRing) {
+                    Geometry geometry = factory.createPolygon((LinearRing) ring);
+                    Map<String, String> tags = OsmModelUtil.getTagsAsMap(wayIterator.value());
 
-                String featureType = null;
-                if (tags.containsKey(OsmFeature.BUILDING)) featureType = OsmFeature.BUILDING;
-                else if (tags.containsKey(OsmFeature.LANDUSE)) featureType = OsmFeature.LANDUSE;
+                    String featureType = null;
+                    if (tags.containsKey(OsmFeature.BUILDING)) featureType = OsmFeature.BUILDING;
+                    else if (tags.containsKey(OsmFeature.LANDUSE)) featureType = OsmFeature.LANDUSE;
 
-                OsmFeature feature = new OsmFeature(geometry, featureType);
-                addPlaceTypes(feature, tags);
+                    OsmFeature feature = new OsmFeature(geometry, featureType);
+                    addPlaceTypes(feature, tags);
 
-                if (feature.isValid()) {
-                    features.add(feature);
-                    waysBuilt++;
+                    if (feature.isValid()) {
+                        features.add(feature);
+                        waysBuilt++;
+                    }
+                } else {
+                    waysFailed++;
                 }
             } catch (EntityNotFoundException e) {
                 waysFailed++;
@@ -119,8 +128,14 @@ public class OsmFeatureBuilder {
             }
         }
 
-        logger.info(String.format("Build %s features from ways, %s features from nodes. %s failures.",
+        logger.info(String.format("Built %s features from ways, %s features from nodes. %s failures.",
                 waysBuilt, nodesBuilt, waysFailed));
+
+        int places = 0;
+        for (OsmFeature feature : features) {
+            if (feature.getPlaceTypes() != null) places += feature.getPlaceTypes().size();
+        }
+        logger.info(String.format("Average places per feature: %.1f.", places / (double) features.size()));
         return features;
     }
 
@@ -129,11 +144,14 @@ public class OsmFeatureBuilder {
             String key = tag.getKey();
             String value = tag.getValue();
 
-            if (wildcards.contains(value)) {
+            if (wildcards.contains(key)) {
                 value = "*";
             }
 
             String compoundKey = String.format("%s-%s", key, value);
+//            if(compoundKey.equalsIgnoreCase("shop-boutique")) {
+//                System.err.println("Storage!");
+//            }
             String placeType = tag2placeType.get(compoundKey);
             if (placeType != null) feature.addPlaceType(placeType);
         }

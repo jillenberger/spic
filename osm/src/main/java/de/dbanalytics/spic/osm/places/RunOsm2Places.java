@@ -22,28 +22,31 @@ package de.dbanalytics.spic.osm.places;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.pbf.seq.PbfIterator;
 import de.topobyte.osm4j.xml.dynsax.OsmXmlIterator;
-import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 
 /**
- * Created by johannesillenberger on 25.04.17.
+ * Created by johannesillenberger on 26.04.17.
  */
-public class PlacesGenerator {
-
-    private static final Logger logger = Logger.getLogger(PlacesGenerator.class);
+public class RunOsm2Places {
 
     public static void main(String args[]) throws IOException {
-        String osmFile = "/home/johannesillenberger/prosim-sge0/sge/prj/drive/osm/runs/287/output/places.pbf";
-        String tag2placeType = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21 DRIVE/97_Work/osm/Tag2PlaceType.csv";
+        String osmFile = args[0];
+        String placesFile = args[1];
+        String tag2placeType = args[2];
+
         InputStream stream = new FileInputStream(osmFile);
         OsmIterator osmIt = null;
         if (osmFile.endsWith(".osm")) osmIt = new OsmXmlIterator(stream, false);
         else if (osmFile.endsWith(".pbf")) osmIt = new PbfIterator(stream, false);
 
         OsmFeatureBuilder builder = new OsmFeatureBuilder(tag2placeType);
-        builder.buildFeatures(osmIt);
+        Set<OsmFeature> features = builder.buildFeatures(osmIt);
+
+        PlacesSynthesizer synthesizer = new PlacesSynthesizer();
+        synthesizer.synthesize(features, placesFile);
     }
 }

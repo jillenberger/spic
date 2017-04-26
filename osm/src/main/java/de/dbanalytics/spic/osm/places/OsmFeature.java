@@ -36,9 +36,9 @@ public class OsmFeature {
     public static final String POI = "poi";
 
 
-    private Geometry geometry;
+    private final Geometry geometry;
 
-    private String featureType;
+    private final String featureType;
 
     private Set<String> placeTypes;
 
@@ -51,9 +51,21 @@ public class OsmFeature {
         this.featureType = featureType;
     }
 
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
+    public Set<String> getPlaceTypes() {
+        return placeTypes;
+    }
+
     public void addPlaceType(String type) {
         if (placeTypes == null) placeTypes = new HashSet<>();
         placeTypes.add(type);
+    }
+
+    public void removePlaceType(String type) {
+        if (placeTypes != null) placeTypes.remove(type);
     }
 
     public boolean isValid() {
@@ -62,6 +74,31 @@ public class OsmFeature {
 
     public boolean isBuilding() {
         return BUILDING.equalsIgnoreCase(featureType);
+    }
+
+    public boolean isLanduse() {
+        return LANDUSE.equalsIgnoreCase(featureType);
+    }
+
+    public boolean isPoi() {
+        return POI.equalsIgnoreCase(featureType);
+    }
+
+    public OsmFeature getParent() {
+        return parent;
+    }
+
+    public void setParent(OsmFeature feature) {
+        parent = feature;
+    }
+
+    public Set<OsmFeature> getChildren() {
+        return children;
+    }
+
+    public void addChild(OsmFeature feature) {
+        if (children == null) children = new HashSet<>();
+        children.add(feature);
     }
 
 }
