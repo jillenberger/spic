@@ -18,7 +18,6 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.gis.ValidateFacilities;
 import de.dbanalytics.devel.matrix2014.gis.ZoneSetLAU2Class;
 import de.dbanalytics.spic.gis.*;
 import org.matsim.core.config.Config;
@@ -41,9 +40,9 @@ public class DataPoolLoader {
         dataPool.register(new ZoneDataLoader(configGroup), ZoneDataLoader.KEY);
         dataPool.register(new ActivityLocationLayerLoader(dataPool), ActivityLocationLayerLoader.KEY);
 
-        ValidateFacilities.validate(dataPool, "modena");
-        ValidateFacilities.validate(dataPool, "lau2");
-        ValidateFacilities.validate(dataPool, "nuts3");
+//        ValidateFacilities.validate(dataPool, "modena");
+//        ValidateFacilities.validate(dataPool, "lau2");
+//        ValidateFacilities.validate(dataPool, "nuts3");
 //        ValidateFacilities.validate(dataPool, "tomtom");
 
         ZoneCollection lau2Zones = ((ZoneData) dataPool.get(ZoneDataLoader.KEY)).getLayer("lau2");

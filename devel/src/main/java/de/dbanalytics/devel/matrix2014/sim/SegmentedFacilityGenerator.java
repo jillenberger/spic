@@ -55,14 +55,10 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
     private final Map<String, Map<Zone, List<ActivityFacility>>> typeMap;
 
     private final List<ActivityFacility> allFacilities;
-
-    private double localProba = 0.5;
-
     private final double threshold = 50000;
-
     private final Random random;
-
     private final List<String> blacklist;
+    private double localProba = 0.5;
 
     public SegmentedFacilityGenerator(DataPool dataPool, String layer, Random random) {
         facilityData = (FacilityData) dataPool.get(FacilityDataLoader.KEY);
@@ -105,36 +101,6 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
         ProgressLogger.terminate();
 
         return map;
-    }
-
-    private static class RunThread implements Runnable {
-
-        private final List<Zone> zones;
-
-        private final QuadTree<ActivityFacility> spatialIndex;
-
-        private final Map<Zone, List<ActivityFacility>> map;
-
-        private final double threshold;
-
-        public RunThread(List<Zone> zones, QuadTree<ActivityFacility> spatialIndex, Map<Zone, List<ActivityFacility>> map, double threshold) {
-            this.zones = zones;
-            this.spatialIndex = spatialIndex;
-            this.map = map;
-            this.threshold = threshold;
-        }
-
-        @Override
-        public void run() {
-            for(Zone zone : zones) {
-                double x = zone.getGeometry().getCentroid().getX();
-                double y = zone.getGeometry().getCentroid().getY();
-                List<ActivityFacility> local = new ArrayList<>(spatialIndex.getDisk(x, y, threshold));
-                map.put(zone, local);
-
-                ProgressLogger.step();
-            }
-        }
     }
 
     @Override
@@ -190,8 +156,43 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
 
 
             Zone zone = zones.get(new Coordinate(home.getCoord().getX(), home.getCoord().getY()));
+            /*
+            Zone may be null if zones used for distributing home locations is different.
+            Fallback to random facility.
+             */
+            if (zone == null) return allFacilities;
 
             return zoneMap.get(zone);
+        }
+    }
+
+    private static class RunThread implements Runnable {
+
+        private final List<Zone> zones;
+
+        private final QuadTree<ActivityFacility> spatialIndex;
+
+        private final Map<Zone, List<ActivityFacility>> map;
+
+        private final double threshold;
+
+        public RunThread(List<Zone> zones, QuadTree<ActivityFacility> spatialIndex, Map<Zone, List<ActivityFacility>> map, double threshold) {
+            this.zones = zones;
+            this.spatialIndex = spatialIndex;
+            this.map = map;
+            this.threshold = threshold;
+        }
+
+        @Override
+        public void run() {
+            for (Zone zone : zones) {
+                double x = zone.getGeometry().getCentroid().getX();
+                double y = zone.getGeometry().getCentroid().getY();
+                List<ActivityFacility> local = new ArrayList<>(spatialIndex.getDisk(x, y, threshold));
+                map.put(zone, local);
+
+                ProgressLogger.step();
+            }
         }
     }
 }

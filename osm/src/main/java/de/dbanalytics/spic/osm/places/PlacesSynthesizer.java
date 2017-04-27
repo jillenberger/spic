@@ -22,6 +22,7 @@ package de.dbanalytics.spic.osm.places;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import org.apache.log4j.Logger;
+import org.matsim.contrib.common.util.ProgressLogger;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -37,13 +38,19 @@ public class PlacesSynthesizer {
 
     private static final Logger logger = Logger.getLogger(PlacesSynthesizer.class);
 
-    private GeoTransformer transformer = GeoTransformer.defaultWGS84toCartesian();
+    private GeoTransformer transformer = GeoTransformer.WGS84toWebMercartor();
 
     private double areaThreshold = 40;
 
-    public void synthesize(Set<OsmFeature> features, String filename) throws IOException {
-        transformer = new GeoTransformer(4326, 31467);
+    public void setGeoTransformer(GeoTransformer transformer) {
+        this.transformer = transformer;
+    }
 
+    public void setAreaThreshold(double threshold) {
+        this.areaThreshold = threshold;
+    }
+
+    public void synthesize(Set<OsmFeature> features, String filename) throws IOException {
         logger.info("Transforming coordinates to cartesian...");
         for (OsmFeature feature : features) transformer.forward(feature.getGeometry());
         logger.info("Removing too small features...");
@@ -183,6 +190,7 @@ public class PlacesSynthesizer {
         Quadtree areaIndex = new Quadtree();
         Quadtree buildingIndex = new Quadtree();
 
+
         for (OsmFeature feature : features) {
             if (feature.isBuilding()) {
                 buildings.add(feature);
@@ -194,21 +202,23 @@ public class PlacesSynthesizer {
             }
         }
 
+        ProgressLogger.init(pois.size() + buildings.size(), 2, 10);
         linkFeatures(pois, buildingIndex);
         linkFeatures(buildings, areaIndex);
+        ProgressLogger.terminate();
     }
 
     private void linkFeatures(Set<OsmFeature> features, Quadtree index) {
         for (OsmFeature feature : features) {
             List<OsmFeature> candidates = index.query(feature.getGeometry().getEnvelopeInternal());
             for (OsmFeature candidate : candidates) {
-//                if (candidate.getGeometry().intersects(feature.getGeometry())) {
                 if (candidate.getGeometry().contains(feature.getGeometry())) {
                     feature.setParent(candidate);
                     candidate.addChild(feature);
                     break;
                 }
             }
+            ProgressLogger.step();
         }
     }
 }

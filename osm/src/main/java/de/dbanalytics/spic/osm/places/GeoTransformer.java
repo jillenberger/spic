@@ -22,8 +22,6 @@ package de.dbanalytics.spic.osm.places;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeocentricCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -59,13 +57,20 @@ public class GeoTransformer {
     public GeoTransformer(CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
         try {
             forwardTransform = CRS.findMathTransform(source, target);
+            backwardTransform = forwardTransform.inverse();
         } catch (FactoryException e) {
+            e.printStackTrace();
+        } catch (NoninvertibleTransformException e) {
             e.printStackTrace();
         }
     }
 
-    public static GeoTransformer defaultWGS84toCartesian() {
-        return new GeoTransformer(DefaultGeographicCRS.WGS84, DefaultGeocentricCRS.CARTESIAN);
+    public static GeoTransformer WGS84toWebMercartor() {
+        return new GeoTransformer(4326, 3857);
+    }
+
+    public static GeoTransformer WGS84toX(int code) {
+        return new GeoTransformer(4326, code);
     }
 
     public void forward(double[] coordinate) {
@@ -91,17 +96,19 @@ public class GeoTransformer {
     }
 
     public void forward(Coordinate coordinate) {
-        double[] xy = new double[]{coordinate.x, coordinate.y};
+        double[] xy = new double[]{coordinate.x, coordinate.y, coordinate.z};
         forward(xy);
         coordinate.x = xy[0];
         coordinate.y = xy[1];
+        coordinate.z = xy[2];
     }
 
     public void backward(Coordinate coordinate) {
-        double[] xy = new double[]{coordinate.x, coordinate.y};
+        double[] xy = new double[]{coordinate.x, coordinate.y, coordinate.z};
         backward(xy);
         coordinate.x = xy[0];
         coordinate.y = xy[1];
+        coordinate.z = xy[2];
     }
 
     public MathTransform getForwardTransform() {

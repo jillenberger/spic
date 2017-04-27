@@ -17,8 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.osm.places;
+package de.dbanalytics.spic.osm.places.run;
 
+import de.dbanalytics.spic.osm.places.GeoTransformer;
+import de.dbanalytics.spic.osm.places.OsmFeature;
+import de.dbanalytics.spic.osm.places.OsmFeatureBuilder;
+import de.dbanalytics.spic.osm.places.PlacesSynthesizer;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.pbf.seq.PbfIterator;
 import de.topobyte.osm4j.xml.dynsax.OsmXmlIterator;
@@ -38,6 +42,7 @@ public class RunOsm2Places {
         String placesFile = args[1];
         String tag2placeType = args[2];
 
+
         InputStream stream = new FileInputStream(osmFile);
         OsmIterator osmIt = null;
         if (osmFile.endsWith(".osm")) osmIt = new OsmXmlIterator(stream, false);
@@ -47,6 +52,15 @@ public class RunOsm2Places {
         Set<OsmFeature> features = builder.buildFeatures(osmIt);
 
         PlacesSynthesizer synthesizer = new PlacesSynthesizer();
+        if (args.length > 3) {
+            int epsg = Integer.parseInt(args[3]);
+            synthesizer.setGeoTransformer(GeoTransformer.WGS84toX(epsg));
+        }
+        if (args.length > 4) {
+            double area = Double.parseDouble(args[4]);
+            synthesizer.setAreaThreshold(area);
+        }
+
         synthesizer.synthesize(features, placesFile);
     }
 }

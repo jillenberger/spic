@@ -5,10 +5,21 @@
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: de.topobyte:osm4j-geometry:0.0.15" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: de.topobyte:jts-utils:0.0.8" level="project" />
+    <orderEntry type="library" name="Maven: de.topobyte:adt-graph:0.0.3" level="project" />
+    <orderEntry type="library" name="Maven: de.topobyte:jgs:0.0.1" level="project" />
+    <orderEntry type="library" name="Maven: de.topobyte:jts-medical-kit:0.0.1" level="project" />
+    <orderEntry type="library" name="Maven: de.topobyte:jsi:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: de.topobyte:jsi-and-jts:0.0.1" level="project" />
     <orderEntry type="module" module-name="spic-core" />
     <orderEntry type="library" name="Maven: org.matsim:matsim:0.8.1" level="project" />
     <orderEntry type="library" name="Maven: kml:kml:2.2.0" level="project" />
@@ -61,8 +72,6 @@
     <orderEntry type="library" name="Maven: org.matsim.contrib:common:0.8.1" level="project" />
     <orderEntry type="library" name="Maven: de.topobyte:osm4j-core:0.0.20" level="project" />
     <orderEntry type="library" name="Maven: de.topobyte:adt-multicollections:0.0.3" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: de.topobyte:osm4j-xml:0.0.5" level="project" />
     <orderEntry type="library" name="Maven: de.topobyte:dynsax:0.0.1" level="project" />
     <orderEntry type="library" name="Maven: de.topobyte:osm4j-pbf:0.0.10" level="project" />

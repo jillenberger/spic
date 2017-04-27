@@ -25,13 +25,16 @@ import com.vividsolutions.jts.geom.LinearRing;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.core.dataset.InMemoryMapDataSet;
 import de.topobyte.osm4j.core.dataset.MapDataSetLoader;
+import de.topobyte.osm4j.core.model.iface.OsmEntity;
 import de.topobyte.osm4j.core.model.iface.OsmNode;
+import de.topobyte.osm4j.core.model.iface.OsmRelation;
 import de.topobyte.osm4j.core.model.iface.OsmWay;
 import de.topobyte.osm4j.core.model.util.OsmModelUtil;
 import de.topobyte.osm4j.core.resolve.EntityNotFoundException;
 import de.topobyte.osm4j.geometry.GeometryBuilder;
 import gnu.trove.iterator.TLongObjectIterator;
 import gnu.trove.map.TLongObjectMap;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 
@@ -59,19 +62,23 @@ public class OsmFeatureBuilder {
         String line = reader.readLine();
         while ((line = reader.readLine()) != null) {
             String[] tokens = line.split("\t");
+            String key = tokens[0];
+            String value = tokens[1];
+            String type = tokens[2];
 
-            String compoundKey = String.format("%s-%s", tokens[0], tokens[1]);
-            tag2placeType.put(compoundKey, tokens[2]);
+            String compoundKey = String.format("%s-%s", key, value);
+            tag2placeType.put(compoundKey, type);
 
-            if (tokens[1].equalsIgnoreCase("*")) wildcards.add(tokens[1]);
+            if (value.equalsIgnoreCase("*")) wildcards.add(key);
         }
         reader.close();
     }
 
     public Set<OsmFeature> buildFeatures(OsmIterator osmIterator) throws IOException {
         int waysBuilt = 0;
+        int relationsBuilt = 0;
         int nodesBuilt = 0;
-        int waysFailed = 0;
+        int errors = 0;
 
         logger.info("Loading osm data...");
         GeometryBuilder builder = new GeometryBuilder();
@@ -90,24 +97,53 @@ public class OsmFeatureBuilder {
                 Geometry ring = builder.build(wayIterator.value(), data);
                 if (ring instanceof LinearRing) {
                     Geometry geometry = factory.createPolygon((LinearRing) ring);
-                    Map<String, String> tags = OsmModelUtil.getTagsAsMap(wayIterator.value());
-
-                    String featureType = null;
-                    if (tags.containsKey(OsmFeature.BUILDING)) featureType = OsmFeature.BUILDING;
-                    else if (tags.containsKey(OsmFeature.LANDUSE)) featureType = OsmFeature.LANDUSE;
-
-                    OsmFeature feature = new OsmFeature(geometry, featureType);
-                    addPlaceTypes(feature, tags);
+                    OsmFeature feature = buildFromPolygon(geometry, wayIterator.value());
 
                     if (feature.isValid()) {
                         features.add(feature);
                         waysBuilt++;
                     }
                 } else {
-                    waysFailed++;
+                    errors++;
                 }
             } catch (EntityNotFoundException e) {
-                waysFailed++;
+                errors++;
+            }
+        }
+
+        logger.info("Creating geometries from relations...");
+        TLongObjectMap<OsmRelation> relations = data.getRelations();
+        TLongObjectIterator<OsmRelation> relationIterator = relations.iterator();
+        while (relationIterator.hasNext()) {
+            relationIterator.advance();
+
+            try {
+                /*
+                Oppress debug messages.
+                 */
+                Level level = Logger.getRootLogger().getLevel();
+                Logger.getRootLogger().setLevel(Level.INFO);
+                /*
+                Polygons from relations can be multi-polygons. Using buffer() to merge this to one polygon
+                appears to be the most stable way.
+                TODO: Need to check if this really yields the expected results.
+                 */
+                Geometry polygon = builder.build(relationIterator.value(), data);
+                polygon = polygon.buffer(0);
+                Logger.getRootLogger().setLevel(level);
+
+                OsmFeature feature = buildFromPolygon(polygon, relationIterator.value());
+
+                /*
+                Add only if feature is of type LANDUSE.
+                TODO: Need to check how this behaves with multi polygon buildings.
+                 */
+                if (feature.isValid() && feature.isLanduse()) {
+                    features.add(feature);
+                    relationsBuilt++;
+                }
+            } catch (EntityNotFoundException e) {
+                errors++;
             }
         }
 
@@ -128,32 +164,58 @@ public class OsmFeatureBuilder {
             }
         }
 
-        logger.info(String.format("Built %s features from ways, %s features from nodes. %s failures.",
-                waysBuilt, nodesBuilt, waysFailed));
+        logger.info(String.format("Built features from ways %s, relations %s, nodes %s. %s errors.",
+                waysBuilt, relationsBuilt, nodesBuilt, errors));
 
         int places = 0;
+        int cnt = 0;
         for (OsmFeature feature : features) {
-            if (feature.getPlaceTypes() != null) places += feature.getPlaceTypes().size();
+            if (feature.getPlaceTypes() != null) {
+                if (!feature.getPlaceTypes().isEmpty()) {
+                    places += feature.getPlaceTypes().size();
+                    cnt++;
+                }
+            }
         }
-        logger.info(String.format("Average places per feature: %.1f.", places / (double) features.size()));
+        logger.info(String.format("Average places per feature: %.1f.", places / (double) cnt));
         return features;
     }
 
+    private OsmFeature buildFromPolygon(Geometry geometry, OsmEntity entity) {
+        Map<String, String> tags = OsmModelUtil.getTagsAsMap(entity);
+
+        String featureType = null;
+        if (tags.containsKey(OsmFeature.BUILDING)) featureType = OsmFeature.BUILDING;
+        else if (tags.containsKey(OsmFeature.LANDUSE)) featureType = OsmFeature.LANDUSE;
+
+        OsmFeature feature = new OsmFeature(geometry, featureType);
+        addPlaceTypes(feature, tags);
+
+        return feature;
+    }
+
     private void addPlaceTypes(OsmFeature feature, Map<String, String> tags) {
-        for (Map.Entry<String, String> tag : tags.entrySet()) {
-            String key = tag.getKey();
-            String value = tag.getValue();
-
-            if (wildcards.contains(key)) {
-                value = "*";
-            }
-
-            String compoundKey = String.format("%s-%s", key, value);
-//            if(compoundKey.equalsIgnoreCase("shop-boutique")) {
-//                System.err.println("Storage!");
-//            }
+        if (feature.isLanduse()) {
+            /*
+            If feature is of type LANDUSE, take over only the land-use tag.
+             */
+            String value = tags.get(OsmFeature.LANDUSE);
+            String compoundKey = String.format("%s-%s", OsmFeature.LANDUSE, value);
             String placeType = tag2placeType.get(compoundKey);
             if (placeType != null) feature.addPlaceType(placeType);
+        } else {
+            for (Map.Entry<String, String> tag : tags.entrySet()) {
+                String key = tag.getKey();
+                String value = tag.getValue();
+
+                if (wildcards.contains(key)) {
+                    value = "*";
+                }
+
+                String compoundKey = String.format("%s-%s", key, value);
+                String placeType = tag2placeType.get(compoundKey);
+                if (placeType != null) feature.addPlaceType(placeType);
+            }
         }
     }
 

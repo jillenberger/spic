@@ -17,8 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.osm.places;
+package de.dbanalytics.spic.osm.places.run;
 
+import de.dbanalytics.spic.osm.places.GeoTransformer;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacilities;
@@ -33,7 +34,7 @@ import java.io.IOException;
 /**
  * Created by johannesillenberger on 26.04.17.
  */
-public class Places2Facilities {
+public class RunPlaces2Facilities {
 
     public static void main(String args[]) throws IOException {
 //        GeoTransformer transformer = new GeoTransformer(4326, 31467);

@@ -35,8 +35,6 @@ public abstract class PlainElement implements Attributable {
 	
 	private Map<String, String> unmodAttribs;
 	
-	private Map<Object, Object> userData;
-	
 	public Map<String, String> getAttributes() {
 		initAttriutes();
 		return unmodAttribs;
@@ -76,26 +74,10 @@ public abstract class PlainElement implements Attributable {
 		return clone;
 	}
 	
-	public Object getUserData(Object key) {
-		initUserData();
-		return userData.get(key);
-	}
-	
-	public Object setUserData(Object key, Object value) {
-		initUserData();
-		return userData.put(key, value);
-	}
-	
 	private void initAttriutes() {
 		if(attributes == null) {
 			attributes = new HashMap<String, String>(5);
 			unmodAttribs = Collections.unmodifiableMap(attributes);
-		}
-	}
-	
-	private void initUserData() {
-		if(userData == null) {
-			userData = new HashMap<Object, Object>(5);
 		}
 	}
 }
