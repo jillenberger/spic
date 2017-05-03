@@ -14,6 +14,7 @@
         <module>matrix</module>
         <module>devel</module>
         <module>osm</module>
+        <module>matsim</module>
     </modules>
 
     <build>
