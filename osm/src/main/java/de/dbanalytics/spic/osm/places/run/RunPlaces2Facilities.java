@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.osm.places.run;
 
-import de.dbanalytics.spic.osm.places.GeoTransformer;
+import de.dbanalytics.spic.gis.GeoTransformer;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacilities;

@@ -21,6 +21,7 @@ package de.dbanalytics.spic.osm.places;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
+import de.dbanalytics.spic.gis.GeoTransformer;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.ProgressLogger;
 

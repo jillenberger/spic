@@ -10,18 +10,19 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.osm.places;
+package de.dbanalytics.spic.gis;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -65,6 +66,10 @@ public class GeoTransformer {
         }
     }
 
+    public static GeoTransformer identityTransformer() {
+        return new GeoTransformer(DefaultGeographicCRS.WGS84, DefaultGeographicCRS.WGS84);
+    }
+
     public static GeoTransformer WGS84toWebMercartor() {
         return new GeoTransformer(4326, 3857);
     }
@@ -92,6 +97,12 @@ public class GeoTransformer {
     public void forward(Geometry geometry) {
         for (Coordinate coordinate : geometry.getCoordinates()) {
             forward(coordinate);
+        }
+    }
+
+    public void backward(Geometry geometry) {
+        for (Coordinate coordinate : geometry.getCoordinates()) {
+            backward(coordinate);
         }
     }
 

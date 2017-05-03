@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.osm.places.run;
 
-import de.dbanalytics.spic.osm.places.GeoTransformer;
+import de.dbanalytics.spic.gis.GeoTransformer;
 import de.dbanalytics.spic.osm.places.OsmFeature;
 import de.dbanalytics.spic.osm.places.OsmFeatureBuilder;
 import de.dbanalytics.spic.osm.places.PlacesSynthesizer;

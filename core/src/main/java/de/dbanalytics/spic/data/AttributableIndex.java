@@ -17,10 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.data;
+package de.dbanalytics.spic.data;
 
 import com.sun.istack.internal.NotNull;
-import de.dbanalytics.spic.data.Attributable;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
