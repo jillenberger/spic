@@ -32,10 +32,10 @@ import java.util.Map;
 public abstract class RowHandler {
 
 	private String separator = "\t";
-	
-	private int offset = 1;
-	
-	protected abstract void handleRow(Map<String, String> attributes);
+
+    private int offset = 0;
+
+    protected abstract void handleRow(Map<String, String> attributes);
 	
 	public void setSeparator(String separator) {
 		this.separator = separator;

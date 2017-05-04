@@ -30,18 +30,20 @@ import java.util.Map;
  */
 public class LegTimeHandler implements LegAttributeHandler {
 
+    private static final String NA_VALUE = "301";
+
 	@Override
 	public void handle(Segment leg, Map<String, String> attributes) {
-		int time = calcSeconds(attributes, true);
-		leg.setAttribute(CommonKeys.LEG_START_TIME, String.valueOf(time));
+        Integer time = calcSeconds(attributes, true);
+        if (time != null) leg.setAttribute(CommonKeys.LEG_START_TIME, String.valueOf(time));
 
 		time = calcSeconds(attributes, false);
-		leg.setAttribute(CommonKeys.LEG_END_TIME, String.valueOf(time));
+        if (time != null) leg.setAttribute(CommonKeys.LEG_END_TIME, String.valueOf(time));
 
 	}
 
-	private int calcSeconds(Map<String, String> attributes, boolean mode) {
-		String hKey = VariableNames.LEG_END_TIME_HOUR;
+    private Integer calcSeconds(Map<String, String> attributes, boolean mode) {
+        String hKey = VariableNames.LEG_END_TIME_HOUR;
 		String mKey = VariableNames.LEG_END_TIME_MIN;
 		String dKey = VariableNames.END_NEXT_DAY;
 
@@ -55,11 +57,16 @@ public class LegTimeHandler implements LegAttributeHandler {
 		String min = attributes.get(mKey);
 		String nextDay = attributes.get(dKey);
 
-		int time = Integer.parseInt(min) * 60 + Integer.parseInt(hour) * 60 * 60;
+        Integer time = null;
+        if (hour != null && min != null) {
+            if (NA_VALUE.equals(hour)) return null;
 
-		if(nextDay != null && nextDay.equalsIgnoreCase("1")) {
-			time += 86400;
-		}
+            time = Integer.parseInt(min) * 60 + Integer.parseInt(hour) * 60 * 60;
+
+            if (nextDay != null && nextDay.equalsIgnoreCase("1")) {
+                time += 86400;
+            }
+        }
 
 		return time;
 	}

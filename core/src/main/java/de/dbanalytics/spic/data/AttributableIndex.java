@@ -19,7 +19,6 @@
 
 package de.dbanalytics.spic.data;
 
-import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -47,7 +46,7 @@ public class AttributableIndex<T extends Attributable> {
         compoundKeys = new HashSet<>();
     }
 
-    public Set<T> get(@NotNull String key, String value) {
+    public Set<T> get(String key, String value) {
         if (value == null) value = NULL_VALUE;
 
         Pair<String, String> compoundKey = new ImmutablePair<>(key, value);

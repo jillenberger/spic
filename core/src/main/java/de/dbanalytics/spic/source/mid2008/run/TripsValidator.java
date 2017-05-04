@@ -69,7 +69,7 @@ public class TripsValidator {
         logger.info("Setting activity times...");
         TaskRunner.run(new SetActivityTimesTask(), persons);
 
-        logger.info("Writing validated population...");
+        logger.info(String.format("Writing %s validated persons...", persons.size()));
         PopulationIO.writeToXML(args[1], persons);
         logger.info("Done.");
     }

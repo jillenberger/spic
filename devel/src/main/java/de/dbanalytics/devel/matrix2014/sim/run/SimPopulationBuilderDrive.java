@@ -81,7 +81,8 @@ public class SimPopulationBuilderDrive {
                 ZoneMobilityRate zoneMobilityRate = new ZoneMobilityRate(
                         MiDKeys.PERSON_LAU2_CLASS,
                         lau2Zones,
-                        engine.getLegPredicate());
+                        engine.getLegPredicate(),
+                        engine.getIOContext());
                 zoneMobilityRate.analyze(engine.getRefPersons(), null);
 
                 new TransferZoneAttribute().apply(lau2Zones, modenaZones, MiDKeys.PERSON_LAU2_CLASS);
