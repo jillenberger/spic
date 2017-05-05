@@ -81,9 +81,18 @@ public class AllOrNothing {
                     String route = leg.getAttribute(CommonKeys.LEG_ROUTE);
 
                     if (route != null) {
-                        String linkIds[] = route.split(" ");
-                        for (String id : linkIds) {
-                            volumes.adjustOrPutValue(id, weight, weight);
+//                        String linkIds[] = route.split(" ");
+//                        for (String id : linkIds) {
+//                            volumes.adjustOrPutValue(id, weight, weight);
+//                        }
+                        String nodeIds[] = route.split("\\s");
+                        for (int i = 0; i < nodeIds.length - 1; i++) {
+                            String pair = new StringBuilder(32).
+                                    append(nodeIds[i]).
+                                    append(";").
+                                    append(nodeIds[i + 1]).
+                                    toString();
+                            volumes.adjustOrPutValue(pair, weight, weight);
                         }
                     }
                 }
