@@ -20,12 +20,13 @@
 package de.dbanalytics.spic.source.mid2008HH;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.gis.Place;
+import de.dbanalytics.spic.gis.PlaceIndex;
+import de.dbanalytics.spic.gis.Zone;
+import de.dbanalytics.spic.gis.ZoneCollection;
+import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -33,61 +34,116 @@ import java.util.*;
  */
 public class HomeLocator {
 
+    private static final Logger logger = Logger.getLogger(HomeLocator.class);
+
     private final Random random;
 
-    public HomeLocator() {
-        this(new XORShiftRandom());
+    private final PlaceIndex placeIndex;
+
+    private final ZoneCollection zones;
+    private String partitionKey;
+    private String inhabitantsKey;
+
+    public HomeLocator(PlaceIndex placeIndex, ZoneCollection zones) {
+        this(placeIndex, zones, new XORShiftRandom());
     }
 
-    public HomeLocator(Random random) {
+    public HomeLocator(PlaceIndex placeIndex, ZoneCollection zones, Random random) {
+        this.placeIndex = placeIndex;
+        this.zones = zones;
         this.random = random;
     }
 
-    public static void main(String args[]) throws IOException, XMLStreamException {
-        String refPersonsFile = "";
-        String zoneFile = "";
-        String placesFile = "";
-        String outFile = "";
-
-        Set<Person> refPersons = PopulationIO.loadFromXML(refPersonsFile, new PlainFactory());
-        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zoneFile, "PLZ8", null);
-        PlacesIO placesIO = new PlacesIO();
-        placesIO.setGeoTransformer(GeoTransformer.WGS84toX(31467));
-        Set<Place> places = placesIO.read(placesFile);
-
-        HomeLocator locator = new HomeLocator();
-        Set<Person> clones = locator.run(refPersons, new PlaceIndex(places), zones, "SV_HVV", "A_GESAMT");
-
-        PopulationIO.writeToXML(outFile, clones);
+    public void setPartitionKey(String partitionKey) {
+        this.partitionKey = partitionKey;
     }
 
-    public Set<Person> run(Set<Person> refPersons, PlaceIndex placeIndex, ZoneCollection zones, String key, String inhabKey) {
+    public void setInhabitantsKey(String inhabitantsKey) {
+        this.inhabitantsKey = inhabitantsKey;
+    }
+
+    public Set<Person> run(Set<Person> refPersons, double fraction) {
         AttributableIndex<Person> personIndex = new AttributableIndex<>(refPersons);
         Set<Person> targetPersons = new HashSet<>();
-
+        /**
+         * Sort zones according to attribute.
+         */
+        Map<String, Set<Zone>> zoneIndex = new HashMap<>();
         for (Zone zone : zones.getZones()) {
-            String value = zone.getAttribute(key);
-            Set<Person> templates = personIndex.get(key, value);
+            String value = zone.getAttribute(partitionKey);
+            Set<Zone> partition = zoneIndex.get(value);
+            if (partition == null) {
+                partition = new HashSet<>();
+                zoneIndex.put(value, partition);
+            }
+            partition.add(zone);
+        }
+        /**
+         * Process partitions.
+         */
+        for (Map.Entry<String, Set<Zone>> entry : zoneIndex.entrySet()) {
+            logger.info(String.format("Processing partition %s...", entry.getKey()));
 
-            String inhabValue = zone.getAttribute(inhabKey);
-            int inhabitants = 0;
-            if (inhabValue != null) inhabitants = Integer.parseInt(inhabValue);
+            Set<Person> templates = personIndex.get(MiDHHValues.PERSON_DISTRICT, entry.getKey());
+            Set<Zone> partition = entry.getValue();
+            /**
+             * Total number inhabitants in partition
+             */
+            int numPartition = 0;
+            for (Zone zone : partition) {
+                String value = zone.getAttribute(inhabitantsKey);
+                if (value != null) numPartition += (int) Double.parseDouble(value);
+            }
+            numPartition = (int) Math.ceil(numPartition * fraction);
 
-            Set<Person> clones = (Set<Person>) PersonUtils.weightedCopy(templates, new PlainFactory(), inhabitants, random);
+            if (numPartition > 0) {
+                List<Person> clones = new ArrayList<>(PersonUtils.weightedCopy(
+                        templates,
+                        new PlainFactory(),
+                        numPartition,
+                        random));
 
-            List<Place> homePlaces = new ArrayList<>(placeIndex.getForActivity(zone.getGeometry(), "home"));
+                int startIdx = 0;
+                for (Zone zone : partition) {
+                    int numZone = 0;
 
-            clones.parallelStream().forEach(clone -> {
-                Place home = homePlaces.get(random.nextInt(homePlaces.size()));
-                clone.getEpisodes().stream().forEach(episode -> episode.getActivities().
-                        stream().
-                        filter(activity -> "home".equalsIgnoreCase(activity.getAttribute(CommonKeys.ACTIVITY_TYPE))).
-                        forEach(activity -> activity.setAttribute(CommonKeys.ACTIVITY_FACILITY, home.getId()))
-                );
-            });
+                    String value = zone.getAttribute(inhabitantsKey);
+                    if (value != null) numZone = (int) Double.parseDouble(value);
+                    numZone = (int) Math.floor(numZone * fraction);
 
+                    if (numZone > 0) {
+                        List<Place> homePlaces = new ArrayList<>(placeIndex.getForActivity(zone.getGeometry(), "home"));
+                        if (homePlaces.size() > 0) {
+                            int endIdx = startIdx + numZone;
+                            for (int i = startIdx; i < endIdx; i++) {
+                                Person clone = clones.get(i);
+                                Place home = homePlaces.get(random.nextInt(homePlaces.size()));
+                                clone.getEpisodes().stream().forEach(episode -> episode.getActivities().
+                                        stream().
+                                        filter(activity ->
+                                                ActivityTypes.HOME.equalsIgnoreCase(activity.getAttribute(CommonKeys.ACTIVITY_TYPE))).
+                                        forEach(activity ->
+                                                activity.setAttribute(CommonKeys.ACTIVITY_FACILITY, home.getId()))
+                                );
+                                targetPersons.add(clone);
+                            }
+                            startIdx = endIdx;
+                        } else {
+                            logger.warn(String.format("No home places for zone with %s persons.", numZone));
+                        }
+                    }
+                }
 
-            targetPersons.addAll(clones);
+                if (startIdx != numPartition) {
+                    logger.warn(String.format("Cloned %s persons but target amount is %s (%.4f).",
+                            startIdx,
+                            numPartition,
+                            startIdx / (double) numPartition));
+                }
+            } else {
+                logger.warn("No inhabitants in partition.");
+            }
+
         }
 
         return targetPersons;
