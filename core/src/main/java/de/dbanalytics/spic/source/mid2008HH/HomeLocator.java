@@ -34,6 +34,8 @@ import java.util.*;
  */
 public class HomeLocator {
 
+    private static final String INHABITANTS_KEY = "persons";
+
     private static final Logger logger = Logger.getLogger(HomeLocator.class);
 
     private final Random random;
@@ -41,8 +43,6 @@ public class HomeLocator {
     private final PlaceIndex placeIndex;
 
     private final ZoneCollection zones;
-    private String partitionKey;
-    private String inhabitantsKey;
 
     public HomeLocator(PlaceIndex placeIndex, ZoneCollection zones) {
         this(placeIndex, zones, new XORShiftRandom());
@@ -54,15 +54,7 @@ public class HomeLocator {
         this.random = random;
     }
 
-    public void setPartitionKey(String partitionKey) {
-        this.partitionKey = partitionKey;
-    }
-
-    public void setInhabitantsKey(String inhabitantsKey) {
-        this.inhabitantsKey = inhabitantsKey;
-    }
-
-    public Set<Person> run(Set<Person> refPersons, double fraction) {
+    public Set<Person> run(Set<Person> refPersons, String partitionKey, double fraction) {
         AttributableIndex<Person> personIndex = new AttributableIndex<>(refPersons);
         Set<Person> targetPersons = new HashSet<>();
         /**
@@ -91,7 +83,7 @@ public class HomeLocator {
              */
             int numPartition = 0;
             for (Zone zone : partition) {
-                String value = zone.getAttribute(inhabitantsKey);
+                String value = zone.getAttribute(INHABITANTS_KEY);
                 if (value != null) numPartition += (int) Double.parseDouble(value);
             }
             numPartition = (int) Math.ceil(numPartition * fraction);
@@ -107,7 +99,7 @@ public class HomeLocator {
                 for (Zone zone : partition) {
                     int numZone = 0;
 
-                    String value = zone.getAttribute(inhabitantsKey);
+                    String value = zone.getAttribute(INHABITANTS_KEY);
                     if (value != null) numZone = (int) Double.parseDouble(value);
                     numZone = (int) Math.floor(numZone * fraction);
 

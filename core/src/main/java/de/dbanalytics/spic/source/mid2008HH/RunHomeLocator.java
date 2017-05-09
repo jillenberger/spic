@@ -23,6 +23,11 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.*;
+import org.apache.log4j.Logger;
+import org.matsim.contrib.common.util.XORShiftRandom;
+import org.matsim.core.config.Config;
+import org.matsim.core.config.ConfigGroup;
+import org.matsim.core.config.ConfigUtils;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -33,27 +38,49 @@ import java.util.Set;
  */
 public class RunHomeLocator {
 
+    private static final String MODULE_NAME = "homelocator";
+
+    private static final String TEMPLATES = "templates";
+
+    private static final String ZONES = "zones";
+
+    private static final String PLACES = "places";
+
+    private static final String OUTPUT = "output";
+
+    private static final String PARTITION_KEY = "partitionKey";
+
+    private static final String EPSG_CODE = "epsg";
+
+    private static final String FRACTION = "fraction";
+
+    private static final Logger logger = Logger.getLogger(RunHomeLocator.class);
+
     public static void main(String args[]) throws IOException, XMLStreamException {
-        String refPersonsFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/demand/midHH/mid2008HH2.xml";
-        String zoneFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/shapes/Plz8.midHH.geojson";
-        String placesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/osm/places.xml.gz";
-        String outFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/demand/midHH/pop.xml.gz";
+        Config config = new Config();
+        ConfigUtils.loadConfig(config, args[0]);
 
-        String zoneId = "PLZ8";
-        String attrKey = "SB_HVV";
-        String popKey = "A_GESAMT";
+        ConfigGroup module = config.getModule(MODULE_NAME);
 
-        Set<Person> refPersons = PopulationIO.loadFromXML(refPersonsFile, new PlainFactory());
-        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zoneFile, zoneId, null);
+        logger.info("Loading persons...");
+        Set<Person> refPersons = PopulationIO.loadFromXML(module.getValue(TEMPLATES), new PlainFactory());
+        logger.info("Loading zones...");
+        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(module.getValue(ZONES), "id", null);
+        logger.info("Loading places...");
         PlacesIO placesIO = new PlacesIO();
-        placesIO.setGeoTransformer(GeoTransformer.WGS84toX(31467));
-        Set<Place> places = placesIO.read(placesFile);
+        placesIO.setGeoTransformer(GeoTransformer.WGS84toX(Integer.parseInt(module.getValue(EPSG_CODE))));
+        Set<Place> places = placesIO.read(module.getValue(PLACES));
 
-        HomeLocator locator = new HomeLocator(new PlaceIndex(places), zones);
-        locator.setInhabitantsKey(popKey);
-        locator.setPartitionKey(attrKey);
-        Set<Person> clones = locator.run(refPersons, 0.5);
+        XORShiftRandom random = new XORShiftRandom(config.global().getRandomSeed());
+        HomeLocator locator = new HomeLocator(new PlaceIndex(places), zones, random);
+        Set<Person> clones = locator.run(
+                refPersons,
+                module.getValue(PARTITION_KEY),
+                Double.parseDouble(module.getValue(FRACTION)));
+        logger.info(String.format("Generated %s persons.", clones.size()));
 
-        PopulationIO.writeToXML(outFile, clones);
+        logger.info("Writing persons...");
+        PopulationIO.writeToXML(module.getValue(OUTPUT), clones);
+        logger.info("Done.");
     }
 }
