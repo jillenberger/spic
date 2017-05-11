@@ -53,6 +53,9 @@ public class DefaultHistogramBuilder implements HistogramBuilder {
     }
 
     public TDoubleDoubleMap build(Collection<? extends Person> persons) {
+        /**
+         * FIXME: I think we need to put the person into a list to ensure same iteration order.
+         */
         List<Double> values = valueCollector.collect(persons);
         List<Double> weights = weightsCollector.collect(persons);
         List<double[]> nativeValues = CollectionUtils.toNativeArray(values, weights);

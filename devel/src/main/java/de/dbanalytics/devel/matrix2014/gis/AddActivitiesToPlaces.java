@@ -19,6 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.gis;
 
+import de.dbanalytics.spic.data.ActivityTypes;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.PlacesIO;
 
@@ -43,6 +44,10 @@ public class AddActivitiesToPlaces {
             if (activities != null) {
                 for (String activity : activities) place.addActivity(activity);
             }
+            /**
+             * FIXME: Each place has an misc activity.
+             */
+            place.addActivity(ActivityTypes.MISC);
         }
 
         reader.write(places, "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/osm/places.xml.gz");

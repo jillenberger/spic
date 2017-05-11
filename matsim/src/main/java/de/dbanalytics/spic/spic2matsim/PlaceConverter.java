@@ -20,6 +20,7 @@
 package de.dbanalytics.spic.spic2matsim;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import de.dbanalytics.spic.gis.GeoTransformer;
 import de.dbanalytics.spic.gis.Place;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
@@ -36,13 +37,21 @@ public class PlaceConverter {
 
     private final ActivityFacilities facilities;
 
+    private GeoTransformer transformer;
+
     public PlaceConverter() {
         facilities = FacilitiesUtils.createActivityFacilities();
+        transformer = GeoTransformer.identityTransformer();
+    }
+
+    public void setTransformer(GeoTransformer transformer) {
+        this.transformer = transformer;
     }
 
     public ActivityFacility convert(Place place) {
         Id<ActivityFacility> id = Id.create(place.getId(), ActivityFacility.class);
         Coordinate coordinate = place.getGeometry().getCoordinate();
+        transformer.forward(coordinate);
         Coord coord = new Coord(coordinate.x, coordinate.y);
 
         ActivityFacility facility = facilities.getFactory().createActivityFacility(id, coord);
@@ -55,7 +64,7 @@ public class PlaceConverter {
     }
 
     public ActivityFacilities convert(Collection<Place> places) {
-        places.parallelStream().forEach(place -> facilities.addActivityFacility(convert(place)));
+        places.stream().forEach(place -> facilities.addActivityFacility(convert(place)));
         return facilities;
     }
 }

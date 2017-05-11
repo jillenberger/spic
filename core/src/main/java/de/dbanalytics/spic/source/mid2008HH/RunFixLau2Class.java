@@ -31,7 +31,7 @@ import java.util.Set;
 /**
  * Created by johannesillenberger on 04.05.17.
  */
-public class AdaptLau2Class {
+public class RunFixLau2Class {
 
     public static void main(String args[]) {
         String inFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/demand/midHH/mid2008HH.xml";

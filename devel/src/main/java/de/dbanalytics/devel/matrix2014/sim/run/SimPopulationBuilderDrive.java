@@ -27,10 +27,7 @@ import de.dbanalytics.spic.data.PersonUtils;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.*;
-import de.dbanalytics.spic.processing.CalculateGeoDistance;
-import de.dbanalytics.spic.processing.EpisodeTask;
-import de.dbanalytics.spic.processing.LegAttributeRemover;
-import de.dbanalytics.spic.processing.TaskRunner;
+import de.dbanalytics.spic.processing.*;
 import de.dbanalytics.spic.sim.SetActivityFacilities;
 import de.dbanalytics.spic.sim.SetHomeFacilities;
 import de.dbanalytics.spic.source.mid2008.MiDKeys;
@@ -101,11 +98,21 @@ public class SimPopulationBuilderDrive {
         } else {
             logger.info("Loading sim population from file...");
             simPersons = PopulationIO.loadFromXML(simPopFile, new PlainFactory());
+
+            logger.info("Assigning random activity locations...");
+            EpisodeTask initActs = new SetActivityFacilities(
+                    (FacilityData) dataPool.get(FacilityDataLoader.KEY),
+                    0.1,
+                    engine.getRandom());
+            TaskRunner.run(initActs, simPersons, Executor.getFreePoolSize(), true);
+            TaskRunner.runActTask(new RandomizeNumAttribute(CommonKeys.ACTIVITY_END_TIME, 300, engine.getRandom()), simPersons);
+            TaskRunner.runLegTask(new SnapLeg2ActTimes(), simPersons);
+
             //TODO: temp fix!
 //            TaskRunner.run(new RefPopulationBuilder.SetVacationsPurpose(), simPersons);
 //            TaskRunner.run(new RefPopulationBuilder.ReplaceHomePurpose(), simPersons);
-//            TaskRunner.run(new RefPopulationBuilder.NullifyPurpose(ActivityTypes.HOME), simPersons);
-//            TaskRunner.run(new RefPopulationBuilder.NullifyPurpose(ActivityTypes.MISC), simPersons);
+//            TaskRunner.run(new RefPopulationBuilder.RemoveLegPurpose(ActivityTypes.HOME), simPersons);
+//            TaskRunner.run(new RefPopulationBuilder.RemoveLegPurpose(ActivityTypes.MISC), simPersons);
 //            TaskRunner.run(new RefPopulationBuilder.ReplaceLegPurposes(), simPersons);
 //            TaskRunner.run(new RefPopulationBuilder.GuessMissingPurposes(simPersons, engine.getLegPredicate(), engine.getRandom()), simPersons);
         }

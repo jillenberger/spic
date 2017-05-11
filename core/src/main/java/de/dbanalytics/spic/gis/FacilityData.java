@@ -38,21 +38,38 @@ import java.util.Map.Entry;
 public class FacilityData {
 
     private static final Logger logger = Logger.getLogger(FacilityData.class);
-
-    private Map<String, QuadTree<ActivityFacility>> quadTrees = new HashMap<>();
-
-    private Map<String, List<ActivityFacility>> facilitiesMap;
-
     private final ActivityFacilities facilities;
-
     private final Random random;
-
     private final Map<String, List<String>> typeMapping;
+    private Map<String, QuadTree<ActivityFacility>> quadTrees = new HashMap<>();
+    private Map<String, List<ActivityFacility>> facilitiesMap;
 
     public FacilityData(ActivityFacilities facilities, Map<String, List<String>> typeMapping, Random random) {
         this.random = random;
         this.facilities = facilities;
         this.typeMapping = typeMapping;
+    }
+
+    public static Map<String, List<String>> loadTypeMapping(String filename) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line = reader.readLine();
+
+        Map<String, List<String>> mapping = new HashMap<>();
+
+        while ((line = reader.readLine()) != null) {
+            String tokens[] = line.split("\\s");
+            String type = tokens[0];
+            String facility = tokens[1];
+
+            List<String> types = mapping.get(facility);
+            if (types == null) {
+                types = new ArrayList<>();
+                mapping.put(facility, types);
+            }
+            types.add(type);
+        }
+
+        return mapping;
     }
 
     public ActivityFacilities getAll() {
@@ -84,6 +101,10 @@ public class FacilityData {
         return quadTree.getClosest(coord.getX(), coord.getY());
     }
 
+//    public String getAttribute(ActivityFacility facility, String key) {
+//        return null;
+//    }
+
     public QuadTree<ActivityFacility> getQuadTree(String type) {
         QuadTree<ActivityFacility> quadtree = quadTrees.get(type);
         if (quadtree == null) {
@@ -93,30 +114,27 @@ public class FacilityData {
         return quadTrees.get(type);
     }
 
-//    public String getAttribute(ActivityFacility facility, String key) {
-//        return null;
-//    }
-
     private synchronized void initMap() {
         if (facilitiesMap == null) {
             facilitiesMap = new HashMap<>();
 
             for (ActivityFacility facility : facilities.getFacilities().values()) {
                 for (ActivityOption option : facility.getActivityOptions().values()) {
-                    //TODO: This needs more thinking...
-                    String buildingType = option.getType();
-                    List<String> activityTypes = typeMapping.get(buildingType);
-
-                    for(String activityType : activityTypes) {
-                        List<ActivityFacility> list = facilitiesMap.get(activityType);
+//                    //TODO: This needs more thinking...
+//                    String buildingType = option.getType();
+//                    List<String> activityTypes = typeMapping.get(buildingType);
+//
+//                    for(String activityType : activityTypes) {
+                    List<ActivityFacility> list = facilitiesMap.get(option.getType());
 
                         if (list == null) {
                             list = new LinkedList<>();
-                            facilitiesMap.put(activityType, list);
+//                            facilitiesMap.put(activityType, list);
+                            facilitiesMap.put(option.getType(), list);
                         }
 
                         list.add(facility);
-                    }
+//                    }
                 }
             }
 
@@ -154,27 +172,5 @@ public class FacilityData {
 
             logger.debug("Done.");
         }
-    }
-
-    public static Map<String, List<String>> loadTypeMapping(String filename) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
-        String line = reader.readLine();
-
-        Map<String, List<String>> mapping = new HashMap<>();
-
-        while((line = reader.readLine()) != null) {
-            String tokens[] = line.split("\\s");
-            String type = tokens[0];
-            String facility = tokens[1];
-
-            List<String> types = mapping.get(facility);
-            if(types == null) {
-                types = new ArrayList<>();
-                mapping.put(facility, types);
-            }
-            types.add(type);
-        }
-
-        return mapping;
     }
 }
