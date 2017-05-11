@@ -92,5 +92,11 @@
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.15" level="project" />
+    <orderEntry type="library" name="Maven: net.java.dev.stax-utils:stax-utils:20070216" level="project" />
+    <orderEntry type="library" name="Maven: com.bea.xml:jsr173-ri:1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.davidmoten:rtree:0.8-RC10" level="project" />
+    <orderEntry type="library" name="Maven: com.github.davidmoten:guava-mini:0.1" level="project" />
+    <orderEntry type="library" name="Maven: io.reactivex:rxjava:1.1.4" level="project" />
+    <orderEntry type="library" name="Maven: com.github.davidmoten:rxjava-extras:0.7" level="project" />
   </component>
 </module>
