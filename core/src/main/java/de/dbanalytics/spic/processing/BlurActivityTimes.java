@@ -19,11 +19,9 @@
 
 package de.dbanalytics.spic.processing;
 
-import de.dbanalytics.spic.analysis.ActAttributeHistogramBuilder;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.analysis.LegAttributeHistogramBuilder;
+import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.sim.HistogramBuilder;
 import gnu.trove.map.TDoubleDoubleMap;
 import gnu.trove.map.TDoubleObjectMap;
@@ -34,6 +32,7 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.Histogram;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
+import org.matsim.contrib.common.util.XORShiftRandom;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -53,8 +52,8 @@ public class BlurActivityTimes implements EpisodeTask {
     public BlurActivityTimes(Set<Person> persons, Random random) {
         this.random = random;
         this.discretizer = new LinearDiscretizer(3600);
-        HistogramBuilder builder = new ActAttributeHistogramBuilder(
-                CommonKeys.ACTIVITY_START_TIME,
+        HistogramBuilder builder = new LegAttributeHistogramBuilder(
+                CommonKeys.LEG_START_TIME,
                 discretizer);
         TDoubleDoubleMap hist = builder.build(persons);
         hist = Histogram.normalize((TDoubleDoubleHashMap) hist);
@@ -84,6 +83,15 @@ public class BlurActivityTimes implements EpisodeTask {
 
             funcs.put(x_left, new ProbabilityFunction(a, b));
         }
+    }
+
+    public static void main(String args[]) {
+        Set<Person> persons = PopulationIO.loadFromXML("/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/demand/midHH/mid2008HH2.xml", new PlainFactory());
+
+        BlurActivityTimes task = new BlurActivityTimes(persons, new XORShiftRandom());
+        TaskRunner.run(task, persons);
+
+//        PopulationIO.writeToXML("", persons);
     }
 
     @Override
