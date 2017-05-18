@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+/.idea/
+/core/spic-core.iml
+/devel/spic-devel.iml
+/matrix/spic-matrix.iml
+/matsim/spic-matsim.iml
+/mid/spic-mid.iml
+/osm/spic-osm.iml
+/spic.iml
