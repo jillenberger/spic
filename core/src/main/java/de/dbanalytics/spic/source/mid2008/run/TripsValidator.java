@@ -26,6 +26,7 @@ import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.processing.*;
 import de.dbanalytics.spic.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.source.mid2008.processing.ResolveReturnTrips;
 import de.dbanalytics.spic.source.mid2008.processing.ResolveRoundTripsTask;
 import de.dbanalytics.spic.source.mid2008.processing.SetFirstActivityTypeTask;
 import de.dbanalytics.spic.source.mid2008.processing.SortLegsTask;
@@ -58,6 +59,8 @@ public class TripsValidator {
         TaskRunner.run(new SetActivityTypeTask(), persons);
         logger.info("Setting first activity type...");
         TaskRunner.run(new SetFirstActivityTypeTask(), persons);
+        logger.info("Resolving return trips...");
+        TaskRunner.run(new ResolveReturnTrips(), persons);
 
         LoggerUtils.disableNewLine();
         logger.info("Resolving round trips...");
