@@ -15,6 +15,7 @@
         <module>devel</module>
         <module>osm</module>
         <module>matsim</module>
+        <module>invermo</module>
     </modules>
 
     <build>
@@ -172,6 +173,11 @@
             <groupId>com.github.davidmoten</groupId>
             <artifactId>rtree</artifactId>
             <version>0.8-RC10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.woodstox</groupId>
+            <artifactId>woodstox-core</artifactId>
+            <version>5.0.3</version>
         </dependency>
     </dependencies>
 

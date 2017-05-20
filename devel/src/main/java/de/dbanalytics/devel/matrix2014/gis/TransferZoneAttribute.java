@@ -23,7 +23,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
 import de.dbanalytics.spic.gis.Zone;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
-import de.dbanalytics.spic.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MiDKeys;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -40,6 +40,17 @@ import java.util.TreeSet;
 public class TransferZoneAttribute {
 
     private static final Logger logger = Logger.getLogger(TransferZoneAttribute.class);
+
+    public static void main(String args[]) throws IOException {
+        ZoneCollection source = ZoneGeoJsonIO.readFromGeoJSON("/home/johannes/gsv/gis/zones/geojson/de.lau2.gk3.geojson", "ID", null);
+        ZoneCollection target = ZoneGeoJsonIO.readFromGeoJSON("/home/johannes/gsv/gis/zones/geojson/modena.de.gk3.geojson", "NO", null);
+        new ZoneSetLAU2Class().apply(source);
+        new TransferZoneAttribute().apply(source, target, MiDKeys.PERSON_LAU2_CLASS);
+        String data = ZoneGeoJsonIO.toJson(target.getZones());
+        Files.write(Paths.get("/home/johannes/gsv/matrix2014/gis/modena.geojson"), data.getBytes(), StandardOpenOption
+                .CREATE);
+
+    }
 
     public void apply(ZoneCollection source, ZoneCollection target, String attribute) {
         /*
@@ -97,16 +108,5 @@ public class TransferZoneAttribute {
                 logger.info("No intersection between source and target zone.");
             }
         }
-    }
-
-    public static void main(String args[]) throws IOException {
-        ZoneCollection source = ZoneGeoJsonIO.readFromGeoJSON("/home/johannes/gsv/gis/zones/geojson/de.lau2.gk3.geojson", "ID", null);
-        ZoneCollection target = ZoneGeoJsonIO.readFromGeoJSON("/home/johannes/gsv/gis/zones/geojson/modena.de.gk3.geojson", "NO", null);
-        new ZoneSetLAU2Class().apply(source);
-        new TransferZoneAttribute().apply(source, target, MiDKeys.PERSON_LAU2_CLASS);
-        String data = ZoneGeoJsonIO.toJson(target.getZones());
-        Files.write(Paths.get("/home/johannes/gsv/matrix2014/gis/modena.geojson"), data.getBytes(), StandardOpenOption
-                .CREATE);
-
     }
 }

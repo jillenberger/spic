@@ -23,8 +23,8 @@ import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.source.mid2008.MiDKeys;
-import de.dbanalytics.spic.source.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MiDValues;
 import gnu.trove.iterator.TObjectDoubleIterator;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 

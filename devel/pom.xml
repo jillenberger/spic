@@ -32,6 +32,11 @@
             <artifactId>jna</artifactId>
             <version>4.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>de.dbanalytics.spic</groupId>
+            <artifactId>spic-mid</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

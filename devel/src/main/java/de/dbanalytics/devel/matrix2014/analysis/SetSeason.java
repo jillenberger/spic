@@ -20,9 +20,9 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MiDValues;
 import de.dbanalytics.spic.processing.PersonTask;
-import de.dbanalytics.spic.source.mid2008.MiDKeys;
-import de.dbanalytics.spic.source.mid2008.MiDValues;
 
 /**
  * @author johannes

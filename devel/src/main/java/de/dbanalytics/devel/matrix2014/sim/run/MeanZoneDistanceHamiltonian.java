@@ -25,6 +25,7 @@ import de.dbanalytics.devel.matrix2014.sim.CopyPersonAttToLeg;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.BivariatMean;
@@ -33,7 +34,6 @@ import de.dbanalytics.spic.sim.MarkovEngineListener;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import de.dbanalytics.spic.sim.data.Converters;
 import de.dbanalytics.spic.sim.data.DoubleConverter;
-import de.dbanalytics.spic.source.mid2008.MiDKeys;
 import gnu.trove.map.TIntDoubleMap;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntDoubleHashMap;
@@ -229,13 +229,10 @@ public class MeanZoneDistanceHamiltonian {
 
     private static class ErrorStatsWriter implements MarkovEngineListener {
 
-        private long interval = (long)1e8;
-
-        private long iteration;
-
         private final String outputDir;
-
         private final BivariatMean hamiltonian;
+        private long interval = (long) 1e8;
+        private long iteration;
 
         public ErrorStatsWriter(String outputDir, BivariatMean hamiltonian) {
             this.outputDir = outputDir;

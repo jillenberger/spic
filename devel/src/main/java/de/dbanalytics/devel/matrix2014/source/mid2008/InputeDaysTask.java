@@ -20,8 +20,8 @@
 package de.dbanalytics.devel.matrix2014.source.mid2008;
 
 import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.mid2008.MiDValues;
 import de.dbanalytics.spic.processing.PersonTask;
-import de.dbanalytics.spic.source.mid2008.MiDValues;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import org.matsim.contrib.common.collections.ChoiceSet;

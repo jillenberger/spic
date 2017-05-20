@@ -24,7 +24,7 @@ import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.StatsContainer;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.gis.*;
-import de.dbanalytics.spic.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MiDKeys;
 import org.apache.log4j.Logger;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;

@@ -30,12 +30,12 @@ import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.matrix.ODCalibrator;
+import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MiDValues;
 import de.dbanalytics.spic.processing.*;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.sim.data.Converters;
 import de.dbanalytics.spic.sim.data.DoubleConverter;
-import de.dbanalytics.spic.source.mid2008.MiDKeys;
-import de.dbanalytics.spic.source.mid2008.MiDValues;
 import de.dbanalytics.spic.util.Executor;
 import gnu.trove.list.array.TDoubleArrayList;
 import org.apache.commons.math.FunctionEvaluationException;
@@ -60,18 +60,14 @@ import java.util.Set;
  */
 public class Simulator {
 
-    private static final Logger logger = Logger.getLogger(Simulator.class);
-
-    private static final String MODULE_NAME = "synPopSim";
-
-    private static Discretizer simDistanceDiscretizer;
-
     public static final boolean USE_WEIGTHS = true;
-
     public static final Predicate<Segment> DEFAULT_LEG_PREDICATE = new LegAttributePredicate(CommonKeys.LEG_MODE,
             CommonValues.LEG_MODE_CAR);
-
     public static final String DEFAULT_LEG_PREDICATE_NAME = CommonValues.LEG_MODE_CAR;
+    private static final Logger logger = Logger.getLogger(Simulator.class);
+    private static final String MODULE_NAME = "synPopSim";
+    private static Discretizer simDistanceDiscretizer;
+
     /**
      * @param args
      * @throws IOException
@@ -407,19 +403,6 @@ public class Simulator {
         return bm;
     }
 
-    public static class Route2GeoDistFunction implements UnivariateRealFunction {
-
-        @Override
-        public double value(double x) throws FunctionEvaluationException {
-            double routDist = x / 1000.0;
-//            double factor = 0.77 - Math.exp(-0.017 * Math.max(10, routDist) - 1.48);
-//            double factor = 0.7 - Math.exp(-0.017 * Math.max(10, routDist) - 1.48);
-//            double factor = 0.6 - Math.exp(-0.008 * Math.max(20, routDist) - 2);
-            double factor = 0.55;
-            return routDist * factor * 1000;
-        }
-    }
-
     private static AnalyzerTask<Collection<? extends Person>> buildGeoDistanceAnalyzer
             (AnalyzerTaskComposite<Collection<? extends Person>> tasks, FileIOContext ioContext, DataPool dataPool) {
 //        AnalyzerTaskComposite<Collection<? extends Person>> composite = new AnalyzerTaskComposite<>();
@@ -523,5 +506,18 @@ public class Simulator {
         for(int d = 500000; d < 1000000; d += 100000) borders.add(d);
         borders.add(Double.MAX_VALUE);
         return new FixedBordersDiscretizer(borders.toArray());
+    }
+
+    public static class Route2GeoDistFunction implements UnivariateRealFunction {
+
+        @Override
+        public double value(double x) throws FunctionEvaluationException {
+            double routDist = x / 1000.0;
+//            double factor = 0.77 - Math.exp(-0.017 * Math.max(10, routDist) - 1.48);
+//            double factor = 0.7 - Math.exp(-0.017 * Math.max(10, routDist) - 1.48);
+//            double factor = 0.6 - Math.exp(-0.008 * Math.max(20, routDist) - 2);
+            double factor = 0.55;
+            return routDist * factor * 1000;
+        }
     }
 }

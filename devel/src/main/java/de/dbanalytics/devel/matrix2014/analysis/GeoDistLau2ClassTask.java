@@ -26,7 +26,7 @@ import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MiDKeys;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import org.matsim.contrib.common.stats.Correlations;

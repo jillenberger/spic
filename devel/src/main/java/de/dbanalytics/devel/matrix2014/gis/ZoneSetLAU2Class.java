@@ -22,7 +22,7 @@ package de.dbanalytics.devel.matrix2014.gis;
 import de.dbanalytics.spic.gis.Zone;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.gis.ZoneData;
-import de.dbanalytics.spic.source.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MiDKeys;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.FixedBordersDiscretizer;
 
@@ -44,6 +44,11 @@ public class ZoneSetLAU2Class {
         categories = new FixedBordersDiscretizer(borders);
     }
 
+    public static String inhabitants2Class(double inhabitants) {
+        int idx = categories.index(inhabitants); //TODO: synchronize with PersonMunicipalityClassHandler
+        return String.valueOf(idx);
+    }
+
     public void apply(ZoneCollection zones) {
         for(Zone zone : zones.getZones()) {
             String inhabitantsVal = zone.getAttribute(ZoneData.POPULATION_KEY);
@@ -53,10 +58,5 @@ public class ZoneSetLAU2Class {
                 zone.setAttribute(MiDKeys.PERSON_LAU2_CLASS, category);
             }
         }
-    }
-
-    public static String inhabitants2Class(double inhabitants) {
-        int idx = categories.index(inhabitants); //TODO: synchronize with PersonMunicipalityClassHandler
-        return String.valueOf(idx);
     }
 }
