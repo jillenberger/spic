@@ -18,6 +18,10 @@
         <module>invermo</module>
     </modules>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -30,39 +34,49 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            <!--<plugin>-->
+            <!--<artifactId>maven-assembly-plugin</artifactId>-->
+            <!--<version>3.0.0</version>-->
+            <!--<configuration>-->
+            <!--<descriptorRefs>-->
+            <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
+            <!--</descriptorRefs>-->
+            <!--</configuration>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>make-assembly</id> &lt;!&ndash; this is used for inheritance merges &ndash;&gt;-->
+            <!--<phase>package</phase> &lt;!&ndash; bind to the packaging phase &ndash;&gt;-->
+            <!--<goals>-->
+            <!--<goal>single</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
-                        <phase>package</phase> <!-- bind to the packaging phase -->
+                        <phase>install</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
     <repositories>
         <repository>
             <id>matsim</id>
             <name>matsim</name>
             <url>http://dl.bintray.com/matsim/matsim</url>
         </repository>
-        <repository>
-            <id>osm4j</id>
-            <name>osm4j</name>
-            <url>http://mvn.topobyte.de</url>
-        </repository>
     </repositories>
-
 
     <dependencies>
         <!--
@@ -80,67 +94,12 @@
         </dependency>
         <dependency>
             <groupId>org.matsim.contrib</groupId>
-            <artifactId>cadytsIntegration</artifactId>
-            <version>0.8.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.matsim.contrib</groupId>
             <artifactId>common</artifactId>
             <version>0.8.1</version>
         </dependency>
         <!--
         other dependencies
         -->
-        <dependency>
-            <groupId>de.topobyte</groupId>
-            <artifactId>osm4j-core</artifactId>
-            <version>0.0.20</version>
-        </dependency>
-        <dependency>
-            <groupId>de.topobyte</groupId>
-            <artifactId>osm4j-xml</artifactId>
-            <version>0.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>de.topobyte</groupId>
-            <artifactId>osm4j-pbf</artifactId>
-            <version>0.0.10</version>
-        </dependency>
-        <dependency>
-            <groupId>com.graphhopper</groupId>
-            <artifactId>graphhopper-core</artifactId>
-            <version>0.8.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.graphhopper</groupId>
-            <artifactId>graphhopper-reader-osm</artifactId>
-            <version>0.8.2</version>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wololo</groupId>
-            <artifactId>jts2geojson</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
-        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -163,21 +122,6 @@
                     <artifactId>jmxri</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.stax-utils</groupId>
-            <artifactId>stax-utils</artifactId>
-            <version>20070216</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.davidmoten</groupId>
-            <artifactId>rtree</artifactId>
-            <version>0.8-RC10</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.woodstox</groupId>
-            <artifactId>woodstox-core</artifactId>
-            <version>5.0.3</version>
         </dependency>
     </dependencies>
 
