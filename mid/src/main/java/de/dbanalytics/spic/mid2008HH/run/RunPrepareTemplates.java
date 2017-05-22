@@ -1,7 +1,7 @@
 /*
  * (c) Copyright 2017 Johannes Illenberger
  *
- * Project de.dbanalytics.spic.*
+ * Project de.dbanalytics.spic.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -10,23 +10,18 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.mid2008HH;
+package de.dbanalytics.spic.mid2008HH.run;
 
-import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.PlainFactory;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.mid2008.processing.GuessMissingPurposes;
-import de.dbanalytics.spic.mid2008.processing.RemoveLegPurpose;
-import de.dbanalytics.spic.mid2008.processing.ReplaceHomePurpose;
+import de.dbanalytics.spic.mid2008HH.processing.FilterWeekday;
 import de.dbanalytics.spic.processing.*;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
@@ -56,16 +51,28 @@ public class RunPrepareTemplates {
         TaskRunner.validatePersons(new ValidatePersonWeight(), refPersons);
         new FilterWeekday().apply(refPersons);
 
-        TaskRunner.run(new ReplaceHomePurpose(), refPersons);
-        TaskRunner.run(new RemoveLegPurpose(ActivityTypes.HOME), refPersons);
-        TaskRunner.run(new RemoveLegPurpose(ActivityTypes.MISC), refPersons);
-        TaskRunner.run(new GuessMissingPurposes(refPersons, null, random), refPersons);
+        /** Remove misc types and impute all missing types */
+        TaskRunner.run(new RemoveMiscActTypes(), refPersons);
+        new ImputeActTypes(random).apply(refPersons);
 
-        new GuessMissingActTypes(random).apply(refPersons);
+        /** Estimate geo distance from route distance */
         TaskRunner.run(new Route2GeoDistance(v -> v * 0.55), refPersons);
 
         logger.info(String.format("Writing %s persons...", refPersons.size()));
         PopulationIO.writeToXML(outFile, refPersons);
         logger.info("Done.");
+    }
+
+    private static class RemoveMiscActTypes implements EpisodeTask {
+
+        @Override
+        public void apply(Episode episode) {
+            for (Segment act : episode.getActivities()) {
+                String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+                if (ActivityTypes.MISC.equalsIgnoreCase(type)) {
+                    act.removeAttribute(CommonKeys.ACTIVITY_TYPE);
+                }
+            }
+        }
     }
 }

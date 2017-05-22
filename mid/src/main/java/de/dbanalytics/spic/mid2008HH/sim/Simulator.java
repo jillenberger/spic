@@ -1,7 +1,7 @@
 /*
  * (c) Copyright 2017 Johannes Illenberger
  *
- * Project de.dbanalytics.spic.*
+ * Project de.dbanalytics.spic.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -10,20 +10,20 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.sim.run;
+package de.dbanalytics.spic.mid2008HH.sim;
 
-import de.dbanalytics.devel.matrix2014.sim.CopyPersonAttToLeg;
-import de.dbanalytics.devel.matrix2014.sim.FacilityMutatorBuilder;
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.ActivityTypes;
+import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.gis.DataPool;
-import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Level;
@@ -42,15 +42,6 @@ public class Simulator {
 
     static final String MODULE_NAME = "synPopSim";
     private static final Logger logger = Logger.getLogger(Simulator.class);
-    private static final boolean USE_WEIGHTS = true;
-
-    private static final Predicate<Segment> DEFAULT_LEG_PREDICATE = new LegAttributePredicate(
-            CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR);
-//    private static final Predicate<Segment> DEFAULT_LEG_PREDICATE = null;
-
-    private static final String DEFAULT_PREDICATE_NAME = "car";
-//    private static final String DEFAULT_PREDICATE_NAME = "";
-
     private AnalyzerTaskComposite<Collection<? extends Person>> analyzerTasks;
 
     private AnalyzerTaskComposite<Collection<? extends Person>> hamiltonianAnalyzers;
@@ -105,18 +96,6 @@ public class Simulator {
         return engineListeners;
     }
 
-    boolean getUseWeights() {
-        return USE_WEIGHTS;
-    }
-
-    Predicate<Segment> getLegPredicate() {
-        return DEFAULT_LEG_PREDICATE;
-    }
-
-    String getLegPredicateName() {
-        return DEFAULT_PREDICATE_NAME;
-    }
-
     Set<? extends Person> getRefPersons() {
         return refPersons;
     }
@@ -169,20 +148,18 @@ public class Simulator {
         /*
         Load reference population...
          */
-        refPersons = RefPopulationBuilder.build(this, config);
-
+        refPersons = RefPopulationBuilderDrive.build(this, config);
         /*
         Generate the simulation population...
          */
-        simPersons = SimPopulationBuilder.build(this, config);
+        simPersons = SimPopulationBuilderDrive.build(this, config);
         /*
-		Setup listeners for changes on facilities and geo distance.
+        Setup listeners for changes on facilities and geo distance.
 		 */
         attributeListeners.put(CommonKeys.LEG_GEO_DISTANCE, new AttributeChangeListenerComposite());
         attributeListeners.put(CommonKeys.ACTIVITY_FACILITY, new AttributeChangeListenerComposite());
 
         GeoDistanceUpdater geoDistanceUpdater = new GeoDistanceUpdater(attributeListeners.get(CommonKeys.LEG_GEO_DISTANCE));
-//        geoDistanceUpdater.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
 
         attributeListeners.get(CommonKeys.ACTIVITY_FACILITY).addComponent(geoDistanceUpdater);
         /*
@@ -192,17 +169,17 @@ public class Simulator {
 		/*
         Build hamiltonians...
          */
-        if(getUseWeights()) {
-            TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.PERSON_WEIGHT), refPersons);
-            TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.PERSON_WEIGHT), simPersons);
-        }
+//        if(getUseWeights()) {
+//            TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.PERSON_WEIGHT), refPersons);
+//            TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.PERSON_WEIGHT), simPersons);
+//        }
 
         hamiltonianAnalyzers = new ConcurrentAnalyzerTask<>();
         analyzerTasks.addComponent(new AnalyzerTaskGroup<>(hamiltonianAnalyzers, ioContext, "hamiltonian"));
 
 //        GeoDistanceZoneDensityHamiltonian.build(this, config);
-        GeoDistanceZoneHamiltonian2.build(this, config);
-//        GeoDistanceZoneHamiltonianDrive.build(this, config);
+//        GeoDistanceZoneHamiltonian2.build(this, config);
+        GeoDistanceZoneHamiltonianDrive.build(this, config);
 //        PurposeHamiltonian.build(this, config);
 //        GeoDistanceTypeHamiltonian.build(this, config);
 //        GeoDistanceHamiltonian.build(this, config);
@@ -223,11 +200,6 @@ public class Simulator {
         ioContext.append("ref");
         getAnalyzerTasks().addComponent(new PopulationWriter(getIOContext()));
         AnalyzerTaskRunner.run(refPersons, analyzerTasks, ioContext);
-        /*
-        Extend the analyzer
-         */
-        ExtendedAnalyzerBuilder.build(this, config);
-//        ExtendedAnalyzerBuilderDrive.build(this, config);
 
 
         engineListeners.addComponent(new AnalyzerListener(analyzerTasks, ioContext, dumpInterval));

@@ -96,7 +96,7 @@ public class PopulationAnalyzer {
         TaskRunner.run(new RefPopulationBuilder.GuessMissingPurposes(persons, carPredicate, random), persons);
 
         TaskRunner.run(new ReplaceActTypes(), persons);
-        new GuessMissingActTypes(random).apply(persons);
+        new ImputeActTypes(random).apply(persons);
         TaskRunner.run(new Route2GeoDistance(new de.dbanalytics.devel.matrix2014.sim.Simulator.Route2GeoDistFunction()), persons);
 
         TaskRunner.run(new WeCommuterSynthesizer(), persons);

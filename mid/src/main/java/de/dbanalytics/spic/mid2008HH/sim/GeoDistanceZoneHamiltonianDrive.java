@@ -1,7 +1,7 @@
 /*
  * (c) Copyright 2017 Johannes Illenberger
  *
- * Project de.dbanalytics.spic.*
+ * Project de.dbanalytics.spic.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -10,21 +10,20 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.devel.matrix2014.sim.run;
+package de.dbanalytics.spic.mid2008HH.sim;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import de.dbanalytics.devel.matrix2014.analysis.HistogramComparator;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.sim.*;
+import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.sim.data.*;
 import de.dbanalytics.spic.util.Executor;
 import gnu.trove.list.array.TDoubleArrayList;
@@ -49,11 +48,9 @@ import java.util.*;
  */
 public class GeoDistanceZoneHamiltonianDrive {
 
-    private static final Logger logger = Logger.getLogger(GeoDistanceZoneHamiltonianDrive.class);
-
     public static final String MODULE_NAME = "geoDistanceHamiltonian";
-
     public static final String PERSON_ZONE_IDX = "zoneIndex";
+    private static final Logger logger = Logger.getLogger(GeoDistanceZoneHamiltonianDrive.class);
 
     public static void build(Simulator engine, Config config) {
         ConfigGroup configGroup = config.getModule(MODULE_NAME);
@@ -70,7 +67,7 @@ public class GeoDistanceZoneHamiltonianDrive {
         Discretizer discretizer = new FixedBordersDiscretizer(borders.toArray());
 
         LegAttributeHistogramBuilder refHistBuilder = new LegAttributeHistogramBuilder(CommonKeys.LEG_GEO_DISTANCE, discretizer);
-        refHistBuilder.setPredicate(engine.getLegPredicate());
+//        refHistBuilder.setPredicate(engine.getLegPredicate());
         TDoubleDoubleMap refHist = refHistBuilder.build(engine.getRefPersons());
         /*
         Index zones
@@ -101,14 +98,14 @@ public class GeoDistanceZoneHamiltonianDrive {
             */
                 LegAttributeHistogramBuilder simHistBuilder = new LegAttributeHistogramBuilder(CommonKeys.LEG_GEO_DISTANCE, discretizer);
                 simHistBuilder.setPredicate(PredicateAndComposite.create(
-                        engine.getLegPredicate(),
+                        null,
                         new LegPersonAttributePredicate(PERSON_ZONE_IDX, String.valueOf(i))));
                 UnivariatFrequency2 hamiltonian = new UnivariatFrequency2(
                         refHist,
                         simHistBuilder,
                         CommonKeys.LEG_GEO_DISTANCE,
                         discretizer,
-                        engine.getUseWeights(),
+                        false,
                         false);
 
                 hamiltonian.setErrorExponent(2.0);
@@ -142,9 +139,9 @@ public class GeoDistanceZoneHamiltonianDrive {
                 new PassThroughDiscretizerBuilder(discretizer, "default"));
         AnalyzerTask<Collection<? extends Person>> analyzer = NumericLegAnalyzer.create(
                 CommonKeys.LEG_GEO_DISTANCE,
-                engine.getUseWeights(),
-                engine.getLegPredicate(),
-                engine.getLegPredicateName(),
+                false,
+                null,
+                null,
                 writer);
         engine.getHamiltonianAnalyzers().addComponent(analyzer);
 
@@ -154,7 +151,7 @@ public class GeoDistanceZoneHamiltonianDrive {
         HistogramComparator comparator = new HistogramComparator(
                 refHist,
                 refHistBuilder,
-                String.format("%s.%s", CommonKeys.LEG_GEO_DISTANCE, engine.getLegPredicateName()));
+                CommonKeys.LEG_GEO_DISTANCE);
         comparator.setFileIoContext(engine.getIOContext());
         engine.getHamiltonianAnalyzers().addComponent(comparator);
         /*
@@ -245,11 +242,8 @@ public class GeoDistanceZoneHamiltonianDrive {
     private static class HamiltonianWrapper implements Hamiltonian, AttributeChangeListener {
 
         private final List<UnivariatFrequency2> hamiltonians;
-
-        private Object dataKey;
-
         private final Object indexDataKey = new Object();
-
+        private Object dataKey;
         private boolean isInitialized = false;
 
         private double sum;

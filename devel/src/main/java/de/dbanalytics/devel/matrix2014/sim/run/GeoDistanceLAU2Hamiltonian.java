@@ -18,13 +18,13 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.UnivariatFrequency;
+import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import gnu.trove.list.array.TDoubleArrayList;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.stats.Discretizer;

@@ -203,7 +203,7 @@ public class Simulator {
         TaskRunner.validatePersons(new ValidatePersonWeight(), refPersons);
 
         TaskRunner.run(new ReplaceActTypes(), refPersons);
-        new GuessMissingActTypes(random).apply(refPersons);
+        new ImputeActTypes(random).apply(refPersons);
         TaskRunner.run(new Route2GeoDistance(new Route2GeoDistFunction()), refPersons);
 
         return refPersons;
@@ -275,7 +275,7 @@ public class Simulator {
         }
 
         logger.info("Recalculate geo distances...");
-        TaskRunner.run(new LegAttributeRemover(CommonKeys.LEG_GEO_DISTANCE), simPersons);
+        TaskRunner.run(new RemoveLegAttribute(CommonKeys.LEG_GEO_DISTANCE), simPersons);
         TaskRunner.run(new CalculateGeoDistance((FacilityData) dataPool.get(FacilityDataLoader.KEY)), simPersons);
 
         logger.info("Resetting LAU2Class attributes...");

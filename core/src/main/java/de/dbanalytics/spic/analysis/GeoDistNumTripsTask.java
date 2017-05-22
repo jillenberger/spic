@@ -36,14 +36,22 @@ import java.util.List;
  */
 public class GeoDistNumTripsTask implements AnalyzerTask<Collection<? extends Person>> {
 
-    private final Predicate<Segment> predicate;
-
     private final FileIOContext ioContext;
+    private Predicate<Segment> predicate;
+
+    public GeoDistNumTripsTask(FileIOContext ioContext) {
+        this(ioContext, null);
+    }
 
     public GeoDistNumTripsTask(FileIOContext ioContext, Predicate<Segment> predicate) {
         this.ioContext = ioContext;
         this.predicate = predicate;
     }
+
+    public void setPredicate(Predicate<Segment> predicate) {
+        this.predicate = predicate;
+    }
+
     @Override
     public void analyze(Collection<? extends Person> object, List<StatsContainer> containers) {
         TDoubleArrayList numsTrips = new TDoubleArrayList();

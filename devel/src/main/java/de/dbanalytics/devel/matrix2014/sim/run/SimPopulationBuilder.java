@@ -29,7 +29,7 @@ import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.processing.CalculateGeoDistance;
 import de.dbanalytics.spic.processing.EpisodeTask;
-import de.dbanalytics.spic.processing.LegAttributeRemover;
+import de.dbanalytics.spic.processing.RemoveLegAttribute;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.SetActivityFacilities;
 import de.dbanalytics.spic.sim.SetHomeFacilities;
@@ -111,7 +111,7 @@ public class SimPopulationBuilder {
         }
 
         logger.info("Recalculate geo distances...");
-        TaskRunner.run(new LegAttributeRemover(CommonKeys.LEG_GEO_DISTANCE), simPersons);
+        TaskRunner.run(new RemoveLegAttribute(CommonKeys.LEG_GEO_DISTANCE), simPersons);
         TaskRunner.run(new CalculateGeoDistance((FacilityData) dataPool.get(FacilityDataLoader.KEY)), simPersons);
 
         logger.info("Resetting LAU2Class attributes...");

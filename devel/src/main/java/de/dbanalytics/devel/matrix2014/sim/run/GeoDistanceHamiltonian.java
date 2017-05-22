@@ -18,12 +18,12 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.UnivariatFrequency;
+import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import gnu.trove.list.array.TDoubleArrayList;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.stats.Discretizer;
@@ -40,9 +40,8 @@ import java.util.Set;
  */
 public class GeoDistanceHamiltonian {
 
-    private static final Logger logger = Logger.getLogger(GeoDistanceHamiltonian.class);
-
     public static final String MODULE_NAME = "geoDistanceHamiltonian";
+    private static final Logger logger = Logger.getLogger(GeoDistanceHamiltonian.class);
 
     public static void build(Simulator engine, Config config) {
         ConfigGroup configGroup = config.getModule(MODULE_NAME);

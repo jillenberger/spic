@@ -31,13 +31,13 @@ import java.util.Random;
 /**
  * @author johannes
  */
-public class GuessMissingActTypes implements PersonsTask {
+public class ImputeActTypes implements PersonsTask {
 
-    private final static Logger logger = Logger.getLogger(GuessMissingActTypes.class);
+    private final static Logger logger = Logger.getLogger(ImputeActTypes.class);
 
     private final Random random;
 
-    public GuessMissingActTypes(Random random) {
+    public ImputeActTypes(Random random) {
         this.random = random;
     }
 
@@ -72,14 +72,33 @@ public class GuessMissingActTypes implements PersonsTask {
                     Segment act = e.getActivities().get(i);
                     String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
                     if (type == null) {
-                        if(i == 0 || i == e.getActivities().size() - 1) {
+
+                        if (i == 0) {
                             type = ActivityTypes.HOME;
-                            countHome++;
+                            /** Home act if next is not already home */
+                            if (e.getActivities().size() > 1) {
+                                Segment next = e.getActivities().get(i + 1);
+                                if (ActivityTypes.HOME.equalsIgnoreCase(next.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+                                    type = set.randomWeightedChoice();
+                                }
+                            }
+                        } else if (i == e.getActivities().size() - 1) {
+                            type = ActivityTypes.HOME;
+                            /** Home act if prev is not already home */
+                            if (e.getActivities().size() > 1) {
+                                Segment prev = e.getActivities().get(i - 1);
+                                if (ActivityTypes.HOME.equalsIgnoreCase(prev.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+                                    type = set.randomWeightedChoice();
+                                }
+                            }
                         } else {
                             type = set.randomWeightedChoice();
-                            countNonHome++;
                         }
+
                         act.setAttribute(CommonKeys.ACTIVITY_TYPE, type);
+
+                        if (ActivityTypes.HOME.equalsIgnoreCase(type)) countHome++;
+                        else countNonHome++;
                     }
                 }
             }

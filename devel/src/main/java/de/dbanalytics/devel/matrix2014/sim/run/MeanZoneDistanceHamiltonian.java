@@ -20,7 +20,6 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.devel.matrix2014.sim.CopyPersonAttToLeg;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
@@ -31,6 +30,7 @@ import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.BivariatMean;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import de.dbanalytics.spic.sim.data.Converters;
 import de.dbanalytics.spic.sim.data.DoubleConverter;

@@ -19,12 +19,11 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import de.dbanalytics.devel.matrix2014.analysis.HistogramComparator;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.sim.*;
+import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.sim.data.*;
 import de.dbanalytics.spic.util.Executor;
 import gnu.trove.list.array.TDoubleArrayList;
@@ -49,11 +48,9 @@ import java.util.*;
  */
 public class GeoDistanceZoneHamiltonian2 {
 
-    private static final Logger logger = Logger.getLogger(GeoDistanceZoneHamiltonian2.class);
-
     public static final String MODULE_NAME = "geoDistanceHamiltonian";
-
     public static final String PERSON_ZONE_IDX = "zoneIndex";
+    private static final Logger logger = Logger.getLogger(GeoDistanceZoneHamiltonian2.class);
 
     public static void build(Simulator engine, Config config) {
         ConfigGroup configGroup = config.getModule(MODULE_NAME);
@@ -245,11 +242,8 @@ public class GeoDistanceZoneHamiltonian2 {
     private static class HamiltonianWrapper implements Hamiltonian, AttributeChangeListener {
 
         private final List<UnivariatFrequency2> hamiltonians;
-
-        private Object dataKey;
-
         private final Object indexDataKey = new Object();
-
+        private Object dataKey;
         private boolean isInitialized = false;
 
         private double sum;

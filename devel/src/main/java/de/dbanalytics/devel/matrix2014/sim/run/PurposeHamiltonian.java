@@ -19,8 +19,6 @@
 
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.analysis.HistogramComparator;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
@@ -32,6 +30,7 @@ import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.AttributeChangeListener;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.UnivariatFrequency2;
+import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.Converters;
 import de.dbanalytics.spic.sim.data.DoubleConverter;
@@ -135,42 +134,6 @@ public class PurposeHamiltonian {
         }
     }
 
-    private static class GeoDistanceMediator implements AttributeChangeListener {
-
-        private Discretizer discretizer;
-
-        private AttributeChangeListener[] listeners;
-
-        private Object purposeIdxObjectKey;
-
-        public GeoDistanceMediator(Discretizer discretizer, Object purposeIdxObjectKey, int maxIdx) {
-            this.discretizer = discretizer;
-            this.purposeIdxObjectKey = purposeIdxObjectKey;
-//            listeners = new ArrayList<>();
-            listeners = new AttributeChangeListener[maxIdx+1];
-        }
-
-        public void addListener(AttributeChangeListener listener, int idx) {
-            listeners[idx] = listener;
-        }
-
-        @Override
-        public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
-            int oldIdx = discretizer.index((Double)oldValue);
-            int newIdx = discretizer.index((Double)newValue);
-
-//            AttributeChangeListener old = listeners.get(oldIdx);
-//            AttributeChangeListener newListener = listeners.get(newIdx);
-            AttributeChangeListener old = listeners[oldIdx];
-            AttributeChangeListener newListener = listeners[newIdx];
-
-            Double purpose = (Double) element.getData(purposeIdxObjectKey);
-
-            old.onChange(purposeIdxObjectKey, purpose, null, element);
-            newListener.onChange(purposeIdxObjectKey, null, purpose, element);
-        }
-    }
-
     private static Map<String, Integer> makePurposeIndex(Collection<? extends Person> persons) {
         Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(CommonKeys.LEG_PURPOSE));
         Set<String> purposes = new HashSet<>(collector.collect(persons));
@@ -226,6 +189,42 @@ public class PurposeHamiltonian {
         }
         Arrays.sort(nativeIndices);
         return nativeIndices;
+    }
+
+    private static class GeoDistanceMediator implements AttributeChangeListener {
+
+        private Discretizer discretizer;
+
+        private AttributeChangeListener[] listeners;
+
+        private Object purposeIdxObjectKey;
+
+        public GeoDistanceMediator(Discretizer discretizer, Object purposeIdxObjectKey, int maxIdx) {
+            this.discretizer = discretizer;
+            this.purposeIdxObjectKey = purposeIdxObjectKey;
+//            listeners = new ArrayList<>();
+            listeners = new AttributeChangeListener[maxIdx + 1];
+        }
+
+        public void addListener(AttributeChangeListener listener, int idx) {
+            listeners[idx] = listener;
+        }
+
+        @Override
+        public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+            int oldIdx = discretizer.index((Double) oldValue);
+            int newIdx = discretizer.index((Double) newValue);
+
+//            AttributeChangeListener old = listeners.get(oldIdx);
+//            AttributeChangeListener newListener = listeners.get(newIdx);
+            AttributeChangeListener old = listeners[oldIdx];
+            AttributeChangeListener newListener = listeners[newIdx];
+
+            Double purpose = (Double) element.getData(purposeIdxObjectKey);
+
+            old.onChange(purposeIdxObjectKey, purpose, null, element);
+            newListener.onChange(purposeIdxObjectKey, null, purpose, element);
+        }
     }
 
     private static class DistancePredicate implements Predicate<Segment> {

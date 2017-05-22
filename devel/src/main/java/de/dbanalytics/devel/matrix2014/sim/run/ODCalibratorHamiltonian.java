@@ -19,13 +19,13 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.config.ODCalibratorConfigurator;
-import de.dbanalytics.devel.matrix2014.sim.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.devel.matrix2014.sim.CachedModePredicate;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.matrix.ODCalibrator;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
+import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
 

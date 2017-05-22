@@ -1,7 +1,7 @@
 /*
  * (c) Copyright 2017 Johannes Illenberger
  *
- * Project de.dbanalytics.spic.*
+ * Project de.dbanalytics.spic.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -10,14 +10,14 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.mid2008HH;
+package de.dbanalytics.spic.mid2008HH.run;
 
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
@@ -25,6 +25,7 @@ import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.PlainPerson;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.mid2008.generator.*;
+import de.dbanalytics.spic.mid2008HH.generator.PersonDistrictHandler;
 import de.dbanalytics.spic.processing.IsolateEpisodes;
 import de.dbanalytics.spic.processing.TaskRunner;
 import org.apache.log4j.Logger;

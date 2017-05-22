@@ -56,7 +56,7 @@ public class RefPopulationBuilder {
 
         TaskRunner.run(new SetNonHomeActTypes(), refPersons);
         TaskRunner.run(new ReplaceActTypes(), refPersons);
-        new GuessMissingActTypes(engine.getRandom()).apply(refPersons);
+        new ImputeActTypes(engine.getRandom()).apply(refPersons);
         TaskRunner.run(new Route2GeoDistance(new de.dbanalytics.devel.matrix2014.sim.Simulator.Route2GeoDistFunction()), refPersons);
 
         return refPersons;

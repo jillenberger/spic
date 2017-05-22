@@ -28,16 +28,16 @@ import java.util.Set;
 /**
  * @author johannes
  */
-public class LegAttributeRemover implements EpisodeTask {
+public class RemoveLegAttribute implements EpisodeTask {
 
     private Set<String> attributes;
 
-    public LegAttributeRemover(String ... attributes) {
+    public RemoveLegAttribute(String... attributes) {
         this.attributes = new HashSet<>(attributes.length);
         for(String att : attributes) this.attributes.add(att);
     }
 
-    public LegAttributeRemover() {
+    public RemoveLegAttribute() {
         this.attributes = new HashSet<>();
     }
 
