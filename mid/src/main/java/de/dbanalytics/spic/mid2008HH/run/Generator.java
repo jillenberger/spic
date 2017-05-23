@@ -25,6 +25,7 @@ import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.PlainPerson;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.mid2008.generator.*;
+import de.dbanalytics.spic.mid2008HH.generator.LegNumPersonsHandler;
 import de.dbanalytics.spic.mid2008HH.generator.PersonDistrictHandler;
 import de.dbanalytics.spic.processing.IsolateEpisodes;
 import de.dbanalytics.spic.processing.TaskRunner;
@@ -81,6 +82,7 @@ public class Generator {
         fileReader.addLegAttributeHandler(new LegOriginHandler());
         fileReader.addLegAttributeHandler(new LegModeHandler());
         fileReader.addLegAttributeHandler(new LegIndexHandler());
+        fileReader.addLegAttributeHandler(new LegNumPersonsHandler());
 
         fileReader.addJourneyAttributeHandler(new JourneyDistanceHandler());
         fileReader.addJourneyAttributeHandler(new JourneyModeHandler());

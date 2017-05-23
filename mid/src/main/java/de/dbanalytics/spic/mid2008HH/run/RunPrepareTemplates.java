@@ -54,6 +54,7 @@ public class RunPrepareTemplates {
         /** Remove misc types and impute all missing types */
         TaskRunner.run(new RemoveMiscActTypes(), refPersons);
         new ImputeActTypes(random).apply(refPersons);
+        //TODO: adjust leg purposes
 
         /** Estimate geo distance from route distance */
         TaskRunner.run(new Route2GeoDistance(v -> v * 0.55), refPersons);

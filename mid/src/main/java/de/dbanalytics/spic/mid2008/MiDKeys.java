@@ -38,4 +38,6 @@ public interface MiDKeys {
 	String LEG_ORIGIN = "origin";
 
 	String LEG_DESTINATION = "destination";
+
+	String LEG_PERSONS = "legpersons";
 }
