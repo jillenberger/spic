@@ -51,6 +51,7 @@ public class GraphBuilder {
         writer.write("tower-edge\tpillar-edge");
         writer.newLine();
         for (Edge edge : edges) {
+            /** forward */
             String edgeId = edge.getFrom().getId() + ";" + edge.getTo().getId();
             for (Edge child : edge.getChildEdges()) {
                 writer.write(edgeId);
@@ -60,7 +61,16 @@ public class GraphBuilder {
                 writer.write(String.valueOf(child.getTo().getId()));
                 writer.newLine();
             }
-
+            /** backward */
+            edgeId = edge.getTo().getId() + ";" + edge.getFrom().getId();
+            for (Edge child : edge.getChildEdges()) {
+                writer.write(edgeId);
+                writer.write("\t");
+                writer.write(String.valueOf(child.getTo().getId()));
+                writer.write(";");
+                writer.write(String.valueOf(child.getFrom().getId()));
+                writer.newLine();
+            }
         }
         writer.close();
         logger.info("Done.");
