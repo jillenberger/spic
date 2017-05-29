@@ -18,7 +18,9 @@
  */
 package de.dbanalytics.spic.mid2008HH.sim;
 
-import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
+import de.dbanalytics.spic.analysis.AnalyzerTaskRunner;
+import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.data.ActivityTypes;
 import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.data.CommonKeys;
@@ -169,24 +171,12 @@ public class Simulator {
 		/*
         Build hamiltonians...
          */
-//        if(getUseWeights()) {
-//            TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.PERSON_WEIGHT), refPersons);
-//            TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.PERSON_WEIGHT), simPersons);
-//        }
 
-        hamiltonianAnalyzers = new ConcurrentAnalyzerTask<>();
-        analyzerTasks.addComponent(new AnalyzerTaskGroup<>(hamiltonianAnalyzers, ioContext, "hamiltonian"));
+//        hamiltonianAnalyzers = new ConcurrentAnalyzerTask<>();
+//        analyzerTasks.addComponent(new AnalyzerTaskGroup<>(hamiltonianAnalyzers, ioContext, "hamiltonian"));
 
-//        GeoDistanceZoneDensityHamiltonian.build(this, config);
-//        GeoDistanceZoneHamiltonian2.build(this, config);
-        GeoDistanceZoneHamiltonianDrive.build(this, config);
-//        PurposeHamiltonian.build(this, config);
-//        GeoDistanceTypeHamiltonian.build(this, config);
-//        GeoDistanceHamiltonian.build(this, config);
-//        GeoDistanceLAU2Hamiltonian.build(this, config);
-//        MeanDistanceHamiltonian.build(this, config);
-//        MeanZoneDistanceHamiltonian.build(this, config);
-//        ODCalibratorHamiltonian.build(this, config);
+//        GeoDistanceZoneHamiltonianDrive.build(this, config);
+        TargetDistanceBuilder.build(this, config);
 
         engineListeners.addComponent(new HamiltonianLogger(hamiltonian,
                 loggingInterval,
@@ -200,7 +190,6 @@ public class Simulator {
         ioContext.append("ref");
         getAnalyzerTasks().addComponent(new PopulationWriter(getIOContext()));
         AnalyzerTaskRunner.run(refPersons, analyzerTasks, ioContext);
-
 
         engineListeners.addComponent(new AnalyzerListener(analyzerTasks, ioContext, dumpInterval));
         /*

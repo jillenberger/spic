@@ -27,6 +27,7 @@ import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import de.dbanalytics.spic.sim.data.Converters;
+import de.dbanalytics.spic.sim.data.DoubleConverter;
 
 import java.util.Collection;
 
@@ -38,34 +39,41 @@ public class TargetDistance implements Hamiltonian, AttributeChangeListener {
     public static final String TARGET_GEO_DISTANCE = "target_geo_distance";
 
     private static final double NO_REF_VALUE_ERROR = 1e6;
-
-    private final Object dataKey;
-
+    private final Object targetDistanceDataKey;
+    private Object dataKey;
     private double hamiltonian;
 
     private boolean isInitialized = false;
 
+    private int legCount;
+
     public TargetDistance() {
-        dataKey = Converters.getObjectKey(TARGET_GEO_DISTANCE);
+        targetDistanceDataKey = Converters.register(TARGET_GEO_DISTANCE, DoubleConverter.getInstance());
     }
 
     private void initHamiltonian(Collection<CachedPerson> persons) {
         hamiltonian = 0;
+        legCount = 0;
         for (CachedPerson person : persons) {
             for (Episode episode : person.getEpisodes()) {
                 for (Segment leg : episode.getLegs()) {
                     double distance = Double.parseDouble(leg.getAttribute(CommonKeys.LEG_GEO_DISTANCE));
                     double targetDistance = Double.parseDouble(leg.getAttribute(TARGET_GEO_DISTANCE));
                     hamiltonian += calculateError(distance, targetDistance);
+                    legCount++;
                 }
             }
         }
+
+        isInitialized = true;
     }
 
     @Override
     public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+        if (this.dataKey == null) this.dataKey = Converters.getObjectKey(CommonKeys.LEG_GEO_DISTANCE);
+
         if (dataKey.equals(this.dataKey)) {
-            Double targetDistance = (Double) element.getData(dataKey);
+            Double targetDistance = (Double) element.getData(targetDistanceDataKey);
 
             double errOld = calculateError((Double) oldValue, targetDistance);
             double errNew = calculateError((Double) newValue, targetDistance);
@@ -78,7 +86,7 @@ public class TargetDistance implements Hamiltonian, AttributeChangeListener {
     public double evaluate(Collection<CachedPerson> population) {
         if (!isInitialized) initHamiltonian(population);
 
-        return hamiltonian;
+        return hamiltonian / (double) legCount;
     }
 
     private double calculateError(double distance, double targetDistance) {

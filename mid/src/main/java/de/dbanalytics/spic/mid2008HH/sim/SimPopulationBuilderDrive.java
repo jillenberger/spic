@@ -18,9 +18,13 @@
  */
 package de.dbanalytics.spic.mid2008HH.sim;
 
+import de.dbanalytics.spic.analysis.NumericAnalyzer;
+import de.dbanalytics.spic.analysis.NumericLegAnalyzer;
+import de.dbanalytics.spic.analysis.StatsContainer;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
+import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.DataPool;
 import de.dbanalytics.spic.gis.FacilityData;
@@ -31,6 +35,9 @@ import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;
 import org.matsim.core.config.Config;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -59,12 +66,40 @@ public class SimPopulationBuilderDrive {
             TaskRunner.runLegTask(new SnapLeg2ActTimes(), simPersons);
 
 
-
+        TaskRunner.runLegTask(new TargetDistanceAttribute(simPersons), simPersons);
         logger.info("Recalculate geo distances...");
         TaskRunner.run(new RemoveLegAttribute(CommonKeys.LEG_GEO_DISTANCE), simPersons);
         TaskRunner.run(new CalculateGeoDistance((FacilityData) dataPool.get(FacilityDataLoader.KEY)), simPersons);
 
 
         return simPersons;
+    }
+
+    private static class TargetDistanceAttribute implements SegmentTask {
+
+        private final double fallbackDistance;
+
+        public TargetDistanceAttribute(Collection<? extends Person> persons) {
+            NumericAnalyzer analyzer = NumericLegAnalyzer.create(
+                    CommonKeys.LEG_GEO_DISTANCE,
+                    false,
+                    null,
+                    null,
+                    null);
+
+            List<StatsContainer> stats = new ArrayList<>(0);
+            analyzer.analyze(persons, stats);
+            fallbackDistance = stats.get(0).getMedian();
+        }
+
+        @Override
+        public void apply(Segment segment) {
+            String value = segment.getAttribute(CommonKeys.LEG_GEO_DISTANCE);
+            if (value == null) {
+                value = String.valueOf(fallbackDistance);
+            }
+
+            segment.setAttribute(TargetDistance.TARGET_GEO_DISTANCE, value);
+        }
     }
 }
