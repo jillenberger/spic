@@ -19,6 +19,7 @@
 
 package de.dbanalytics.spic.gis;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.util.IOUtils;
@@ -148,9 +149,10 @@ public class PlacesIO {
             writer.add(factory.createStartElement(EMPTY, EMPTY, PLACE_ELEMENT));
             writer.add(factory.createAttribute(ID_ATTRIBUTE, place.getId()));
 
-            transformer.backward(place.getGeometry());
+            Coordinate coordinate = new Coordinate(place.getGeometry().getCoordinate());
+            transformer.backward(coordinate);
             writer.add(factory.createAttribute(COORDINATE_ATTRIBUTE,
-                    CoordinateUtils.toString(place.getGeometry().getCoordinate())));
+                    CoordinateUtils.toString(coordinate)));
             /*
             Write activities.
              */

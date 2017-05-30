@@ -18,9 +18,7 @@
  */
 package de.dbanalytics.spic.mid2008HH.sim;
 
-import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
-import de.dbanalytics.spic.analysis.AnalyzerTaskRunner;
-import de.dbanalytics.spic.analysis.FileIOContext;
+import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.ActivityTypes;
 import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.data.CommonKeys;
@@ -172,11 +170,12 @@ public class Simulator {
         Build hamiltonians...
          */
 
-//        hamiltonianAnalyzers = new ConcurrentAnalyzerTask<>();
-//        analyzerTasks.addComponent(new AnalyzerTaskGroup<>(hamiltonianAnalyzers, ioContext, "hamiltonian"));
+        hamiltonianAnalyzers = new ConcurrentAnalyzerTask<>();
+        analyzerTasks.addComponent(new AnalyzerTaskGroup<>(hamiltonianAnalyzers, ioContext, "hamiltonian"));
 
 //        GeoDistanceZoneHamiltonianDrive.build(this, config);
-        TargetDistanceBuilder.build(this, config);
+//        TargetDistanceBuilder.build(this, config);
+        ModeGeoDistanceBuilder.build(this, config);
 
         engineListeners.addComponent(new HamiltonianLogger(hamiltonian,
                 loggingInterval,

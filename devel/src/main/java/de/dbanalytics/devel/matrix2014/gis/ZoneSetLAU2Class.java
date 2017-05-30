@@ -45,7 +45,7 @@ public class ZoneSetLAU2Class {
     }
 
     public static String inhabitants2Class(double inhabitants) {
-        int idx = categories.index(inhabitants); //TODO: synchronize with PersonMunicipalityClassHandler
+        int idx = categories.index(inhabitants); //TODO: synchronize with PersonLau2ClassHandler
         return String.valueOf(idx);
     }
 
