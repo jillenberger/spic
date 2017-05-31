@@ -72,12 +72,12 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
         this.delta_threshold = threshold;
     }
 
-    public void setStartIteration(long iteration) {
-        this.startIteration = iteration;
-    }
-
     public long getStartIteration() {
         return startIteration;
+    }
+
+    public void setStartIteration(long iteration) {
+        this.startIteration = iteration;
     }
 
     @Override
@@ -91,11 +91,13 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
         double delta = h_old - h_new;
 
         if (delta < delta_threshold) {
-            theta = theta * theta_factor;
-            theta = Math.max(theta, theta_min);
-            theta = Math.min(theta, theta_max);
+            double thetaNew = theta * theta_factor;
+            thetaNew = Math.max(thetaNew, theta_min);
+            thetaNew = Math.min(thetaNew, theta_max);
 
-            logger.trace(String.format("Theta update triggered: %s", theta));
+            if (thetaNew != theta) logger.trace(String.format("Theta update triggered: %s", thetaNew));
+
+            theta = thetaNew;
         }
 
         h_old = h_new;

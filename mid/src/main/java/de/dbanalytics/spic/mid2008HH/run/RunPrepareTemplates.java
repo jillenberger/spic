@@ -22,6 +22,7 @@ package de.dbanalytics.spic.mid2008HH.run;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.mid2008HH.processing.FilterWeekday;
+import de.dbanalytics.spic.mid2008HH.processing.ImputeModes;
 import de.dbanalytics.spic.processing.*;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
@@ -55,6 +56,8 @@ public class RunPrepareTemplates {
         TaskRunner.run(new RemoveMiscActTypes(), refPersons);
         new ImputeActTypes(random).apply(refPersons);
         //TODO: adjust leg purposes
+
+        TaskRunner.runLegTask(new ImputeModes(refPersons, random), refPersons);
 
         /** Estimate geo distance from route distance */
         TaskRunner.run(new Route2GeoDistance(v -> v * 0.55), refPersons);

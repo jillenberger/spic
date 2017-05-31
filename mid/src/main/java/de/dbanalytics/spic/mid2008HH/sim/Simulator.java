@@ -173,7 +173,7 @@ public class Simulator {
         hamiltonianAnalyzers = new ConcurrentAnalyzerTask<>();
         analyzerTasks.addComponent(new AnalyzerTaskGroup<>(hamiltonianAnalyzers, ioContext, "hamiltonian"));
 
-//        GeoDistanceZoneHamiltonianDrive.build(this, config);
+        GeoDistanceZoneHamiltonianDrive.build(this, config);
 //        TargetDistanceBuilder.build(this, config);
         ModeGeoDistanceBuilder.build(this, config);
 

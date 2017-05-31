@@ -35,13 +35,13 @@ import java.util.Collection;
 public class AdoptParentAttribute {
 
     public static void main(String args[]) throws IOException {
-        String childZonesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/shapes/Plz8.geojson";
-        String parentZonesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/shapes/Bezirke.geojson";
-        String outFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/shapes/Plz8-2.geojson";
+        String childZonesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/04_Daten/Shapes/PLZ8.midHH.geojson";
+        String parentZonesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/04_Daten/Shapes/lau2.hh.gk3.geojson";
+        String outFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/shapes/PLZ8-sim.gk3.geojson";
         ZoneCollection childZones = ZoneGeoJsonIO.readFromGeoJSON(childZonesFile, "PLZ8", null);
-        ZoneCollection parentZones = ZoneGeoJsonIO.readFromGeoJSON(parentZonesFile, "gml_id", null);
+        ZoneCollection parentZones = ZoneGeoJsonIO.readFromGeoJSON(parentZonesFile, "ID", null);
 
-        new AdoptParentAttribute().run(childZones.getZones(), parentZones, "SB_HVV");
+        new AdoptParentAttribute().run(childZones.getZones(), parentZones, "Lau2Class");
 
         String data = ZoneGeoJsonIO.toJson(childZones.getZones());
         Files.write(Paths.get(outFile), data.getBytes());

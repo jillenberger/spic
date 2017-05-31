@@ -20,18 +20,15 @@
 package de.dbanalytics.spic.mid2008HH.sim;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.UnivariatFrequency2;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
+import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TDoubleDoubleMap;
-import org.matsim.contrib.common.collections.CollectionUtils;
 import org.matsim.contrib.common.stats.Discretizer;
-import org.matsim.contrib.common.stats.FixedSampleSizeDiscretizer;
+import org.matsim.contrib.common.stats.FixedBordersDiscretizer;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
 
@@ -65,7 +62,8 @@ public class ModeGeoDistanceBuilder {
          */
         for (String mode : modes) {
             Predicate<Segment> modePredicate = new LegAttributePredicate(CommonKeys.LEG_MODE, mode);
-            Discretizer discretizer = createDiscretizer(modePredicate, engine.getRefPersons());
+//            Discretizer discretizer = createDiscretizer(modePredicate, engine.getRefPersons());
+            Discretizer discretizer = createDiscretizer(mode);
             LegHistogramBuilder histogramBuilder = new LegAttributeHistogramBuilder(CommonKeys.LEG_GEO_DISTANCE, discretizer);
             histogramBuilder.setPredicate(modePredicate);
 
@@ -78,6 +76,9 @@ public class ModeGeoDistanceBuilder {
                     discretizer,
                     false,
                     false);
+
+            hamiltonian.setErrorExponent(2.0);
+            hamiltonian.setResetInterval((long) 5e8);
 
             AnnealingHamiltonian annealingHamiltonian = AnnealingHamiltonianConfigurator.configure(
                     hamiltonian,
@@ -103,7 +104,7 @@ public class ModeGeoDistanceBuilder {
             HistogramComparator comparator = new HistogramComparator(
                     histogram,
                     histogramBuilder,
-                    CommonKeys.LEG_GEO_DISTANCE);
+                    String.format("%s.%s", CommonKeys.LEG_GEO_DISTANCE, mode));
             comparator.setFileIoContext(engine.getIOContext());
             engine.getHamiltonianAnalyzers().addComponent(comparator);
         /*
@@ -117,11 +118,30 @@ public class ModeGeoDistanceBuilder {
         }
     }
 
-    private static Discretizer createDiscretizer(Predicate<Segment> modePredicate, Collection<? extends Person> persons) {
-        ValueProvider<Double, Segment> provider = new NumericAttributeProvider<>(CommonKeys.LEG_GEO_DISTANCE);
-        LegCollector<Double> collector = new LegCollector<>(provider);
-        collector.setPredicate(modePredicate);
-        double[] values = CollectionUtils.toNativeArray(collector.collect(persons));
-        return FixedSampleSizeDiscretizer.create(values, 200);
+//    private static Discretizer createDiscretizer(Predicate<Segment> modePredicate, Collection<? extends Person> persons) {
+//        ValueProvider<Double, Segment> provider = new NumericAttributeProvider<>(CommonKeys.LEG_GEO_DISTANCE);
+//        LegCollector<Double> collector = new LegCollector<>(provider);
+//        collector.setPredicate(modePredicate);
+//        double[] values = CollectionUtils.toNativeArray(collector.collect(persons));
+//        return FixedSampleSizeDiscretizer.create(values, 200);
+//    }
+
+    private static Discretizer createDiscretizer(String mode) {
+        TDoubleArrayList borders = new TDoubleArrayList();
+        borders.add(-1);
+        if (CommonValues.LEG_MODE_CAR.equalsIgnoreCase(mode)) {
+            for (int d = 1000; d < 10000; d += 1000) borders.add(d);
+            for (int d = 10000; d < 50000; d += 5000) borders.add(d);
+        } else if (CommonValues.LEG_MODE_RIDE.equalsIgnoreCase(mode) ||
+                CommonValues.LEG_MODE_PT.equalsIgnoreCase(mode)) {
+            for (int d = 2000; d < 10000; d += 2000) borders.add(d);
+            for (int d = 10000; d < 50000; d += 10000) borders.add(d);
+        } else if (CommonValues.LEG_MODE_PED.equalsIgnoreCase(mode) ||
+                CommonValues.LEG_MODE_BIKE.equalsIgnoreCase(mode)) {
+            for (int d = 500; d < 3000; d += 500) borders.add(d);
+            for (int d = 3000; d < 9000; d += 3000) borders.add(d);
+        }
+        borders.add(Double.MAX_VALUE);
+        return new FixedBordersDiscretizer(borders.toArray());
     }
 }

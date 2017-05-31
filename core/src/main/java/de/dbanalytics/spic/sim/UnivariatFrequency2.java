@@ -45,44 +45,27 @@ public class UnivariatFrequency2 implements Hamiltonian, AttributeChangeListener
     private final DynamicDoubleArray refFreq;
 
     private final HistogramBuilder histBuilder;
-
-    private DynamicDoubleArray simFreq;
-
-    private double scaleFactor;
+    private final String attrKey;
+    private final Discretizer discretizer;
 
 //    private double refSum;
 
 //    private double simSum;
-
-    private double binCount;
-
-    private Object dataKey;
-
-    private final String attrKey;
-
-    private final Discretizer discretizer;
-
-    private double hamiltonianValue;
-
-    private final boolean absoluteMode;
-
-    private boolean useWeights;
-
-    private Object weightKey;
-
-    private Predicate<Segment> predicate;
-
+private final boolean absoluteMode;
     private final Object PREDICATE_RESULT_KEY = new Object();
-
-    private double errorExponent = 1.0;
-
     private final double noRefValError = 1e6;
-
-    private long iterations = 0;
-
-    private final long resetInterval = (long)1e7;
-
     private final boolean debugMode = false;
+    private DynamicDoubleArray simFreq;
+    private double scaleFactor;
+    private double binCount;
+    private Object dataKey;
+    private double hamiltonianValue;
+    private boolean useWeights;
+    private Object weightKey;
+    private Predicate<Segment> predicate;
+    private double errorExponent = 1.0;
+    private long iterations = 0;
+    private long resetInterval = Long.MAX_VALUE;
 
     public UnivariatFrequency2(TDoubleDoubleMap refHist, HistogramBuilder histBuilder,
                                String attrKey, Discretizer discretizer, boolean useWeights, boolean absoluteMode) {
@@ -103,6 +86,10 @@ public class UnivariatFrequency2 implements Hamiltonian, AttributeChangeListener
 
     public void setErrorExponent(double exponent) {
         this.errorExponent = exponent;
+    }
+
+    public void setResetInterval(long interval) {
+        this.resetInterval = interval;
     }
 
     private void initHistogram(Collection<? extends Person> simPersons) {
