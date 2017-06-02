@@ -31,6 +31,8 @@ public class Node {
 
     private List<Edge> edges;
 
+    private boolean isEndNode = false;
+
     public Node(Long id) {
         this.id = id;
         this.edges = new ArrayList<>();
@@ -46,5 +48,13 @@ public class Node {
 
     public List<Edge> getEdges() {
         return edges;
+    }
+
+    public void setEndNode() {
+        isEndNode = true;
+    }
+
+    public boolean getIsEndNode() {
+        return isEndNode;
     }
 }

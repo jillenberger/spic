@@ -97,6 +97,11 @@ public class GraphBuilder {
             if (container.getType() == EntityType.Way) {
                 OsmWay way = (OsmWay) container.getEntity();
 
+                Node start = nodes.get(way.getNodeId(0));
+                if (start != null) start.setEndNode();
+                Node end = nodes.get(way.getNodeId(way.getNumberOfNodes() - 1));
+                if (end != null) end.setEndNode();
+
                 for (int i = 0; i < way.getNumberOfNodes() - 1; i++) {
                     long fromId = way.getNodeId(i);
                     long toId = way.getNodeId(i + 1);
@@ -125,10 +130,11 @@ public class GraphBuilder {
         while (nodeIt.hasNext()) {
             nodeIt.advance();
             Node node = nodeIt.value();
-            if (node.getEdges().size() == 2) {
-                pillars.add(node);
-            } else {
+            if (node.getIsEndNode() || node.getEdges().size() != 2) {
                 towers.add(node);
+            } else {
+                pillars.add(node);
+
             }
         }
         logger.info(String.format("Found %s pillars and %s towers.", pillars.size(), towers.size()));
