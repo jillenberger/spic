@@ -20,10 +20,9 @@
 package de.dbanalytics.spic.mid2008HH;
 
 import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.gis.Feature;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.PlaceIndex;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
 
@@ -42,28 +41,28 @@ public class HomeLocator {
 
     private final PlaceIndex placeIndex;
 
-    private final ZoneCollection zones;
+    private final Set<? extends Feature> zones;
 
-    public HomeLocator(PlaceIndex placeIndex, ZoneCollection zones) {
+    public HomeLocator(PlaceIndex placeIndex, Set<? extends Feature> zones) {
         this(placeIndex, zones, new XORShiftRandom());
     }
 
-    public HomeLocator(PlaceIndex placeIndex, ZoneCollection zones, Random random) {
+    public HomeLocator(PlaceIndex placeIndex, Set<? extends Feature> zones, Random random) {
         this.placeIndex = placeIndex;
         this.zones = zones;
         this.random = random;
     }
 
-    public Set<Person> run(Set<Person> refPersons, String partitionKey, double fraction) {
+    public Set<Person> run(Set<Person> refPersons, List<String> partitionKeys, double fraction) {
         AttributableIndex<Person> personIndex = new AttributableIndex<>(refPersons);
         Set<Person> targetPersons = new HashSet<>();
         /**
          * Sort zones according to attribute.
          */
-        Map<String, Set<Zone>> zoneIndex = new HashMap<>();
-        for (Zone zone : zones.getZones()) {
-            String value = zone.getAttribute(partitionKey);
-            Set<Zone> partition = zoneIndex.get(value);
+        Map<String, Set<Feature>> zoneIndex = new HashMap<>();
+        for (Feature zone : zones) {
+            String value = buildCompoundValue(partitionKeys, zone);
+            Set<Feature> partition = zoneIndex.get(value);
             if (partition == null) {
                 partition = new HashSet<>();
                 zoneIndex.put(value, partition);
@@ -73,16 +72,16 @@ public class HomeLocator {
         /**
          * Process partitions.
          */
-        for (Map.Entry<String, Set<Zone>> entry : zoneIndex.entrySet()) {
+        for (Map.Entry<String, Set<Feature>> entry : zoneIndex.entrySet()) {
             logger.info(String.format("Processing partition %s...", entry.getKey()));
 
             Set<Person> templates = personIndex.get(MiDHHValues.PERSON_DISTRICT, entry.getKey());
-            Set<Zone> partition = entry.getValue();
+            Set<Feature> partition = entry.getValue();
             /**
              * Total number inhabitants in partition
              */
             int numPartition = 0;
-            for (Zone zone : partition) {
+            for (Feature zone : partition) {
                 String value = zone.getAttribute(INHABITANTS_KEY);
                 if (value != null) numPartition += (int) Double.parseDouble(value);
             }
@@ -96,7 +95,7 @@ public class HomeLocator {
                         random));
 
                 int startIdx = 0;
-                for (Zone zone : partition) {
+                for (Feature zone : partition) {
                     int numZone = 0;
 
                     String value = zone.getAttribute(INHABITANTS_KEY);
@@ -139,5 +138,16 @@ public class HomeLocator {
         }
 
         return targetPersons;
+    }
+
+    private String buildCompoundValue(List<String> keys, Feature zone) {
+        StringBuilder builder = new StringBuilder(100);
+        for (String key : keys) {
+            String value = zone.getAttribute(key);
+            if (value == null) value = "";
+            builder.append(value);
+            builder.append("|");
+        }
+        return builder.toString();
     }
 }

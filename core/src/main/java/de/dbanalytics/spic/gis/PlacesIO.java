@@ -23,7 +23,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.util.IOUtils;
-import javanet.staxutils.IndentingXMLEventWriter;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 
 import javax.xml.namespace.QName;
@@ -60,6 +59,10 @@ public class PlacesIO {
     private static final String TYPE_ATTRIBUTE = "type";
 
     private static final String EMPTY = "";
+
+    private static final String NEW_LINE = "\n";
+
+    private static final String SPACES = "    ";
 
     private GeoTransformer transformer = GeoTransformer.identityTransformer();
 
@@ -133,49 +136,54 @@ public class PlacesIO {
         return places;
     }
 
-    public void write(Collection<Place> places, String filename) throws IOException, XMLStreamException {
+    public void write(Collection<? extends Place> places, String filename) throws IOException, XMLStreamException {
         XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
         OutputStream stream = IOUtils.createOutputStream(filename);
-        XMLEventWriter writer = new IndentingXMLEventWriter(outputFactory.createXMLEventWriter(stream));
-        XMLEventFactory factory = XMLEventFactory.newInstance();
+        XMLStreamWriter writer = outputFactory.createXMLStreamWriter(stream);
 
-        writer.add(factory.createStartDocument());
-        writer.add(factory.createStartElement(EMPTY, EMPTY, PLACES_ELEMENT));
+        writer.writeStartDocument();
+        writer.writeCharacters(NEW_LINE);
+        writer.writeStartElement(PLACES_ELEMENT);
+        writer.writeCharacters(NEW_LINE);
 
         for (Place place : places) {
-            /*
-            Write place element.
-             */
-            writer.add(factory.createStartElement(EMPTY, EMPTY, PLACE_ELEMENT));
-            writer.add(factory.createAttribute(ID_ATTRIBUTE, place.getId()));
+
+            writer.writeCharacters(SPACES);
+            writer.writeStartElement(PLACE_ELEMENT);
+            writer.writeAttribute(ID_ATTRIBUTE, place.getId());
 
             Coordinate coordinate = new Coordinate(place.getGeometry().getCoordinate());
             transformer.backward(coordinate);
-            writer.add(factory.createAttribute(COORDINATE_ATTRIBUTE,
-                    CoordinateUtils.toString(coordinate)));
-            /*
-            Write activities.
-             */
+            writer.writeAttribute(COORDINATE_ATTRIBUTE, CoordinateUtils.toString(coordinate));
+            writer.writeCharacters(NEW_LINE);
+
             for (String activity : place.getActivities()) {
-                writer.add(factory.createStartElement(EMPTY, EMPTY, ACTIVITY_ELEMENT));
-                writer.add(factory.createAttribute(TYPE_ATTRIBUTE, activity));
-                writer.add(factory.createEndElement(EMPTY, EMPTY, ACTIVITY_ELEMENT));
-            }
-            /*
-            Writer attributes.
-             */
-            for (Map.Entry<String, String> entry : place.getAttributes().entrySet()) {
-                writer.add(factory.createStartElement(EMPTY, EMPTY, ATTRIBUTE_ELEMENT));
-                writer.add(factory.createAttribute(NAME_ATTRIBUTE, entry.getKey()));
-                writer.add(factory.createCharacters(entry.getValue()));
-                writer.add(factory.createEndElement(EMPTY, EMPTY, ATTRIBUTE_ELEMENT));
+                writer.writeCharacters(SPACES);
+                writer.writeCharacters(SPACES);
+                writer.writeStartElement(ACTIVITY_ELEMENT);
+                writer.writeAttribute(TYPE_ATTRIBUTE, activity);
+                writer.writeEndElement();
+                writer.writeCharacters(NEW_LINE);
             }
 
-            writer.add(factory.createEndElement(EMPTY, EMPTY, PLACE_ELEMENT));
+            for (Map.Entry<String, String> entry : place.getAttributes().entrySet()) {
+                writer.writeCharacters(SPACES);
+                writer.writeCharacters(SPACES);
+                writer.writeStartElement(ATTRIBUTE_ELEMENT);
+                writer.writeAttribute(NAME_ATTRIBUTE, entry.getKey());
+                writer.writeCharacters(entry.getValue());
+                writer.writeEndElement();
+                writer.writeCharacters(NEW_LINE);
+            }
+
+            writer.writeCharacters(SPACES);
+            writer.writeEndElement();
+            writer.writeCharacters(NEW_LINE);
         }
 
-        writer.add(factory.createEndElement(EMPTY, EMPTY, PLACES_ELEMENT));
-        writer.add(factory.createEndDocument());
+        writer.writeEndElement();
+        writer.writeCharacters(NEW_LINE);
+        writer.writeEndDocument();
 
         writer.flush();
         writer.close();

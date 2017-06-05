@@ -27,13 +27,14 @@ import gnu.trove.map.TDoubleDoubleMap;
 import gnu.trove.map.TDoubleObjectMap;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import gnu.trove.map.hash.TDoubleObjectHashMap;
-import org.apache.commons.math.FunctionEvaluationException;
-import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.Histogram;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
 import org.matsim.contrib.common.util.XORShiftRandom;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Set;
@@ -47,9 +48,12 @@ public class BlurActivityTimes implements EpisodeTask {
 
     private final Random random;
 
-    TDoubleObjectMap<UnivariateRealFunction> funcs;
+    TDoubleObjectMap<InverseDensityFunction> densityFuncs;
 
-    public BlurActivityTimes(Set<Person> persons, Random random) {
+
+    BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/jillenberger/Desktop/times.txt"));
+
+    public BlurActivityTimes(Set<Person> persons, Random random) throws IOException {
         this.random = random;
         this.discretizer = new LinearDiscretizer(3600);
         HistogramBuilder builder = new LegAttributeHistogramBuilder(
@@ -59,7 +63,7 @@ public class BlurActivityTimes implements EpisodeTask {
         hist = Histogram.normalize((TDoubleDoubleHashMap) hist);
         //TODO: double hist for periodic boundary
 
-        funcs = new TDoubleObjectHashMap<>();
+        densityFuncs = new TDoubleObjectHashMap<>();
         double[] keys = hist.keys();
         Arrays.sort(keys);
         for (int i = 0; i < keys.length - 1; i++) {
@@ -68,80 +72,85 @@ public class BlurActivityTimes implements EpisodeTask {
             double y_left = hist.get(x_left);
             double y_right = hist.get(x_right);
 
-            double b = y_left;
             double a = (y_right - y_left) / (x_right - x_left);
+            double b = y_left - (a * x_left);
 
-            double x_m = x_left + ((x_right - x_left) / 2.0);
-            double y_m = a * (x_m - x_left) + b;
-
-            double offset = 0.5 - y_m;
-
-            y_left += offset;
-            y_right += offset;
-            b = y_left;
-            a = (y_right - y_left) / (x_right - x_left);
-
-            funcs.put(x_left, new ProbabilityFunction(a, b));
+            densityFuncs.put(x_right, new InverseDensityFunction(a, b));
         }
     }
 
-    public static void main(String args[]) {
-        Set<Person> persons = PopulationIO.loadFromXML("/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/demand/midHH/mid2008HH2.xml", new PlainFactory());
+    public static void main(String args[]) throws IOException {
+        Set<Person> persons = PopulationIO.loadFromXML("/Users/jillenberger/work/mid2008.midtrips.valid.xml", new PlainFactory());
 
         BlurActivityTimes task = new BlurActivityTimes(persons, new XORShiftRandom());
         TaskRunner.run(task, persons);
-
+        task.writer.close();
 //        PopulationIO.writeToXML("", persons);
     }
 
     @Override
     public void apply(Episode episode) {
-        for (Segment act : episode.getActivities()) {
-            String startVal = act.getAttribute(CommonKeys.ACTIVITY_START_TIME);
-            String endVal = act.getAttribute(CommonKeys.ACTIVITY_END_TIME);
+        for (Segment leg : episode.getLegs()) {
+            String startVal = leg.getAttribute(CommonKeys.LEG_START_TIME);
 
-            if (startVal != null && endVal != null) {
+            if (startVal != null) {
                 double start = Double.parseDouble(startVal);
-                double end = Double.parseDouble(endVal);
-                double duration = end - start;
 
-                double bin = discretizer.discretize(start);
+                double x_right = discretizer.discretize(start);
+                double x_left = x_right - discretizer.binWidth(x_right) + 1;
 
-                UnivariateRealFunction func = funcs.get(bin);
-                try {
+                InverseDensityFunction func = densityFuncs.get(x_right);
 
-                    boolean hit = false;
-                    while (!hit) {
-                        double newStart = random.nextDouble() * duration;
-                        double p = func.value(newStart);
-                        if (random.nextDouble() < p) {
-                            hit = true;
+                if (func != null) {
+                    double y_left = func.density(x_left);
+                    double y_right = func.density(x_right);
 
-                            act.setAttribute(CommonKeys.ACTIVITY_START_TIME, String.valueOf(bin + newStart));
-                            act.setAttribute(CommonKeys.ACTIVITY_END_TIME, String.valueOf(bin + newStart + duration));
-                        }
+                    double y = y_left + (random.nextDouble() * (y_right - y_left));
+
+                    double x = func.inverseDensity(y);
+
+                    if (x > 190000) {
+                        System.out.println("Opps");
                     }
-                } catch (FunctionEvaluationException e) {
-                    e.printStackTrace();
+                    leg.setAttribute(CommonKeys.LEG_START_TIME, String.valueOf(x));
+
+                    String endVal = leg.getAttribute(CommonKeys.LEG_END_TIME);
+                    if (endVal != null) {
+                        double end = Double.parseDouble(endVal);
+                        double newEnd = x + (end - start);
+
+                        leg.setAttribute(CommonKeys.LEG_END_TIME, String.valueOf(newEnd));
+                    }
+                    try {
+                        writer.write(x_right + "\t" + x);
+                        writer.newLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
     }
 
-    private static class ProbabilityFunction implements UnivariateRealFunction {
+    private static class InverseDensityFunction {
 
         private final double a;
 
         private final double b;
 
-        public ProbabilityFunction(double a, double b) {
+        public InverseDensityFunction(double a, double b) {
             this.a = a;
             this.b = b;
         }
 
-        @Override
-        public double value(double v) throws FunctionEvaluationException {
-            return a * v + b;
+        public double density(double v) {
+            return a / 2 * Math.pow(v, 2) + b * v;
+        }
+
+        public double inverseDensity(double v) {
+            int sign = 1;
+            if (a < 0) sign = -1;
+            return -(b / a) + sign * Math.sqrt(Math.pow(b / a, 2) + 2 * v / a);
         }
     }
 }

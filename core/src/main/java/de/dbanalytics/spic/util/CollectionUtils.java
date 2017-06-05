@@ -55,4 +55,10 @@ public class CollectionUtils {
 
         return list;
     }
+
+    public static <T> List<T> toList(T[] array) {
+        ArrayList<T> list = new ArrayList<>(array.length);
+        for (T element : array) list.add(element);
+        return list;
+    }
 }

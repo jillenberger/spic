@@ -24,6 +24,7 @@ import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.mid2008HH.HomeLocator;
+import de.dbanalytics.spic.util.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
 import org.matsim.core.config.Config;
@@ -32,6 +33,8 @@ import org.matsim.core.config.ConfigUtils;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -66,17 +69,23 @@ public class RunHomeLocator {
         logger.info("Loading persons...");
         Set<Person> refPersons = PopulationIO.loadFromXML(module.getValue(TEMPLATES), new PlainFactory());
         logger.info("Loading zones...");
-        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(module.getValue(ZONES), "id", null);
+//        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(module.getValue(ZONES), "id", null);
+        FeaturesIO featureReader = new FeaturesIO();
+        GeoTransformer transformer = GeoTransformer.WGS84toX(Integer.parseInt(module.getValue(EPSG_CODE)));
+        featureReader.setTransformer(transformer);
+        Set<Feature> zones = featureReader.read(module.getValue(ZONES));
         logger.info("Loading places...");
-        PlacesIO placesIO = new PlacesIO();
-        placesIO.setGeoTransformer(GeoTransformer.WGS84toX(Integer.parseInt(module.getValue(EPSG_CODE))));
-        Set<Place> places = placesIO.read(module.getValue(PLACES));
+        PlacesIO placesReader = new PlacesIO();
+        placesReader.setGeoTransformer(transformer);
+        Set<Place> places = placesReader.read(module.getValue(PLACES));
 
+        String keys = module.getValue(PARTITION_KEY);
+        List<String> partitionKeys = new ArrayList<>(CollectionUtils.toList(keys.split(",")));
         XORShiftRandom random = new XORShiftRandom(config.global().getRandomSeed());
         HomeLocator locator = new HomeLocator(new PlaceIndex(places), zones, random);
         Set<Person> clones = locator.run(
                 refPersons,
-                module.getValue(PARTITION_KEY),
+                partitionKeys,
                 Double.parseDouble(module.getValue(FRACTION)));
         logger.info(String.format("Generated %s persons.", clones.size()));
 

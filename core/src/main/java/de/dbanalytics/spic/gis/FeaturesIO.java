@@ -34,6 +34,10 @@ public class FeaturesIO {
 
     private GeoTransformer transformer = GeoTransformer.identityTransformer();
 
+    public void setTransformer(GeoTransformer transformer) {
+        this.transformer = transformer;
+    }
+
     public Set<Feature> read(String filename) throws IOException {
         if (isGeoJson(filename)) {
             FeaturesIOGeoJson reader = new FeaturesIOGeoJson();

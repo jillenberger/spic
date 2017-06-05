@@ -40,6 +40,10 @@ public class ZoneIndex {
         this.zones = zone;
     }
 
+    public Set<Feature> get() {
+        return zones;
+    }
+
     public Feature get(Coordinate coordinate) {
         if (spatialIndex == null) initSpatialIndex();
 

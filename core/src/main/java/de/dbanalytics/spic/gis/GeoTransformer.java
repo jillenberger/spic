@@ -22,7 +22,7 @@ package de.dbanalytics.spic.gis;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -66,8 +66,17 @@ public class GeoTransformer {
         }
     }
 
+    public GeoTransformer(MathTransform transform) {
+        forwardTransform = transform;
+        try {
+            backwardTransform = transform.inverse();
+        } catch (NoninvertibleTransformException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static GeoTransformer identityTransformer() {
-        return new GeoTransformer(DefaultGeographicCRS.WGS84, DefaultGeographicCRS.WGS84);
+        return new GeoTransformer(IdentityTransform.create(3));
     }
 
     public static GeoTransformer WGS84toWebMercartor() {
@@ -81,6 +90,7 @@ public class GeoTransformer {
     public void forward(double[] coordinate) {
         try {
             forwardTransform.transform(coordinate, 0, coordinate, 0, 1);
+
         } catch (TransformException e) {
             e.printStackTrace();
         }
@@ -129,4 +139,5 @@ public class GeoTransformer {
     public MathTransform getBackwardTransform() {
         return backwardTransform;
     }
+
 }

@@ -46,7 +46,7 @@ public class CoordinateUtils {
         builder.append(FIELD_SEPARATOR);
         builder.append(String.valueOf(coordinate.y));
 
-        if (coordinate.z != 0) {
+        if (coordinate.z != 0 && !Double.isNaN(coordinate.z)) {
             builder.append(FIELD_SEPARATOR);
             builder.append(String.valueOf(coordinate.z));
         }
