@@ -19,6 +19,7 @@
 
 package de.dbanalytics.spic.sim;
 
+import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.sim.data.CachedElement;
 
 /**
@@ -34,23 +35,34 @@ public class AttributeMutator implements RandomElementMutator {
 
     private Object oldValue;
 
+    private Predicate<CachedElement> predicate;
+
     public AttributeMutator(Object dataKey, ValueGenerator generator, AttributeChangeListener listener) {
         this.dataKey = dataKey;
         this.listener = listener;
         this.generator = generator;
     }
 
+    private void setPredicate(Predicate<CachedElement> predicate) {
+        this.predicate = predicate;
+    }
+
     @Override
     public boolean modify(CachedElement element) {
         oldValue = element.getData(dataKey);
-        Object newValue = generator.newValue(element);
 
-        if(newValue != null) {
-            element.setData(dataKey, newValue);
+        if (predicate == null || predicate.test(element)) {
+            Object newValue = generator.newValue(element);
 
-            if (listener != null) listener.onChange(dataKey, oldValue, newValue, element);
+            if (newValue != null) {
+                element.setData(dataKey, newValue);
 
-            return true;
+                if (listener != null) listener.onChange(dataKey, oldValue, newValue, element);
+
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

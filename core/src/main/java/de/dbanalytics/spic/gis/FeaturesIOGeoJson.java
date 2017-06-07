@@ -54,12 +54,17 @@ public class FeaturesIOGeoJson {
             Set<Feature> features = new HashSet<>();
             FeatureCollection jsonFeatures = (FeatureCollection) jsonData;
             for (org.wololo.geojson.Feature jsonFeature : jsonFeatures.getFeatures()) {
-                Feature feature = new Feature(jsonFeature.getId().toString(), reader.read(jsonFeature.getGeometry()));
+                Map<String, String> attributes = new HashMap<>();
                 for (Map.Entry<String, Object> prop : jsonFeature.getProperties().entrySet()) {
                     Object value = prop.getValue();
-                    if (value != null) feature.setAttribute(prop.getKey(), prop.getValue().toString());
+                    if (value != null) attributes.put(prop.getKey().toLowerCase(), prop.getValue().toString());
                 }
 
+                Feature feature = new Feature(attributes.get("id"), reader.read(jsonFeature.getGeometry()));
+                attributes.remove("id");
+                for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                    feature.setAttribute(entry.getKey(), entry.getValue().toString());
+                }
                 transformer.forward(feature.getGeometry());
                 features.add(feature);
             }

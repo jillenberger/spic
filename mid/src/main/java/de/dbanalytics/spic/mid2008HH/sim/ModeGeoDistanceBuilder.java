@@ -27,11 +27,14 @@ import de.dbanalytics.spic.sim.UnivariatFrequency2;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TDoubleDoubleMap;
+import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.FixedBordersDiscretizer;
+import org.matsim.contrib.common.stats.StatsWriter;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,10 +70,31 @@ public class ModeGeoDistanceBuilder {
             refHistogramBuilder.setPredicate(modePredicate);
             TDoubleDoubleMap refHistogram = refHistogramBuilder.build(engine.getRefPersons());
 
-            TDoubleArrayList borders = createSimDiscretizer(mode);
-            TDoubleDoubleMap simHist = HistogramTransformer.transform(borders, refHistogram);
+            TDoubleArrayList tmpBorders = createSimDiscretizer(mode);
+            TDoubleDoubleMap simHist = HistogramTransformer.transform(tmpBorders, refHistogram);
+
+            TDoubleArrayList borders = new TDoubleArrayList();
+            borders.add(-1);
+            borders.addAll(tmpBorders);
             Discretizer simDiscretizer = new FixedBordersDiscretizer(borders.toArray());
             LegHistogramBuilder simHistBuilder = new LegAttributeHistogramBuilder(CommonKeys.LEG_GEO_DISTANCE, simDiscretizer);
+            simHistBuilder.setPredicate(modePredicate);
+
+            try {
+                FileIOContext ioContext = engine.getIOContext();
+                String path = String.format("%s/%s.ref.%s.txt",
+                        ioContext.getPath(),
+                        ModeGeoDistanceBuilder.class.getSimpleName(),
+                        mode);
+                StatsWriter.writeHistogram((TDoubleDoubleHashMap) refHistogram, CommonKeys.LEG_GEO_DISTANCE, "count", path);
+                path = String.format("%s/%s.sim.%s.txt",
+                        ioContext.getPath(),
+                        ModeGeoDistanceBuilder.class.getSimpleName(),
+                        mode);
+                StatsWriter.writeHistogram((TDoubleDoubleHashMap) simHist, CommonKeys.LEG_GEO_DISTANCE, "count", path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             UnivariatFrequency2 hamiltonian = new UnivariatFrequency2(
                     simHist,
@@ -80,6 +104,8 @@ public class ModeGeoDistanceBuilder {
                     false,
                     false);
 
+            hamiltonian.setPredicate(modePredicate);
+            hamiltonian.setNoRefValError(2);
             hamiltonian.setErrorExponent(2.0);
             hamiltonian.setResetInterval((long) 5e8);
 
@@ -95,7 +121,7 @@ public class ModeGeoDistanceBuilder {
 
             HistogramWriter writer = new HistogramWriter(
                     engine.getIOContext(),
-                    new PassThroughDiscretizerBuilder(refDiscretizer, "default"));
+                    new PassThroughDiscretizerBuilder(simDiscretizer, "default"));
             AnalyzerTask<Collection<? extends Person>> analyzer = NumericLegAnalyzer.create(
                     CommonKeys.LEG_GEO_DISTANCE,
                     false,
@@ -105,8 +131,8 @@ public class ModeGeoDistanceBuilder {
             engine.getHamiltonianAnalyzers().addComponent(analyzer);
 
             HistogramComparator comparator = new HistogramComparator(
-                    refHistogram,
-                    refHistogramBuilder,
+                    simHist,
+                    simHistBuilder,
                     String.format("%s.%s", CommonKeys.LEG_GEO_DISTANCE, mode));
             comparator.setFileIoContext(engine.getIOContext());
             engine.getHamiltonianAnalyzers().addComponent(comparator);
@@ -133,7 +159,7 @@ public class ModeGeoDistanceBuilder {
         TDoubleArrayList borders = new TDoubleArrayList();
         borders.add(-1);
         if (CommonValues.LEG_MODE_CAR.equalsIgnoreCase(mode)) {
-            for (int d = 1000; d < 10000; d += 1000) borders.add(d);
+            for (int d = 2000; d < 10000; d += 2000) borders.add(d);
             for (int d = 10000; d < 50000; d += 5000) borders.add(d);
         } else if (CommonValues.LEG_MODE_RIDE.equalsIgnoreCase(mode) ||
                 CommonValues.LEG_MODE_PT.equalsIgnoreCase(mode)) {
@@ -150,7 +176,7 @@ public class ModeGeoDistanceBuilder {
 
     private static TDoubleArrayList createSimDiscretizer(String mode) {
         TDoubleArrayList borders = new TDoubleArrayList();
-        borders.add(-1);
+//        borders.add(-1);
         if (CommonValues.LEG_MODE_PED.equalsIgnoreCase(mode)) {
             for (int d = 500; d < 3000; d += 500) borders.add(d);
         } else if (CommonValues.LEG_MODE_BIKE.equalsIgnoreCase(mode)) {
@@ -158,7 +184,7 @@ public class ModeGeoDistanceBuilder {
             for (int d = 5000; d < 10000; d += 1000) borders.add(d);
             for (int d = 10000; d < 20000; d += 5000) borders.add(d);
         } else {
-            for (int d = 1000; d < 20000; d += 1000) borders.add(d);
+            for (int d = 2000; d < 20000; d += 2000) borders.add(d);
             for (int d = 20000; d < 50000; d += 5000) borders.add(d);
         }
         borders.add(Double.MAX_VALUE);

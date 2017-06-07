@@ -18,11 +18,11 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.sim.CopyPersonAttToLeg;
 import de.dbanalytics.devel.matrix2014.sim.FacilityMutatorBuilder;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.spic.processing.CopyPersonAttToLeg;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.util.Executor;

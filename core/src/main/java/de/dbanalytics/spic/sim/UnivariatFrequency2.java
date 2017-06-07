@@ -53,8 +53,8 @@ public class UnivariatFrequency2 implements Hamiltonian, AttributeChangeListener
 //    private double simSum;
 private final boolean absoluteMode;
     private final Object PREDICATE_RESULT_KEY = new Object();
-    private final double noRefValError = 1e6;
     private final boolean debugMode = false;
+    private double noRefValError = 1e6;
     private DynamicDoubleArray simFreq;
     private double scaleFactor;
     private double binCount;
@@ -86,6 +86,10 @@ private final boolean absoluteMode;
 
     public void setErrorExponent(double exponent) {
         this.errorExponent = exponent;
+    }
+
+    public void setNoRefValError(double value) {
+        this.noRefValError = value;
     }
 
     public void setResetInterval(long interval) {

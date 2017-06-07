@@ -49,8 +49,9 @@ public class HistogramFunction {
             double x_upper = discretizer.discretize(x);
             double x_lower = x_upper - discretizer.binWidth(x);
 
-            double y_upper = histogram.get(x_upper);
-            double y_lower = histogram.get(x_lower);
+            //TODO: Reweighting should be done before
+            double y_upper = histogram.get(x_upper) / discretizer.binWidth(x_upper);
+            double y_lower = histogram.get(x_lower) / discretizer.binWidth(x_lower);
 
             double a = (y_upper - y_lower) / (x_upper - x_lower);
             double y = a * (x - x_lower) + y_lower;

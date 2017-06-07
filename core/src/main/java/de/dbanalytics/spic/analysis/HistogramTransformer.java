@@ -38,7 +38,8 @@ public class HistogramTransformer {
             return true;
         });
 
-        Histogram.normalize((TDoubleDoubleHashMap) newHist, Histogram.sum((TDoubleDoubleHashMap) source));
+        double norm = Histogram.sum((TDoubleDoubleHashMap) newHist) / Histogram.sum((TDoubleDoubleHashMap) source);
+        Histogram.normalize((TDoubleDoubleHashMap) newHist, norm);
 
         return newHist;
     }

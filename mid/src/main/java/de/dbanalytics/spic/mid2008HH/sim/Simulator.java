@@ -176,6 +176,7 @@ public class Simulator {
         GeoDistanceZoneHamiltonianDrive.build(this, config);
 //        TargetDistanceBuilder.build(this, config);
         ModeGeoDistanceBuilder.build(this, config);
+        Lau2GeoDistanceBuilder.build(this, config);
 
         engineListeners.addComponent(new HamiltonianLogger(hamiltonian,
                 loggingInterval,

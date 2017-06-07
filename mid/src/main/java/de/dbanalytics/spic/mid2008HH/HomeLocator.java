@@ -54,7 +54,7 @@ public class HomeLocator {
     }
 
     public Set<Person> run(Set<Person> refPersons, List<String> partitionKeys, double fraction) {
-        AttributableIndex<Person> personIndex = new AttributableIndex<>(refPersons);
+//        AttributableIndex<Person> personIndex = new AttributableIndex<>(refPersons);
         Set<Person> targetPersons = new HashSet<>();
         /**
          * Sort zones according to attribute.
@@ -70,12 +70,26 @@ public class HomeLocator {
             partition.add(zone);
         }
         /**
+         * Sort persons according to attribute.
+         */
+        Map<String, Set<Person>> personIndex = new HashMap<>();
+        for (Person person : refPersons) {
+            String value = buildCompoundValue(partitionKeys, person);
+            Set<Person> partition = personIndex.get(value);
+            if (partition == null) {
+                partition = new HashSet<>();
+                personIndex.put(value, partition);
+            }
+            partition.add(person);
+        }
+        /**
          * Process partitions.
          */
         for (Map.Entry<String, Set<Feature>> entry : zoneIndex.entrySet()) {
             logger.info(String.format("Processing partition %s...", entry.getKey()));
 
-            Set<Person> templates = personIndex.get(MiDHHValues.PERSON_DISTRICT, entry.getKey());
+//            Set<Person> templates = personIndex.get(MiDHHValues.PERSON_DISTRICT, entry.getKey());
+            Set<Person> templates = personIndex.get(entry.getKey());
             Set<Feature> partition = entry.getValue();
             /**
              * Total number inhabitants in partition
@@ -140,13 +154,17 @@ public class HomeLocator {
         return targetPersons;
     }
 
-    private String buildCompoundValue(List<String> keys, Feature zone) {
+    private String buildCompoundValue(List<String> keys, Attributable attributable) {
         StringBuilder builder = new StringBuilder(100);
-        for (String key : keys) {
-            String value = zone.getAttribute(key);
+        String value = attributable.getAttribute(keys.get(0));
+        if (value == null) value = "";
+        builder.append(value);
+
+        for (int i = 1; i < keys.size(); i++) {
+            builder.append("|");
+            value = attributable.getAttribute(keys.get(i));
             if (value == null) value = "";
             builder.append(value);
-            builder.append("|");
         }
         return builder.toString();
     }

@@ -38,8 +38,12 @@ public class AdoptParentAttribute {
         String childZonesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/04_Daten/Shapes/PLZ8.midHH.geojson";
         String parentZonesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/04_Daten/Shapes/lau2.hh.gk3.geojson";
         String outFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/shapes/PLZ8-sim.gk3.geojson";
+
+//        new FeaturesIO().read("/home/johannesillenberger/prosim-sge0/sge/prj/drive/demand/data/zones/PLZ8.midHH.geojson");
+
         ZoneCollection childZones = ZoneGeoJsonIO.readFromGeoJSON(childZonesFile, "PLZ8", null);
         ZoneCollection parentZones = ZoneGeoJsonIO.readFromGeoJSON(parentZonesFile, "ID", null);
+
 
         new AdoptParentAttribute().run(childZones.getZones(), parentZones, "Lau2Class");
 

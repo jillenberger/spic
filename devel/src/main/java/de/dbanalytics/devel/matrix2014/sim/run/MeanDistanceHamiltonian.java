@@ -18,10 +18,10 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.sim.CopyPersonAttToLeg;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.processing.CopyPersonAttToLeg;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.BivariatMean;

@@ -25,7 +25,7 @@ package de.dbanalytics.spic.mid2008;
  */
 public interface MiDKeys {
 
-	String PERSON_LAU2_CLASS = "lau2Class";
+    String PERSON_LAU2_CLASS = "lau2class";
 
 	String PERSON_NUTS1 = "nuts1";
 	
