@@ -107,7 +107,15 @@ public class ModeGeoDistanceBuilder {
             hamiltonian.setPredicate(modePredicate);
             hamiltonian.setNoRefValError(2);
             hamiltonian.setErrorExponent(2.0);
-            hamiltonian.setResetInterval((long) 5e8);
+//            hamiltonian.setResetInterval((long) 1e7);
+            hamiltonian.setDebugMode(false);
+
+            engine.getEngineListeners().addComponent(new DiscretDistributionDebugger(
+                    hamiltonian,
+                    "DebugModeDistance." + mode,
+                    engine.getIOContext().getPath(),
+                    (long) 1e7
+            ));
 
             AnnealingHamiltonian annealingHamiltonian = AnnealingHamiltonianConfigurator.configure(
                     hamiltonian,

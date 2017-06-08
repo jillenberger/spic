@@ -72,7 +72,7 @@ public class FacilityMutatorBuilder implements MutatorBuilder {
 
 //        RandomFacilityGenerator generator = new RandomFacilityGenerator(facilityData);
 //        LocalFacilityGenerator generator = new LocalFacilityGenerator(facilityData, random);
-
+//
 //        ZoneData zoneData = (ZoneData) dataPool.get(ZoneDataLoader.KEY);
 //        ZoneCollection zones = zoneData.getLayer("nuts3");
 //        ProximityFacilityGenerator generator = new ProximityFacilityGenerator(facilityData, zones, proximityProba,
@@ -80,9 +80,11 @@ public class FacilityMutatorBuilder implements MutatorBuilder {
 
         SegmentedFacilityGenerator generator = new SegmentedFacilityGenerator(dataPool, "modena", random);
         generator.setLocalSegmentProbability(proximityProba);
+//        RandomFacilityGenerator generator = new RandomFacilityGenerator(facilityData);
         for (String type : blacklist) {
             generator.addToBlacklist(type);
         }
+
 
         AttributeMutator attMutator = new AttributeMutator(dataKey, generator, listener);
         RandomActMutator actMutator = new RandomActMutator(attMutator, random);

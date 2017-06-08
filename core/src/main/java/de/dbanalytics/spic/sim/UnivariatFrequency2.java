@@ -33,6 +33,9 @@ import gnu.trove.map.TDoubleDoubleMap;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.stats.Discretizer;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -53,7 +56,7 @@ public class UnivariatFrequency2 implements Hamiltonian, AttributeChangeListener
 //    private double simSum;
 private final boolean absoluteMode;
     private final Object PREDICATE_RESULT_KEY = new Object();
-    private final boolean debugMode = false;
+    private boolean debugMode = false;
     private double noRefValError = 1e6;
     private DynamicDoubleArray simFreq;
     private double scaleFactor;
@@ -96,7 +99,15 @@ private final boolean absoluteMode;
         this.resetInterval = interval;
     }
 
+    public void setDebugMode(boolean mode) {
+        this.debugMode = mode;
+    }
+
     private void initHistogram(Collection<? extends Person> simPersons) {
+        logger.trace("Initializing histogram...");
+//        LegAttributeHistogramBuilder builder = new LegAttributeHistogramBuilder(attrKey, discretizer);
+//        builder.setPredicate(predicate);
+//        TDoubleDoubleMap simHist = builder.build(simPersons);
         TDoubleDoubleMap simHist = histBuilder.build(simPersons);
         DynamicDoubleArray tempFreq = DynamicArrayBuilder.build(simHist, discretizer);
 
@@ -230,4 +241,22 @@ private final boolean absoluteMode;
         }
     }
 
+    public void debugDump(String filename) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        writer.write("bin\tref\tsim\th\tscale");
+        writer.newLine();
+        for (int i = 0; i < binCount; i++) {
+            writer.write(String.valueOf(i));
+            writer.write("\t");
+            writer.write(String.valueOf(refFreq.get(i)));
+            writer.write("\t");
+            writer.write(String.valueOf(simFreq.get(i)));
+            writer.write("\t");
+            writer.write(String.valueOf(hamiltonianValue));
+            writer.write("\t");
+            writer.write(String.valueOf(scaleFactor));
+            writer.newLine();
+        }
+        writer.close();
+    }
 }
