@@ -22,8 +22,9 @@ package de.dbanalytics.spic.mid2008HH.sim;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
+import de.dbanalytics.spic.sim.DiscreteDistributionTerm;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
-import de.dbanalytics.spic.sim.UnivariatFrequency2;
+import de.dbanalytics.spic.sim.RelativeErrorFunction;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TDoubleDoubleMap;
@@ -96,19 +97,26 @@ public class ModeGeoDistanceBuilder {
                 e.printStackTrace();
             }
 
-            UnivariatFrequency2 hamiltonian = new UnivariatFrequency2(
+//            UnivariatFrequency2 hamiltonian = new UnivariatFrequency2(
+//                    simHist,
+//                    simHistBuilder,
+//                    CommonKeys.LEG_GEO_DISTANCE,
+//                    simDiscretizer,
+//                    false,
+//                    false);
+//
+//            hamiltonian.setPredicate(modePredicate);
+//            hamiltonian.setNoRefValError(2);
+//            hamiltonian.setErrorExponent(2.0);
+////            hamiltonian.setResetInterval((long) 1e7);
+//            hamiltonian.setDebugMode(false);
+            DiscreteDistributionTerm<Segment> hamiltonian = new DiscreteDistributionTerm<>(
                     simHist,
-                    simHistBuilder,
-                    CommonKeys.LEG_GEO_DISTANCE,
-                    simDiscretizer,
-                    false,
-                    false);
-
+                    new LegCollector<>(),
+                    CommonKeys.LEG_GEO_DISTANCE
+            );
             hamiltonian.setPredicate(modePredicate);
-            hamiltonian.setNoRefValError(2);
-            hamiltonian.setErrorExponent(2.0);
-//            hamiltonian.setResetInterval((long) 1e7);
-            hamiltonian.setDebugMode(false);
+            hamiltonian.setErrorFunction(new RelativeErrorFunction(2, 2));
 
             engine.getEngineListeners().addComponent(new DiscretDistributionDebugger(
                     hamiltonian,

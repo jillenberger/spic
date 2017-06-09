@@ -20,8 +20,8 @@
 package de.dbanalytics.spic.mid2008HH.sim;
 
 import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.sim.DiscreteDistributionTerm;
 import de.dbanalytics.spic.sim.MarkovEngineListener;
-import de.dbanalytics.spic.sim.UnivariatFrequency2;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 
 import java.io.File;
@@ -40,13 +40,13 @@ public class DiscretDistributionDebugger implements MarkovEngineListener {
 
     private final String name;
 
-    private final UnivariatFrequency2 delegate;
+    private final DiscreteDistributionTerm delegate;
 
     private final long interval;
     private final DecimalFormat df;
     private long iteration;
 
-    public DiscretDistributionDebugger(UnivariatFrequency2 delegate, String name, String outDir, long interval) {
+    public DiscretDistributionDebugger(DiscreteDistributionTerm delegate, String name, String outDir, long interval) {
         this.delegate = delegate;
         this.name = name;
         this.outputDirectory = outDir;

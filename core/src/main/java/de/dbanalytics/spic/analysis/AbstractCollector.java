@@ -27,18 +27,25 @@ public abstract class AbstractCollector<T, A extends Attributable, P extends Att
 
     protected Predicate<P> predicate;
 
-    protected final ValueProvider<T, A> provider;
+    protected ValueProvider<T, A> provider;
 
-    public AbstractCollector(ValueProvider<T, A> provider) {
-        this.provider = provider;
+    public AbstractCollector() {
     }
 
-    public void setPredicate(Predicate<P> predicate) {
-        this.predicate = predicate;
+    public AbstractCollector(ValueProvider<T, A> provider) {
+        setProvider(provider);
+    }
+
+    public void setProvider(ValueProvider<T, A> provider) {
+        this.provider = provider;
     }
 
     public Predicate<P> getPredicate() {
         return predicate;
+    }
+
+    public void setPredicate(Predicate<P> predicate) {
+        this.predicate = predicate;
     }
 
 }
