@@ -40,7 +40,7 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
 
     private double theta_factor = 10;
 
-    private double delta_interval = 1e7;
+    private long delta_interval = (long) 1e7;
 
     private double delta_threshold = 0.005;
 
@@ -64,11 +64,11 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
         this.theta_factor = factor;
     }
 
-    public void setDeltaInterval(long interval) {
+    public void setThetaInterval(long interval) {
         this.delta_interval = interval;
     }
 
-    public void setDeltaThreshold(double threshold) {
+    public void setThetaThreshold(double threshold) {
         this.delta_threshold = threshold;
     }
 

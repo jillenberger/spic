@@ -19,13 +19,11 @@
 package de.dbanalytics.spic.mid2008HH.sim;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.DataPool;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.util.Executor;
+import gnu.trove.map.TDoubleDoubleMap;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
@@ -33,6 +31,7 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
 import org.matsim.core.config.ConfigUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -64,7 +63,7 @@ public class Simulator {
 
     private Random random;
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         Logger.getRootLogger().setLevel(Level.TRACE);
 
         final Config config = new Config();
@@ -124,7 +123,7 @@ public class Simulator {
         return random;
     }
 
-    public MarkovEngine build(Config config) {
+    public MarkovEngine build(Config config) throws IOException {
         ConfigGroup configGroup = config.getModule(MODULE_NAME);
         /*
         Initialize composites...
@@ -175,7 +174,8 @@ public class Simulator {
 
         GeoDistanceZoneHamiltonianDrive.build(this, config);
 //        TargetDistanceBuilder.build(this, config);
-        ModeGeoDistanceBuilder.build(this, config);
+//        ModeGeoDistanceBuilder.build(this, config);
+        setupModeDistance(config);
         Lau2GeoDistanceBuilder.build(this, config);
 
         engineListeners.addComponent(new HamiltonianLogger(hamiltonian,
@@ -207,5 +207,40 @@ public class Simulator {
         engine.setListener(engineListeners);
 
         return engine;
+    }
+
+    private void setupModeDistance(Config config) throws IOException {
+        ConfigGroup group = config.getModule("ModeGeoDistance");
+        String baseDir = group.getValue("base_dir");
+
+        Set<String> modes = new HashSet<>();
+        for (Person person : getSimPersons()) {
+            for (Episode episode : person.getEpisodes()) {
+                for (Segment leg : episode.getLegs()) {
+                    String value = leg.getAttribute(CommonKeys.LEG_MODE);
+                    if (value != null) modes.add(value);
+                }
+            }
+        }
+
+        for (String mode : modes) {
+            String histFile = String.format("%s/%s.%s.txt", baseDir, CommonKeys.LEG_GEO_DISTANCE, mode);
+            TDoubleDoubleMap hist = Histogram.readHistogram(histFile);
+            LegDistributionTermBuilder builder = new LegDistributionTermBuilder(hist, CommonKeys.LEG_GEO_DISTANCE);
+            new LegDistributionTermConfig(group).configure(builder);
+
+            Predicate<Segment> predicate = new LegAttributePredicate(CommonKeys.LEG_MODE, mode);
+            builder.analyzers(getHamiltonianAnalyzers());
+            builder.attributeListeners(getAttributeListeners().get(CommonKeys.LEG_GEO_DISTANCE));
+            builder.engineListeners(getEngineListeners());
+            builder.ioContext(getIOContext());
+            builder.predicate(predicate);
+            builder.name(CommonKeys.LEG_GEO_DISTANCE + "." + mode);
+            Hamiltonian h = builder.build();
+
+            getHamiltonian().addComponent(h);
+        }
+
+
     }
 }

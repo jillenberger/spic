@@ -38,10 +38,10 @@ public class AnnealingHamiltonianConfigurator {
         if(value != null) hamiltonian.setThetaFactor(Double.parseDouble(value));
 
         value = configGroup.getValue("delta_interval");
-        if(value != null) hamiltonian.setDeltaInterval((long)Double.parseDouble(value));
+        if (value != null) hamiltonian.setThetaInterval((long) Double.parseDouble(value));
 
         value = configGroup.getValue("delta_threshold");
-        if(value != null) hamiltonian.setDeltaThreshold(Double.parseDouble(value));
+        if (value != null) hamiltonian.setThetaThreshold(Double.parseDouble(value));
 
         value = configGroup.getValue("startIteration");
         if(value != null) hamiltonian.setStartIteration((long)Double.parseDouble(value));

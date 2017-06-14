@@ -20,7 +20,13 @@
 package de.dbanalytics.spic.analysis;
 
 import gnu.trove.function.TDoubleFunction;
+import gnu.trove.map.TDoubleDoubleMap;
 import gnu.trove.map.TObjectDoubleMap;
+import gnu.trove.map.hash.TDoubleDoubleHashMap;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * @author johannes
@@ -38,6 +44,7 @@ public class Histogram {
         return normalize(histogram, sum);
     }
 
+    //FIXME: This function standalone does not make much sense.
     public static TObjectDoubleMap<?> normalize(TObjectDoubleMap<?> histogram, double sum) {
         final double norm = 1 / sum;
 
@@ -51,5 +58,20 @@ public class Histogram {
         histogram.transformValues(fct);
 
         return histogram;
+    }
+
+    public static TDoubleDoubleMap readHistogram(String filename) throws IOException {
+        TDoubleDoubleMap hist = new TDoubleDoubleHashMap();
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line = reader.readLine();
+        while ((line = reader.readLine()) != null) {
+            String tokens[] = line.split("\t");
+            double bin = Double.parseDouble(tokens[0]);
+            double height = Double.parseDouble(tokens[1]);
+            hist.put(bin, height);
+        }
+        reader.close();
+
+        return hist;
     }
 }

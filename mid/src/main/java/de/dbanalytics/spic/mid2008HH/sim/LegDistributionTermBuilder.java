@@ -45,9 +45,15 @@ public class LegDistributionTermBuilder {
 
     private boolean useWeights = false;
 
-    private double theta_min = 1.0;
+    private double thetaMin = 1.0;
 
-    private double theta_max = 1.0;
+    private double thetaMax = 1.0;
+
+    private double thetaFactor = 10;
+
+    private long thetaInterval = (long) 1e7;
+
+    private double thetaThreshold = 0.005;
 
     private MarkovEngineListenerComposite engineListeners;
 
@@ -88,12 +94,27 @@ public class LegDistributionTermBuilder {
     }
 
     public LegDistributionTermBuilder thetaMin(double theta) {
-        this.theta_min = theta;
+        this.thetaMin = theta;
         return this;
     }
 
     public LegDistributionTermBuilder thetaMax(double theta) {
-        this.theta_max = theta;
+        this.thetaMax = theta;
+        return this;
+    }
+
+    public LegDistributionTermBuilder thetaFactor(double factor) {
+        this.thetaFactor = factor;
+        return this;
+    }
+
+    public LegDistributionTermBuilder thetaInterval(long interval) {
+        this.thetaInterval = interval;
+        return this;
+    }
+
+    public LegDistributionTermBuilder thetaThreshold(double threshold) {
+        this.thetaThreshold = threshold;
         return this;
     }
 
@@ -155,7 +176,11 @@ public class LegDistributionTermBuilder {
         if (attributeListeners != null) attributeListeners.addComponent(term);
 
         /** Wrap in an annealing hamiltonian */
-        AnnealingHamiltonian aTerm = new AnnealingHamiltonian(term, theta_min, theta_max);
+        AnnealingHamiltonian aTerm = new AnnealingHamiltonian(term, thetaMin, thetaMax);
+        aTerm.setStartIteration(startIteration);
+        aTerm.setThetaInterval(thetaInterval);
+        aTerm.setThetaThreshold(thetaThreshold);
+        aTerm.setThetaFactor(thetaFactor);
         if (engineListeners != null) engineListeners.addComponent(aTerm);
 
         /** Do some debugging stuff */
