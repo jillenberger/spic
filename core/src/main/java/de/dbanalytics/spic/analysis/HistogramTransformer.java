@@ -22,6 +22,8 @@ package de.dbanalytics.spic.analysis;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TDoubleDoubleMap;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
+import org.matsim.contrib.common.stats.Discretizer;
+import org.matsim.contrib.common.stats.FixedBordersDiscretizer;
 import org.matsim.contrib.common.stats.Histogram;
 
 /**
@@ -32,9 +34,14 @@ public class HistogramTransformer {
     public static TDoubleDoubleMap transform(TDoubleArrayList borders, TDoubleDoubleMap source) {
         HistogramFunction function = new HistogramFunction(source);
 
+        TDoubleArrayList tmpBorders = new TDoubleArrayList();
+        tmpBorders.add(0);
+        tmpBorders.addAll(borders);
+        Discretizer d = new FixedBordersDiscretizer(tmpBorders.toArray());
+
         TDoubleDoubleMap newHist = new TDoubleDoubleHashMap();
         borders.forEach(value -> {
-            newHist.put(value, function.value(value));
+            newHist.put(value, function.value(value) * d.binWidth(value));
             return true;
         });
 

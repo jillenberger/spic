@@ -19,7 +19,10 @@
 
 package de.dbanalytics.spic.mid2008HH.run;
 
-import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.analysis.LegAttributeHistogramBuilder;
+import de.dbanalytics.spic.analysis.LegAttributePredicate;
+import de.dbanalytics.spic.analysis.LegHistogramBuilder;
+import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import gnu.trove.list.array.TDoubleArrayList;
@@ -68,17 +71,21 @@ public class RunGenerateDistributions {
             LegHistogramBuilder builder = new LegAttributeHistogramBuilder(CommonKeys.LEG_GEO_DISTANCE, discretizer);
             builder.setPredicate(modePredicate);
             TDoubleDoubleMap hist = builder.build(refPersons);
+//            StatsWriter.writeHistogram((TDoubleDoubleHashMap) hist,
+//                    "bin",
+//                    "height",
+//                    String.format("%s/%s.%s.tmp.txt", outDir, CommonKeys.LEG_GEO_DISTANCE, mode));
             StatsWriter.writeHistogram((TDoubleDoubleHashMap) hist,
                     "bin",
                     "height",
-                    String.format("%s/%s.%s.tmp.txt", outDir, CommonKeys.LEG_GEO_DISTANCE, mode));
-
-            TDoubleArrayList borders = createSimDiscretizer(mode);
-            TDoubleDoubleMap newHist = HistogramTransformer.transform(borders, hist);
-            StatsWriter.writeHistogram((TDoubleDoubleHashMap) newHist,
-                    "bin",
-                    "height",
                     String.format("%s/%s.%s.txt", outDir, CommonKeys.LEG_GEO_DISTANCE, mode));
+
+//            TDoubleArrayList borders = createSimDiscretizer(mode);
+//            TDoubleDoubleMap newHist = HistogramTransformer.transform(borders, hist);
+//            StatsWriter.writeHistogram((TDoubleDoubleHashMap) newHist,
+//                    "bin",
+//                    "height",
+//                    String.format("%s/%s.%s.txt", outDir, CommonKeys.LEG_GEO_DISTANCE, mode));
         }
     }
 
@@ -103,6 +110,7 @@ public class RunGenerateDistributions {
 
     private static TDoubleArrayList createSimDiscretizer(String mode) {
         TDoubleArrayList borders = new TDoubleArrayList();
+//        borders.add(-1);
         if (CommonValues.LEG_MODE_PED.equalsIgnoreCase(mode)) {
             for (int d = 500; d < 3000; d += 500) borders.add(d);
         } else if (CommonValues.LEG_MODE_BIKE.equalsIgnoreCase(mode)) {
