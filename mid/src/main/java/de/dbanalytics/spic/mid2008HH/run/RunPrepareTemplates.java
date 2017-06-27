@@ -52,6 +52,17 @@ public class RunPrepareTemplates {
         TaskRunner.validatePersons(new ValidatePersonWeight(), refPersons);
         new FilterWeekday().apply(refPersons);
 
+        /***************************************************************/
+        //TODO: remove manual weight fix!
+        for (Person person : refPersons) {
+            String householdId = person.getId().split("\\.")[0];
+            if (householdId.equals("728784")) {
+                person.setAttribute(CommonKeys.PERSON_WEIGHT, "1");
+                logger.info(String.format("Overwriting weight for person %s.", person.getId()));
+            }
+        }
+        /***************************************************************/
+
         /** Remove misc types and impute all missing types */
         TaskRunner.run(new RemoveMiscActTypes(), refPersons);
         new ImputeActTypes(random).apply(refPersons);
