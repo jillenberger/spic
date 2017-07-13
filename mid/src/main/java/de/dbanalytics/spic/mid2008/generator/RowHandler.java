@@ -55,9 +55,9 @@ public abstract class RowHandler {
 		int lineCount = 1;
 		while((line = reader.readLine()) != null) {
 			String tokens[] = line.split(separator, -1);
-			
-			if(tokens.length - offset > keys.length) // -1 because rows are numbered
-				throw new RuntimeException(String.format("Line %s has more fields (%s) than available keys (%s).", lineCount, tokens.length, keys.length));
+
+            if (tokens.length - offset > keys.length)
+                throw new RuntimeException(String.format("Line %s has more fields (%s) than available keys (%s).", lineCount, tokens.length, keys.length));
 			
 			for(int i = offset; i < tokens.length; i++) {
 				attributes.put(keys[i - offset], tokens[i]);

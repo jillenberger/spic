@@ -18,7 +18,6 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
-import de.dbanalytics.devel.matrix2014.analysis.MatrixComparator;
 import de.dbanalytics.devel.matrix2014.config.MatrixAnalyzerConfigurator;
 import de.dbanalytics.devel.matrix2014.sim.GSVMatrixSampler;
 import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;

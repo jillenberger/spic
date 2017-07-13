@@ -19,18 +19,12 @@
 
 package de.dbanalytics.devel.matrix2014.config;
 
-import de.dbanalytics.devel.matrix2014.analysis.MatrixComparator;
-import de.dbanalytics.devel.matrix2014.analysis.MatrixDistanceCompare;
-import de.dbanalytics.devel.matrix2014.analysis.MatrixMarginalsCompare;
-import de.dbanalytics.devel.matrix2014.analysis.MatrixVolumeCompare;
 import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.HistogramWriter;
 import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
 import de.dbanalytics.spic.gis.*;
-import de.dbanalytics.spic.matrix.MatrixBuilderFactory;
-import de.dbanalytics.spic.matrix.NumericMatrix;
-import de.dbanalytics.spic.matrix.NumericMatrixIO;
+import de.dbanalytics.spic.matrix.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
 import org.matsim.core.config.ConfigGroup;

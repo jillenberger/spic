@@ -21,6 +21,7 @@ package de.dbanalytics.spic.mid2008HH.sim;
 
 import de.dbanalytics.spic.analysis.Histogram;
 import de.dbanalytics.spic.sim.RelativeErrorFunction;
+import de.dbanalytics.spic.util.Configurator;
 import gnu.trove.map.TDoubleDoubleMap;
 import org.matsim.core.config.ConfigGroup;
 

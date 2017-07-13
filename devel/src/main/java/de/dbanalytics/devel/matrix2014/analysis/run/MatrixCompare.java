@@ -19,10 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.analysis.run;
 
-import de.dbanalytics.devel.matrix2014.analysis.MatrixDistanceCompare;
 import de.dbanalytics.devel.matrix2014.analysis.MatrixIntraVolumeShareCompare;
-import de.dbanalytics.devel.matrix2014.analysis.MatrixMarginalsCompare;
-import de.dbanalytics.devel.matrix2014.analysis.MatrixVolumeCompare;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
