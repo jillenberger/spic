@@ -343,7 +343,7 @@ public class Simulator {
 //                .setHistogramWriter(histogramWriter)
 //                .setLegPredicate(DEFAULT_LEG_PREDICATE, DEFAULT_LEG_PREDICATE_NAME)
 //                .setUseWeights(USE_WEIGTHS)
-//                .build(fData.getAll());
+//                .getEdges(fData.getAll());
 //        task.addComponent(actDist);
     }
 

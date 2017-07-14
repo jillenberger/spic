@@ -200,16 +200,16 @@ public class Simulator {
         hamiltonianAnalyzers = new ConcurrentAnalyzerTask<>();
         analyzerTasks.addComponent(new AnalyzerTaskGroup<>(hamiltonianAnalyzers, ioContext, "hamiltonian"));
 
-//        GeoDistanceZoneDensityHamiltonian.build(this, config);
+//        GeoDistanceZoneDensityHamiltonian.getEdges(this, config);
         GeoDistanceZoneHamiltonian2.build(this, config);
-//        GeoDistanceZoneHamiltonianDrive.build(this, config);
-//        PurposeHamiltonian.build(this, config);
-//        GeoDistanceTypeHamiltonian.build(this, config);
-//        GeoDistanceHamiltonian.build(this, config);
-//        GeoDistanceLAU2Hamiltonian.build(this, config);
-//        MeanDistanceHamiltonian.build(this, config);
-//        MeanZoneDistanceHamiltonian.build(this, config);
-//        ODCalibratorHamiltonian.build(this, config);
+//        GeoDistanceZoneHamiltonianDrive.getEdges(this, config);
+//        PurposeHamiltonian.getEdges(this, config);
+//        GeoDistanceTypeHamiltonian.getEdges(this, config);
+//        GeoDistanceHamiltonian.getEdges(this, config);
+//        GeoDistanceLAU2Hamiltonian.getEdges(this, config);
+//        MeanDistanceHamiltonian.getEdges(this, config);
+//        MeanZoneDistanceHamiltonian.getEdges(this, config);
+//        ODCalibratorHamiltonian.getEdges(this, config);
 
         engineListeners.addComponent(new HamiltonianLogger(hamiltonian,
                 loggingInterval,
@@ -227,7 +227,7 @@ public class Simulator {
         Extend the analyzer
          */
         ExtendedAnalyzerBuilder.build(this, config);
-//        ExtendedAnalyzerBuilderDrive.build(this, config);
+//        ExtendedAnalyzerBuilderDrive.getEdges(this, config);
 
 
         engineListeners.addComponent(new AnalyzerListener(analyzerTasks, ioContext, dumpInterval));

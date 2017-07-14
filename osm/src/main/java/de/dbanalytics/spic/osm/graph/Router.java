@@ -34,16 +34,15 @@ import com.graphhopper.storage.CHGraphImpl;
 import com.graphhopper.storage.GraphHopperStorage;
 import com.graphhopper.storage.index.LocationIndex;
 import com.graphhopper.storage.index.QueryResult;
+import com.graphhopper.util.EdgeIteratorState;
 import com.graphhopper.util.Parameters;
-import com.graphhopper.util.PointList;
-import com.graphhopper.util.shapes.GHPoint;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.core.model.iface.EntityContainer;
 import de.topobyte.osm4j.core.model.iface.EntityType;
 import de.topobyte.osm4j.core.model.iface.OsmNode;
 import de.topobyte.osm4j.xml.dynsax.OsmXmlIterator;
+import gnu.trove.list.array.TLongArrayList;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -80,6 +79,7 @@ public class Router {
 
         GraphHopperStorage graph = hopper.getGraphHopperStorage();
 
+
         LocationIndex index = hopper.getLocationIndex();
 
         AlgorithmOptions algoOpts = AlgorithmOptions.start().algorithm(Parameters.Algorithms.ASTAR_BI).
@@ -101,12 +101,26 @@ public class Router {
 
         Path path = algorithm.calcPath(fromQR.getClosestNode(), toQR.getClosestNode());
 
-        Router router = new Router(new FileInputStream(osmFile));
+//        Router router = new Router(new FileInputStream(osmFile));
 
-        PointList plist = path.calcPoints();
-        for (GHPoint point : plist) {
-            long id = router.getNode(point.getLon(), point.getLat());
-            System.out.println(String.valueOf(id));
+//        PointList plist = path.calcPoints();
+//        for (GHPoint point : plist) {
+//            long id = router.getNode(point.getLon(), point.getLat());
+//            System.out.println(String.valueOf(id));
+//        }
+
+
+        Edge2Node edge2Node = new Edge2Node(graph, osmFile);
+
+
+        for (EdgeIteratorState edge : path.calcEdges()) {
+
+            TLongArrayList nodes = edge2Node.getNodes(edge.getEdge());
+            if (nodes != null) {
+                System.out.println(edge.getEdge() + " -> " + nodes.toString());
+            } else {
+                System.err.println("Not found");
+            }
         }
     }
 
