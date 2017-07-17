@@ -31,14 +31,18 @@ import java.util.Set;
  */
 public class NumericMatrixTxtIO {
 
-    private static final String HEADER = "from\tto\tvalue";
+    private static final String HEADER_TAB = "from\tto\tvalue";
+
+    private static final String HEADER_CSV = "from;to;volume"; //TODO: make naming consitent
 
     private static final String TAB = "\t";
+
+    private static final String SEMICOLON = ";";
 
     public static void write(NumericMatrix m, String file) throws IOException {
         BufferedWriter writer = IOUtils.getBufferedWriter(file);
 
-        writer.write(HEADER);
+        writer.write(HEADER_TAB);
         writer.newLine();
 
         Set<String> keys = m.keys();
@@ -62,9 +66,16 @@ public class NumericMatrixTxtIO {
         BufferedReader reader = IOUtils.getBufferedReader(file);
 
         String line = reader.readLine();
-        if(line.startsWith(HEADER)) {
-            while((line = reader.readLine()) != null) {
+        if (line.toLowerCase().startsWith(HEADER_TAB)) {
+            while ((line = reader.readLine()) != null) {
                 String tokens[] = line.split(TAB);
+
+                Double val = new Double(tokens[2]);
+                m.set(tokens[0], tokens[1], val);
+            }
+        } else if (line.toLowerCase().startsWith(HEADER_CSV)) {
+            while ((line = reader.readLine()) != null) {
+                String tokens[] = line.split(SEMICOLON);
 
                 Double val = new Double(tokens[2]);
                 m.set(tokens[0], tokens[1], val);

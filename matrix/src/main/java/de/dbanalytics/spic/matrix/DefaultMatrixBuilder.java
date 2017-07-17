@@ -69,6 +69,11 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
     }
 
     private String getZoneId(String facilityId) {
+        if (facilityId == null) {
+            logger.warn("Facility id must not be null!");
+            return null;
+        }
+
         String zoneId = zoneIds.get(facilityId);
 
         if(zoneId == null) {
@@ -95,7 +100,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
         logger.debug("Start building matrix...");
         int n = persons.size() / 10000;
         n = Math.min(n, Executor.getFreePoolSize());
-        //n = Math.max(2, n);
+        n = Math.max(1, n);
         List<? extends Person>[] segments = org.matsim.contrib.common.collections.CollectionUtils.split(persons, n);
 
         List<RunThread> runnables = new ArrayList<>(n);
@@ -105,18 +110,25 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
         Executor.submitAndWait(runnables);
 
-        int errors = 0;
+        int noZoneFound = 0;
+        int nullIds = 0;
         Set<NumericMatrix> matrices = new HashSet<>();
         for(RunThread runnable : runnables) {
             matrices.add(runnable.getMatrix());
-            errors += runnable.getErrors();
+            noZoneFound += runnable.getNoZoneFound();
+            nullIds += runnable.getNullId();
         }
         NumericMatrix m = new NumericMatrix();
         MatrixOperations.accumulate(matrices, m);
 
-        if(errors > 0) {
-            logger.warn(String.format("%s facilities cannot be located in a zone.", errors));
+        if (noZoneFound > 0) {
+            logger.warn(String.format("%s facilities cannot be located in a zone.", noZoneFound));
         }
+
+        if (nullIds > 0) {
+            logger.warn(String.format("%s null facilities ids.", nullIds));
+        }
+
         logger.debug("Done building matrix.");
         return m;
     }
@@ -131,7 +143,9 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
         private final boolean useWeights;
 
-        private int errors;
+        private int noZoneFound;
+
+        private int nullId;
 
         public RunThread(Collection<? extends Person> persons, Predicate<Segment> predicate, boolean useWeights) {
             this.persons = persons;
@@ -145,8 +159,12 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             return m;
         }
 
-        public int getErrors() {
-            return  errors;
+        public int getNoZoneFound() {
+            return noZoneFound;
+        }
+
+        public int getNullId() {
+            return nullId;
         }
 
         @Override
@@ -160,17 +178,22 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                             Segment next = episode.getActivities().get(i + 1);
 
                             String originFacId = prev.getAttribute(CommonKeys.ACTIVITY_FACILITY);
-                            String origin = getZoneId(originFacId);
-
                             String destFacId = next.getAttribute(CommonKeys.ACTIVITY_FACILITY);
-                            String dest = getZoneId(destFacId);
 
-                            if (origin != null && dest != null) {
-                                double w = 1.0;
-                                if(useWeights) w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
-                                m.add(origin, dest, w);
+                            if (originFacId != null && destFacId != null) {
+                                String origin = getZoneId(originFacId);
+                                String dest = getZoneId(destFacId);
+
+                                if (origin != null && dest != null) {
+                                    double w = 1.0;
+                                    if (useWeights)
+                                        w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+                                    m.add(origin, dest, w);
+                                } else {
+                                    noZoneFound++;
+                                }
                             } else {
-                                errors++;
+                                nullId++;
                             }
                         }
                     }

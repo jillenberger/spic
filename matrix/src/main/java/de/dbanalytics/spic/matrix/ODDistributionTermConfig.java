@@ -68,7 +68,8 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
             throw new RuntimeException("Matrix file must be specified.");
         } else {
             NumericMatrix m = NumericMatrixIO.read(file);
-            return new ODDistributionTermBuilder(m, facilities, zones);
+            ODDistributionTermBuilder builder = new ODDistributionTermBuilder(m, facilities, zones);
+            return configure(builder);
         }
 
 
