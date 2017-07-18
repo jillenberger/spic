@@ -35,6 +35,8 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
 
     private static final String LOG_INTERVAL = "log_interval";
 
+    private static final String DEBUG_INTERVAL = "debug_interval";
+
     private static final String NAME = "name";
 
     private static final String START_ITERATION = "start_iteration";
@@ -88,6 +90,10 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
         /** logging interval */
         value = config.getValue(LOG_INTERVAL);
         if (value != null) builder.logInterval((long) Double.parseDouble(value));
+
+        /** debug interval */
+        value = config.getValue(DEBUG_INTERVAL);
+        if (value != null) builder.debugInterval((long) Double.parseDouble(value));
 
         /** name */
         value = config.getValue(NAME);

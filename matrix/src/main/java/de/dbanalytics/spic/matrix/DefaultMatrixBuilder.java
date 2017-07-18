@@ -110,23 +110,28 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
         Executor.submitAndWait(runnables);
 
-        int noZoneFound = 0;
-        int nullIds = 0;
+        int countNoZones = 0;
+        int countNullIds = 0;
+        int size = 0;
         Set<NumericMatrix> matrices = new HashSet<>();
         for(RunThread runnable : runnables) {
             matrices.add(runnable.getMatrix());
-            noZoneFound += runnable.getNoZoneFound();
-            nullIds += runnable.getNullId();
+            countNoZones += runnable.getCountNoZones();
+            countNullIds += runnable.getCountNullIds();
+            size += runnable.getSize();
         }
         NumericMatrix m = new NumericMatrix();
         MatrixOperations.accumulate(matrices, m);
 
-        if (noZoneFound > 0) {
-            logger.warn(String.format("%s facilities cannot be located in a zone.", noZoneFound));
+        if (countNoZones > 0) {
+            logger.warn(String.format(Locale.US, "%s of %s (%.2f %%) od-pairs skipped because at least one facility cannot be located in a zone.",
+                    countNoZones,
+                    size + countNoZones,
+                    countNoZones / ((double) size + countNoZones) * 100));
         }
 
-        if (nullIds > 0) {
-            logger.warn(String.format("%s null facilities ids.", nullIds));
+        if (countNullIds > 0) {
+            logger.warn(String.format("%s null facilities ids.", countNullIds));
         }
 
         logger.debug("Done building matrix.");
@@ -143,9 +148,11 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
         private final boolean useWeights;
 
-        private int noZoneFound;
+        private int countNoZones;
 
-        private int nullId;
+        private int countNullIds;
+
+        private int size;
 
         public RunThread(Collection<? extends Person> persons, Predicate<Segment> predicate, boolean useWeights) {
             this.persons = persons;
@@ -159,12 +166,16 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             return m;
         }
 
-        public int getNoZoneFound() {
-            return noZoneFound;
+        public int getCountNoZones() {
+            return countNoZones;
         }
 
-        public int getNullId() {
-            return nullId;
+        public int getCountNullIds() {
+            return countNullIds;
+        }
+
+        private int getSize() {
+            return size;
         }
 
         @Override
@@ -189,11 +200,12 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                                     if (useWeights)
                                         w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
                                     m.add(origin, dest, w);
+                                    size++;
                                 } else {
-                                    noZoneFound++;
+                                    countNoZones++;
                                 }
                             } else {
-                                nullId++;
+                                countNullIds++;
                             }
                         }
                     }

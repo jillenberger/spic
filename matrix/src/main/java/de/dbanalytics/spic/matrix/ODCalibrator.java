@@ -30,6 +30,7 @@ import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.sim.AttributeChangeListener;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.data.*;
+import gnu.trove.impl.Constants;
 import gnu.trove.iterator.TIntDoubleIterator;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.TIntDoubleHashMap;
@@ -41,6 +42,9 @@ import org.matsim.contrib.common.gis.DistanceCalculator;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 
@@ -328,22 +332,106 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
             rowIt.advance();
             TIntDoubleHashMap row = rowIt.value();
             int idx_i = rowIt.key();
-            Point p_i = index2Point.get(idx_i);
+            if (idx_i >= 0) {
+                Point p_i = index2Point.get(idx_i);
 
-            TIntDoubleIterator colIt = row.iterator();
-            for (int j = 0; j < row.size(); j++) {
-                colIt.advance();
-                int idx_j = colIt.key();
-                Point p_j = index2Point.get(idx_j);
 
-                double d = dCalc.distance(p_i, p_j);
-                if (d >= threshold) {
-                    sum += colIt.value();
+                TIntDoubleIterator colIt = row.iterator();
+                for (int j = 0; j < row.size(); j++) {
+                    colIt.advance();
+                    int idx_j = colIt.key();
+                    if (idx_j >= 0) {
+                        Point p_j = index2Point.get(idx_j);
+
+                        double d = dCalc.distance(p_i, p_j);
+                        if (d >= threshold) {
+                            sum += colIt.value();
+                        }
+                    }
                 }
             }
         }
 
         return sum;
+    }
+
+    public void debugDump(String filename) throws IOException {
+//        /** Collect all keys, including dummy keys */
+//        Set<Integer> keys = new HashSet<>();
+//        TIntObjectIterator<TIntDoubleHashMap> rowIt = refMatrix.iterator();
+//        for (int i = 0; i < refMatrix.size(); i++) {
+//            rowIt.advance();
+//            keys.add(rowIt.key());
+//
+//            int[] colKeys = rowIt.value().keys();
+//            for(int k = 0; k < colKeys.length; k++) {
+//                keys.add(colKeys[k]);
+//            }
+//        }
+//
+//        rowIt = simMatrix.iterator();
+//        for (int i = 0; i < simMatrix.size(); i++) {
+//            rowIt.advance();
+//            keys.add(rowIt.key());
+//
+//            int[] colKeys = rowIt.value().keys();
+//            for(int k = 0; k < colKeys.length; k++) {
+//                keys.add(colKeys[k]);
+//            }
+//        }
+
+        /** Write debug file */
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        writer.write("from\tto\tref\tsim\terror\th\tscale\todCount\tdistThres\tvolThres");
+        writer.newLine();
+
+        int[] keys = facility2Index.values();
+        for (int i : keys) {
+            Point p_i = index2Point.get(i);
+            for (int j : keys) {
+                Point p_j = index2Point.get(j);
+
+                double refVal = getCellValue(i, j, refMatrix);
+                double simVal = getCellValue(i, j, simMatrix);
+
+                if (refVal > 0 && simVal > 0) {
+                    /** zone indices */
+                    writer.write(String.valueOf(i));
+                    writer.write("\t");
+                    writer.write(String.valueOf(j));
+                    /** volumes */
+                    writer.write("\t");
+                    writer.write(String.valueOf(refVal));
+                    writer.write("\t");
+                    writer.write(String.valueOf(simVal));
+                    /** misc */
+                    writer.write("\t");
+                    writer.write(String.valueOf(calculateError(simVal, refVal)));
+                    writer.write("\t");
+                    writer.write(String.valueOf(hamiltonianValue));
+                    writer.write("\t");
+                    writer.write(String.valueOf(scaleFactor));
+                    writer.write("\t");
+                    writer.write(String.valueOf(odCount));
+                    /** od flags */
+                    writer.write("\t");
+                    if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) >= distanceThreshold) {
+                        writer.write("1");
+                    } else {
+                        writer.write("0");
+                    }
+                    writer.write("\t");
+                    if (refVal >= volumeThreshold) {
+                        writer.write("1");
+                    } else {
+                        writer.write("0");
+                    }
+
+                    writer.newLine();
+                }
+            }
+        }
+        writer.close();
     }
 
     public static class Builder {
@@ -356,7 +444,8 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
         public Builder(NumericMatrix refKeyMatrix, ZoneCollection zones, ActivityFacilities facilities) {
             Set<Zone> zoneSet = zones.getZones();
-            TObjectIntHashMap<String> id2Index = new TObjectIntHashMap<>(zoneSet.size());
+            TObjectIntHashMap<String> id2Index = new TObjectIntHashMap<>(zoneSet.size(), Constants.DEFAULT_LOAD_FACTOR, -1);
+
             index2Point = new TIntObjectHashMap<>();
 
             int index = 0;

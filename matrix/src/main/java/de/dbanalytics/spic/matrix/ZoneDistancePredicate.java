@@ -19,6 +19,7 @@
 package de.dbanalytics.spic.matrix;
 
 import com.vividsolutions.jts.geom.Point;
+import de.dbanalytics.spic.gis.Zone;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import org.matsim.contrib.common.gis.DistanceCalculator;
 import org.matsim.contrib.common.gis.OrthodromicDistanceCalculator;
@@ -46,10 +47,17 @@ public class ZoneDistancePredicate implements ODPredicate<String, Double> {
 
     @Override
     public boolean test(String row, String col, Matrix<String, Double> matrix) {
-        Point p_i = zones.get(row).getGeometry().getCentroid();
-        Point p_j = zones.get(col).getGeometry().getCentroid();
-        double d = calculator.distance(p_i, p_j);
+        Zone z_i = zones.get(row);
+        Zone z_j = zones.get(col);
 
-        return (d >= threshold);
+        if (z_i != null && z_j != null) {
+            Point p_i = z_i.getGeometry().getCentroid();
+            Point p_j = z_j.getGeometry().getCentroid();
+            double d = calculator.distance(p_i, p_j);
+
+            return (d >= threshold);
+        } else {
+            return false;
+        }
     }
 }

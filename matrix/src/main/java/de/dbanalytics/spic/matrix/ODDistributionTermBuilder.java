@@ -31,6 +31,7 @@ import de.dbanalytics.spic.sim.AttributeChangeListenerComposite;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
 import org.apache.commons.lang3.tuple.Pair;
+import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
 import org.matsim.facilities.ActivityFacilities;
 
@@ -66,6 +67,8 @@ public class ODDistributionTermBuilder {
     private long startIteration = 0;
 
     private long logInterval = 0;
+
+    private long debugInterval = 0;
 
     private String name;
 
@@ -133,6 +136,11 @@ public class ODDistributionTermBuilder {
         return this;
     }
 
+    public ODDistributionTermBuilder debugInterval(long debugInterval) {
+        this.debugInterval = debugInterval;
+        return this;
+    }
+
     public ODDistributionTermBuilder name(String name) {
         this.name = name;
         return this;
@@ -184,7 +192,15 @@ public class ODDistributionTermBuilder {
                 ioContext.getRoot(),
                 startIteration));
 
-        /** */
+        if (debugInterval > 0 && engineListeners != null && ioContext != null) {
+            engineListeners.addComponent(new ODDistributionDebugger(
+                    calibrator,
+                    name + ".interState",
+                    ioContext.getPath(),
+                    debugInterval));
+        }
+
+        /** Add hamiltonian analyzer */
         if (analyzers != null) {
             AnalyzerTaskComposite<Pair<NumericMatrix, NumericMatrix>> composite = new AnalyzerTaskComposite<>();
 
@@ -209,6 +225,7 @@ public class ODDistributionTermBuilder {
             ActivityLocationLayer locationLayer = new ActivityLocationLayer(facilities);
             MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(locationLayer, zones), composite);
             analyzer.setVolumeThreshold(volumeThreshold);
+            analyzer.setNormPredicate(new ZoneDistancePredicate(zones, distanceThreshold, CartesianDistanceCalculator.getInstance()));
 
             analyzers.addComponent(analyzer);
         }
