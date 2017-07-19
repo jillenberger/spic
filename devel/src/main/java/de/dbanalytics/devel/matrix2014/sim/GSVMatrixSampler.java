@@ -29,6 +29,7 @@ import de.dbanalytics.spic.matrix.MatrixSampler;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.sim.MarkovEngineListener;
 import de.dbanalytics.spic.sim.data.CachedPerson;
+import de.dbanalytics.spic.spic2matsim.PlaceConverter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -53,7 +54,12 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
                             FileIOContext ioContext) {
 
         this.ioContext = ioContext;
-        ActivityLocationLayer activityLocationLayer = (ActivityLocationLayer) dataPool.get(ActivityLocationLayerLoader.KEY);
+//        ActivityLocationLayer activityLocationLayer = (ActivityLocationLayer) dataPool.get(ActivityLocationLayerLoader.KEY);
+        FacilityData facilityData = (FacilityData) dataPool.get(FacilityDataLoader.KEY);
+        PlaceConverter placeConverter = new PlaceConverter();
+        Set<Place> places = placeConverter.convert(facilityData.getAll());
+        PlaceIndex placeIndex = new PlaceIndex(places);
+
         ZoneData zoneData = (ZoneData) dataPool.get(ZoneDataLoader.KEY);
         ZoneCollection zones = zoneData.getLayer(layerName);
 
@@ -71,7 +77,7 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
                     purpose,
                     DirectionPredicate.OUTWARD,
                     random,
-                    activityLocationLayer,
+                    placeIndex,
                     zones,
                     start,
                     step));
@@ -81,7 +87,7 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
                     purpose,
                     DirectionPredicate.RETURN,
                     random,
-                    activityLocationLayer,
+                    placeIndex,
                     zones,
                     start,
                     step));
@@ -92,7 +98,7 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
                                                                String purpose,
                                                                String direction,
                                                                Random random,
-                                                               ActivityLocationLayer locarions,
+                                                               PlaceIndex places,
                                                                ZoneCollection zones,
                                                                long start,
                                                                long step) {
@@ -105,7 +111,7 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
                 outPredicate,
                 modePredicate);
 
-        MatrixSampler builder = new MatrixSampler(new DefaultMatrixBuilder(locarions, zones), start, step);
+        MatrixSampler builder = new MatrixSampler(new DefaultMatrixBuilder(places, zones), start, step);
         builder.setLegPredicate(andPredicate);
         builder.setUseWeights(true);
 

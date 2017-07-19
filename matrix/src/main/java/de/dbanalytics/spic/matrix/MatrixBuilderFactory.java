@@ -19,7 +19,7 @@
 package de.dbanalytics.spic.matrix;
 
 
-import de.dbanalytics.spic.gis.ActivityLocationLayer;
+import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneCollection;
 
 /**
@@ -27,6 +27,6 @@ import de.dbanalytics.spic.gis.ZoneCollection;
  */
 public interface MatrixBuilderFactory {
 
-    MatrixBuilder create(ActivityLocationLayer locations, ZoneCollection zones);
+    MatrixBuilder create(PlaceIndex placeIndex, ZoneCollection zones);
 
 }

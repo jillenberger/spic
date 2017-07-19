@@ -42,8 +42,12 @@ public class PlaceIndex {
     private Map<String, Set<Place>> activityIndex;
 
     public PlaceIndex(Set<Place> places) {
-        this.places = places;
+        this.places = Collections.unmodifiableSet(places);
         spatialActivityIndex = new HashMap<>();
+    }
+
+    public Set<Place> get() {
+        return places;
     }
 
     public Place get(String id) {
@@ -72,38 +76,48 @@ public class PlaceIndex {
         return new HashSet<>(tree.queryInside(geometry));
     }
 
-    private void initIdIndex() {
-        idIndex = new HashMap<>(places.size());
-        for (Place place : places) idIndex.put(place.getId(), place);
-    }
-
-    private void initActivityIndex() {
-        activityIndex = new HashMap<>();
-        for (Place place : places) {
-            for (String activity : place.getActivities()) {
-                Set<Place> set = activityIndex.get(activity);
-                if (set == null) {
-                    set = new HashSet<>();
-                    activityIndex.put(activity, set);
-                }
-                set.add(place);
-            }
+    private synchronized void initIdIndex() {
+        if (idIndex == null) {
+            Map<String, Place> tmp = new HashMap<>(places.size());
+            for (Place place : places) tmp.put(place.getId(), place);
+            idIndex = tmp;
         }
     }
 
-    private void initAttributeIndex() {
-        attributeIndex = new AttributableIndex(places);
+    private synchronized void initActivityIndex() {
+        if (activityIndex == null) {
+            Map<String, Set<Place>> tmp = new HashMap<>();
+            for (Place place : places) {
+                for (String activity : place.getActivities()) {
+                    Set<Place> set = tmp.get(activity);
+                    if (set == null) {
+                        set = new HashSet<>();
+                        tmp.put(activity, set);
+                    }
+                    set.add(place);
+                }
+            }
+
+            activityIndex = tmp;
+        }
     }
 
-    private void initSpatialIndex() {
-        spatialIndex = createSpatialIndex(places);
+    private synchronized void initAttributeIndex() {
+        if (activityIndex == null) attributeIndex = new AttributableIndex(places);
     }
 
-    private SpatialIndex<Place> initSpatialActivityIndex(String activity) {
-        Set<Place> set = getForActivity(activity);
-        if (set == null) set = new HashSet<>();
-        SpatialIndex<Place> tree = createSpatialIndex(set);
-        spatialActivityIndex.put(activity, tree);
+    private synchronized void initSpatialIndex() {
+        if (spatialIndex == null) spatialIndex = createSpatialIndex(places);
+    }
+
+    private synchronized SpatialIndex<Place> initSpatialActivityIndex(String activity) {
+        SpatialIndex<Place> tree = spatialActivityIndex.get(activity);
+        if (tree == null) {
+            Set<Place> set = getForActivity(activity);
+            if (set == null) set = new HashSet<>();
+            tree = createSpatialIndex(set);
+            spatialActivityIndex.put(activity, tree);
+        }
         return tree;
     }
 

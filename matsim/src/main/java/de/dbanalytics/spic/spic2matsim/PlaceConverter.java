@@ -20,27 +20,32 @@
 package de.dbanalytics.spic.spic2matsim;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.gis.GeoTransformer;
 import de.dbanalytics.spic.gis.Place;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
+import org.matsim.facilities.ActivityOption;
 import org.matsim.facilities.FacilitiesUtils;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author jillenberger
  */
 public class PlaceConverter {
 
-    private final ActivityFacilities facilities;
-
     private GeoTransformer transformer;
 
+    private GeometryFactory geometryFactory;
+
     public PlaceConverter() {
-        facilities = FacilitiesUtils.createActivityFacilities();
         transformer = GeoTransformer.identityTransformer();
     }
 
@@ -48,7 +53,7 @@ public class PlaceConverter {
         this.transformer = transformer;
     }
 
-    public ActivityFacility convert(Place place) {
+    public ActivityFacility convert(Place place, ActivityFacilities facilities) {
         Id<ActivityFacility> id = Id.create(place.getId(), ActivityFacility.class);
         Coordinate coordinate = place.getGeometry().getCoordinate();
         transformer.forward(coordinate);
@@ -64,7 +69,28 @@ public class PlaceConverter {
     }
 
     public ActivityFacilities convert(Collection<Place> places) {
-        places.stream().forEach(place -> facilities.addActivityFacility(convert(place)));
+        ActivityFacilities facilities = FacilitiesUtils.createActivityFacilities();
+        places.stream().forEach(place -> facilities.addActivityFacility(convert(place, facilities)));
         return facilities;
+    }
+
+    public Place convert(ActivityFacility facility) {
+        Point point = geometryFactory.createPoint(new Coordinate(facility.getCoord().getX(), facility.getCoord().getY()));
+        transformer.forward(point);
+
+        Place place = new Place(facility.getId().toString(), point);
+        for (ActivityOption option : facility.getActivityOptions().values()) place.addActivity(option.getType());
+
+        return place;
+    }
+
+    public Set<Place> convert(ActivityFacilities facilities) {
+        geometryFactory = JTSFactoryFinder.getGeometryFactory();
+        Set<Place> places = new HashSet<>(facilities.getFacilities().size());
+        for (ActivityFacility facility : facilities.getFacilities().values()) {
+            places.add(convert(facility));
+        }
+
+        return places;
     }
 }

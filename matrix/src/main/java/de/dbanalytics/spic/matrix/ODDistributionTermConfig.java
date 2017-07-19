@@ -19,10 +19,10 @@
 
 package de.dbanalytics.spic.matrix;
 
+import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.util.Configurator;
 import org.matsim.core.config.ConfigGroup;
-import org.matsim.facilities.ActivityFacilities;
 
 /**
  * @author johannes
@@ -53,13 +53,13 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
 
     private static final String MATRIX_FILE = "matrix_file";
 
-    private ActivityFacilities facilities;
+    private PlaceIndex placeIndex;
 
     private ZoneCollection zones;
 
-    public ODDistributionTermConfig(ConfigGroup config, ActivityFacilities facilities, ZoneCollection zones) {
+    public ODDistributionTermConfig(ConfigGroup config, PlaceIndex placeIndex, ZoneCollection zones) {
         super(config);
-        this.facilities = facilities;
+        this.placeIndex = placeIndex;
         this.zones = zones;
     }
 
@@ -70,7 +70,7 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
             throw new RuntimeException("Matrix file must be specified.");
         } else {
             NumericMatrix m = NumericMatrixIO.read(file);
-            ODDistributionTermBuilder builder = new ODDistributionTermBuilder(m, facilities, zones);
+            ODDistributionTermBuilder builder = new ODDistributionTermBuilder(m, placeIndex, zones);
             return configure(builder);
         }
 

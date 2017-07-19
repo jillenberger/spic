@@ -27,9 +27,11 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.matrix.*;
 import de.dbanalytics.spic.sim.PopulationWriter;
+import de.dbanalytics.spic.spic2matsim.PlaceConverter;
 import org.matsim.core.config.Config;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author jillenberger
@@ -40,7 +42,7 @@ public class ExtendedAnalyzerBuilder {
         AnalyzerTaskComposite<Collection<? extends Person>> task = engine.getAnalyzerTasks();
 
         ZoneData zoneData = (ZoneData) engine.getDataPool().get(ZoneDataLoader.KEY);
-        ActivityLocationLayer locations = (ActivityLocationLayer) engine.getDataPool().get(ActivityLocationLayerLoader.KEY);
+//        ActivityLocationLayer locations = (ActivityLocationLayer) engine.getDataPool().get(ActivityLocationLayerLoader.KEY);
 
         DefaultMatrixBuilderFactory matrixBuilderFactory = new DefaultMatrixBuilderFactory();
         /*
@@ -74,7 +76,12 @@ public class ExtendedAnalyzerBuilder {
         /*
         matrix writer
          */
-        MatrixBuilder tomtomBuilder = matrixBuilderFactory.create(locations, tomtomZones);
+        FacilityData facilityData = (FacilityData) engine.getDataPool().get(FacilityDataLoader.KEY);
+        PlaceConverter placeConverter = new PlaceConverter();
+        Set<Place> places = placeConverter.convert(facilityData.getAll());
+        PlaceIndex placeIndex = new PlaceIndex(places);
+
+        MatrixBuilder tomtomBuilder = matrixBuilderFactory.create(placeIndex, tomtomZones);
         tomtomBuilder.setLegPredicate(engine.getLegPredicate());
         tomtomBuilder.setUseWeights(engine.getUseWeights());
 
@@ -116,7 +123,7 @@ public class ExtendedAnalyzerBuilder {
         /*
         matrix writer
          */
-        MatrixBuilder mBuilder = nuts3Sampler.create(locations, tomtomZones);
+        MatrixBuilder mBuilder = nuts3Sampler.create(placeIndex, tomtomZones);
         mBuilder.setLegPredicate(engine.getLegPredicate());
         mBuilder.setUseWeights(engine.getUseWeights());
         matrixWriter = new MatrixWriter(mBuilder, engine.getIOContext());

@@ -24,13 +24,12 @@ import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.HistogramWriter;
 import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.gis.ActivityLocationLayer;
+import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.sim.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
-import org.matsim.facilities.ActivityFacilities;
 
 import java.util.Collection;
 
@@ -39,7 +38,7 @@ import java.util.Collection;
  */
 public class ODDistributionTermBuilder {
 
-    private ActivityFacilities facilities;
+    private PlaceIndex placeIndex;
 
     private ZoneCollection zones;
 
@@ -77,9 +76,9 @@ public class ODDistributionTermBuilder {
 
     private AnalyzerTaskComposite<Collection<? extends Person>> analyzers;
 
-    public ODDistributionTermBuilder(NumericMatrix refMatrix, ActivityFacilities facilities, ZoneCollection zones) {
+    public ODDistributionTermBuilder(NumericMatrix refMatrix, PlaceIndex placeIndex, ZoneCollection zones) {
         this.refMatrix = refMatrix;
-        this.facilities = facilities;
+        this.placeIndex = placeIndex;
         this.zones = zones;
     }
 
@@ -164,7 +163,7 @@ public class ODDistributionTermBuilder {
     }
 
     public Hamiltonian build() {
-        ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, facilities).build();
+        ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, placeIndex.get()).build();
 
         calibrator.setDistanceThreshold(distanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);
@@ -219,8 +218,8 @@ public class ODDistributionTermBuilder {
             composite.addComponent(marTask);
 
             DefaultMatrixBuilderFactory factory = new DefaultMatrixBuilderFactory();
-            ActivityLocationLayer locationLayer = new ActivityLocationLayer(facilities);
-            MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(locationLayer, zones), composite);
+//            ActivityLocationLayer locationLayer = new ActivityLocationLayer(placeIndex);
+            MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(placeIndex, zones), composite);
             analyzer.setVolumeThreshold(volumeThreshold);
             analyzer.setNormPredicate(new ZoneDistancePredicate(zones, distanceThreshold, CartesianDistanceCalculator.getInstance()));
 

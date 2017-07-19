@@ -22,9 +22,11 @@ import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixTxtIO;
 import de.dbanalytics.spic.matrix.ODCalibrator;
+import de.dbanalytics.spic.spic2matsim.PlaceConverter;
 import org.matsim.core.config.ConfigGroup;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author jillenberger
@@ -63,7 +65,10 @@ public class ODCalibratorConfigurator {
         ZoneData zoneData = (ZoneData) dataPool.get(ZoneDataLoader.KEY);
         ZoneCollection zones = zoneData.getLayer(layer);
 
-        ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, facilityData.getAll()).build();
+        PlaceConverter placeConverter = new PlaceConverter();
+        Set<Place> places = placeConverter.convert(facilityData.getAll());
+
+        ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, places).build();
         calibrator.setDistanceThreshold(distanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);
 

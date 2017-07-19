@@ -19,12 +19,12 @@
 
 package de.dbanalytics.spic.matrix;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.Zone;
 import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.sim.AttributeChangeListener;
@@ -39,8 +39,6 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.gis.DistanceCalculator;
-import org.matsim.facilities.ActivityFacilities;
-import org.matsim.facilities.ActivityFacility;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -55,11 +53,11 @@ import java.util.Set;
 public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     private final static Logger logger = Logger.getLogger(ODCalibrator.class);
-    private final TObjectIntHashMap<ActivityFacility> facility2Index;
+    private final TObjectIntHashMap<Place> place2Index;
     private final TIntObjectHashMap<Point> index2Point;
     private final TIntObjectHashMap<TIntDoubleHashMap> refMatrix;
     private final long rescaleInterval = (long) 1e7;
-    private Object facilityDataKey;
+    private Object placeDataKey;
     private TIntObjectHashMap<TIntDoubleHashMap> simMatrix;
     private double hamiltonianValue;
     private double scaleFactor;
@@ -78,10 +76,10 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     private int odCount;
 
-    public ODCalibrator(TIntObjectHashMap<TIntDoubleHashMap> refMatrix, TObjectIntHashMap<ActivityFacility>
-            facility2Index, TIntObjectHashMap<Point> index2Point) {
+    public ODCalibrator(TIntObjectHashMap<TIntDoubleHashMap> refMatrix, TObjectIntHashMap<Place>
+            place2Index, TIntObjectHashMap<Point> index2Point) {
         this.refMatrix = refMatrix;
-        this.facility2Index = facility2Index;
+        this.place2Index = place2Index;
         this.index2Point = index2Point;
         this.distanceThreshold = 0;
     }
@@ -134,8 +132,8 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     private void initSimMatrix(Collection<? extends CachedPerson> persons) {
         logger.debug("Initializing simulation matrix...");
 
-        if (this.facilityDataKey == null)
-            this.facilityDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
+        if (this.placeDataKey == null)
+            this.placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
 
         simMatrix = new TIntObjectHashMap<>();
 
@@ -152,11 +150,11 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                         CachedSegment origin = (CachedSegment) episode.getActivities().get(i - 1);
                         CachedSegment destination = (CachedSegment) episode.getActivities().get(i);
 
-                        ActivityFacility originFac = (ActivityFacility) origin.getData(facilityDataKey);
-                        ActivityFacility destinationFac = (ActivityFacility) destination.getData(facilityDataKey);
+                        Place origPlace = (Place) origin.getData(placeDataKey);
+                        Place destPlace = (Place) destination.getData(placeDataKey);
 
-                        int idx_i = facility2Index.get(originFac);
-                        int idx_j = facility2Index.get(destinationFac);
+                        int idx_i = place2Index.get(origPlace);
+                        int idx_j = place2Index.get(destPlace);
 
                         adjustCellValue(idx_i, idx_j, weight, simMatrix);
                     }
@@ -170,9 +168,9 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     @Override
     public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if (simMatrix != null) {
-            if (this.facilityDataKey.equals(dataKey)) {
-                if (this.facilityDataKey == null)
-                    this.facilityDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
+            if (this.placeDataKey.equals(dataKey)) {
+                if (this.placeDataKey == null)
+                    this.placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
 
                 if(weightDataKey == null)
                     weightDataKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
@@ -188,37 +186,27 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                 }
 
                 CachedSegment act = (CachedSegment) element;
-                int oldIdx = facility2Index.get(oldValue);
-                int newIdx = facility2Index.get(newValue);
+                int oldIdx = place2Index.get(oldValue);
+                int newIdx = place2Index.get(newValue);
             /*
             if there is a preceding trip...
              */
                 CachedSegment toLeg = (CachedSegment) act.previous();
                 if (toLeg != null && (predicate == null || predicate.test(toLeg))) {
                     CachedSegment prevAct = (CachedSegment) toLeg.previous();
-                    ActivityFacility prevFac = (ActivityFacility) prevAct.getData(facilityDataKey);
+                    Place fromPlace = (Place) prevAct.getData(placeDataKey);
 
-                    int i = facility2Index.get(prevFac);
+                    int i = place2Index.get(fromPlace);
                     int j = oldIdx;
-
-                    //Point p_i = index2Point.get(i);
-                    //Point p_j = index2Point.get(j);
 
                     double w = 1.0;
                     if(useWeights) w = (Double)toLeg.getData(weightDataKey);
 
                     double diff1 = changeCellContent(i, j, -w);
-                    //if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) < distanceThreshold) {
-                    //    diff1 = 0;
-                   // }
 
                     j = newIdx;
-                    //p_j = index2Point.get(j);
 
                     double diff2 = changeCellContent(i, j, w);
-                    //if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) < distanceThreshold) {
-                    //    diff2 = 0;
-                    //}
 
                     hamiltonianValue += diff1 + diff2;
                 }
@@ -228,29 +216,19 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                 CachedSegment fromLeg = (CachedSegment) act.next();
                 if (fromLeg != null && (predicate == null || predicate.test(fromLeg))) {
                     CachedSegment nextAct = (CachedSegment) fromLeg.next();
-                    ActivityFacility nextFac = (ActivityFacility) nextAct.getData(facilityDataKey);
+                    Place toPlace = (Place) nextAct.getData(placeDataKey);
 
                     int i = oldIdx;
-                    int j = facility2Index.get(nextFac);
-
-                    //Point p_i = index2Point.get(i);
-                    //Point p_j = index2Point.get(j);
+                    int j = place2Index.get(toPlace);
 
                     double w = 1.0;
                     if(useWeights) w = (Double)fromLeg.getData(weightDataKey);
 
                     double diff1 = changeCellContent(i, j, -w);
-                    //if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) < distanceThreshold) {
-                    //    diff1 = 0;
-                    //}
 
                     i = newIdx;
-                    //p_i = index2Point.get(i);
 
                     double diff2 = changeCellContent(i, j, w);
-                    //if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) < distanceThreshold) {
-                    //    diff2 = 0;
-                    //}
 
                     hamiltonianValue += diff1 + diff2;
                 }
@@ -362,7 +340,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
         writer.write("from\tto\tref\tsim\terror\th\tscale\todCount\tdistThres\tvolThres");
         writer.newLine();
 
-        int[] tmpkeys = facility2Index.values();
+        int[] tmpkeys = place2Index.values();
         Set<Integer> keys = new HashSet<>();
         for (int i = 0; i < tmpkeys.length; i++) keys.add(tmpkeys[i]);
 
@@ -418,11 +396,11 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
         private final TIntObjectHashMap<TIntDoubleHashMap> refMatrix;
 
-        private final TObjectIntHashMap<ActivityFacility> facility2Index;
+        private final TObjectIntHashMap<Place> facility2Index;
 
         private final TIntObjectHashMap<Point> index2Point;
 
-        public Builder(NumericMatrix refKeyMatrix, ZoneCollection zones, ActivityFacilities facilities) {
+        public Builder(NumericMatrix refKeyMatrix, ZoneCollection zones, Collection<Place> facilities) {
             Set<Zone> zoneSet = zones.getZones();
             TObjectIntHashMap<String> id2Index = new TObjectIntHashMap<>(zoneSet.size(), Constants.DEFAULT_LOAD_FACTOR, -1);
 
@@ -438,8 +416,8 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
             facility2Index = new TObjectIntHashMap<>();
 
-            for(ActivityFacility fac : facilities.getFacilities().values()) {
-                Zone zone = zones.get(new Coordinate(fac.getCoord().getX(), fac.getCoord().getY()));
+            for (Place fac : facilities) {
+                Zone zone = zones.get(fac.getGeometry().getCoordinate());
                 int idx = -1;
                 if (zone != null) idx = id2Index.get(zone.getAttribute(zones.getPrimaryKey()));
 

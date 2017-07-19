@@ -17,26 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.devel.matrix2014.matrix.io;
+package de.dbanalytics.spic.matrix;
 
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.gis.ActivityLocationLayer;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
-import de.dbanalytics.spic.matrix.DefaultMatrixBuilder;
-import de.dbanalytics.spic.matrix.NumericMatrix;
-import de.dbanalytics.spic.matrix.NumericMatrixIO;
+import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;
-import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
 import org.matsim.core.config.ConfigUtils;
-import org.matsim.core.scenario.ScenarioUtils;
-import org.matsim.facilities.FacilitiesReaderMatsimV1;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.Set;
 
@@ -53,13 +46,15 @@ public class Episodes2Matrix {
 
     private static final String ZONE_KEY_PARAM = "zoneKey";
 
-    private static final String FACILITY_FILE_PARAM = "facilityFile";
+    private static final String PLACES_FILE_PARAM = "placesFile";
 
     private static final String PERSONS_FILE_PARAM = "personsFile";
 
     private static final String MATRIX_FILE_PARAM = "matrixFile";
 
-    public static void main(String args[]) throws IOException {
+    private static final String SRID_PARAM = "srid";
+
+    public static void main(String args[]) throws IOException, XMLStreamException {
         final Config config = new Config();
         ConfigUtils.loadConfig(config, args[0]);
         ConfigGroup group = config.getModules().get(MODULE_NAME);
@@ -71,17 +66,17 @@ public class Episodes2Matrix {
                 null
         );
 
-        logger.info("Loading facilities...");
-        Scenario scenario = ScenarioUtils.createScenario(config);
-        FacilitiesReaderMatsimV1 reader = new FacilitiesReaderMatsimV1(scenario);
-        reader.readFile(group.getValue(FACILITY_FILE_PARAM));
+        logger.info("Loading places...");
+        PlacesIO placesReader = new PlacesIO();
+        placesReader.setGeoTransformer(GeoTransformer.WGS84toX(Integer.parseInt(config.getParam(MODULE_NAME, SRID_PARAM))));
+        Set<Place> places = placesReader.read(config.getParam(MODULE_NAME, PLACES_FILE_PARAM));
 
         logger.info("Loading persons...");
         Set<? extends Person> persons = PopulationIO.loadFromXML(group.getParams().get(PERSONS_FILE_PARAM), new PlainFactory());
 
         logger.info("Building matrix...");
         DefaultMatrixBuilder builder = new DefaultMatrixBuilder(
-                new ActivityLocationLayer(scenario.getActivityFacilities()),
+                new PlaceIndex(places),
                 zoneCollection);
         NumericMatrix m = builder.build(persons);
 

@@ -43,13 +43,9 @@ public class MatrixAnalyzer implements AnalyzerTask<Collection<? extends Person>
     private static final Logger logger = Logger.getLogger(MatrixAnalyzer.class);
 
     private static final String KEY = "matrix";
-
-    private NumericMatrix refMatrix;
-
     private final String matrixName;
-
     private final DefaultMatrixBuilder matrixBuilder;
-
+    private NumericMatrix refMatrix;
     private Predicate<Segment> predicate;
 
     private FileIOContext ioContext;
@@ -67,7 +63,9 @@ public class MatrixAnalyzer implements AnalyzerTask<Collection<? extends Person>
     public MatrixAnalyzer(ActivityLocationLayer facilities, ZoneCollection zones, NumericMatrix refMatrix, String name, String layerName) {
         this.refMatrix = refMatrix;
         this.matrixName = name;
-        matrixBuilder = new DefaultMatrixBuilder(facilities, zones);
+
+        matrixBuilder = new DefaultMatrixBuilder(null, zones);
+        throw new RuntimeException("Deprected code?");
     }
 
     public void setLegPredicate(Predicate<Segment> predicate) {

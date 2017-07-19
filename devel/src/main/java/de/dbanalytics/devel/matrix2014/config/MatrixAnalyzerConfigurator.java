@@ -25,9 +25,12 @@ import de.dbanalytics.spic.analysis.HistogramWriter;
 import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.matrix.*;
+import de.dbanalytics.spic.spic2matsim.PlaceConverter;
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
 import org.matsim.core.config.ConfigGroup;
+
+import java.util.Set;
 
 /**
  * @author johannes
@@ -63,7 +66,12 @@ public class MatrixAnalyzerConfigurator implements DataLoader {
     public Object load() {
         String zoneLayerName = config.getValue(ZONE_LAYER_NAME);
 
-        ActivityLocationLayer locationLayer = (ActivityLocationLayer) dataPool.get(ActivityLocationLayerLoader.KEY);
+//        ActivityLocationLayer locationLayer = (ActivityLocationLayer) dataPool.get(ActivityLocationLayerLoader.KEY);
+        FacilityData facilityData = (FacilityData) dataPool.get(FacilityDataLoader.KEY);
+        PlaceConverter placeConverter = new PlaceConverter();
+        Set<Place> places = placeConverter.convert(facilityData.getAll());
+        PlaceIndex placeIndex = new PlaceIndex(places);
+
         ZoneData zoneData = (ZoneData) dataPool.get(ZoneDataLoader.KEY);
         ZoneCollection zones = zoneData.getLayer(zoneLayerName);
 
@@ -95,7 +103,7 @@ public class MatrixAnalyzerConfigurator implements DataLoader {
         composite.addComponent(distTask);
         composite.addComponent(marTask);
 
-        MatrixComparator analyzer = new MatrixComparator(m, factory.create(locationLayer, zones), composite);
+        MatrixComparator analyzer = new MatrixComparator(m, factory.create(placeIndex, zones), composite);
         analyzer.setVolumeThreshold(threshold);
 
         return analyzer;
