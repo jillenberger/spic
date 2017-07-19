@@ -46,6 +46,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -356,36 +357,15 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     }
 
     public void debugDump(String filename) throws IOException {
-//        /** Collect all keys, including dummy keys */
-//        Set<Integer> keys = new HashSet<>();
-//        TIntObjectIterator<TIntDoubleHashMap> rowIt = refMatrix.iterator();
-//        for (int i = 0; i < refMatrix.size(); i++) {
-//            rowIt.advance();
-//            keys.add(rowIt.key());
-//
-//            int[] colKeys = rowIt.value().keys();
-//            for(int k = 0; k < colKeys.length; k++) {
-//                keys.add(colKeys[k]);
-//            }
-//        }
-//
-//        rowIt = simMatrix.iterator();
-//        for (int i = 0; i < simMatrix.size(); i++) {
-//            rowIt.advance();
-//            keys.add(rowIt.key());
-//
-//            int[] colKeys = rowIt.value().keys();
-//            for(int k = 0; k < colKeys.length; k++) {
-//                keys.add(colKeys[k]);
-//            }
-//        }
-
         /** Write debug file */
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
         writer.write("from\tto\tref\tsim\terror\th\tscale\todCount\tdistThres\tvolThres");
         writer.newLine();
 
-        int[] keys = facility2Index.values();
+        int[] tmpkeys = facility2Index.values();
+        Set<Integer> keys = new HashSet<>();
+        for (int i = 0; i < tmpkeys.length; i++) keys.add(tmpkeys[i]);
+
         for (int i : keys) {
             Point p_i = index2Point.get(i);
             for (int j : keys) {

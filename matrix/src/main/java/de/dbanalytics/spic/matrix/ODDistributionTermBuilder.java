@@ -26,10 +26,7 @@ import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.gis.ActivityLocationLayer;
 import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.sim.AnnealingHamiltonian;
-import de.dbanalytics.spic.sim.AttributeChangeListenerComposite;
-import de.dbanalytics.spic.sim.HamiltonianLogger;
-import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
+import de.dbanalytics.spic.sim.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
@@ -166,7 +163,7 @@ public class ODDistributionTermBuilder {
         return this;
     }
 
-    public ODCalibrator build() {
+    public Hamiltonian build() {
         ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, facilities).build();
 
         calibrator.setDistanceThreshold(distanceThreshold);
@@ -230,6 +227,6 @@ public class ODDistributionTermBuilder {
             analyzers.addComponent(analyzer);
         }
 
-        return calibrator;
+        return aTerm;
     }
 }
