@@ -1,23 +1,23 @@
 /*
  * (c) Copyright 2017 Johannes Illenberger
  *
- * Project de.dbanalytics.spic.*
+ *  Project de.dbanalytics.spic.*
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.processing;
+package de.dbanalytics.spic.osm.graph;
 
 import com.graphhopper.GraphHopper;
 import com.graphhopper.routing.AlgorithmOptions;
@@ -38,6 +38,7 @@ import com.graphhopper.util.Parameters;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.processing.SegmentTask;
 import gnu.trove.list.TIntList;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacility;
@@ -47,7 +48,7 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * @author johannes
  */
-public class RouteLegGH implements SegmentTask {
+public class RouteLegOld implements SegmentTask {
 
     private static final String SEPARATOR = " ";
 
@@ -67,7 +68,7 @@ public class RouteLegGH implements SegmentTask {
 
     private final Graph chGraph;
 
-    public RouteLegGH(GraphHopper graphHopper, FlagEncoder encoder, FacilityData facilityData, MathTransform transform) {
+    public RouteLegOld(GraphHopper graphHopper, FlagEncoder encoder, FacilityData facilityData, MathTransform transform) {
         this.facilityData = facilityData;
         this.locationIndex = graphHopper.getLocationIndex();
         this.transform = transform;

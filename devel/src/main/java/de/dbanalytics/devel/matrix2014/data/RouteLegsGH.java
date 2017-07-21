@@ -19,23 +19,20 @@
 
 package de.dbanalytics.devel.matrix2014.data;
 
-import com.graphhopper.GraphHopper;
-import com.graphhopper.reader.osm.GraphHopperOSM;
-import com.graphhopper.routing.util.CarFlagEncoder;
-import com.graphhopper.routing.util.EncodingManager;
-import com.graphhopper.routing.util.FlagEncoder;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.spic.gis.GeoTransformer;
+import de.dbanalytics.spic.gis.Place;
+import de.dbanalytics.spic.gis.PlaceIndex;
+import de.dbanalytics.spic.osm.graph.RouteLeg;
+import de.dbanalytics.spic.osm.graph.RoutingService;
 import de.dbanalytics.spic.processing.EpisodeTask;
-import de.dbanalytics.spic.processing.RouteLegGH;
 import de.dbanalytics.spic.processing.TaskRunner;
+import de.dbanalytics.spic.spic2matsim.PlaceConverter;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.matsim.api.core.v01.Scenario;
-import org.matsim.contrib.common.gis.CRSUtils;
 import org.matsim.contrib.common.util.XORShiftRandom;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
@@ -43,7 +40,6 @@ import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.facilities.MatsimFacilitiesReader;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform;
 
 import java.util.Set;
 
@@ -89,21 +85,29 @@ public class RouteLegsGH {
         int nThreads = Executor.getFreePoolSize();
 //        int nThreads = 1;
 
-        FlagEncoder encoder = new CarFlagEncoder();
-        EncodingManager em = new EncodingManager(encoder);
-
-        GraphHopper hopper = new GraphHopperOSM().forDesktop();
-
-        hopper.setDataReaderFile(group.getParams().get(OSM_FILE));
-        hopper.setGraphHopperLocation(group.getParams().get(GH_DIR));
-        hopper.setEncodingManager(em);
-        hopper.importOrLoad();
+//        FlagEncoder encoder = new CarFlagEncoder();
+//        EncodingManager em = new EncodingManager(encoder);
+//
+//        GraphHopper hopper = new GraphHopperOSM().forDesktop();
+//
+//        hopper.setDataReaderFile(group.getParams().get(OSM_FILE));
+//        hopper.setGraphHopperLocation(group.getParams().get(GH_DIR));
+//        hopper.setEncodingManager(em);
+//        hopper.importOrLoad();
         /*
         Run...
          */
-        MathTransform transform = CRS.findMathTransform(CRSUtils.getCRS(31467), DefaultGeographicCRS.WGS84);
+        String osmFile = group.getParams().get(OSM_FILE);
+        String ghDir = group.getParams().get(GH_DIR);
+        RoutingService router = new RoutingService(osmFile, ghDir);
+
+//        MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, CRSUtils.getCRS(31467));
+        GeoTransformer transform = GeoTransformer.WGS84toX(31467);
+        Set<Place> places = new PlaceConverter().convert(facilityData.getAll());
+        PlaceIndex placeIndex = new PlaceIndex(places);
+
         logger.info("Route legs...");
-        RouteEpisode task = new RouteEpisode(new RouteLegGH(hopper, encoder, facilityData, transform));
+        RouteEpisode task = new RouteEpisode(new RouteLeg(router, placeIndex, transform));
         TaskRunner.run(task, persons, nThreads, true);
         /*
         Validate...
@@ -133,9 +137,9 @@ public class RouteLegsGH {
 
     private static class RouteEpisode implements EpisodeTask {
 
-        private RouteLegGH routeLeg;
+        private RouteLeg routeLeg;
 
-        public RouteEpisode(RouteLegGH routeLeg) {
+        public RouteEpisode(RouteLeg routeLeg) {
             this.routeLeg = routeLeg;
         }
 

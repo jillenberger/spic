@@ -90,6 +90,7 @@ public class RoutingService {
 
         Path path = algorithm.calcPath(fromQR.getClosestNode(), toQR.getClosestNode());
 
-        return new RoutingResult(path, edge2Node);
+        if (path.isFound()) return new RoutingResult(path, edge2Node);
+        else return null;
     }
 }

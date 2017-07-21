@@ -26,6 +26,8 @@ import com.graphhopper.routing.util.AllEdgesIterator;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.PointList;
 import com.graphhopper.util.shapes.GHPoint;
+import de.dbanalytics.spic.util.Executor;
+import de.dbanalytics.spic.util.ProgressLogger;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.core.model.iface.EntityContainer;
 import de.topobyte.osm4j.core.model.iface.EntityType;
@@ -44,9 +46,8 @@ import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author johannes
@@ -111,32 +112,41 @@ public class Edge2Node {
         /**
          * Insert nodes in rtree.
          */
-        logger.info("Building spatial index...");
+        ProgressLogger pLogger = new ProgressLogger(logger);
+        pLogger.start("Building spatial index...", hwNodes.size());
         RTree<Long, Point> rTree = RTree.star().create();
         TLongObjectIterator<Point> mapIt = hwNodes.iterator();
         for (int i = 0; i < hwNodes.size(); i++) {
             mapIt.advance();
             rTree = rTree.add(mapIt.key(), mapIt.value());
+            pLogger.step();
         }
+        pLogger.stop();
         /**
          * Map way geometries of edges to nodes.
          */
-        logger.info("Mapping way geometries to node sequences...");
-        AllEdgesIterator edgesIterator = graph.getAllEdges();
-        while (edgesIterator.next()) {
-            PointList plist = edgesIterator.fetchWayGeometry(3);
-            TLongArrayList nodes = new TLongArrayList(plist.size());
-            for (GHPoint point : plist) {
-                Long node = rTree.nearest(Geometries.pointGeographic(point.getLon(), point.getLat()), 1, 1).
-                        first().
-                        toBlocking().
-                        single().
-                        value();
-                if (Arrays.binarySearch(towerNodes, node) >= 0) nodes.add(node);
-            }
-
-            edge2towers.put(edgesIterator.getEdge(), nodes);
+        AllEdgesIterator edgeIterator = graph.getAllEdges();
+        pLogger.start("Fetching all edges...", edgeIterator.getMaxId());
+        ConcurrentLinkedQueue<Entry> queue = new ConcurrentLinkedQueue<>();
+        while (edgeIterator.next()) {
+            PointList plist = edgeIterator.fetchWayGeometry(3);
+            queue.add(new Entry(plist, edgeIterator.getEdge()));
+            pLogger.step();
         }
+        pLogger.stop();
+        logger.info(String.format("Fetched %s edges.", queue.size()));
+
+        pLogger.start("Mapping way geometries to node sequences...", queue.size());
+        List<RunThread> threads = new ArrayList<>();
+        int n = Math.max(Executor.getFreePoolSize(), 1);
+        for (int i = 0; i < n; i++) threads.add(new RunThread(queue, rTree, towerNodes, pLogger));
+        Executor.submitAndWait(threads);
+
+        for (RunThread thread : threads) {
+            edge2towers.putAll(thread.edge2towers);
+        }
+        pLogger.stop();
+
     }
 
     private OsmIterator getOsmIterator(String file) throws FileNotFoundException {
@@ -151,5 +161,59 @@ public class Edge2Node {
 
     public TLongArrayList getNodes(int edgeId) {
         return edge2towers.get(edgeId);
+    }
+
+    private class RunThread implements Runnable {
+
+        private ConcurrentLinkedQueue<Entry> queue;
+
+        private RTree<Long, Point> rTree;
+
+        private long[] towerNodes;
+
+        private TIntObjectMap<TLongArrayList> edge2towers;
+
+        private ProgressLogger plogger;
+
+        public RunThread(ConcurrentLinkedQueue<Entry> queue, RTree<Long, Point> rTree, long[] towerNodes, ProgressLogger plogger) {
+            this.queue = queue;
+            this.rTree = rTree;
+            this.towerNodes = towerNodes;
+            this.plogger = plogger;
+        }
+
+        @Override
+        public void run() {
+            edge2towers = new TIntObjectHashMap<>(queue.size());
+            Entry entry = queue.poll();
+            while (entry != null) {
+                PointList plist = entry.plist;
+
+                TLongArrayList nodes = new TLongArrayList(plist.size());
+                for (GHPoint point : plist) {
+                    Long node = rTree.nearest(Geometries.pointGeographic(point.getLon(), point.getLat()), 1, 1).
+                            first().
+                            toBlocking().
+                            single().
+                            value();
+                    if (Arrays.binarySearch(towerNodes, node) >= 0) nodes.add(node);
+                }
+                edge2towers.put(entry.edgeId, nodes);
+                plogger.step();
+
+                entry = queue.poll();
+            }
+        }
+    }
+
+    private class Entry {
+
+        private PointList plist;
+        private int edgeId;
+
+        public Entry(PointList plist, int edgeId) {
+            this.plist = plist;
+            this.edgeId = edgeId;
+        }
     }
 }

@@ -19,8 +19,12 @@
 
 package de.dbanalytics.spic.gis;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import de.dbanalytics.spic.data.AttributableIndex;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 
 import java.util.*;
 
@@ -39,7 +43,7 @@ public class PlaceIndex {
 
     private Map<String, Place> idIndex;
 
-    private Map<String, Set<Place>> activityIndex;
+    private Map<String, List<Place>> activityIndex;
 
     public PlaceIndex(Set<Place> places) {
         this.places = Collections.unmodifiableSet(places);
@@ -55,7 +59,7 @@ public class PlaceIndex {
         return idIndex.get(id);
     }
 
-    public Set<Place> getForActivity(String activity) {
+    public List<Place> getForActivity(String activity) {
         if (activityIndex == null) initActivityIndex();
         return activityIndex.get(activity);
     }
@@ -68,6 +72,27 @@ public class PlaceIndex {
     public Set<Place> get(Geometry geometry) {
         if (spatialIndex == null) initSpatialIndex();
         return new HashSet<>(spatialIndex.queryInside(geometry));
+    }
+
+    public List<Place> getForActivity(Coordinate center, double r_min, double r_max, String activity) {
+        SpatialIndex<Place> tree = spatialActivityIndex.get(activity);
+        if (tree == null) tree = initSpatialActivityIndex(activity);
+
+        GeometryFactory factory = JTSFactoryFinder.getGeometryFactory();
+
+        Envelope env = new Envelope(center.x - r_max,
+                center.x + r_max,
+                center.y - r_min,
+                center.y + r_max);
+        List<Place> places = tree.queryInside(factory.toGeometry(env));
+        places.stream().filter(place -> {
+            double dx = center.x - place.getGeometry().getCoordinate().x;
+            double dy = center.y - place.getGeometry().getCoordinate().y;
+            double d = Math.sqrt(dx * dx + dy * dy);
+
+            return (d >= r_min && d <= r_max);
+        });
+        return places;
     }
 
     public Set<Place> getForActivity(Geometry geometry, String activity) {
@@ -86,17 +111,19 @@ public class PlaceIndex {
 
     private synchronized void initActivityIndex() {
         if (activityIndex == null) {
-            Map<String, Set<Place>> tmp = new HashMap<>();
+            Map<String, List<Place>> tmp = new HashMap<>();
             for (Place place : places) {
                 for (String activity : place.getActivities()) {
-                    Set<Place> set = tmp.get(activity);
-                    if (set == null) {
-                        set = new HashSet<>();
-                        tmp.put(activity, set);
+                    List<Place> list = tmp.get(activity);
+                    if (list == null) {
+                        list = new ArrayList<>();
+                        tmp.put(activity, list);
                     }
-                    set.add(place);
+                    list.add(place);
                 }
             }
+
+            for (List<Place> list : tmp.values()) ((ArrayList) list).trimToSize();
 
             activityIndex = tmp;
         }
@@ -113,9 +140,9 @@ public class PlaceIndex {
     private synchronized SpatialIndex<Place> initSpatialActivityIndex(String activity) {
         SpatialIndex<Place> tree = spatialActivityIndex.get(activity);
         if (tree == null) {
-            Set<Place> set = getForActivity(activity);
-            if (set == null) set = new HashSet<>();
-            tree = createSpatialIndex(set);
+            List<Place> list = getForActivity(activity);
+            if (list == null) list = new ArrayList<>();
+            tree = createSpatialIndex(list);
             spatialActivityIndex.put(activity, tree);
         }
         return tree;

@@ -76,6 +76,7 @@ public class RTreeWrapper<T extends Feature> implements SpatialIndex<T> {
         tree.search(rect).
                 filter(entry -> prepGeometry.contains(entry.value().feature.getGeometry())).
                 forEach(entry -> result.add(entry.value().feature));
+
         return result;
     }
 
