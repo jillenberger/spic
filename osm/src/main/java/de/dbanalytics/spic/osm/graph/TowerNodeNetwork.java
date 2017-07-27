@@ -22,6 +22,7 @@ package de.dbanalytics.spic.osm.graph;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.core.model.iface.EntityContainer;
 import de.topobyte.osm4j.core.model.iface.EntityType;
+import de.topobyte.osm4j.core.model.iface.OsmNode;
 import de.topobyte.osm4j.core.model.iface.OsmWay;
 import de.topobyte.osm4j.core.model.util.OsmModelUtil;
 import de.topobyte.osm4j.xml.dynsax.OsmXmlIterator;
@@ -44,23 +45,22 @@ public class TowerNodeNetwork {
     public TowerNodeNetwork(String filename) throws FileNotFoundException {
         logger.info("Loading nodes...");
         InputStream osmStream = new FileInputStream(filename);
-//        OsmIterator it = new OsmXmlIterator(osmStream, false);
+        OsmIterator it = new OsmXmlIterator(osmStream, false);
 //        TLongObjectMap<OsmNode> allNodes = new TLongObjectHashMap<>();
-////        TLongObjectMap<Node> nodes = new TLongObjectHashMap<>();
-//        for (EntityContainer container : it) {
-//            if (container.getType() == EntityType.Node) {
-//                Node node = new Node(container.getEntity().getId());
-////                nodes.put(node.getId(), node);
-//                allNodes.put(node.getId(), (OsmNode) container.getEntity());
-//            }
-//        }
-//        logger.info(String.format("Loaded %s nodes.", allNodes.size()));
+        TLongObjectMap<OsmNode> osmNodes = new TLongObjectHashMap<>();
+        for (EntityContainer container : it) {
+            if (container.getType() == EntityType.Node) {
+                OsmNode osmNode = (OsmNode) container.getEntity();
+                osmNodes.put(osmNode.getId(), (OsmNode) container.getEntity());
+            }
+        }
+        logger.info(String.format("Loaded %s nodes.", osmNodes.size()));
 
         TLongObjectMap<Node> nodes = new TLongObjectHashMap<>();
 
         logger.info("Loading edges...");
         osmStream = new FileInputStream(filename);
-        OsmIterator it = new OsmXmlIterator(osmStream, false);
+        it = new OsmXmlIterator(osmStream, false);
         int pillarEdges = 0;
         for (EntityContainer container : it) {
             if (container.getType() == EntityType.Way) {
@@ -73,14 +73,16 @@ public class TowerNodeNetwork {
                         long toId = way.getNodeId(i + 1);
 
                         Node from = nodes.get(fromId);
-                        if (from == null) {
-                            from = new Node(fromId);
+                        OsmNode osmFrom = osmNodes.get(fromId);
+                        if (from == null && osmFrom != null) {
+                            from = new Node(fromId, osmFrom.getLatitude(), osmFrom.getLongitude());
                             nodes.put(fromId, from);
                         }
 
                         Node to = nodes.get(toId);
-                        if (to == null) {
-                            to = new Node(toId);
+                        OsmNode osmTo = osmNodes.get(toId);
+                        if (to == null && osmTo != null) {
+                            to = new Node(toId, osmTo.getLatitude(), osmTo.getLongitude());
                             nodes.put(toId, to);
                         }
 
@@ -244,9 +246,23 @@ public class TowerNodeNetwork {
 
         private boolean isEndNode = false;
 
-        public Node(Long id) {
+        private double lat;
+
+        private double lon;
+
+        public Node(Long id, double lat, double lon) {
             this.id = id;
             this.edges = new ArrayList<>();
+            this.lat = lat;
+            this.lon = lon;
+        }
+
+        public double getLat() {
+            return lat;
+        }
+
+        public double getLon() {
+            return lon;
         }
 
         public long getId() {

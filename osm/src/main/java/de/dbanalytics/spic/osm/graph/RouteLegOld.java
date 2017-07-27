@@ -39,7 +39,6 @@ import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.FacilityData;
 import de.dbanalytics.spic.processing.SegmentTask;
-import gnu.trove.list.TIntList;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacility;
 import org.opengis.referencing.operation.MathTransform;
@@ -116,17 +115,18 @@ public class RouteLegOld implements SegmentTask {
 
                 RoutingAlgorithm algorithm = chAlgoFactory.createAlgo(chGraph, options);
                 Path path = algorithm.calcPath(fromQuery.getClosestNode(), toQuery.getClosestNode());
-                TIntList nodes = path.calcNodes();
-
-                if(nodes.size() > 0) {
-                    StringBuilder builder = new StringBuilder();
-                    builder.append(String.valueOf(nodes.get(0)));
-                    for (int i = 1; i < nodes.size(); i++) {
-                        builder.append(SEPARATOR);
-                        builder.append(String.valueOf(nodes.get(i)));
-                    }
-                    segment.setAttribute(CommonKeys.LEG_ROUTE, builder.toString());
-                }
+                throw new RuntimeException();
+//                TIntList nodes = path.calcNode    s();
+//
+//                if(nodes.size() > 0) {
+//                    StringBuilder builder = new StringBuilder();
+//                    builder.append(String.valueOf(nodes.get(0)));
+//                    for (int i = 1; i < nodes.size(); i++) {
+//                        builder.append(SEPARATOR);
+//                        builder.append(String.valueOf(nodes.get(i)));
+//                    }
+//                    segment.setAttribute(CommonKeys.LEG_ROUTE, builder.toString());
+//                }
             }
         }
     }
