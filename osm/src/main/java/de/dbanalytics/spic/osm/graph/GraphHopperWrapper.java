@@ -265,6 +265,11 @@ public class GraphHopperWrapper {
                     } else if (firstEdge[firstEdge.length - 1] == secondEdge[secondEdge.length - 1]) {
                         /** second edge reversed */
                         nodes.addAll(firstEdge);
+                    } else {
+                        logger.warn(String.format("Non consecutive edges: %s - %s",
+                                Arrays.toString(firstEdge),
+                                Arrays.toString(secondEdge)));
+                        return null;
                     }
 
                     for (int i = 1; i < osmEdges.size(); i++) {
