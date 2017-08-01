@@ -21,8 +21,11 @@ package de.dbanalytics.spic.matrix;
 
 import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
 import de.dbanalytics.spic.util.Configurator;
 import org.matsim.core.config.ConfigGroup;
+
+import java.io.IOException;
 
 /**
  * @author johannes
@@ -53,28 +56,35 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
 
     private static final String MATRIX_FILE = "matrix_file";
 
+    private static final String ZONES_FILE = "zones_file";
+
     private PlaceIndex placeIndex;
 
-    private ZoneCollection zones;
+//    private ZoneCollection zones;
 
     public ODDistributionTermConfig(ConfigGroup config, PlaceIndex placeIndex, ZoneCollection zones) {
         super(config);
         this.placeIndex = placeIndex;
-        this.zones = zones;
+//        this.zones = zones;
     }
 
     @Override
     public ODDistributionTermBuilder configure() {
-        String file = config.getValue(MATRIX_FILE);
-        if (file == null) {
-            throw new RuntimeException("Matrix file must be specified.");
+        String mFile = config.getValue(MATRIX_FILE);
+        String zFile = config.getValue(ZONES_FILE);
+        if (mFile == null || zFile == null) {
+            throw new RuntimeException("Matrix and zones file must be specified.");
         } else {
-            NumericMatrix m = NumericMatrixIO.read(file);
-            ODDistributionTermBuilder builder = new ODDistributionTermBuilder(m, placeIndex, zones);
-            return configure(builder);
+            try {
+                NumericMatrix m = NumericMatrixIO.read(mFile);
+                ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zFile, "Id", null);
+                ODDistributionTermBuilder builder = new ODDistributionTermBuilder(m, placeIndex, zones);
+                return configure(builder);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
-
-
     }
 
     @Override

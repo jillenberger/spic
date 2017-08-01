@@ -401,7 +401,18 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
         private final TIntObjectHashMap<Point> index2Point;
 
         public Builder(NumericMatrix refKeyMatrix, ZoneCollection zones, Collection<Place> facilities) {
-            Set<Zone> zoneSet = zones.getZones();
+            Set<Zone> zoneSet = new HashSet<>();//zones.getZones();
+            /** remove zone with ignore tag */
+            for (Zone zone : zones.getZones()) {
+                String value = zone.getAttribute("Ignore");
+                if (!"yes".equalsIgnoreCase(value)) {
+                    zoneSet.add(zone);
+                }
+            }
+            logger.info(String.format("%s calibration zones, %s ignored.",
+                    zoneSet.size(),
+                    zones.getZones().size() - zoneSet.size()));
+
             TObjectIntHashMap<String> id2Index = new TObjectIntHashMap<>(zoneSet.size(), Constants.DEFAULT_LOAD_FACTOR, -1);
 
             index2Point = new TIntObjectHashMap<>();
