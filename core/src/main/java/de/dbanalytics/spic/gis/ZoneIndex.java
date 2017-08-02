@@ -58,11 +58,11 @@ public class ZoneIndex {
         return attributableIndex.get(key, value);
     }
 
-    private void initSpatialIndex() {
-        spatialIndex = new RTreeWrapper<>(zones);
+    private synchronized void initSpatialIndex() {
+        if (spatialIndex == null) spatialIndex = new RTreeWrapper<>(zones);
     }
 
-    private void initAttributableIndex() {
-        attributableIndex = new AttributableIndex(zones);
+    private synchronized void initAttributableIndex() {
+        if (attributableIndex == null) attributableIndex = new AttributableIndex(zones);
     }
 }

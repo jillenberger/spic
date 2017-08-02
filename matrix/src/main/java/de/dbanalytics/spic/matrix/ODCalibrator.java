@@ -350,7 +350,10 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                 Point p_j = index2Point.get(j);
 
                 double refVal = getCellValue(i, j, refMatrix);
-                double simVal = getCellValue(i, j, simMatrix);
+                double simVal = Double.NaN;
+                if (simMatrix != null) {
+                    simVal = getCellValue(i, j, simMatrix);
+                }
 
                 if (refVal > 0 && simVal > 0) {
                     /** zone indices */

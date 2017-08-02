@@ -60,12 +60,9 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
 
     private PlaceIndex placeIndex;
 
-//    private ZoneCollection zones;
-
-    public ODDistributionTermConfig(ConfigGroup config, PlaceIndex placeIndex, ZoneCollection zones) {
+    public ODDistributionTermConfig(ConfigGroup config, PlaceIndex placeIndex) {
         super(config);
         this.placeIndex = placeIndex;
-//        this.zones = zones;
     }
 
     @Override
