@@ -25,7 +25,7 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PersonUtils;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,7 +54,7 @@ public class IsolateEpisodes implements PersonTask {
             String key = episode.getAttribute(attrKey);
             Set<Person> persons = populations.get(key);
             if(persons == null) {
-                persons = new HashSet<>();
+                persons = new LinkedHashSet<>();
                 populations.put(key, persons);
             }
 
