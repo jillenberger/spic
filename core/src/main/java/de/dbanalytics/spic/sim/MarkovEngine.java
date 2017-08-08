@@ -63,7 +63,7 @@ public class MarkovEngine {
     }
 
     public void run(long iterations) {
-        for (long i = 0; i < iterations; i++) {
+        for (long i = 0; i <= iterations; i++) {
             /*
 			 * select person
 			 */

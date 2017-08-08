@@ -51,7 +51,7 @@ public class FeaturesIOGeoJson {
 
         if (jsonData instanceof FeatureCollection) {
             GeoJSONReader reader = new GeoJSONReader();
-            Set<Feature> features = new HashSet<>();
+            Set<Feature> features = new LinkedHashSet<>();
             FeatureCollection jsonFeatures = (FeatureCollection) jsonData;
             for (org.wololo.geojson.Feature jsonFeature : jsonFeatures.getFeatures()) {
                 Map<String, String> attributes = new HashMap<>();

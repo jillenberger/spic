@@ -22,10 +22,7 @@ package de.dbanalytics.spic.data;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author jillenberger
@@ -66,7 +63,7 @@ public class AttributableIndex<T extends Attributable> {
 
             Set<T> result = index.get(compoundKey);
             if (result == null) {
-                result = new HashSet<>();
+                result = new LinkedHashSet<>();
                 index.put(compoundKey, result);
             }
             result.add(attributable);

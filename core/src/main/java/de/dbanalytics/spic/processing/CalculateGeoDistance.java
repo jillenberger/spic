@@ -22,19 +22,18 @@ package de.dbanalytics.spic.processing;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.gis.FacilityData;
-import org.matsim.api.core.v01.Id;
-import org.matsim.facilities.ActivityFacility;
+import de.dbanalytics.spic.gis.Place;
+import de.dbanalytics.spic.gis.PlaceIndex2;
 
 /**
  * @author johannes
  */
 public class CalculateGeoDistance implements EpisodeTask {
 
-    private final FacilityData data;
+    private final PlaceIndex2 placeIndex;
 
-    public CalculateGeoDistance(FacilityData data) {
-       this.data = data;
+    public CalculateGeoDistance(PlaceIndex2 placeIndex) {
+        this.placeIndex = placeIndex;
     }
 
     @Override
@@ -43,16 +42,14 @@ public class CalculateGeoDistance implements EpisodeTask {
             Segment from = episode.getActivities().get(i);
             Segment to = episode.getActivities().get(i + 1);
 
-            Id<ActivityFacility> idFrom = Id.create(from.getAttribute(CommonKeys.ACTIVITY_FACILITY), ActivityFacility
-                    .class);
-            Id<ActivityFacility> idTo = Id.create(to.getAttribute(CommonKeys.ACTIVITY_FACILITY), ActivityFacility
-                    .class);
+            String idFrom = from.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+            String idTo = to.getAttribute(CommonKeys.ACTIVITY_FACILITY);
 
-            ActivityFacility facFrom = data.getAll().getFacilities().get(idFrom);
-            ActivityFacility facTo = data.getAll().getFacilities().get(idTo);
+            Place placeFrom = placeIndex.get(idFrom);
+            Place placeTo = placeIndex.get(idTo);
 
-            double dx = facFrom.getCoord().getX() - facTo.getCoord().getX();
-            double dy = facFrom.getCoord().getY() - facTo.getCoord().getY();
+            double dx = placeFrom.getGeometry().getCoordinate().x - placeTo.getGeometry().getCoordinate().x;
+            double dy = placeFrom.getGeometry().getCoordinate().y - placeTo.getGeometry().getCoordinate().y;
             double d = Math.sqrt(dx*dx + dy*dy);
 
             Segment leg = episode.getLegs().get(i);

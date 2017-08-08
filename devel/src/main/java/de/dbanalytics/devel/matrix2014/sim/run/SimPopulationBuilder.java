@@ -20,14 +20,12 @@ package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.analysis.ZoneMobilityRate;
 import de.dbanalytics.devel.matrix2014.gis.TransferZoneAttribute;
-import de.dbanalytics.devel.matrix2014.sim.SetLAU2Attribute;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.analysis.TripsCounter;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.processing.CalculateGeoDistance;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import de.dbanalytics.spic.processing.RemoveLegAttribute;
 import de.dbanalytics.spic.processing.TaskRunner;
@@ -112,15 +110,16 @@ public class SimPopulationBuilder {
 
         logger.info("Recalculate geo distances...");
         TaskRunner.run(new RemoveLegAttribute(CommonKeys.LEG_GEO_DISTANCE), simPersons);
-        TaskRunner.run(new CalculateGeoDistance((FacilityData) dataPool.get(FacilityDataLoader.KEY)), simPersons);
+        throw new RuntimeException("Obsolete code.");
+//        TaskRunner.run(new CalculateGeoDistance((FacilityData) dataPool.get(FacilityDataLoader.KEY)), simPersons);
 
-        logger.info("Resetting LAU2Class attributes...");
-        SetLAU2Attribute lTask = new SetLAU2Attribute(dataPool, "lau2");
-        TaskRunner.run(lTask, simPersons);
-        if (lTask.getErrors() > 0)
-            logger.warn(String.format("Cannot set LAU2Class attribute for %s persons.", lTask.getErrors()));
+//        logger.info("Resetting LAU2Class attributes...");
+//        SetLAU2Attribute lTask = new SetLAU2Attribute(dataPool, "lau2");
+//        TaskRunner.run(lTask, simPersons);
+//        if (lTask.getErrors() > 0)
+//            logger.warn(String.format("Cannot set LAU2Class attribute for %s persons.", lTask.getErrors()));
 
-        return simPersons;
+//        return simPersons;
     }
 
     private static Collection<Person> clonePersons(Collection<? extends Person> refPersons,

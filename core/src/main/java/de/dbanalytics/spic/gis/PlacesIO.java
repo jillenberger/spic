@@ -33,7 +33,7 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -89,7 +89,7 @@ public class PlacesIO {
                     /*
                     Init places set.
                      */
-                    places = new HashSet<>();
+                    places = new LinkedHashSet<>();
 
                 } else if (localName.equals(PLACE_ELEMENT)) {
                     /*

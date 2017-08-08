@@ -33,13 +33,21 @@ public class Executor {
 
     private static ThreadPoolExecutor service;
 
+    private static boolean singleThreadMode = false;
+
+    public static void setSingleThreadMode(boolean mode) {
+        singleThreadMode = mode;
+    }
+
     private static void init() {
         if (service == null) {
-            service = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-            //TODO: Does not work as expected.
-//            Timer timer = new Timer(true);
-//            timer.scheduleAtFixedRate(new ShutdownTask(), 0, 60 * 1000);
+            int numThreads = Runtime.getRuntime().availableProcessors() + 2;
+            service = (ThreadPoolExecutor) Executors.newFixedThreadPool(numThreads);
         }
+    }
+
+    private static void reinit() {
+
     }
 
     public static void shutdown() {
@@ -52,19 +60,23 @@ public class Executor {
     }
 
     public static void submitAndWait(List<? extends Runnable> runnables) {
-        init();
-        List<Future<?>> futures = new ArrayList<>(runnables.size());
-        for(Runnable runnable : runnables) {
-            futures.add(service.submit(runnable));
-        }
+        if (singleThreadMode) {
+            for (Runnable runnable : runnables) runnable.run();
+        } else {
+            init();
+            List<Future<?>> futures = new ArrayList<>(runnables.size());
+            for (Runnable runnable : runnables) {
+                futures.add(service.submit(runnable));
+            }
 
-        for(Future<?> future : futures) {
-            try {
-                future.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+            for (Future<?> future : futures) {
+                try {
+                    future.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -54,7 +54,7 @@ public class PersonUtils {
 		 * adjust weight so that max weight equals probability 1
 		 */
         ProgressLogger.init(N, 2, 10);
-        Set<Person> clones = new HashSet<>();
+        Set<Person> clones = new LinkedHashSet<>();
         while(clones.size() < N) {
             Person template = templates.get(random.nextInt(templates.size()));
             double w = weights.get(template);

@@ -72,8 +72,7 @@ public class PlaceIndex2 {
 
     public Set<Place> get(Geometry geometry) {
         if (spatialIndex == null) initSpatialIndex();
-//        return new HashSet<>(spatialIndex.queryInside(geometry));
-        return new HashSet<>(queryInside(geometry, spatialIndex));
+        return new LinkedHashSet<>(queryInside(geometry, spatialIndex));
     }
 
     public List<Place> getForActivity(Coordinate center, double r_min, double r_max, String activity) {
@@ -81,41 +80,14 @@ public class PlaceIndex2 {
         if (tree == null) tree = initSpatialActivityIndex(activity);
 
         ArrayList<Place> result = (ArrayList<Place>) tree.getRing(center.x, center.y, r_min, r_max);
-//        tree.search(Geometries.circle(center.x, center.y, r_max)).
-//                filter(entry -> {
-//                    double dx = center.x - entry.value().getGeometry().getCoordinate().x;
-//                    double dy = center.y - entry.value().getGeometry().getCoordinate().y;
-//                    double d = Math.sqrt(dx * dx + dy * dy);
-//                    return (d >= r_min && d <= r_max);
-//                }).
-//                forEach(entry -> result.add(entry.value()));
 
         return result;
     }
 
-//    public Place getRandomForActivity(Coordinate center, double r_min, double r_max, String activity, Random random) {
-//        RTree<Place, Point> tree = spatialActivityIndex.get(activity);
-//        if (tree == null) tree = initSpatialActivityIndex(activity);
-//
-//        ArrayList<Place> result = new ArrayList<>(1000);
-//        tree.search(Geometries.circle(center.x, center.y, r_max)).forEach(entry -> result.add(entry.value()));
-////        Collections.shuffle(result);
-//
-//        for(Place place : result) {
-//            double dx = center.x - place.getGeometry().getCoordinate().x;
-//            double dy = center.y - place.getGeometry().getCoordinate().y;
-//            double d = Math.sqrt(dx * dx + dy * dy);
-//            if(d >= r_min && d <= r_max) {
-//                return place;
-//            }
-//        }
-//        return null;
-//    }
-
     public Set<Place> getForActivity(Geometry geometry, String activity) {
         QuadTree<Place> tree = spatialActivityIndex.get(activity);
         if (tree == null) tree = initSpatialActivityIndex(activity);
-        return new HashSet<>(queryInside(geometry, tree));
+        return new LinkedHashSet<>(queryInside(geometry, tree));
     }
 
     private synchronized void initIdIndex() {
@@ -165,18 +137,6 @@ public class PlaceIndex2 {
         return tree;
     }
 
-//    private RTree<Place, Point> createSpatialIndex(Collection<Place> places) {
-//        RTree<Place, Point> tree = RTree.star().create();
-//
-//        for (Place feature : places) {
-//            double x = feature.getGeometry().getCoordinate().x;
-//            double y = feature.getGeometry().getCoordinate().y;
-//            tree = tree.add(feature, Geometries.point(x, y));
-//        }
-//
-//        return tree;
-//    }
-
     private QuadTree<Place> createSpatialIndex(Collection<Place> places) {
         double minx = Double.MAX_VALUE;
         double miny = Double.MAX_VALUE;
@@ -198,22 +158,6 @@ public class PlaceIndex2 {
 
         return tree;
     }
-
-//    private List<Place> queryInside(Geometry geometry, RTree<Place, Point> tree) {
-//        List<Place> result = new ArrayList<>();
-//        PreparedGeometry prepGeometry = PreparedGeometryFactory.prepare(geometry);
-//        Envelope env = geometry.getEnvelopeInternal();
-//        Rectangle rect = Geometries.rectangle(
-//                env.getMinX(),
-//                env.getMinY(),
-//                env.getMaxX(),
-//                env.getMaxY());
-//        tree.search(rect).
-//                filter(entry -> prepGeometry.contains(entry.value().getGeometry())).
-//                forEach(entry -> result.add(entry.value()));
-//
-//        return result;
-//    }
 
     private List<Place> queryInside(Geometry geometry, QuadTree<Place> tree) {
 

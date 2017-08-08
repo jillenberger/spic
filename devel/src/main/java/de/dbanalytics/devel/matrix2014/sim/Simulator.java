@@ -276,15 +276,16 @@ public class Simulator {
 
         logger.info("Recalculate geo distances...");
         TaskRunner.run(new RemoveLegAttribute(CommonKeys.LEG_GEO_DISTANCE), simPersons);
-        TaskRunner.run(new CalculateGeoDistance((FacilityData) dataPool.get(FacilityDataLoader.KEY)), simPersons);
-
-        logger.info("Resetting LAU2Class attributes...");
-        SetLAU2Attribute lTask = new SetLAU2Attribute(dataPool, "lau2");
-        TaskRunner.run(lTask, simPersons);
-        if (lTask.getErrors() > 0)
-            logger.warn(String.format("Cannot set LAU2Class attribute for %s persons.", lTask.getErrors()));
-
-        return simPersons;
+        throw new RuntimeException("Obsolete code.");
+//        TaskRunner.run(new CalculateGeoDistance((FacilityData) dataPool.get(FacilityDataLoader.KEY)), simPersons);
+//
+//        logger.info("Resetting LAU2Class attributes...");
+//        SetLAU2Attribute lTask = new SetLAU2Attribute(dataPool, "lau2");
+//        TaskRunner.run(lTask, simPersons);
+//        if (lTask.getErrors() > 0)
+//            logger.warn(String.format("Cannot set LAU2Class attribute for %s persons.", lTask.getErrors()));
+//
+//        return simPersons;
     }
 
     private static void extendAnalyzer(AnalyzerTaskComposite<Collection<? extends Person>> task, DataPool dataPool, FileIOContext ioContext, Config config) {

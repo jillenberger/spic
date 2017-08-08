@@ -23,8 +23,7 @@ import de.dbanalytics.spic.data.Factory;
 import de.dbanalytics.spic.data.Person;
 import org.apache.log4j.Logger;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author johannes
@@ -45,6 +44,16 @@ public class PopulationIO {
 
     public static void writeToXML(String file, Collection<? extends Person> population) {
         XMLWriter writer = new XMLWriter();
-        writer.write(file, population);
+
+        /** sort persons for better file comparison in test cases */
+        SortedSet<Person> sorted = new TreeSet<>(new Comparator<Person>() {
+            @Override
+            public int compare(Person o1, Person o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });
+        sorted.addAll(population);
+
+        writer.write(file, sorted);
     }
 }
