@@ -34,13 +34,13 @@ public class RouteLeg implements SegmentTask {
 
     private static final String PATH_SEPARATOR = " ";
 
-    private final RoutingService router;
+    private final GraphHopperWrapper router;
 
     private final PlaceIndex placeIndex;
 
     private final GeoTransformer transformer;
 
-    public RouteLeg(RoutingService router, PlaceIndex placeIndex, GeoTransformer transformer) {
+    public RouteLeg(GraphHopperWrapper router, PlaceIndex placeIndex, GeoTransformer transformer) {
         this.router = router;
         this.placeIndex = placeIndex;
         this.transformer = transformer;
@@ -71,7 +71,7 @@ public class RouteLeg implements SegmentTask {
         RoutingResult result = router.query(fromCoord[1], fromCoord[0], toCoord[1], toCoord[0]);
 
         if (result != null) {
-            TLongArrayList nodes = result.getPath();
+            TLongArrayList nodes = result.getPathAsOsmIds();
 
             StringBuilder builder = new StringBuilder(1000);
             for (int i = 0; i < nodes.size(); i++) {

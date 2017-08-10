@@ -42,7 +42,19 @@ public class Node {
         this.edges = new ArrayList<>();
     }
 
+    public long getId() {
+        return id;
+    }
+
     public List<Edge> getEdges() {
         return edges;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

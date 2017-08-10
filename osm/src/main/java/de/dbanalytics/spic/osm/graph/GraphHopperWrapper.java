@@ -19,6 +19,11 @@
 
 package de.dbanalytics.spic.osm.graph;
 
+import com.graphhopper.GHRequest;
+import com.graphhopper.GHResponse;
+import com.graphhopper.GraphHopper;
+import com.graphhopper.reader.DataReader;
+import com.graphhopper.reader.osm.OSMReader;
 import com.graphhopper.routing.AlgorithmOptions;
 import com.graphhopper.routing.Path;
 import com.graphhopper.routing.QueryGraph;
@@ -26,34 +31,24 @@ import com.graphhopper.routing.RoutingAlgorithm;
 import com.graphhopper.routing.util.*;
 import com.graphhopper.routing.weighting.FastestWeighting;
 import com.graphhopper.storage.CHGraphImpl;
+import com.graphhopper.storage.DataAccess;
+import com.graphhopper.storage.Directory;
 import com.graphhopper.storage.GraphHopperStorage;
 import com.graphhopper.storage.index.LocationIndex;
 import com.graphhopper.storage.index.QueryResult;
-import com.graphhopper.util.EdgeIteratorState;
+import com.graphhopper.util.BitUtil;
 import com.graphhopper.util.Parameters;
 import com.graphhopper.util.PointList;
-import com.graphhopper.util.shapes.BBox;
 import de.dbanalytics.spic.util.ProgressLogger;
-import de.topobyte.osm4j.core.access.OsmIterator;
-import de.topobyte.osm4j.core.model.iface.EntityContainer;
-import de.topobyte.osm4j.core.model.iface.EntityType;
-import de.topobyte.osm4j.core.model.iface.OsmNode;
-import de.topobyte.osm4j.core.model.iface.OsmWay;
-import de.topobyte.osm4j.core.model.util.OsmModelUtil;
-import de.topobyte.osm4j.pbf.seq.PbfIterator;
-import de.topobyte.osm4j.xml.dynsax.OsmXmlIterator;
-import gnu.trove.list.array.TLongArrayList;
+import gnu.trove.iterator.TLongObjectIterator;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.TLongObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TLongObjectHashMap;
 import org.apache.log4j.Logger;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author johannes
@@ -66,19 +61,17 @@ public class GraphHopperWrapper {
 
     private final HintsMap hintsMap;
 
-    private TIntObjectMap<long[]> edge2osmPair;
+    private TIntObjectMap<List<Node>> ghEdge2Nodes;
 
-    private MyGraphHopper hopper;
+    private InternalGraphHopper hopper;
 
-    private TowerNodeNetwork towerNodeNetwork;
-
-    private TLongObjectMap<TowerNodeNetwork.Node> towers;
+    private Graph graph;
 
     public GraphHopperWrapper(String osmFile, String ghStorage) {
         FlagEncoder encoder = new CarFlagEncoder();
         EncodingManager em = new EncodingManager(encoder);
 
-        hopper = new MyGraphHopper();
+        hopper = new InternalGraphHopper();
         hopper.setDataReaderFile(osmFile);
         hopper.setGraphHopperLocation(ghStorage);
         hopper.setEncodingManager(em);
@@ -94,73 +87,30 @@ public class GraphHopperWrapper {
         hintsMap.setVehicle("car");
         hintsMap.setWeighting("fastest");
 
+        GraphBuilder builder = new GraphBuilder();
+        graph = builder.build(osmFile);
         try {
-            initEdgeMapping(osmFile);
+            initEdgeMapping(graph);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void initEdgeMapping(String osmFile) throws FileNotFoundException {
-        towerNodeNetwork = new TowerNodeNetwork(osmFile);
-        towers = new TLongObjectHashMap<>();
-        for (TowerNodeNetwork.Edge edge : towerNodeNetwork.getEdges()) {
-            towers.put(edge.getFrom().getId(), edge.getFrom());
-            towers.put(edge.getTo().getId(), edge.getTo());
-        }
-        long[] towerIds = towers.keys();
-        Arrays.sort(towerIds);
-        /**
-         * Map OSM-way to OSM-nodes
-         */
-        logger.info("Collecting nodes...");
-        TLongObjectMap<Node> allOsmNodes = new TLongObjectHashMap<>();
-        OsmIterator it = getOsmIterator(osmFile);
-        for (EntityContainer container : it) {
-            if (container.getType() == EntityType.Node) {
-                OsmNode node = (OsmNode) container.getEntity();
+    private void initEdgeMapping(Graph graph) throws FileNotFoundException {
+        TLongObjectMap<List<Node>> nodes = getOsmWayId2Nodes(graph);
 
-
-                allOsmNodes.put(node.getId(), new Node(node.getId(), node.getLatitude(), node.getLongitude()));
-            }
-        }
-        /**
-         * Collect nodes part of a highway.
-         */
-        logger.info("Filtering for nodes of highways...");
-        TLongObjectMap<ArrayList<Node>> osmEdge2OsmNodes = new TLongObjectHashMap<>();
-        it = getOsmIterator(osmFile);
-        for (EntityContainer container : it) {
-            if (container.getType() == EntityType.Way) {
-                OsmWay way = (OsmWay) container.getEntity();
-                if (OsmModelUtil.getTagsAsMap(way).containsKey("highway")) {
-                    ArrayList<Node> nodes = new ArrayList<>(way.getNumberOfNodes());
-                    for (int i = 0; i < way.getNumberOfNodes(); i++) {
-                        long id = way.getNodeId(i);
-                        Node node = allOsmNodes.get(id);
-                        nodes.add(node);
-                    }
-
-                    osmEdge2OsmNodes.put(way.getId(), nodes);
-                }
-            }
-        }
-        logger.info("Done.");
-        /**
-         * Go through all edges
-         */
         ProgressLogger plogger = new ProgressLogger(logger);
-        edge2osmPair = new TIntObjectHashMap<>();
+        ghEdge2Nodes = new TIntObjectHashMap<>();
         AllEdgesIterator edgesIterator = hopper.getGraphHopperStorage().getAllEdges();
         plogger.start("Mapping edges...", edgesIterator.getMaxId());
         while (edgesIterator.next()) {
             long osmWayId = hopper.getOSMWay(edgesIterator.getEdge());
-            List<Node> osmNodes = osmEdge2OsmNodes.get(osmWayId);
-            TLongArrayList ghNodes = new TLongArrayList();
+            List<de.dbanalytics.spic.osm.graph.Node> osmNodes = nodes.get(osmWayId);
+
             PointList plist = edgesIterator.fetchWayGeometry(3);
 
-            Node startNode = getNearestNode(plist.getLatitude(0), plist.getLongitude(0), osmNodes);
-            Node endNode = getNearestNode(plist.getLatitude(plist.size() - 1), plist.getLongitude(plist.size() - 1), osmNodes);
+            de.dbanalytics.spic.osm.graph.Node startNode = getNearestNode(plist.getLatitude(0), plist.getLongitude(0), osmNodes);
+            de.dbanalytics.spic.osm.graph.Node endNode = getNearestNode(plist.getLatitude(plist.size() - 1), plist.getLongitude(plist.size() - 1), osmNodes);
 
             int idx1 = osmNodes.indexOf(startNode);
             int idx2 = osmNodes.indexOf(endNode);
@@ -168,15 +118,16 @@ public class GraphHopperWrapper {
             int starIdx = Math.min(idx1, idx2);
             int endIdx = Math.max(idx1, idx2);
 
+            List<Node> ghNodes = new ArrayList<>();
             for (int i = starIdx; i <= endIdx; i++) {
-                Node node = osmNodes.get(i);
-                if (Arrays.binarySearch(towerIds, node.id) >= 0) {
-                    ghNodes.add(node.id);
+                de.dbanalytics.spic.osm.graph.Node node = osmNodes.get(i);
+                if (!node.getEdges().isEmpty()) {
+                    ghNodes.add(node);
                 }
             }
 
             if (ghNodes.size() > 0) {
-                edge2osmPair.put(edgesIterator.getEdge(), ghNodes.toArray());
+                ghEdge2Nodes.put(edgesIterator.getEdge(), ghNodes);
             }
 
 
@@ -186,20 +137,57 @@ public class GraphHopperWrapper {
         plogger.stop();
     }
 
-    public BBox getBoundingBox() {
-        return hopper.getGraphHopperStorage().getBounds();
+    private TLongObjectMap<List<Node>> getOsmWayId2Nodes(Graph graph) {
+        TLongObjectMap<SortedSet<Edge>> edges = new TLongObjectHashMap<>();
+
+        /** collect edges for osm ways */
+        for (Edge edge : graph.getEdges()) {
+            SortedSet<Edge> list = edges.get(edge.getOsmWayId());
+            if (list == null) {
+                list = new TreeSet<>(new Comparator<Edge>() {
+                    @Override
+                    public int compare(Edge o1, Edge o2) {
+                        return Integer.compare(o1.getOsmWayIndex(), o2.getOsmWayIndex());
+                    }
+                });
+                edges.put(edge.getOsmWayId(), list);
+            }
+
+            list.add(edge);
+        }
+
+        /** build node sequence for osm way */
+        TLongObjectMap<List<Node>> nodes = new TLongObjectHashMap<>(edges.size());
+        TLongObjectIterator<SortedSet<Edge>> it = edges.iterator();
+        for (int i = 0; i < edges.size(); i++) {
+            it.advance();
+
+            SortedSet<Edge> list = it.value();
+            List<Node> path = new ArrayList<>();
+            path.add(list.first().getFrom());
+
+            for (Edge edge : list) {
+                path.addAll(edge.getBends());
+                path.add(edge.getTo());
+            }
+
+            nodes.put(it.key(), path);
+        }
+
+        return nodes;
     }
 
-    public TowerNodeNetwork getTowerNodeNetwork() {
-        return towerNodeNetwork;
+
+    public Graph getGraph() {
+        return graph;
     }
 
-    private Node getNearestNode(double lat, double lon, List<Node> nodes) {
+    private de.dbanalytics.spic.osm.graph.Node getNearestNode(double lat, double lon, List<de.dbanalytics.spic.osm.graph.Node> nodes) {
         double d_min = Double.MAX_VALUE;
-        Node theNode = null;
-        for (Node node : nodes) {
-            double dx = lon - node.lon;
-            double dy = lat - node.lat;
+        de.dbanalytics.spic.osm.graph.Node theNode = null;
+        for (de.dbanalytics.spic.osm.graph.Node node : nodes) {
+            double dx = lon - node.getLongitude();
+            double dy = lat - node.getLatitude();
             double d = Math.sqrt(dx * dx + dy * dy);
             if (d < d_min) {
                 d_min = d;
@@ -210,7 +198,7 @@ public class GraphHopperWrapper {
         return theNode;
     }
 
-    public TLongArrayList query(double fromLat, double fromLon, double toLat, double toLon) {
+    public RoutingResult query(double fromLat, double fromLon, double toLat, double toLon) {
         LocationIndex index = hopper.getLocationIndex();
         GraphHopperStorage graph = hopper.getGraphHopperStorage();
 
@@ -229,94 +217,72 @@ public class GraphHopperWrapper {
         Path path = algorithm.calcPath(fromNodeId, toNodeId);
 
         if (path.isFound()) {
-            TLongArrayList nodes = new TLongArrayList(path.getEdgeCount() + 1);
-            List<EdgeIteratorState> ghEdges = path.calcEdges();
-            List<long[]> osmEdges = new ArrayList<>(ghEdges.size());
-            for (EdgeIteratorState ghEdge : ghEdges) {
-                long[] osmEdge = edge2osmPair.get(ghEdge.getEdge());
-                if (osmEdge != null) {
-                    osmEdges.add(osmEdge);
-                }
-            }
-
-            if (osmEdges.size() == 0) {
-                return nodes;
-            } else {
-                if (osmEdges.size() == 1) {
-                    long[] edgeNodes = osmEdges.get(0);
-                    nodes.addAll(edgeNodes);
-                } else {
-                    long[] firstEdge = osmEdges.get(0);
-                    long[] secondEdge = osmEdges.get(1);
-
-                    if (firstEdge[firstEdge.length - 1] == secondEdge[0]) {
-                        /** both edges correct order */
-                        nodes.addAll(firstEdge);
-                    } else if (firstEdge[0] == secondEdge[0]) {
-                        /** fist edge reversed  - second correct */
-                        for (int k = firstEdge.length - 1; k >= 0; k--) {
-                            nodes.add(firstEdge[k]);
-                        }
-                    } else if (firstEdge[0] == secondEdge[secondEdge.length - 1]) {
-                        /** both edges reversed */
-                        for (int k = firstEdge.length - 1; k >= 0; k--) {
-                            nodes.add(firstEdge[k]);
-                        }
-                    } else if (firstEdge[firstEdge.length - 1] == secondEdge[secondEdge.length - 1]) {
-                        /** second edge reversed */
-                        nodes.addAll(firstEdge);
-                    } else {
-                        logger.warn(String.format("Non consecutive edges: %s - %s",
-                                Arrays.toString(firstEdge),
-                                Arrays.toString(secondEdge)));
-                        return null;
-                    }
-
-                    for (int i = 1; i < osmEdges.size(); i++) {
-                        long[] edgeNodes = osmEdges.get(i);
-                        long last = nodes.get(nodes.size() - 1);
-                        if (last == edgeNodes[0]) {
-                            /** correct order */
-                            for (int k = 1; k < edgeNodes.length; k++) {
-                                nodes.add(edgeNodes[k]);
-                            }
-                        } else if (last == edgeNodes[edgeNodes.length - 1]) {
-                            /** reverse order */
-                            for (int k = edgeNodes.length - 2; k >= 0; k--) {
-                                nodes.add(edgeNodes[k]);
-                            }
-                        }
-                    }
-                }
-            }
-            return nodes;
+            return new RoutingResult(path, ghEdge2Nodes);
         } else {
             return null;
         }
     }
 
-    private static OsmIterator getOsmIterator(String file) throws FileNotFoundException {
-        if (file.endsWith(".xml") || file.endsWith(".osm")) {
-            return new OsmXmlIterator(new FileInputStream(file), false);
-        } else if (file.endsWith(".pbf")) {
-            return new PbfIterator(new FileInputStream(file), false);
-        } else {
-            throw new RuntimeException("File format unknown. Can only parse .xml, .osm and .pbf.");
+    private static class InternalGraphHopper extends GraphHopper {
+
+        // mapping of internal edge ID to OSM way ID
+        private DataAccess edgeMapping;
+        private BitUtil bitUtil;
+
+        @Override
+        public boolean load(String graphHopperFolder) {
+            boolean loaded = super.load(graphHopperFolder);
+
+            Directory dir = getGraphHopperStorage().getDirectory();
+            bitUtil = BitUtil.get(dir.getByteOrder());
+            edgeMapping = dir.find("edge_mapping");
+
+            if (loaded) {
+                edgeMapping.loadExisting();
+            }
+
+            return loaded;
         }
-    }
 
-    private static class Node {
+        @Override
+        protected DataReader createReader(GraphHopperStorage ghStorage) {
+            OSMReader reader = new OSMReader(ghStorage) {
 
-        long id;
+                {
+                    edgeMapping.create(1000);
+                }
 
-        double lat;
+                // this method is only in >0.6 protected, before it was private
+                @Override
+                protected void storeOsmWayID(int edgeId, long osmWayId) {
+                    super.storeOsmWayID(edgeId, osmWayId);
 
-        double lon;
+                    long pointer = 8L * edgeId;
+                    edgeMapping.ensureCapacity(pointer + 8L);
 
-        public Node(long id, double lat, double lon) {
-            this.id = id;
-            this.lat = lat;
-            this.lon = lon;
+                    edgeMapping.setInt(pointer, bitUtil.getIntLow(osmWayId));
+                    edgeMapping.setInt(pointer + 4, bitUtil.getIntHigh(osmWayId));
+                }
+
+                @Override
+                protected void finishedReading() {
+                    super.finishedReading();
+
+                    edgeMapping.flush();
+                }
+            };
+
+            return initDataReader(reader);
+        }
+
+        public long getOSMWay(int internalEdgeId) {
+            long pointer = 8L * internalEdgeId;
+            return bitUtil.combineIntsToLong(edgeMapping.getInt(pointer), edgeMapping.getInt(pointer + 4L));
+        }
+
+        @Override
+        public List<Path> calcPaths(GHRequest request, GHResponse rsp) {
+            return super.calcPaths(request, rsp);
         }
     }
 }

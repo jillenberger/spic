@@ -19,6 +19,10 @@
 
 package de.dbanalytics.spic.osm.graph;
 
+import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,23 +30,47 @@ import java.util.List;
  */
 public class Graph {
 
+    private final List<Edge> edges;
+
+    private final TLongObjectMap<Node> nodes;
+
+    public Graph() {
+        edges = new ArrayList<>(10000);
+        nodes = new TLongObjectHashMap<>();
+    }
+
     public List<Node> getNodes() {
-        return null;
+        return new ArrayList<>(nodes.valueCollection());
     }
 
     public Node getNode(long id) {
-        return null;
+        return nodes.get(id);
     }
 
     public void addNode(Node node) {
+        nodes.put(node.getId(), node);
+    }
 
+    public void removeNode(Node node) {
+        if (node.getEdges().isEmpty()) nodes.remove(node.getId());
+        else throw new RuntimeException("Cannot remove a node that is still connected to edges.");
     }
 
     public List<Edge> getEdges() {
-        return null;
+        return edges;
     }
 
     public void addEdge(Edge edge) {
-
+        edges.add(edge);
+        edge.getFrom().getEdges().add(edge);
+        edge.getTo().getEdges().add(edge);
     }
+
+    public void removeEdge(Edge edge) {
+        edge.getFrom().getEdges().remove(edge);
+        edge.getTo().getEdges().remove(edge);
+        edges.remove(edge);
+    }
+
+
 }

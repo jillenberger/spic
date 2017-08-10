@@ -33,13 +33,36 @@ public class Edge {
 
     private final List<Node> bends;
 
-    public Edge(Node from, Node to) {
+    private final long osmWayId;
+
+    private final int osmWayIndex;
+
+    public Edge(Node from, Node to, long osmWayId, int osmWayIndex) {
         this.from = from;
         this.to = to;
+        this.osmWayId = osmWayId;
+        this.osmWayIndex = osmWayIndex;
+
         this.bends = new ArrayList<>();
     }
 
     public List<Node> getBends() {
         return bends;
+    }
+
+    public Node getFrom() {
+        return from;
+    }
+
+    public Node getTo() {
+        return to;
+    }
+
+    public long getOsmWayId() {
+        return osmWayId;
+    }
+
+    public int getOsmWayIndex() {
+        return osmWayIndex;
     }
 }
