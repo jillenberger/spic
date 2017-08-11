@@ -106,22 +106,30 @@ public class RoutingResult {
                 /** proceed with the remaining edges */
                 for (int i = 1; i < osmEdges.size(); i++) {
                     List<Node> edgeNodes = osmEdges.get(i);
-                    Node last = nodes.get(nodes.size() - 1);
-                    if (last == edgeNodes.get(0)) {
-                        /** correct order */
-                        for (int k = 1; k < edgeNodes.size(); k++) {
-                            nodes.add(edgeNodes.get(k));
-                        }
-                    } else if (last == edgeNodes.get(edgeNodes.size() - 1)) {
-                        /** reversed order */
-                        for (int k = edgeNodes.size() - 2; k >= 0; k--) {
-                            nodes.add(edgeNodes.get(k));
-                        }
+
+                    if (edgeNodes.size() == 1) {
+                        /** Appears to happen when routes and at a barrier.
+                         * Add the single node if it is not already in the path.
+                         **/
+                        if (nodes.get(nodes.size() - 1) != edgeNodes.get(0)) nodes.add(edgeNodes.get(0));
                     } else {
-                        logger.warn(String.format("Non consecutive edges: %s - %s",
-                                last.getId(),
-                                Arrays.toString(edgeNodes.toArray())));
-                        return null;
+                        Node last = nodes.get(nodes.size() - 1);
+                        if (last == edgeNodes.get(0)) {
+                            /** correct order */
+                            for (int k = 1; k < edgeNodes.size(); k++) {
+                                nodes.add(edgeNodes.get(k));
+                            }
+                        } else if (last == edgeNodes.get(edgeNodes.size() - 1)) {
+                            /** reversed order */
+                            for (int k = edgeNodes.size() - 2; k >= 0; k--) {
+                                nodes.add(edgeNodes.get(k));
+                            }
+                        } else {
+                            logger.warn(String.format("Non consecutive edges: %s - %s",
+                                    last.getId(),
+                                    Arrays.toString(edgeNodes.toArray())));
+                            return null;
+                        }
                     }
                 }
             }

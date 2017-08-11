@@ -23,19 +23,21 @@ import gnu.trove.map.TLongObjectMap;
 import gnu.trove.map.hash.TLongObjectHashMap;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author jillenberger
  */
 public class Graph {
 
-    private final List<Edge> edges;
+    private final Set<Edge> edges;
 
     private final TLongObjectMap<Node> nodes;
 
     public Graph() {
-        edges = new ArrayList<>(10000);
+        edges = new HashSet<>(10000);
         nodes = new TLongObjectHashMap<>();
     }
 
@@ -56,7 +58,7 @@ public class Graph {
         else throw new RuntimeException("Cannot remove a node that is still connected to edges.");
     }
 
-    public List<Edge> getEdges() {
+    public Set<Edge> getEdges() {
         return edges;
     }
 

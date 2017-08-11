@@ -26,7 +26,6 @@ import com.graphhopper.reader.DataReader;
 import com.graphhopper.reader.osm.OSMReader;
 import com.graphhopper.routing.AlgorithmOptions;
 import com.graphhopper.routing.Path;
-import com.graphhopper.routing.QueryGraph;
 import com.graphhopper.routing.RoutingAlgorithm;
 import com.graphhopper.routing.util.*;
 import com.graphhopper.routing.weighting.FastestWeighting;
@@ -47,7 +46,6 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TLongObjectHashMap;
 import org.apache.log4j.Logger;
 
-import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -89,52 +87,67 @@ public class GraphHopperWrapper {
 
         GraphBuilder builder = new GraphBuilder();
         graph = builder.build(osmFile);
-        try {
-            initEdgeMapping(graph);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        initEdgeMapping(graph);
     }
 
-    private void initEdgeMapping(Graph graph) throws FileNotFoundException {
-        TLongObjectMap<List<Node>> nodes = getOsmWayId2Nodes(graph);
+    private void initEdgeMapping(Graph graph) {
+        logger.info("Collection nodes of osm ways...");
+        TLongObjectMap<List<Node>> osmWayNodes = getOsmWayId2Nodes(graph);
 
         ProgressLogger plogger = new ProgressLogger(logger);
         ghEdge2Nodes = new TIntObjectHashMap<>();
         AllEdgesIterator edgesIterator = hopper.getGraphHopperStorage().getAllEdges();
         plogger.start("Mapping edges...", edgesIterator.getMaxId());
+
+        int numOneNode = 0;
+        int numNoNode = 0;
+
         while (edgesIterator.next()) {
             long osmWayId = hopper.getOSMWay(edgesIterator.getEdge());
-            List<de.dbanalytics.spic.osm.graph.Node> osmNodes = nodes.get(osmWayId);
+            List<Node> candidates = osmWayNodes.get(osmWayId);
 
             PointList plist = edgesIterator.fetchWayGeometry(3);
 
-            de.dbanalytics.spic.osm.graph.Node startNode = getNearestNode(plist.getLatitude(0), plist.getLongitude(0), osmNodes);
-            de.dbanalytics.spic.osm.graph.Node endNode = getNearestNode(plist.getLatitude(plist.size() - 1), plist.getLongitude(plist.size() - 1), osmNodes);
+            Node startNode = getNearestNode(
+                    plist.getLatitude(0),
+                    plist.getLongitude(0),
+                    candidates);
+            Node endNode = getNearestNode(
+                    plist.getLatitude(plist.size() - 1),
+                    plist.getLongitude(plist.size() - 1),
+                    candidates);
 
-            int idx1 = osmNodes.indexOf(startNode);
-            int idx2 = osmNodes.indexOf(endNode);
+            int idx1 = candidates.indexOf(startNode);
+            int idx2 = candidates.indexOf(endNode);
 
             int starIdx = Math.min(idx1, idx2);
             int endIdx = Math.max(idx1, idx2);
 
-            List<Node> ghNodes = new ArrayList<>();
+            List<Node> ghEdgeNodes = new ArrayList<>();
             for (int i = starIdx; i <= endIdx; i++) {
-                de.dbanalytics.spic.osm.graph.Node node = osmNodes.get(i);
+                de.dbanalytics.spic.osm.graph.Node node = candidates.get(i);
                 if (!node.getEdges().isEmpty()) {
-                    ghNodes.add(node);
+                    ghEdgeNodes.add(node);
                 }
             }
 
-            if (ghNodes.size() > 0) {
-                ghEdge2Nodes.put(edgesIterator.getEdge(), ghNodes);
+            if (ghEdgeNodes.size() > 0) {
+                ghEdge2Nodes.put(edgesIterator.getEdge(), ghEdgeNodes);
+
+                if (ghEdgeNodes.size() == 1) {
+                    /** Happens if a GH-edge is only a part of an (tower-)edge. Can happen with barriers. */
+                    numOneNode++;
+                }
+            } else {
+                numNoNode++;
             }
-
-
             plogger.step();
         }
-
         plogger.stop();
+
+        if (numNoNode > 0 || numOneNode > 0) {
+            logger.warn(String.format("%s GH-edges with no node, %s GH-edges with only one node.", numNoNode, numOneNode));
+        }
     }
 
     private TLongObjectMap<List<Node>> getOsmWayId2Nodes(Graph graph) {
@@ -207,9 +220,10 @@ public class GraphHopperWrapper {
 
         if (!fromQR.isValid() || !toQR.isValid()) return null;
 
-        QueryGraph queryGraph = new QueryGraph(graph.getGraph(CHGraphImpl.class));
-        queryGraph.lookup(fromQR, toQR);
+//        QueryGraph queryGraph = new QueryGraph(graph.getGraph(CHGraphImpl.class));
+//        queryGraph.lookup(fromQR, toQR);
 
+        com.graphhopper.storage.Graph queryGraph = graph.getGraph(CHGraphImpl.class);
         RoutingAlgorithm algorithm = hopper.getAlgorithmFactory(hintsMap).createAlgo(queryGraph, algoOpts);
 
         int fromNodeId = fromQR.getClosestNode();

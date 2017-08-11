@@ -22,7 +22,9 @@ package de.dbanalytics.spic.gis;
 import com.vividsolutions.jts.geom.Coordinate;
 import de.dbanalytics.spic.data.AttributableIndex;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -31,6 +33,8 @@ import java.util.Set;
 public class ZoneIndex {
 
     private final Set<Feature> zones;
+
+    private Map<String, Feature> idIndex;
 
     private SpatialIndex<Feature> spatialIndex;
 
@@ -42,6 +46,11 @@ public class ZoneIndex {
 
     public Set<Feature> get() {
         return zones;
+    }
+
+    public Feature get(String id) {
+        if (idIndex == null) initIdIndex();
+        return idIndex.get(id);
     }
 
     public Feature get(Coordinate coordinate) {
@@ -56,6 +65,13 @@ public class ZoneIndex {
         if (attributableIndex == null) initAttributableIndex();
 
         return attributableIndex.get(key, value);
+    }
+
+    private synchronized void initIdIndex() {
+        if (idIndex == null) {
+            idIndex = new HashMap<>(zones.size());
+            zones.stream().forEach(zone -> idIndex.put(zone.getId(), zone));
+        }
     }
 
     private synchronized void initSpatialIndex() {

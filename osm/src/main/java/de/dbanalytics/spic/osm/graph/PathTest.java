@@ -60,22 +60,24 @@ public class PathTest {
 
                 if (result != null) {
                     List<Node> nodes = result.getPath();
-                    if (nodes.isEmpty()) {
-                        emptyPath++;
-                    } else {
-                        for (int k = 1; k < nodes.size(); k++) {
-                            Node from = nodes.get(k - 1);
-                            Node to = nodes.get(k);
+                    if (nodes != null) {
+                        if (nodes.isEmpty()) {
+                            emptyPath++;
+                        } else {
+                            for (int k = 1; k < nodes.size(); k++) {
+                                Node from = nodes.get(k - 1);
+                                Node to = nodes.get(k);
 
-                            Edge link = null;
-                            for (Edge edge : from.getEdges()) {
-                                if (edge.getTo() == to || edge.getFrom() == to) {
-                                    link = edge;
+                                Edge link = null;
+                                for (Edge edge : from.getEdges()) {
+                                    if (edge.getTo() == to || edge.getFrom() == to) {
+                                        link = edge;
+                                    }
                                 }
-                            }
 
-                            if (link == null) {
-                                logger.warn(String.format("No edge between %s and %s.", from.getId(), to.getId()));
+                                if (link == null) {
+                                    logger.warn(String.format("No edge between %s and %s.", from.getId(), to.getId()));
+                                }
                             }
                         }
                     }

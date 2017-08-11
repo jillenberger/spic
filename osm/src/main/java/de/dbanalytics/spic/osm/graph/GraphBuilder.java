@@ -19,6 +19,7 @@
 
 package de.dbanalytics.spic.osm.graph;
 
+import de.dbanalytics.spic.util.ProgressLogger;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.core.model.iface.EntityContainer;
 import de.topobyte.osm4j.core.model.iface.EntityType;
@@ -55,6 +56,7 @@ public class GraphBuilder {
 
     private Graph buildeTowerNetwork(Graph graph) {
         /** get pillar (bend) nodes */
+        logger.info("Collecting pillar nodes...");
         endNodes.sort();
         List<Node> pillars = new LinkedList<>();
         for (Node node : graph.getNodes()) {
@@ -62,7 +64,11 @@ public class GraphBuilder {
                 pillars.add(node);
             }
         }
+        logger.info(String.format("Collected %s pillar nodes.", pillars.size()));
 
+        ProgressLogger pLogger = new ProgressLogger(logger);
+        pLogger.start("Simplifying network...", pillars.size());
+//        int cnt = 0;
         for (Node pillar : pillars) {
             Edge edge1 = pillar.getEdges().get(0);
             Edge edge2 = pillar.getEdges().get(1);
@@ -99,8 +105,13 @@ public class GraphBuilder {
 
             graph.addEdge(newEdge);
 
+            pLogger.step();
+//            cnt++;
+//            if(cnt % 1000 == 0) logger.info(String.format("Processed %s nodes...", cnt));
         }
+        pLogger.stop();
 
+        logger.info(String.format("Simplified network: %s nodes, %s edges.", graph.getNodes().size(), graph.getEdges().size()));
         return graph;
     }
 
@@ -111,17 +122,20 @@ public class GraphBuilder {
 
             OsmIterator it = new OsmXmlIterator(osmStream, false);
             TLongObjectMap<OsmNode> osmNodes = new TLongObjectHashMap<>();
+            long numEntities = 0;
             for (EntityContainer container : it) {
                 if (container.getType() == EntityType.Node) {
                     OsmNode osmNode = (OsmNode) container.getEntity();
                     osmNodes.put(osmNode.getId(), (OsmNode) container.getEntity());
                 }
+                numEntities++;
             }
             logger.info(String.format("Loaded %s OSM nodes.", osmNodes.size()));
 
             Graph graph = new Graph();
 
-            logger.info("Building full network...");
+            ProgressLogger pLogger = new ProgressLogger(logger);
+            pLogger.start("Building network...", numEntities);
             osmStream = new FileInputStream(osmFile);
             it = new OsmXmlIterator(osmStream, false);
             for (EntityContainer container : it) {
@@ -145,8 +159,9 @@ public class GraphBuilder {
                         }
                     }
                 }
+                pLogger.step();
             }
-
+            pLogger.stop();
             logger.info(String.format("Full network: %s node, %s edges.", graph.getNodes().size(), graph.getEdges().size()));
 
             return graph;
