@@ -31,7 +31,11 @@ import de.dbanalytics.spic.gis.ZoneCollection;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author johannes
@@ -50,10 +54,14 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
     private boolean useWeights;
 
+    private Map<String, String> zoneIds;
+
+    private Set<Place> outOfBoundsPlaces;
+
     public DefaultMatrixBuilder(PlaceIndex placeIndex, ZoneCollection zones) {
         this.placeIndex = placeIndex;
         this.zones = zones;
-//        zoneIdKey = zones.getId() + "_zone_id";
+        zoneIds = new ConcurrentHashMap<>();
     }
 
     public void setLegPredicate(Predicate<Segment> predicate) {
@@ -66,6 +74,8 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
     @Override
     public NumericMatrix build(Collection<? extends Person> persons) {
+        outOfBoundsPlaces = new HashSet<>();
+
         logger.debug("Start building matrix...");
         int n = persons.size() / 10000;
         n = Math.min(n, Executor.getFreePoolSize());
@@ -107,11 +117,25 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
         return m;
     }
 
+    public void debugDump(String filename) throws IOException {
+        if (!outOfBoundsPlaces.isEmpty()) {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            writer.write("Id\tX\tY");
+            for (Place place : outOfBoundsPlaces) {
+                writer.newLine();
+                writer.write(String.valueOf(place.getId()));
+                writer.write("\t");
+                writer.write(String.valueOf(place.getGeometry().getCoordinate().x));
+                writer.write("\t");
+                writer.write(String.valueOf(place.getGeometry().getCoordinate().y));
+            }
+            writer.close();
+        }
+    }
+
     public class RunThread implements Runnable {
 
         private final Collection<? extends Person> persons;
-
-        private final Map<String, String> zoneIds;
 
         private final Predicate<Segment> predicate;
 
@@ -129,9 +153,6 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             this.persons = persons;
             this.predicate = predicate;
             this.useWeights = useWeights;
-
-            zoneIds = new HashMap<>();
-
             m = new NumericMatrix();
         }
 
@@ -153,7 +174,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
         @Override
         public void run() {
-            for(Person person : persons) {
+            for (Person person : persons) {
                 for (Episode episode : person.getEpisodes()) {
                     for (int i = 0; i < episode.getLegs().size(); i++) {
                         Segment leg = episode.getLegs().get(i);
@@ -193,10 +214,16 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             }
 
             String zoneId = zoneIds.get(placeId);
+            if (zoneId == null) zoneId = getOrSetZoneId(placeId);
+            return zoneId;
+        }
+
+
+        private synchronized String getOrSetZoneId(String placeId) {
+            String zoneId = zoneIds.get(placeId);
 
             if (zoneId == null) {
                 Place place = placeIndex.get(placeId);
-//                zoneId = place.getAttribute(zoneIdKey);
 
                 if (zoneId == null) {
                     Zone zone = zones.get(place.getGeometry().getCoordinate());
@@ -204,6 +231,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                         zoneId = zone.getAttribute(zones.getPrimaryKey());
                     } else {
                         // facility is outside bounds of zones
+                        outOfBoundsPlaces.add(place);
                         return null;
                     }
                 }
