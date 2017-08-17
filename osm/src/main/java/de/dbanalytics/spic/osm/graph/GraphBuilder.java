@@ -35,8 +35,10 @@ import org.apache.log4j.Logger;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jillenberger
@@ -142,15 +144,31 @@ public class GraphBuilder {
                 if (container.getType() == EntityType.Way) {
                     OsmWay way = (OsmWay) container.getEntity();
                     if (OsmModelUtil.getTagsAsMap(way).containsKey("highway")) {
-                        for (int i = 0; i < way.getNumberOfNodes() - 1; i++) {
-                            long fromId = way.getNodeId(i);
-                            long toId = way.getNodeId(i + 1);
+                        ArrayList<OsmNode> osmWayNodes = new ArrayList(way.getNumberOfNodes());
+                        for (int i = 0; i < way.getNumberOfNodes(); i++) {
+                            OsmNode node = osmNodes.get(way.getNodeId(i));
+                            if (node != null) {
+                                /**
+                                 * Stop signs may be very close to the junction. In that case the
+                                 * mapping from way geometry to nodes may fail, because the stop sign
+                                 * instead of the junction node is found.
+                                 */
+                                Map<String, String> tags = OsmModelUtil.getTagsAsMap(node);
+                                boolean ignore = "stop".equals(tags.get("highway"));
+                                if (!ignore) {
+                                    osmWayNodes.add(node);
+                                }
+                            }
+                        }
+                        for (int i = 0; i < osmWayNodes.size() - 1; i++) {
+                            OsmNode from = osmWayNodes.get(i);
+                            OsmNode to = osmWayNodes.get(i + 1);
 
                             boolean endOfWay = (i == 0);
-                            Node fromNode = getOrCreateNode(fromId, osmNodes, graph, endOfWay);
+                            Node fromNode = getOrCreateNode(from, graph, endOfWay);
 
-                            endOfWay = (i + 1 == way.getNumberOfNodes() - 1);
-                            Node toNode = getOrCreateNode(toId, osmNodes, graph, endOfWay);
+                            endOfWay = (i + 1 == osmWayNodes.size() - 1);
+                            Node toNode = getOrCreateNode(to, graph, endOfWay);
 
                             if (fromNode != null && toNode != null) {
                                 Edge edge = new Edge(fromNode, toNode, way.getId(), i);
@@ -171,15 +189,23 @@ public class GraphBuilder {
         }
     }
 
-    private Node getOrCreateNode(long id, TLongObjectMap<OsmNode> osmNodes, Graph graph, boolean isEndOfWay) {
-        OsmNode osmNode = osmNodes.get(id);
+    private Node getOrCreateNode(OsmNode osmNode, Graph graph, boolean isEndOfWay) {
+//        OsmNode osmNode = osmNodes.get(id);
         if (osmNode != null) {
-            Node node = graph.getNode(id);
+            Node node = graph.getNode(osmNode.getId());
             if (node == null) {
                 node = new Node(osmNode.getId(), osmNode.getLatitude(), osmNode.getLongitude());
                 graph.addNode(node);
 
-                if (isEndOfWay) endNodes.add(id);
+                Map<String, String> tags = OsmModelUtil.getTagsAsMap(osmNode);
+                /**
+                 * GraphHopper treads end nodes of ways and some barriers as tower nodes.
+                 */
+                if (isEndOfWay ||
+//                        "stop".equals(tags.get("highway")) ||
+                        "gate".equals(tags.get("barrier"))) {
+                    endNodes.add(osmNode.getId());
+                }
             }
             return node;
         } else {

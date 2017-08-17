@@ -120,6 +120,10 @@ public class GraphHopperWrapper {
             int idx1 = candidates.indexOf(startNode);
             int idx2 = candidates.indexOf(endNode);
 
+//            if(idx1 == idx2) {
+//                logger.warn("Same start and end index.");
+//            }
+
             int starIdx = Math.min(idx1, idx2);
             int endIdx = Math.max(idx1, idx2);
 
@@ -135,7 +139,11 @@ public class GraphHopperWrapper {
                 ghEdge2Nodes.put(edgesIterator.getEdge(), ghEdgeNodes);
 
                 if (ghEdgeNodes.size() == 1) {
-                    /** Happens if a GH-edge is only a part of an (tower-)edge. Can happen with barriers. */
+                    /**
+                     * Can happen
+                     * 1) if a GH-edge is only a part of an (tower-)edge. Can happen with barriers. (probably fixed)
+                     * 2) with loops
+                     **/
                     numOneNode++;
                 }
             } else {

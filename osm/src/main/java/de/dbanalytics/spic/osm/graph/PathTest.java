@@ -47,6 +47,7 @@ public class PathTest {
 
         int noPathFound = 0;
         int emptyPath = 0;
+        int pathErrors = 0;
 
         ProgressLogger plogger = new ProgressLogger(logger);
         plogger.start("Sampling...", samples);
@@ -80,6 +81,8 @@ public class PathTest {
                                 }
                             }
                         }
+                    } else {
+                        pathErrors++;
                     }
                 } else {
                     noPathFound++;
@@ -90,6 +93,6 @@ public class PathTest {
         }
         plogger.stop();
         logger.info(String.format("Sampled %s paths in %.2f secs.", samples, (System.currentTimeMillis() - time) / 1000.0));
-        logger.info(String.format("%s paths not found, %s empty paths.", noPathFound, emptyPath));
+        logger.info(String.format("%s paths not found, %s empty paths, %s path errors.", noPathFound, emptyPath, pathErrors));
     }
 }
