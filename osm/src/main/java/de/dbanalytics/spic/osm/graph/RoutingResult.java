@@ -26,7 +26,6 @@ import gnu.trove.map.TIntObjectMap;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -97,9 +96,19 @@ public class RoutingResult {
                     /** second edge reversed */
                     nodes.addAll(firstEdge);
                 } else {
+                    StringBuilder firstIds = new StringBuilder();
+                    firstEdge.stream().forEach(node -> {
+                        firstIds.append(node.getId());
+                        firstIds.append(" ");
+                    });
+                    StringBuilder secondIds = new StringBuilder();
+                    firstEdge.stream().forEach(node -> {
+                        secondIds.append(node.getId());
+                        secondIds.append(" ");
+                    });
                     logger.warn(String.format("Non consecutive edges: %s - %s",
-                            Arrays.toString(firstEdge.toArray()),
-                            Arrays.toString(secondEdge.toArray())));
+                            firstIds.toString(),
+                            secondIds.toString()));
                     return null;
                 }
 
@@ -125,9 +134,14 @@ public class RoutingResult {
                                 nodes.add(edgeNodes.get(k));
                             }
                         } else {
+                            StringBuilder builder = new StringBuilder();
+                            edgeNodes.stream().forEach(node -> {
+                                builder.append(node.getId());
+                                builder.append(" ");
+                            });
                             logger.warn(String.format("Non consecutive edges: %s - %s",
                                     last.getId(),
-                                    Arrays.toString(edgeNodes.toArray())));
+                                    builder.toString()));
                             return null;
                         }
                     }

@@ -97,8 +97,9 @@ public class RunMatrixAssignment {
 
                         if (result != null) {
                             List<Pair<Node, Node>> path = nodes2Edges(result.getPath());
-                            path.stream().forEach(edge -> trafficState.adjustOrPutValue(edge, vol, vol));
-
+                            if (path != null) {
+                                path.stream().forEach(edge -> trafficState.adjustOrPutValue(edge, vol, vol));
+                            }
                         } else {
                             logger.warn(String.format("No path found between zone %s and %s.",
                                     zone_i.getId(),
@@ -134,7 +135,7 @@ public class RunMatrixAssignment {
                 Pair<Node, Node> pair = ImmutablePair.of(prev, next);
                 edges.add(pair);
             } else {
-                throw new RuntimeException(String.format("No edge between %s and %s.", prev.getId(), next.getId()));
+                logger.warn(String.format("No edge between %s and %s.", prev.getId(), next.getId()));
             }
         }
 

@@ -103,7 +103,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
         MatrixOperations.accumulate(matrices, m);
 
         if (countNoZones > 0) {
-            logger.warn(String.format(Locale.US, "%s of %s (%.2f %%) od-pairs skipped because at least one facility cannot be located in a zone.",
+            logger.info(String.format(Locale.US, "%s of %s (%.2f %%) od-pairs skipped because at least one facility cannot be located in a zone.",
                     countNoZones,
                     size + countNoZones,
                     countNoZones / ((double) size + countNoZones) * 100));
