@@ -23,16 +23,16 @@ import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Place;
-import de.dbanalytics.spic.gis.PlaceIndex2;
+import de.dbanalytics.spic.gis.PlaceIndex;
 
 /**
  * @author johannes
  */
 public class CalculateGeoDistance implements EpisodeTask {
 
-    private final PlaceIndex2 placeIndex;
+    private final PlaceIndex placeIndex;
 
-    public CalculateGeoDistance(PlaceIndex2 placeIndex) {
+    public CalculateGeoDistance(PlaceIndex placeIndex) {
         this.placeIndex = placeIndex;
     }
 

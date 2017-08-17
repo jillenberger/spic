@@ -22,9 +22,10 @@ package de.dbanalytics.spic.gis;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.prep.PreparedGeometry;
+import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
 import de.dbanalytics.spic.data.AttributableIndex;
-import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.matsim.core.utils.collections.QuadTree;
 
 import java.util.*;
 
@@ -37,9 +38,9 @@ public class PlaceIndex {
 
     private AttributableIndex attributeIndex;
 
-    private SpatialIndex<Place> spatialIndex;
+    private QuadTree<Place> spatialIndex;
 
-    private Map<String, SpatialIndex<Place>> spatialActivityIndex;
+    private Map<String, QuadTree<Place>> spatialActivityIndex;
 
     private Map<String, Place> idIndex;
 
@@ -71,34 +72,22 @@ public class PlaceIndex {
 
     public Set<Place> get(Geometry geometry) {
         if (spatialIndex == null) initSpatialIndex();
-        return new HashSet<>(spatialIndex.queryInside(geometry));
+        return new LinkedHashSet<>(queryInside(geometry, spatialIndex));
     }
 
     public List<Place> getForActivity(Coordinate center, double r_min, double r_max, String activity) {
-        SpatialIndex<Place> tree = spatialActivityIndex.get(activity);
+        QuadTree<Place> tree = spatialActivityIndex.get(activity);
         if (tree == null) tree = initSpatialActivityIndex(activity);
 
-        GeometryFactory factory = JTSFactoryFinder.getGeometryFactory();
+        ArrayList<Place> result = (ArrayList<Place>) tree.getRing(center.x, center.y, r_min, r_max);
 
-        Envelope env = new Envelope(center.x - r_max,
-                center.x + r_max,
-                center.y - r_min,
-                center.y + r_max);
-        List<Place> places = tree.queryInside(factory.toGeometry(env));
-        places.stream().filter(place -> {
-            double dx = center.x - place.getGeometry().getCoordinate().x;
-            double dy = center.y - place.getGeometry().getCoordinate().y;
-            double d = Math.sqrt(dx * dx + dy * dy);
-
-            return (d >= r_min && d <= r_max);
-        });
-        return places;
+        return result;
     }
 
     public Set<Place> getForActivity(Geometry geometry, String activity) {
-        SpatialIndex<Place> tree = spatialActivityIndex.get(activity);
+        QuadTree<Place> tree = spatialActivityIndex.get(activity);
         if (tree == null) tree = initSpatialActivityIndex(activity);
-        return new HashSet<>(tree.queryInside(geometry));
+        return new LinkedHashSet<>(queryInside(geometry, tree));
     }
 
     private synchronized void initIdIndex() {
@@ -137,8 +126,8 @@ public class PlaceIndex {
         if (spatialIndex == null) spatialIndex = createSpatialIndex(places);
     }
 
-    private synchronized SpatialIndex<Place> initSpatialActivityIndex(String activity) {
-        SpatialIndex<Place> tree = spatialActivityIndex.get(activity);
+    private synchronized QuadTree<Place> initSpatialActivityIndex(String activity) {
+        QuadTree<Place> tree = spatialActivityIndex.get(activity);
         if (tree == null) {
             List<Place> list = getForActivity(activity);
             if (list == null) list = new ArrayList<>();
@@ -148,7 +137,42 @@ public class PlaceIndex {
         return tree;
     }
 
-    private SpatialIndex<Place> createSpatialIndex(Collection<Place> places) {
-        return new RTreeWrapper<>(places);
+    private QuadTree<Place> createSpatialIndex(Collection<Place> places) {
+        double minx = Double.MAX_VALUE;
+        double miny = Double.MAX_VALUE;
+        double maxx = 0;
+        double maxy = 0;
+
+        for (Place fac : places) {
+            minx = Math.min(minx, fac.getGeometry().getCoordinate().x);
+            miny = Math.min(miny, fac.getGeometry().getCoordinate().y);
+            maxx = Math.max(maxx, fac.getGeometry().getCoordinate().x);
+            maxy = Math.max(maxy, fac.getGeometry().getCoordinate().y);
+        }
+
+        QuadTree<Place> tree = new QuadTree<>(minx, miny, maxx, maxy);
+
+        for (Place fac : places) {
+            tree.put(fac.getGeometry().getCoordinate().x, fac.getGeometry().getCoordinate().y, fac);
+        }
+
+        return tree;
+    }
+
+    private List<Place> queryInside(Geometry geometry, QuadTree<Place> tree) {
+
+        PreparedGeometry prepGeometry = PreparedGeometryFactory.prepare(geometry);
+        Envelope env = geometry.getEnvelopeInternal();
+
+        List<Place> candidates = new ArrayList<>(1000);
+        tree.getRectangle(env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY(), candidates);
+        List<Place> result = new ArrayList<>(1000);
+        for (Place place : candidates) {
+            if (prepGeometry.contains(place.getGeometry())) {
+                result.add(place);
+            }
+        }
+
+        return result;
     }
 }

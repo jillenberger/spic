@@ -96,8 +96,9 @@ public class RunMatrixAssignment {
                                 zone_j.getGeometry().getCentroid().getX());
 
                         if (result != null) {
-                            List<Pair<Node, Node>> path = nodes2Edges(result.getPath());
-                            if (path != null) {
+                            List<Node> nodes = result.getPath();
+                            if (nodes != null) {
+                                List<Pair<Node, Node>> path = nodes2Edges(nodes);
                                 path.stream().forEach(edge -> trafficState.adjustOrPutValue(edge, vol, vol));
                             }
                         } else {
