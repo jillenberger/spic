@@ -49,10 +49,13 @@ public class GraphBuilder {
 
     private TLongArrayList endNodes;
 
+    private static final double NODE_MERGE_THRESHOLD = 0.0000004;
+
     public Graph build(String osmFile) {
         endNodes = new TLongArrayList();
         Graph graph = buildFullNetwork(osmFile);
         graph = buildeTowerNetwork(graph);
+        graph = mergeCloseNodes(graph);
         return graph;
     }
 
@@ -148,16 +151,7 @@ public class GraphBuilder {
                         for (int i = 0; i < way.getNumberOfNodes(); i++) {
                             OsmNode node = osmNodes.get(way.getNodeId(i));
                             if (node != null) {
-                                /**
-                                 * Stop signs may be very close to the junction. In that case the
-                                 * mapping from way geometry to nodes may fail, because the stop sign
-                                 * instead of the junction node is found.
-                                 */
-                                Map<String, String> tags = OsmModelUtil.getTagsAsMap(node);
-                                boolean ignore = "stop".equals(tags.get("highway"));
-                                if (!ignore) {
                                     osmWayNodes.add(node);
-                                }
                             }
                         }
                         for (int i = 0; i < osmWayNodes.size() - 1; i++) {
@@ -187,6 +181,52 @@ public class GraphBuilder {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private Graph mergeCloseNodes(Graph graph) {
+        ProgressLogger pLogger = new ProgressLogger(logger);
+        pLogger.start("Snapping close bends...", graph.getEdges().size());
+        int cnt = 0;
+        for (Edge edge : graph.getEdges()) {
+            while (!checkBends(edge)) {
+                cnt++;
+            }
+            pLogger.step();
+        }
+        pLogger.stop();
+        if (cnt > 0) logger.info(String.format("Removed %s bends.", cnt));
+        return graph;
+    }
+
+    private boolean checkBends(Edge edge) {
+        for (int i = 0; i < edge.getBends().size(); i++) {
+            Node bend = edge.getBends().get(i);
+
+            /** check previous node */
+            Node prev = edge.getFrom();
+            if (i > 0) prev = edge.getBends().get(i - 1);
+            if (isClose(prev, bend)) {
+                edge.getBends().remove(i);
+                return false;
+            }
+
+            /** check next node */
+            Node next = edge.getTo();
+            if (i < edge.getBends().size() - 1) next = edge.getBends().get(i + 1);
+            if (isClose(bend, next)) {
+                edge.getBends().remove(i);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isClose(Node node1, Node node2) {
+        double dx = Math.abs(node1.getLongitude() - node2.getLongitude());
+        double dy = Math.abs(node1.getLatitude() - node2.getLatitude());
+
+        return (dx < NODE_MERGE_THRESHOLD && dy < NODE_MERGE_THRESHOLD);
     }
 
     private Node getOrCreateNode(OsmNode osmNode, Graph graph, boolean isEndOfWay) {

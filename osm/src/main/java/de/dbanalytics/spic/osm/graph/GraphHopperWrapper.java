@@ -106,48 +106,52 @@ public class GraphHopperWrapper {
             long osmWayId = hopper.getOSMWay(edgesIterator.getEdge());
             List<Node> candidates = osmWayNodes.get(osmWayId);
 
-            PointList plist = edgesIterator.fetchWayGeometry(3);
+            if (candidates != null) {
+                PointList plist = edgesIterator.fetchWayGeometry(3);
 
-            Node startNode = getNearestNode(
-                    plist.getLatitude(0),
-                    plist.getLongitude(0),
-                    candidates);
-            Node endNode = getNearestNode(
-                    plist.getLatitude(plist.size() - 1),
-                    plist.getLongitude(plist.size() - 1),
-                    candidates);
+                Node startNode = getNearestNode(
+                        plist.getLatitude(0),
+                        plist.getLongitude(0),
+                        candidates);
+                Node endNode = getNearestNode(
+                        plist.getLatitude(plist.size() - 1),
+                        plist.getLongitude(plist.size() - 1),
+                        candidates);
 
-            int idx1 = candidates.indexOf(startNode);
-            int idx2 = candidates.indexOf(endNode);
+                int idx1 = candidates.indexOf(startNode);
+                int idx2 = candidates.indexOf(endNode);
 
 //            if(idx1 == idx2) {
 //                logger.warn("Same start and end index.");
 //            }
 
-            int starIdx = Math.min(idx1, idx2);
-            int endIdx = Math.max(idx1, idx2);
+                int starIdx = Math.min(idx1, idx2);
+                int endIdx = Math.max(idx1, idx2);
 
-            List<Node> ghEdgeNodes = new ArrayList<>();
-            for (int i = starIdx; i <= endIdx; i++) {
-                de.dbanalytics.spic.osm.graph.Node node = candidates.get(i);
-                if (!node.getEdges().isEmpty()) {
-                    ghEdgeNodes.add(node);
+                List<Node> ghEdgeNodes = new ArrayList<>();
+                for (int i = starIdx; i <= endIdx; i++) {
+                    de.dbanalytics.spic.osm.graph.Node node = candidates.get(i);
+                    if (!node.getEdges().isEmpty()) {
+                        ghEdgeNodes.add(node);
+                    }
                 }
-            }
 
-            if (ghEdgeNodes.size() > 0) {
-                ghEdge2Nodes.put(edgesIterator.getEdge(), ghEdgeNodes);
+                if (ghEdgeNodes.size() > 0) {
+                    ghEdge2Nodes.put(edgesIterator.getEdge(), ghEdgeNodes);
 
-                if (ghEdgeNodes.size() == 1) {
-                    /**
-                     * Can happen
-                     * 1) if a GH-edge is only a part of an (tower-)edge. Can happen with barriers. (probably fixed)
-                     * 2) with loops
-                     **/
-                    numOneNode++;
+                    if (ghEdgeNodes.size() == 1) {
+                        /**
+                         * Can happen
+                         * 1) if a GH-edge is only a part of an (tower-)edge. Can happen with barriers. (probably fixed)
+                         * 2) with loops
+                         **/
+                        numOneNode++;
+                    }
+                } else {
+                    numNoNode++;
                 }
             } else {
-                numNoNode++;
+                logger.warn(String.format("No candidates found for way %s.", osmWayId));
             }
             plogger.step();
         }
