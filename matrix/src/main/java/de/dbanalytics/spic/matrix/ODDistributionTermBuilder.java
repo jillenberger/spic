@@ -19,14 +19,15 @@
 
 package de.dbanalytics.spic.matrix;
 
-import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
-import de.dbanalytics.spic.analysis.FileIOContext;
-import de.dbanalytics.spic.analysis.HistogramWriter;
-import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
+import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.sim.*;
+import de.dbanalytics.spic.sim.AnnealingHamiltonian;
+import de.dbanalytics.spic.sim.AttributeChangeListenerComposite;
+import de.dbanalytics.spic.sim.HamiltonianLogger;
+import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
+import de.dbanalytics.spic.sim.data.CachedSegment;
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
@@ -43,6 +44,8 @@ public class ODDistributionTermBuilder {
     private ZoneCollection zones;
 
     private NumericMatrix refMatrix;
+
+    private Predicate<CachedSegment> predicate;
 
     private double distanceThreshold = 0;
 
@@ -80,6 +83,11 @@ public class ODDistributionTermBuilder {
         this.refMatrix = refMatrix;
         this.placeIndex = placeIndex;
         this.zones = zones;
+    }
+
+    public ODDistributionTermBuilder predicate(Predicate<CachedSegment> predicate) {
+        this.predicate = predicate;
+        return this;
     }
 
     public ODDistributionTermBuilder distanceThreshold(double distanceThreshold) {
@@ -162,12 +170,13 @@ public class ODDistributionTermBuilder {
         return this;
     }
 
-    public Hamiltonian build() {
+    public AnnealingHamiltonian build() {
         ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, placeIndex.get()).build();
 
         calibrator.setDistanceThreshold(distanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);
         calibrator.setUseWeights(false);
+        calibrator.setPredicate(predicate);
 
         /** Add to facility attribute change listener **/
         if (attributeListeners != null) attributeListeners.addComponent(calibrator);

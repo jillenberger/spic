@@ -355,7 +355,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                     simVal = getCellValue(i, j, simMatrix);
                 }
 
-                if (refVal > 0 && simVal > 0) {
+                if (refVal > 0 || simVal > 0) {
                     /** zone indices */
                     writer.write(String.valueOf(i));
                     writer.write("\t");

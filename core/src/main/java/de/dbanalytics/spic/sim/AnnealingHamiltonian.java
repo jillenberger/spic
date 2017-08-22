@@ -60,6 +60,10 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
         theta = theta_min;
     }
 
+    public Hamiltonian getDelegate() {
+        return delegate;
+    }
+
     public void setThetaFactor(double factor) {
         this.theta_factor = factor;
     }
