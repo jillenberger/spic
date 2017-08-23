@@ -53,6 +53,8 @@ public class ODDistributionTermBuilder {
 
     private boolean useWeights = false;
 
+    private boolean normalize = false;
+
     private double thetaMin = 1.0;
 
     private double thetaMax = 1.0;
@@ -102,6 +104,11 @@ public class ODDistributionTermBuilder {
 
     public ODDistributionTermBuilder useWeights(boolean useWeights) {
         this.useWeights = useWeights;
+        return this;
+    }
+
+    public ODDistributionTermBuilder normalize(boolean normalize) {
+        this.normalize = normalize;
         return this;
     }
 
@@ -177,6 +184,7 @@ public class ODDistributionTermBuilder {
         calibrator.setVolumeThreshold(volumeThreshold);
         calibrator.setUseWeights(false);
         calibrator.setPredicate(predicate);
+        calibrator.setNormalize(normalize);
 
         /** Add to facility attribute change listener **/
         if (attributeListeners != null) attributeListeners.addComponent(calibrator);

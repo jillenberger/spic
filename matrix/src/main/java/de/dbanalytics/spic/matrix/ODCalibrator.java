@@ -74,6 +74,8 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     private Object weightDataKey;
 
+    private boolean normalize;
+
     private int odCount;
 
     public ODCalibrator(TIntObjectHashMap<TIntDoubleHashMap> refMatrix, TObjectIntHashMap<Place>
@@ -92,6 +94,10 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
         this.useWeights = useWeights;
     }
 
+    public void setNormalize(boolean normalize) {
+        this.normalize = normalize;
+    }
+
     public void setDistanceThreshold(double threshold) {
         this.distanceThreshold = threshold;
     }
@@ -101,10 +107,14 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     }
 
     private void calculateScaleFactor() {
-        double simSum = calculateSum(simMatrix, distanceThreshold);
-        scaleFactor = simSum / refSum;
+        if (normalize) {
+            double simSum = calculateSum(simMatrix, distanceThreshold);
+            scaleFactor = simSum / refSum;
 
-        logger.debug(String.format("Recalculated scale factor: %s.", scaleFactor));
+            logger.debug(String.format("Recalculated scale factor: %s.", scaleFactor));
+        } else {
+            scaleFactor = 1.0;
+        }
     }
 
     private void initHamiltonian() {
@@ -269,19 +279,20 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                 return 0.0;
             }
         } else {
+            adjustCellValue(i, j, amount, simMatrix);
             return 0.0;
         }
     }
 
     private void adjustCellValue(int i, int j, double amount, TIntObjectHashMap<TIntDoubleHashMap> matrix) {
-        if (i >= 0 && j >= 0) {
+//        if (i >= 0 && j >= 0) {
             TIntDoubleHashMap row = matrix.get(i);
             if (row == null) {
                 row = new TIntDoubleHashMap();
                 matrix.put(i, row);
             }
             row.adjustOrPutValue(j, amount, amount);
-        }
+//        }
     }
 
     private double getCellValue(int i, int j, TIntObjectHashMap<TIntDoubleHashMap> matrix) {
@@ -376,10 +387,14 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                     writer.write(String.valueOf(odCount));
                     /** od flags */
                     writer.write("\t");
-                    if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) >= distanceThreshold) {
-                        writer.write("1");
+                    if (p_i != null && p_j != null) {
+                        if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) >= distanceThreshold) {
+                            writer.write("1");
+                        } else {
+                            writer.write("0");
+                        }
                     } else {
-                        writer.write("0");
+                        writer.write("NA");
                     }
                     writer.write("\t");
                     if (refVal >= volumeThreshold) {
