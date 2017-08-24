@@ -179,7 +179,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if (simMatrix != null) {
             if (this.placeDataKey.equals(dataKey)) {
-                if (this.placeDataKey == null)
+                if (this.placeDataKey == null) //FIXME: Does not make sense!
                     this.placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
 
                 if(weightDataKey == null)
