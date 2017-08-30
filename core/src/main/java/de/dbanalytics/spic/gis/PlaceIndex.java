@@ -90,6 +90,13 @@ public class PlaceIndex {
         return new LinkedHashSet<>(queryInside(geometry, tree));
     }
 
+    public Place getClosestForActivity(Coordinate center, String activity) {
+        QuadTree<Place> tree = spatialActivityIndex.get(activity);
+        if (tree == null) tree = initSpatialActivityIndex(activity);
+
+        return tree.getClosest(center.x, center.y);
+    }
+
     private synchronized void initIdIndex() {
         if (idIndex == null) {
             Map<String, Place> tmp = new HashMap<>(places.size());

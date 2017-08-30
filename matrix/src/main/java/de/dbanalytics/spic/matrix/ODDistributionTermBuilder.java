@@ -211,6 +211,7 @@ public class ODDistributionTermBuilder {
                     name + ".interState",
                     ioContext.getPath(),
                     debugInterval));
+            aTerm.enableFileLogging(ioContext.getPath() + "/" + name + ".thetaUpdates.txt");
         }
 
         /** Add hamiltonian analyzer */

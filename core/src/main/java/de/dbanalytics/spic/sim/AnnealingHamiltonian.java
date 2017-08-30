@@ -23,6 +23,9 @@ import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import org.apache.log4j.Logger;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -51,6 +54,8 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
     private double h_old = Double.MAX_VALUE;
 
     private long iteration;
+
+    private BufferedWriter writer;
 
     public AnnealingHamiltonian(Hamiltonian delegate, double theta_min, double theta_max) {
         this.delegate = delegate;
@@ -86,7 +91,7 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
 
     @Override
     public double evaluate(Collection<CachedPerson> population) {
-        if(iteration >= startIteration) return theta * delegate.evaluate(population);
+        if (iteration >= startIteration) return theta * delegate.evaluate(population);
         else return 0.0;
     }
 
@@ -99,7 +104,35 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
             thetaNew = Math.max(thetaNew, theta_min);
             thetaNew = Math.min(thetaNew, theta_max);
 
-            if (thetaNew != theta) logger.trace(String.format("Theta update triggered: %s", thetaNew));
+            if (thetaNew != theta) {
+                logger.trace(String.format("Theta update triggered: %s", thetaNew));
+
+                if (writer != null) {
+                    try {
+                        writer.write(String.valueOf(iteration));
+                        writer.write("\t");
+                        writer.write(String.valueOf(delta));
+                        writer.write("\t");
+                        writer.write(String.valueOf(theta));
+                        writer.write("\t");
+                        writer.write(String.valueOf(thetaNew));
+                        writer.write("\t");
+                        writer.write(String.valueOf(h_old));
+                        writer.write("\t");
+                        writer.write(String.valueOf(h_new));
+                        writer.write("\t");
+                        writer.write(String.valueOf(delta_threshold));
+                        writer.write("\t");
+                        writer.write(String.valueOf(theta_factor));
+                        writer.write("\t");
+                        writer.write(String.valueOf(delta_interval));
+
+                        writer.newLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
             theta = thetaNew;
         }
@@ -114,5 +147,36 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
         }
 
         iteration++;
+    }
+
+    public void enableFileLogging(String filename) {
+        try {
+            writer = new BufferedWriter(new FileWriter(filename));
+            writer.write("iter\tdelta\ttheta_old\ttheta_new\th_old\th_new\tdelta_threshold\ttheta_factor\tdelta_interval");
+            writer.newLine();
+            writer.write(String.valueOf(iteration));
+            writer.write("\t");
+            writer.write("NA"); // delta
+            writer.write("\t");
+            writer.write(String.valueOf(theta));
+            writer.write("\t");
+            writer.write("NA"); //theta_new
+            writer.write("\t");
+            writer.write(String.valueOf(h_old));
+            writer.write("\t");
+            writer.write("NA"); //h_new
+            writer.write("\t");
+            writer.write(String.valueOf(delta_threshold));
+            writer.write("\t");
+            writer.write(String.valueOf(theta_factor));
+            writer.write("\t");
+            writer.write(String.valueOf(delta_interval));
+
+            writer.newLine();
+
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
