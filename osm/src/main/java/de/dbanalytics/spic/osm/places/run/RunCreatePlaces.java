@@ -42,7 +42,7 @@ public class RunCreatePlaces {
         String placesXmlFile = args[1];
 
         BufferedReader reader = new BufferedReader(new FileReader(placesTxtFile));
-        String line;
+        String line = reader.readLine();
         int cnt = 1;
         GeometryFactory factory = JTSFactoryFinder.getGeometryFactory();
         Set<Place> places = new HashSet<>();

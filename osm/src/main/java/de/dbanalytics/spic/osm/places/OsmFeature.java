@@ -20,6 +20,7 @@
 package de.dbanalytics.spic.osm.places;
 
 import com.vividsolutions.jts.geom.Geometry;
+import de.dbanalytics.spic.gis.Feature;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +28,7 @@ import java.util.Set;
 /**
  * Created by johannesillenberger on 25.04.17.
  */
-public class OsmFeature {
+public class OsmFeature extends Feature {
 
     public static final String LANDUSE = "landuse";
 
@@ -36,7 +37,7 @@ public class OsmFeature {
     public static final String POI = "poi";
 
 
-    private final Geometry geometry;
+//    private final Geometry geometry;
 
     private final String featureType;
 
@@ -47,13 +48,14 @@ public class OsmFeature {
     private Set<OsmFeature> children;
 
     public OsmFeature(Geometry geometry, String featureType) {
-        this.geometry = geometry;
+        super(null, geometry);
+//        this.geometry = geometry;
         this.featureType = featureType;
     }
 
-    public Geometry getGeometry() {
-        return geometry;
-    }
+//    public Geometry getGeometry() {
+//        return geometry;
+//    }
 
     public Set<String> getPlaceTypes() {
         return placeTypes;

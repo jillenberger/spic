@@ -20,17 +20,16 @@
 package de.dbanalytics.spic.osm.places;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
 import de.dbanalytics.spic.gis.GeoTransformer;
+import de.dbanalytics.spic.gis.RTreeWrapper;
+import de.dbanalytics.spic.gis.SpatialIndex;
 import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.ProgressLogger;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by johannesillenberger on 25.04.17.
@@ -185,23 +184,24 @@ public class PlacesSynthesizer {
     }
 
     private void initFeatureTree(Set<OsmFeature> features) {
-        Set<OsmFeature> pois = new HashSet<>(features.size());
-        Set<OsmFeature> buildings = new HashSet<>(features.size());
-
-        Quadtree areaIndex = new Quadtree();
-        Quadtree buildingIndex = new Quadtree();
-
+        List<OsmFeature> pois = new ArrayList<>(features.size());
+        List<OsmFeature> buildings = new ArrayList<>(features.size());
+        List<OsmFeature> areas = new ArrayList<>(features.size());
 
         for (OsmFeature feature : features) {
             if (feature.isBuilding()) {
                 buildings.add(feature);
-                buildingIndex.insert(feature.getGeometry().getEnvelopeInternal(), feature);
+//                buildingIndex.insert(feature.getGeometry().getEnvelopeInternal(), feature);
             } else if (feature.isLanduse()) {
-                areaIndex.insert(feature.getGeometry().getEnvelopeInternal(), feature);
+                areas.add(feature);
+//                areaIndex.insert(feature.getGeometry().getEnvelopeInternal(), feature);
             } else if (feature.isPoi()) {
                 pois.add(feature);
             }
         }
+
+        SpatialIndex<OsmFeature> areaIndex = new RTreeWrapper<>(areas);
+        SpatialIndex<OsmFeature> buildingIndex = new RTreeWrapper<>(buildings);
 
         ProgressLogger.init(pois.size() + buildings.size(), 2, 10);
         linkFeatures(pois, buildingIndex);
@@ -209,9 +209,10 @@ public class PlacesSynthesizer {
         ProgressLogger.terminate();
     }
 
-    private void linkFeatures(Set<OsmFeature> features, Quadtree index) {
+    private void linkFeatures(Collection<OsmFeature> features, SpatialIndex<OsmFeature> index) {
         for (OsmFeature feature : features) {
-            List<OsmFeature> candidates = index.query(feature.getGeometry().getEnvelopeInternal());
+//            List<OsmFeature> candidates = index.query(feature.getGeometry().getEnvelopeInternal());
+            List<OsmFeature> candidates = index.queryContains(feature.getGeometry().getCoordinate());
             for (OsmFeature candidate : candidates) {
                 if (candidate.getGeometry().contains(feature.getGeometry())) {
                     feature.setParent(candidate);

@@ -29,6 +29,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Location;
 import com.vividsolutions.jts.geom.prep.PreparedGeometry;
 import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,18 +40,32 @@ import java.util.List;
  */
 public class RTreeWrapper<T extends Feature> implements SpatialIndex<T> {
 
+    private static final Logger logger = Logger.getLogger(RTreeWrapper.class);
+
     private RTree<IndexEntry, com.github.davidmoten.rtree.geometry.Geometry> tree;
 
     public RTreeWrapper(Collection<T> features) {
         tree = RTree.star().create();
 
+        int errors = 0;
         for (T feature : features) {
-            Envelope env = feature.getGeometry().getEnvelopeInternal();
-            tree = tree.add(new IndexEntry(feature), Geometries.rectangle(
-                    env.getMinX(),
-                    env.getMinY(),
-                    env.getMaxX(),
-                    env.getMaxY()));
+            try {
+                Envelope env = feature.getGeometry().getEnvelopeInternal();
+                tree = tree.add(new IndexEntry(feature), Geometries.rectangle(
+                        env.getMinX(),
+                        env.getMinY(),
+                        env.getMaxX(),
+                        env.getMaxY()));
+            } catch (IllegalArgumentException e) {
+                errors++;
+            }
+        }
+
+        if (errors > 0) {
+            logger.warn(String.format("Failed to insert some features: %s of %s (%.2f %%).",
+                    errors,
+                    features.size(),
+                    (errors / (double) features.size()) * 100));
         }
     }
 
