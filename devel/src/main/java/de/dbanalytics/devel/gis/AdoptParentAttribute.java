@@ -20,14 +20,13 @@
 package de.dbanalytics.devel.gis;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.FeaturesIO;
+import de.dbanalytics.spic.gis.ZoneIndex;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Created by johannesillenberger on 04.05.17.
@@ -35,26 +34,23 @@ import java.util.Collection;
 public class AdoptParentAttribute {
 
     public static void main(String args[]) throws IOException {
-        String childZonesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/04_Daten/Shapes/PLZ8.midHH.geojson";
-        String parentZonesFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/04_Daten/Shapes/lau2.hh.gk3.geojson";
-        String outFile = "/home/johannesillenberger/gsv/C_Vertrieb/2017_03_21_DRIVE/97_Work/shapes/PLZ8-sim.gk3.geojson";
+        String childZonesFile = args[0];
+        String parentZonesFile = args[1];
+        String outFile = args[2];
 
-//        new FeaturesIO().read("/home/johannesillenberger/prosim-sge0/sge/prj/drive/demand/data/zones/PLZ8.midHH.geojson");
+        FeaturesIO featuresIO = new FeaturesIO();
+        Set<Feature> childZones = featuresIO.read(childZonesFile);
+        Set<Feature> parentZones = featuresIO.read(parentZonesFile);
 
-        ZoneCollection childZones = ZoneGeoJsonIO.readFromGeoJSON(childZonesFile, "PLZ8", null);
-        ZoneCollection parentZones = ZoneGeoJsonIO.readFromGeoJSON(parentZonesFile, "ID", null);
+        new AdoptParentAttribute().run(childZones, new ZoneIndex(parentZones), "lau2class");
 
-
-        new AdoptParentAttribute().run(childZones.getZones(), parentZones, "Lau2Class");
-
-        String data = ZoneGeoJsonIO.toJson(childZones.getZones());
-        Files.write(Paths.get(outFile), data.getBytes());
+        featuresIO.write(childZones, outFile);
     }
 
-    public void run(Collection<Zone> zones, ZoneCollection parentZones, String key) {
-        for (Zone zone : zones) {
+    public void run(Collection<Feature> zones, ZoneIndex parentZones, String key) {
+        for (Feature zone : zones) {
             Coordinate centroid = zone.getGeometry().getCentroid().getCoordinate();
-            Zone parent = parentZones.get(centroid);
+            Feature parent = parentZones.get(centroid);
             if (parent != null) {
                 zone.setAttribute(key, parent.getAttribute(key));
             }

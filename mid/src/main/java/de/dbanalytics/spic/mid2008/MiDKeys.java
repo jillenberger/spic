@@ -40,4 +40,6 @@ public interface MiDKeys {
 	String LEG_DESTINATION = "destination";
 
 	String LEG_PERSONS = "legpersons";
+
+    String JOURNEY_WEIGHT = "journeyweight";
 }

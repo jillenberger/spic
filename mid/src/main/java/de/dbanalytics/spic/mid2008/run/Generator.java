@@ -101,6 +101,7 @@ public class Generator {
         logger.info("Isolating persons...");
         IsolateEpisodes isolator = new IsolateEpisodes(CommonKeys.DATA_SOURCE, factory);
         TaskRunner.run(isolator, persons);
+
         Map<String, Set<Person>> populations = isolator.getPopulations();
         for(Map.Entry<String, Set<Person>> entry : populations.entrySet()) {
             logger.info(String.format("Writing persons %s...", entry.getKey()));
