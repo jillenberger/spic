@@ -20,7 +20,7 @@ package de.dbanalytics.spic.matrix;
 
 
 import de.dbanalytics.spic.gis.PlaceIndex;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
 
 /**
@@ -41,8 +41,8 @@ public class MatrixSamplerFactory implements MatrixBuilderFactory {
     }
 
     @Override
-    public MatrixBuilder create(PlaceIndex placeIndex, ZoneCollection zones) {
-        MatrixSampler sampler = new MatrixSampler(new DefaultMatrixBuilder(placeIndex, zones), start, step);
+    public MatrixBuilder create(PlaceIndex placeIndex, ZoneIndex zoneIndex) {
+        MatrixSampler sampler = new MatrixSampler(new DefaultMatrixBuilder(placeIndex, zoneIndex), start, step);
         listeners.addComponent(sampler);
         return sampler;
     }

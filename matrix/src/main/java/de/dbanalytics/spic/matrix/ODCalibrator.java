@@ -24,9 +24,9 @@ import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.gis.Feature;
 import de.dbanalytics.spic.gis.Place;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.sim.AttributeChangeListener;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.data.*;
@@ -414,14 +414,14 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
         private final TIntObjectHashMap<TIntDoubleHashMap> refMatrix;
 
-        private final TObjectIntHashMap<Place> facility2Index;
+        private final TObjectIntHashMap<Place> place2Index;
 
         private final TIntObjectHashMap<Point> index2Point;
 
-        public Builder(NumericMatrix refKeyMatrix, ZoneCollection zones, Collection<Place> facilities) {
-            Set<Zone> zoneSet = new HashSet<>();//zones.getZones();
+        public Builder(NumericMatrix refKeyMatrix, ZoneIndex zones, Collection<Place> places) {
+            Set<Feature> zoneSet = new HashSet<>();//zones.getZones();
             /** remove zone with ignore tag */
-            for (Zone zone : zones.getZones()) {
+            for (Feature zone : zones.get()) {
                 String value = zone.getAttribute("Ignore");
                 if (!"yes".equalsIgnoreCase(value)) {
                     zoneSet.add(zone);
@@ -429,28 +429,28 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
             }
             logger.info(String.format("%s calibration zones, %s ignored.",
                     zoneSet.size(),
-                    zones.getZones().size() - zoneSet.size()));
+                    zones.get().size() - zoneSet.size()));
 
             TObjectIntHashMap<String> id2Index = new TObjectIntHashMap<>(zoneSet.size(), Constants.DEFAULT_LOAD_FACTOR, -1);
 
             index2Point = new TIntObjectHashMap<>();
 
             int index = 0;
-            for(Zone zone : zoneSet) {
-                id2Index.put(zone.getAttribute(zones.getPrimaryKey()), index);
+            for (Feature zone : zoneSet) {
+                id2Index.put(zone.getId(), index);
                 index2Point.put(index, zone.getGeometry().getCentroid());
 
                 index++;
             }
 
-            facility2Index = new TObjectIntHashMap<>();
+            place2Index = new TObjectIntHashMap<>();
 
-            for (Place fac : facilities) {
-                Zone zone = zones.get(fac.getGeometry().getCoordinate());
+            for (Place fac : places) {
+                Feature zone = zones.get(fac.getGeometry().getCoordinate());
                 int idx = -1;
-                if (zone != null) idx = id2Index.get(zone.getAttribute(zones.getPrimaryKey()));
+                if (zone != null) idx = id2Index.get(zone.getId());
 
-                facility2Index.put(fac, idx);
+                place2Index.put(fac, idx);
             }
 
 
@@ -470,7 +470,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
 
         public ODCalibrator build() {
-            return new ODCalibrator(refMatrix, facility2Index, index2Point);
+            return new ODCalibrator(refMatrix, place2Index, index2Point);
         }
 
 

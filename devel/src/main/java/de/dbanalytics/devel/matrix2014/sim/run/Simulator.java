@@ -19,6 +19,7 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.sim.FacilityMutatorBuilder;
+import de.dbanalytics.devel.matrix2014.sim.GeoDistanceUpdaterFacility;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.DataPool;
@@ -181,7 +182,7 @@ public class Simulator {
         attributeListeners.put(CommonKeys.LEG_GEO_DISTANCE, new AttributeChangeListenerComposite());
         attributeListeners.put(CommonKeys.ACTIVITY_FACILITY, new AttributeChangeListenerComposite());
 
-        GeoDistanceUpdater geoDistanceUpdater = new GeoDistanceUpdater(attributeListeners.get(CommonKeys.LEG_GEO_DISTANCE));
+        GeoDistanceUpdaterFacility geoDistanceUpdater = new GeoDistanceUpdaterFacility(attributeListeners.get(CommonKeys.LEG_GEO_DISTANCE));
 //        geoDistanceUpdater.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
 
         attributeListeners.get(CommonKeys.ACTIVITY_FACILITY).addComponent(geoDistanceUpdater);

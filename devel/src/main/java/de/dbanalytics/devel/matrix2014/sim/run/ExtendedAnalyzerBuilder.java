@@ -69,7 +69,10 @@ public class ExtendedAnalyzerBuilder {
         mAnalyzer.setLegPredicate(engine.getLegPredicate());
         mAnalyzer.setUseWeights(engine.getUseWeights());
 
-        ODPredicate distPredicate = new ZoneDistancePredicate(tomtomZones, 100000);
+        ODPredicate distPredicate = new ZoneDistancePredicate(null, 100000);
+        System.err.println("Deprecated code!");
+        System.exit(-1);
+
         mAnalyzer.setNormPredicate(distPredicate);
 
         matrixTasks.addComponent(mAnalyzer);
@@ -81,7 +84,7 @@ public class ExtendedAnalyzerBuilder {
         Set<Place> places = placeConverter.convert(facilityData.getAll());
         PlaceIndex placeIndex = new PlaceIndex(places);
 
-        MatrixBuilder tomtomBuilder = matrixBuilderFactory.create(placeIndex, tomtomZones);
+        MatrixBuilder tomtomBuilder = matrixBuilderFactory.create(placeIndex, null);
         tomtomBuilder.setLegPredicate(engine.getLegPredicate());
         tomtomBuilder.setUseWeights(engine.getUseWeights());
 
@@ -123,7 +126,7 @@ public class ExtendedAnalyzerBuilder {
         /*
         matrix writer
          */
-        MatrixBuilder mBuilder = nuts3Sampler.create(placeIndex, tomtomZones);
+        MatrixBuilder mBuilder = nuts3Sampler.create(placeIndex, null);
         mBuilder.setLegPredicate(engine.getLegPredicate());
         mBuilder.setUseWeights(engine.getUseWeights());
         matrixWriter = new MatrixWriter(mBuilder, engine.getIOContext());

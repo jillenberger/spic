@@ -93,17 +93,19 @@ public class MatrixAnalyzerConfigurator implements DataLoader {
         volTask.setIoContext(ioContext);
         volTask.setHistogramWriter(writer);
 
-        MatrixDistanceCompare distTask = new MatrixDistanceCompare(String.format("matrix.%s.dist", name), zones);
-        distTask.setFileIoContext(ioContext);
+        System.err.println("Deprecated code!");
+        System.exit(-1);
+//        MatrixDistanceCompare distTask = new MatrixDistanceCompare(String.format("matrix.%s.dist", name), zones);
+//        distTask.setFileIoContext(ioContext);
 
         MatrixMarginalsCompare marTask = new MatrixMarginalsCompare(String.format("matrix.%s", name));
         marTask.setHistogramWriter(writer);
 
         composite.addComponent(volTask);
-        composite.addComponent(distTask);
+//        composite.addComponent(distTask);
         composite.addComponent(marTask);
 
-        MatrixComparator analyzer = new MatrixComparator(m, factory.create(placeIndex, zones), composite);
+        MatrixComparator analyzer = new MatrixComparator(m, factory.create(placeIndex, null), composite);
         analyzer.setVolumeThreshold(threshold);
 
         return analyzer;

@@ -23,8 +23,8 @@ import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.StatsContainer;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import org.apache.commons.lang3.tuple.Pair;
@@ -52,7 +52,7 @@ public class MatrixDistanceCompare implements AnalyzerTask<Pair<NumericMatrix, N
 
     private final NumericMatrix distanceMatrix;
 
-    private final ZoneCollection zones;
+    private final ZoneIndex zoneIndex;
 
     private DistanceCalculator distanceCalculator;
 
@@ -60,10 +60,10 @@ public class MatrixDistanceCompare implements AnalyzerTask<Pair<NumericMatrix, N
 
     private FileIOContext ioContext;
 
-    public MatrixDistanceCompare(String dimension, ZoneCollection zones) {
+    public MatrixDistanceCompare(String dimension, ZoneIndex zoneIndex) {
         this.dimension = dimension;
         this.distanceMatrix = new NumericMatrix();
-        this.zones = zones;
+        this.zoneIndex = zoneIndex;
 
         setDiscretizer(new LinearDiscretizer(50000));
         setDistanceCalculator(OrthodromicDistanceCalculator.getInstance());
@@ -111,7 +111,6 @@ public class MatrixDistanceCompare implements AnalyzerTask<Pair<NumericMatrix, N
             try {
                 Histogram.normalize(simHist);
                 Histogram.normalize(refHist);
-//                Histogram.normalize(diffHist);
 
                 StatsWriter.writeHistogram(simHist, "distance", "count", String.format("%s/%s.sim.txt", ioContext.getPath
                         (), dimension));
@@ -140,8 +139,8 @@ public class MatrixDistanceCompare implements AnalyzerTask<Pair<NumericMatrix, N
                         values.add(d);
                         weights.add(vol);
                     } else {
-                        if(zones.get(i) == null) notfound.add(i);
-                        if(zones.get(j) == null) notfound.add(j);
+                        if (zoneIndex.get(i) == null) notfound.add(i);
+                        if (zoneIndex.get(j) == null) notfound.add(j);
                     }
                 }
             }
@@ -156,8 +155,8 @@ public class MatrixDistanceCompare implements AnalyzerTask<Pair<NumericMatrix, N
         Double d = distanceMatrix.get(i, j);
 
         if(d == null) {
-            Zone z_i = zones.get(i);
-            Zone z_j = zones.get(j);
+            Feature z_i = zoneIndex.get(i);
+            Feature z_j = zoneIndex.get(j);
 
             if(z_i != null && z_j != null) {
                 Point p_i = z_i.getGeometry().getCentroid();
@@ -167,8 +166,6 @@ public class MatrixDistanceCompare implements AnalyzerTask<Pair<NumericMatrix, N
                 distanceMatrix.set(i, j, d);
             } else {
                 d = Double.POSITIVE_INFINITY;
-//                if(z_i == null) logger.warn(String.format("Zone %s not found.", i));
-//                if(z_j == null) logger.warn(String.format("Zone %s not found.", j));
             }
         }
 

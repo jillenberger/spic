@@ -24,10 +24,10 @@ import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.gis.Feature;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.PlaceIndex;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;
 
@@ -46,9 +46,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
     private final PlaceIndex placeIndex;
 
-//    private final String zoneIdKey;
-
-    private final ZoneCollection zones;
+    private final ZoneIndex zones;
 
     private Predicate<Segment> legPredicate;
 
@@ -58,9 +56,9 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
     private Set<Place> outOfBoundsPlaces;
 
-    public DefaultMatrixBuilder(PlaceIndex placeIndex, ZoneCollection zones) {
+    public DefaultMatrixBuilder(PlaceIndex placeIndex, ZoneIndex zoneIndex) {
         this.placeIndex = placeIndex;
-        this.zones = zones;
+        this.zones = zoneIndex;
         zoneIds = new ConcurrentHashMap<>();
     }
 
@@ -226,9 +224,9 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                 Place place = placeIndex.get(placeId);
 
                 if (zoneId == null) {
-                    Zone zone = zones.get(place.getGeometry().getCoordinate());
+                    Feature zone = zones.get(place.getGeometry().getCoordinate());
                     if (zone != null) {
-                        zoneId = zone.getAttribute(zones.getPrimaryKey());
+                        zoneId = zone.getId();
                     } else {
                         // facility is outside bounds of zones
                         outOfBoundsPlaces.add(place);

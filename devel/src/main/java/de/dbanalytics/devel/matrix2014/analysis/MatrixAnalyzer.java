@@ -64,7 +64,9 @@ public class MatrixAnalyzer implements AnalyzerTask<Collection<? extends Person>
         this.refMatrix = refMatrix;
         this.matrixName = name;
 
-        matrixBuilder = new DefaultMatrixBuilder(null, zones);
+        System.err.println("Deprecated code!");
+        System.exit(-1);
+        matrixBuilder = new DefaultMatrixBuilder(null, null);
         throw new RuntimeException("Deprected code?");
     }
 

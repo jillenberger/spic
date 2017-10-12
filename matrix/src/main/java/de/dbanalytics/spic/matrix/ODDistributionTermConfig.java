@@ -19,13 +19,15 @@
 
 package de.dbanalytics.spic.matrix;
 
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.FeaturesIO;
 import de.dbanalytics.spic.gis.PlaceIndex;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.util.Configurator;
 import org.matsim.core.config.ConfigGroup;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author johannes
@@ -74,8 +76,11 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
         } else {
             try {
                 NumericMatrix m = NumericMatrixIO.read(mFile);
-                ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zFile, "Id", null);
-                ODDistributionTermBuilder builder = new ODDistributionTermBuilder(m, placeIndex, zones);
+//                ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zFile, "Id", null);
+                FeaturesIO featuresIO = new FeaturesIO();
+//                featuresIO.setTransformer(null); //TODO: set epsg code here
+                Set<Feature> zones = featuresIO.read(zFile);
+                ODDistributionTermBuilder builder = new ODDistributionTermBuilder(m, placeIndex, new ZoneIndex(zones));
                 return configure(builder);
             } catch (IOException e) {
                 e.printStackTrace();

@@ -156,7 +156,7 @@ public class Simulator {
 		 */
         FacilityMutatorBuilder mutatorBuilder = new FacilityMutatorBuilder(dataPool, random);
         mutatorBuilder.addToBlacklist(ActivityTypes.HOME);
-        GeoDistanceUpdater geoDistanceUpdater = new GeoDistanceUpdater(geoDistListeners);
+        GeoDistanceUpdaterFacility geoDistanceUpdater = new GeoDistanceUpdaterFacility(geoDistListeners);
         geoDistanceUpdater.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
         AttributeChangeListenerComposite mutatorListenerComposite = new AttributeChangeListenerComposite();
         mutatorListenerComposite.addComponent(geoDistanceUpdater);

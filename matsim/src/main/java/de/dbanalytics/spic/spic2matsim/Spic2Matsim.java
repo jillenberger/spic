@@ -22,6 +22,9 @@ package de.dbanalytics.spic.spic2matsim;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
+import de.dbanalytics.spic.gis.Place;
+import de.dbanalytics.spic.gis.PlaceIndex;
+import de.dbanalytics.spic.gis.PlacesIO;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.util.PopulationStats;
 import org.apache.log4j.Logger;
@@ -30,11 +33,11 @@ import org.matsim.api.core.v01.population.PopulationWriter;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.scenario.ScenarioUtils;
-import org.matsim.facilities.ActivityFacilities;
-import org.matsim.facilities.FacilitiesReaderMatsimV1;
 import org.matsim.utils.objectattributes.ObjectAttributes;
 import org.matsim.utils.objectattributes.ObjectAttributesXmlWriter;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -44,9 +47,9 @@ public class Spic2Matsim {
 
     private static final Logger logger = Logger.getLogger(Spic2Matsim.class);
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException, XMLStreamException {
         String popInFile = args[0];
-        String facFile = args[1];
+        String placesFile = args[1];
         String popOutFile = args[2];
 
         Config config = ConfigUtils.createConfig();
@@ -59,10 +62,9 @@ public class Spic2Matsim {
         /*
         Load facilities...
          */
-        logger.info("Loading facilities...");
-        FacilitiesReaderMatsimV1 facReader = new FacilitiesReaderMatsimV1(scenario);
-        facReader.readFile(facFile);
-        ActivityFacilities facilities = scenario.getActivityFacilities();
+        logger.info("Loading places...");
+        Set<Place> places = new PlacesIO().read(placesFile);
+        PlaceIndex placeIndex = new PlaceIndex(places);
         /*
         Validate persons...
          */
@@ -79,7 +81,7 @@ public class Spic2Matsim {
                 stats.getNumEpisodes(),
                 stats.getNumActivities(),
                 stats.getNumLegs()));
-        PersonConverter converter = new PersonConverter(scenario.getPopulation(), facilities);
+        PersonConverter converter = new PersonConverter(scenario.getPopulation(), placeIndex);
         converter.convert(persons);
 
         /*

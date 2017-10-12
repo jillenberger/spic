@@ -19,8 +19,8 @@
 package de.dbanalytics.spic.matrix;
 
 import com.vividsolutions.jts.geom.Point;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import org.matsim.contrib.common.gis.DistanceCalculator;
 import org.matsim.contrib.common.gis.OrthodromicDistanceCalculator;
 
@@ -29,26 +29,26 @@ import org.matsim.contrib.common.gis.OrthodromicDistanceCalculator;
  */
 public class ZoneDistancePredicate implements ODPredicate<String, Double> {
 
-    private final ZoneCollection zones;
+    private final ZoneIndex zoneIndex;
 
     private final DistanceCalculator calculator;
 
     private final double threshold;
 
-    public ZoneDistancePredicate(ZoneCollection zones, double threshold) {
-        this(zones, threshold, new OrthodromicDistanceCalculator());
+    public ZoneDistancePredicate(ZoneIndex zoneIndex, double threshold) {
+        this(zoneIndex, threshold, new OrthodromicDistanceCalculator());
     }
 
-    public ZoneDistancePredicate(ZoneCollection zones, double threshold, DistanceCalculator calculator) {
-        this.zones = zones;
+    public ZoneDistancePredicate(ZoneIndex zoneIndex, double threshold, DistanceCalculator calculator) {
+        this.zoneIndex = zoneIndex;
         this.threshold = threshold;
         this.calculator = calculator;
     }
 
     @Override
     public boolean test(String row, String col, Matrix<String, Double> matrix) {
-        Zone z_i = zones.get(row);
-        Zone z_j = zones.get(col);
+        Feature z_i = zoneIndex.get(row);
+        Feature z_j = zoneIndex.get(col);
 
         if (z_i != null && z_j != null) {
             Point p_i = z_i.getGeometry().getCentroid();

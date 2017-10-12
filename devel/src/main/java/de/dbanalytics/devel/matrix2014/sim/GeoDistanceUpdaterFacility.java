@@ -16,33 +16,34 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.devel.matrix2014.sim;
 
-import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.gis.Place;
+import de.dbanalytics.spic.sim.AttributeChangeListener;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.CachedSegment;
 import de.dbanalytics.spic.sim.data.Converters;
 import de.dbanalytics.spic.sim.data.DoubleConverter;
+import org.matsim.api.core.v01.Coord;
+import org.matsim.facilities.ActivityFacility;
 
 /**
  * @author jillenberger
  */
-public class GeoDistanceUpdater implements AttributeChangeListener {
+public class GeoDistanceUpdaterFacility implements AttributeChangeListener {
 
     private final Object geoDistDataKey = Converters.register(CommonKeys.LEG_GEO_DISTANCE, DoubleConverter.getInstance());
-    private Object placeDataKey;
+    private Object facDataKey;
     private AttributeChangeListener listener;
 
     private Predicate<CachedSegment> predicate;
 
-    public GeoDistanceUpdater() {
+    public GeoDistanceUpdaterFacility() {
         this.listener = null;
     }
 
-    public GeoDistanceUpdater(AttributeChangeListener listener) {
+    public GeoDistanceUpdaterFacility(AttributeChangeListener listener) {
         setListener(listener);
     }
 
@@ -56,9 +57,9 @@ public class GeoDistanceUpdater implements AttributeChangeListener {
 
     @Override
     public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
-        if (placeDataKey == null) placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
+        if (facDataKey == null) facDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
 
-        if (placeDataKey.equals(dataKey)) {
+        if (facDataKey.equals(dataKey)) {
             CachedSegment act = (CachedSegment) element;
             CachedSegment toLeg = (CachedSegment) act.previous();
             CachedSegment fromLeg = (CachedSegment) act.next();
@@ -90,14 +91,14 @@ public class GeoDistanceUpdater implements AttributeChangeListener {
     }
 
     private double distance(CachedSegment from, CachedSegment to) {
-        Place place1 = (Place) from.getData(placeDataKey);
-        Place place2 = (Place) to.getData(placeDataKey);
+        ActivityFacility fac1 = (ActivityFacility) from.getData(facDataKey);
+        ActivityFacility fac2 = (ActivityFacility) to.getData(facDataKey);
 
-        Point point1 = (Point) place1.getGeometry();
-        Point point2 = (Point) place2.getGeometry();
+        Coord c1 = fac1.getCoord();
+        Coord c2 = fac2.getCoord();
 
-        double dx = point1.getX() - point2.getX();
-        double dy = point1.getY() - point2.getY();
+        double dx = c1.getX() - c2.getX();
+        double dy = c1.getY() - c2.getY();
         return Math.sqrt(dx * dx + dy * dy);
     }
 }

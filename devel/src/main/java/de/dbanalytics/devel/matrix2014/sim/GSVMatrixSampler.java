@@ -61,7 +61,10 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
         PlaceIndex placeIndex = new PlaceIndex(places);
 
         ZoneData zoneData = (ZoneData) dataPool.get(ZoneDataLoader.KEY);
-        ZoneCollection zones = zoneData.getLayer(layerName);
+//        ZoneCollection zones = zoneData.getLayer(layerName);
+        ZoneIndex zones = null;
+        System.err.println("Adapt code!");
+        System.exit(-1);
 
         Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(CommonKeys.LEG_PURPOSE));
         Set<String> purposes = new HashSet<>(collector.collect(persons));
@@ -99,7 +102,7 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
                                                                String direction,
                                                                Random random,
                                                                PlaceIndex places,
-                                                               ZoneCollection zones,
+                                                               ZoneIndex zones,
                                                                long start,
                                                                long step) {
 

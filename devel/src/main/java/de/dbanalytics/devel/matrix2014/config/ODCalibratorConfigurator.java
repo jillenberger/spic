@@ -68,7 +68,9 @@ public class ODCalibratorConfigurator {
         PlaceConverter placeConverter = new PlaceConverter();
         Set<Place> places = placeConverter.convert(facilityData.getAll());
 
-        ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, places).build();
+        System.err.println("Deprecated code!");
+        System.exit(-1);
+        ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, null, places).build();
         calibrator.setDistanceThreshold(distanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);
 

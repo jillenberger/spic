@@ -93,7 +93,9 @@ public class MatrixCompare {
         volTask.setIoContext(ioContext);
         volTask.setHistogramWriter(writer);
 
-        MatrixDistanceCompare distTask = new MatrixDistanceCompare("matrix.dist", zones);
+        System.err.println("Deprecated code!");
+        System.exit(-1);
+        MatrixDistanceCompare distTask = new MatrixDistanceCompare("matrix.dist", null);
 //        distTask.setDistanceCalculator(WGS84DistanceCalculator.getInstance());
         distTask.setDistanceCalculator(CartesianDistanceCalculator.getInstance());
         distTask.setFileIoContext(ioContext);

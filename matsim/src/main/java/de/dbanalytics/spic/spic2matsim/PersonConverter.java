@@ -22,9 +22,11 @@ package de.dbanalytics.spic.spic2matsim;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.gis.Place;
+import de.dbanalytics.spic.gis.PlaceIndex;
+import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.population.*;
-import org.matsim.facilities.ActivityFacilities;
 import org.matsim.facilities.ActivityFacility;
 import org.matsim.utils.objectattributes.ObjectAttributes;
 
@@ -38,11 +40,11 @@ public class PersonConverter {
 
     private final Population population;
 
-    private final ActivityFacilities facilities;
+    private final PlaceIndex placeIndex;
 
-    public PersonConverter(Population population, ActivityFacilities facilities) {
+    public PersonConverter(Population population, PlaceIndex placeIndex) {
         this.population = population;
-        this.facilities = facilities;
+        this.placeIndex = placeIndex;
     }
 
     public Population convert(Set<? extends de.dbanalytics.spic.data.Person> persons) {
@@ -85,19 +87,20 @@ public class PersonConverter {
                 Create and add activity.
                  */
                 String type = actSegment.getAttribute(CommonKeys.ACTIVITY_TYPE);
-                ActivityFacility facility = facilities.getFacilities().get(
-                        Id.create(actSegment.getAttribute(CommonKeys.ACTIVITY_FACILITY), ActivityFacility.class));
-                Activity matsimAct = factory.createActivityFromCoord(type, facility.getCoord());
-                matsimAct.setFacilityId(facility.getId());
+                Place place = placeIndex.get(actSegment.getAttribute(CommonKeys.ACTIVITY_FACILITY));
+                Activity matsimAct = factory.createActivityFromCoord(
+                        type,
+                        new Coord(place.getGeometry().getCoordinate().x, place.getGeometry().getCoordinate().y));
+                matsimAct.setFacilityId(Id.create(place.getId(), ActivityFacility.class));
                 matsimPlan.addActivity(matsimAct);
                 /*
                 Transfer attributes.
                  */
                 String startTime = actSegment.getAttribute(CommonKeys.ACTIVITY_START_TIME);
-                matsimAct.setStartTime(Integer.parseInt(startTime));
+                matsimAct.setStartTime((int) Double.parseDouble(startTime));
 
                 String endTime = actSegment.getAttribute(CommonKeys.ACTIVITY_END_TIME);
-                matsimAct.setEndTime(Integer.parseInt(endTime));
+                matsimAct.setEndTime((int) Double.parseDouble(endTime));
                 /*
                 Create and add leg.
                  */

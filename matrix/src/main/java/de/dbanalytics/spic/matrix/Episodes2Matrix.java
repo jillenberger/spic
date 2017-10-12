@@ -60,15 +60,15 @@ public class Episodes2Matrix {
         ConfigGroup group = config.getModules().get(MODULE_NAME);
 
         logger.info("Loading zones...");
-        ZoneCollection zoneCollection = ZoneGeoJsonIO.readFromGeoJSON(
-                group.getParams().get(ZONES_FILE_PARAM),
-                group.getParams().get(ZONE_KEY_PARAM),
-                null
-        );
+        int srid = Integer.parseInt(config.getParam(MODULE_NAME, SRID_PARAM));
+        FeaturesIO featuresIO = new FeaturesIO();
+        featuresIO.setTransformer(GeoTransformer.WGS84toX(srid));
+        Set<Feature> features = featuresIO.read(group.getParams().get(ZONES_FILE_PARAM));
+        ZoneIndex zoneIndex = new ZoneIndex(features);
 
         logger.info("Loading places...");
         PlacesIO placesReader = new PlacesIO();
-        placesReader.setGeoTransformer(GeoTransformer.WGS84toX(Integer.parseInt(config.getParam(MODULE_NAME, SRID_PARAM))));
+        placesReader.setGeoTransformer(GeoTransformer.WGS84toX(srid));
         Set<Place> places = placesReader.read(config.getParam(MODULE_NAME, PLACES_FILE_PARAM));
 
         logger.info("Loading persons...");
@@ -77,7 +77,7 @@ public class Episodes2Matrix {
         logger.info("Building matrix...");
         DefaultMatrixBuilder builder = new DefaultMatrixBuilder(
                 new PlaceIndex(places),
-                zoneCollection);
+                zoneIndex);
         NumericMatrix m = builder.build(persons);
 
         logger.info("Writing matrix...");

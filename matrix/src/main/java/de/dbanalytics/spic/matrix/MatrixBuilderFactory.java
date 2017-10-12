@@ -20,13 +20,13 @@ package de.dbanalytics.spic.matrix;
 
 
 import de.dbanalytics.spic.gis.PlaceIndex;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneIndex;
 
 /**
  * @author jillenberger
  */
 public interface MatrixBuilderFactory {
 
-    MatrixBuilder create(PlaceIndex placeIndex, ZoneCollection zones);
+    MatrixBuilder create(PlaceIndex placeIndex, ZoneIndex zones);
 
 }

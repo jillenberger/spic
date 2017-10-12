@@ -22,7 +22,7 @@ package de.dbanalytics.spic.matrix;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.gis.PlaceIndex;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.AttributeChangeListenerComposite;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
@@ -41,7 +41,7 @@ public class ODDistributionTermBuilder {
 
     private PlaceIndex placeIndex;
 
-    private ZoneCollection zones;
+    private ZoneIndex zones;
 
     private NumericMatrix refMatrix;
 
@@ -81,7 +81,7 @@ public class ODDistributionTermBuilder {
 
     private AnalyzerTaskComposite<Collection<? extends Person>> analyzers;
 
-    public ODDistributionTermBuilder(NumericMatrix refMatrix, PlaceIndex placeIndex, ZoneCollection zones) {
+    public ODDistributionTermBuilder(NumericMatrix refMatrix, PlaceIndex placeIndex, ZoneIndex zones) {
         this.refMatrix = refMatrix;
         this.placeIndex = placeIndex;
         this.zones = zones;
