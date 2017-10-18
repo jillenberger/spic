@@ -67,12 +67,12 @@ public class RefPopulationBuilder {
         @Override
         public void apply(Episode episode) {
             for(Segment act : episode.getActivities()) {
-                if(ActivityTypes.VACATIONS_LONG.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
-                    replace(act, ActivityTypes.VACATIONS_LONG);
+                if (ActivityTypes.VACATION_LONG.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+                    replace(act, ActivityTypes.VACATION_LONG);
                 }
 
-                if(ActivityTypes.VACATIONS_SHORT.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
-                    replace(act, ActivityTypes.VACATIONS_SHORT);
+                if (ActivityTypes.VACATION_SHORT.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+                    replace(act, ActivityTypes.VACATION_SHORT);
                 }
             }
         }

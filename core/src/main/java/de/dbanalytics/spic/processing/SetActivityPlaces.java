@@ -24,6 +24,7 @@ import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.PlaceIndex;
+import org.apache.log4j.Logger;
 import org.matsim.contrib.common.util.XORShiftRandom;
 
 import java.util.List;
@@ -33,6 +34,8 @@ import java.util.Random;
  * @author johannes
  */
 public class SetActivityPlaces implements EpisodeTask {
+
+    private static final Logger logger = Logger.getLogger(SetActivityPlaces.class);
 
     private final PlaceIndex placeIndex;
 
@@ -100,6 +103,11 @@ public class SetActivityPlaces implements EpisodeTask {
 
     private Place getRandomPlace(String type) {
         List<Place> list = placeIndex.getForActivity(type);
-        return list.get(random.nextInt(list.size()));
+        if (list != null) {
+            return list.get(random.nextInt(list.size()));
+        } else {
+            logger.warn(String.format("No places found for type \"%s\".", type));
+            return null;
+        }
     }
 }

@@ -69,10 +69,10 @@ public class LegPurposeHandlerOld implements LegAttributeHandler {
 				} else if(subtype.equalsIgnoreCase("706")) {
 					leg.setAttribute(CommonKeys.LEG_PURPOSE, ActivityTypes.GASTRO);
 				} else if(subtype.equalsIgnoreCase("708")) {
-					leg.setAttribute(CommonKeys.LEG_PURPOSE, ActivityTypes.VACATIONS_SHORT);
-				} else if(subtype.equalsIgnoreCase("709")) {
-					leg.setAttribute(CommonKeys.LEG_PURPOSE, ActivityTypes.VACATIONS_LONG);
-				}
+                    leg.setAttribute(CommonKeys.LEG_PURPOSE, ActivityTypes.VACATION_SHORT);
+                } else if(subtype.equalsIgnoreCase("709")) {
+                    leg.setAttribute(CommonKeys.LEG_PURPOSE, ActivityTypes.VACATION_LONG);
+                }
 			}
 			
 		} else if(val.equalsIgnoreCase("8")) {

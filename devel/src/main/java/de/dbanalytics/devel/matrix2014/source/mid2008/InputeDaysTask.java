@@ -64,7 +64,7 @@ public class InputeDaysTask implements PersonTask {
             }
         }
 
-        matrix.put(ActivityTypes.VACATIONS_LONG, matrix.get(ActivityTypes.VACATIONS_SHORT));
+        matrix.put(ActivityTypes.VACATION_LONG, matrix.get(ActivityTypes.VACATION_SHORT));
 
         map = new HashMap<>();
 

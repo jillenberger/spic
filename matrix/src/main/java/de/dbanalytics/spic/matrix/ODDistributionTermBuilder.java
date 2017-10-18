@@ -21,13 +21,13 @@ package de.dbanalytics.spic.matrix;
 
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.AttributeChangeListenerComposite;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
-import de.dbanalytics.spic.sim.data.CachedSegment;
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
@@ -45,7 +45,7 @@ public class ODDistributionTermBuilder {
 
     private NumericMatrix refMatrix;
 
-    private Predicate<CachedSegment> predicate;
+    private Predicate<Segment> predicate;
 
     private double distanceThreshold = 0;
 
@@ -87,7 +87,7 @@ public class ODDistributionTermBuilder {
         this.zones = zones;
     }
 
-    public ODDistributionTermBuilder predicate(Predicate<CachedSegment> predicate) {
+    public ODDistributionTermBuilder predicate(Predicate<Segment> predicate) {
         this.predicate = predicate;
         return this;
     }

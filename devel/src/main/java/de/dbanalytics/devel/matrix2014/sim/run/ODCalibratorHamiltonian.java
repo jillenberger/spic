@@ -19,7 +19,7 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.config.ODCalibratorConfigurator;
-import de.dbanalytics.devel.matrix2014.sim.CachedModePredicate;
+import de.dbanalytics.spic.analysis.AttributePredicate;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.matrix.ODCalibrator;
@@ -43,7 +43,8 @@ public class ODCalibratorHamiltonian {
                 .configure(configGroup);
 
         hamiltonian.setUseWeights(engine.getUseWeights());
-        hamiltonian.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
+        //hamiltonian.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
+        hamiltonian.setPredicate(new AttributePredicate<>(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
 
         AnnealingHamiltonian annealingHamiltonian = AnnealingHamiltonianConfigurator.configure(hamiltonian,
                 configGroup);

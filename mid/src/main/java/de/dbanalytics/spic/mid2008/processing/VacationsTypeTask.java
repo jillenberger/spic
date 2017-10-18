@@ -43,9 +43,9 @@ public class VacationsTypeTask implements EpisodeTask {
 					days = Integer.parseInt(val);
 				
 				if (days > 4) {
-					act.setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.VACATIONS_LONG);
+					act.setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.VACATION_LONG);
 				} else  if(days > 1 && days <= 4) {
-					act.setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.VACATIONS_SHORT);
+					act.setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.VACATION_SHORT);
 				}
 
 			}

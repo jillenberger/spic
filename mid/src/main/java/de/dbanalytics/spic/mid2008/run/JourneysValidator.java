@@ -26,6 +26,7 @@ import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.mid2008.processing.SetFirstActivityTypeTask;
 import de.dbanalytics.spic.mid2008.processing.VacationsTypeTask;
 import de.dbanalytics.spic.mid2008.processing.ValidateDomestic;
+import de.dbanalytics.spic.mid2008.processing.WeCommuterTask;
 import de.dbanalytics.spic.processing.SetActivityTypeTask;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.processing.ValidateNoPlans;
@@ -53,6 +54,8 @@ public class JourneysValidator {
         TaskRunner.run(new SetFirstActivityTypeTask(), persons);
         logger.info("Setting vacations type...");
         TaskRunner.run(new VacationsTypeTask(), persons);
+        logger.info("Setting wecommuter activity type...");
+        TaskRunner.runLegTask(new WeCommuterTask(), persons);
 
         logger.info("Writing validated population...");
         PopulationIO.writeToXML(args[1], persons);

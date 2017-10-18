@@ -28,8 +28,8 @@ public interface ActivityTypes {
 	String HOME = "home";
 
 	String WORK = "work";
-	
-	String BUSINESS = "buisiness";
+
+	String BUSINESS = "business";
 	
 	String LEISURE = "leisure";
 	
@@ -39,9 +39,9 @@ public interface ActivityTypes {
 	
 	String MISC = "misc";
 
-	String VACATIONS_SHORT = "vacations_short";
+	String VACATION_SHORT = "vacation_short";
 
-	String VACATIONS_LONG = "vacations_long";
+	String VACATION_LONG = "vacation_long";
 
 	String VISIT = "visit";
 

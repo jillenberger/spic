@@ -24,6 +24,7 @@ import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Feature;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.ZoneIndex;
@@ -66,7 +67,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     private double volumeThreshold;
 
-    private Predicate<CachedSegment> predicate;
+    private Predicate<Segment> predicate;
 
     private double refSum;
 
@@ -86,7 +87,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
         this.distanceThreshold = 0;
     }
 
-    public void setPredicate(Predicate<CachedSegment> predicate) {
+    public void setPredicate(Predicate<Segment> predicate) {
         this.predicate = predicate;
     }
 

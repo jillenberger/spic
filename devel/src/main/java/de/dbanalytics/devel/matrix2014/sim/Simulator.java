@@ -139,7 +139,8 @@ public class Simulator {
          */
         ODCalibrator odDistribution = new ODCalibratorConfigurator(dataPool).configure(config.getModule("tomtomCalibrator"));
         odDistribution.setUseWeights(true);
-        odDistribution.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
+//        odDistribution.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
+        odDistribution.setPredicate(new AttributePredicate<>(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
         DelayedHamiltonian odDistributionDelayed = new DelayedHamiltonian(odDistribution, (long) Double.parseDouble(config.getParam
                 (MODULE_NAME, "delay_matrix")));
         hamiltonian.addComponent(odDistributionDelayed, Double.parseDouble(config.getParam(MODULE_NAME,
