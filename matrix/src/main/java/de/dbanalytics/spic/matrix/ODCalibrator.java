@@ -150,6 +150,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
         for (Person person : persons) {
             double weight = 1.0;
+            // TODO: Would be more consistent to use a leg weight here.
             if(useWeights) weight = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
 
             for (Episode episode : person.getEpisodes()) {

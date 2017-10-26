@@ -182,7 +182,7 @@ public class ODDistributionTermBuilder {
 
         calibrator.setDistanceThreshold(distanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);
-        calibrator.setUseWeights(false);
+        calibrator.setUseWeights(useWeights);
         calibrator.setPredicate(predicate);
         calibrator.setNormalize(normalize);
 
