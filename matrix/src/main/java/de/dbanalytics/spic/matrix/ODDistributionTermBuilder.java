@@ -238,9 +238,11 @@ public class ODDistributionTermBuilder {
             DefaultMatrixBuilderFactory factory = new DefaultMatrixBuilderFactory();
 //            ActivityLocationLayer locationLayer = new ActivityLocationLayer(placeIndex);
             MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(placeIndex, zones), composite);
+            analyzer.setLegPredicate(predicate);
             analyzer.setVolumeThreshold(volumeThreshold);
-            analyzer.setNormPredicate(new ZoneDistancePredicate(zones, distanceThreshold, CartesianDistanceCalculator.getInstance()));
-
+            analyzer.setMatrixPredicate(new ZoneDistancePredicate(zones, distanceThreshold, CartesianDistanceCalculator.getInstance()));
+            analyzer.setUseWeights(useWeights);
+            analyzer.setNormalize(normalize);
             analyzers.addComponent(analyzer);
         }
 

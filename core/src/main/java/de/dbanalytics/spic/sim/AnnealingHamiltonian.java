@@ -128,6 +128,7 @@ public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
                         writer.write(String.valueOf(delta_interval));
 
                         writer.newLine();
+                        writer.flush();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

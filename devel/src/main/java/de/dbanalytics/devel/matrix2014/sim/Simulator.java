@@ -311,7 +311,7 @@ public class Simulator {
 //        ZoneData zoneData = (ZoneData) dataPool.get(ZoneDataLoader.KEY);
 //        ZoneCollection zones = zoneData.getLayer("tomtom");
 //        ODPredicate distPredicate = new ZoneDistancePredicate(zones, 100000);
-//        mAnalyzer.setNormPredicate(distPredicate);
+//        mAnalyzer.setMatrixPredicate(distPredicate);
 //        mAnalyzer.setUseWeights(USE_WEIGTHS);
 //        matrixTasks.addComponent(mAnalyzer);
 

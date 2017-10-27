@@ -73,7 +73,7 @@ public class ExtendedAnalyzerBuilder {
         System.err.println("Deprecated code!");
         System.exit(-1);
 
-        mAnalyzer.setNormPredicate(distPredicate);
+        mAnalyzer.setMatrixPredicate(distPredicate);
 
         matrixTasks.addComponent(mAnalyzer);
         /*
@@ -121,7 +121,7 @@ public class ExtendedAnalyzerBuilder {
         mAnalyzer.setLegPredicate(engine.getLegPredicate());
         mAnalyzer.setUseWeights(engine.getUseWeights());
 
-        mAnalyzer.setNormPredicate(distPredicate);
+        mAnalyzer.setMatrixPredicate(distPredicate);
         samplerTasks.addComponent(mAnalyzer);
         /*
         matrix writer

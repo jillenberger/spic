@@ -41,9 +41,11 @@ public class MatrixComparator implements AnalyzerTask<Collection<? extends Perso
 
     private final NumericMatrix refMatrix;
 
-    private ODPredicate<String, Double> normPredicate;
+    private ODPredicate<String, Double> matrixPredicate;
 
     private double volumeThreshold;
+
+    private boolean normalize;
 
     private AnalyzerTask<Pair<NumericMatrix, NumericMatrix>> tasks;
 
@@ -62,27 +64,31 @@ public class MatrixComparator implements AnalyzerTask<Collection<? extends Perso
         builder.setUseWeights(useWeights);
     }
 
-    public void setNormPredicate(ODPredicate<String, Double> normPredicate) {
-        this.normPredicate = normPredicate;
+    public void setMatrixPredicate(ODPredicate<String, Double> matrixPredicate) {
+        this.matrixPredicate = matrixPredicate;
     }
 
     public void setVolumeThreshold(double threshold) {
         this.volumeThreshold = threshold;
     }
 
+    public void setNormalize(boolean normalize) {
+        this.normalize = normalize;
+    }
+
     @Override
     public void analyze(Collection<? extends Person> persons, List<StatsContainer> containers) {
         NumericMatrix simMatrix = builder.build(persons);
         NumericMatrix tmpSimMatrix = simMatrix;
-        if (normPredicate != null) {
-            tmpSimMatrix = (NumericMatrix) MatrixOperations.subMatrix(normPredicate, simMatrix, new NumericMatrix());
+        if (matrixPredicate != null) {
+            tmpSimMatrix = (NumericMatrix) MatrixOperations.subMatrix(matrixPredicate, simMatrix, new NumericMatrix());
         }
 
         double simTotal = MatrixOperations.sum(tmpSimMatrix);
 
         NumericMatrix tmpRefMatrix = refMatrix;
-        if (normPredicate != null) {
-            tmpRefMatrix = (NumericMatrix) MatrixOperations.subMatrix(normPredicate, refMatrix, new NumericMatrix());
+        if (matrixPredicate != null) {
+            tmpRefMatrix = (NumericMatrix) MatrixOperations.subMatrix(matrixPredicate, refMatrix, new NumericMatrix());
         }
 
         double refTotal = MatrixOperations.sum(tmpRefMatrix);
@@ -93,9 +99,11 @@ public class MatrixComparator implements AnalyzerTask<Collection<? extends Perso
             tmpRefMatrix = (NumericMatrix) MatrixOperations.subMatrix(volPredicate, tmpRefMatrix, new NumericMatrix());
         }
 
-        double normFactor = refTotal/simTotal;
-        MatrixOperations.applyFactor(simMatrix, normFactor);
-        logger.debug(String.format("Normalization factor: %s.", normFactor));
+        if (normalize) {
+            double normFactor = refTotal / simTotal;
+            MatrixOperations.applyFactor(simMatrix, normFactor);
+            logger.debug(String.format("Normalization factor: %s.", normFactor));
+        }
 
         tasks.analyze(new ImmutablePair<>(tmpRefMatrix, simMatrix), containers);
     }
