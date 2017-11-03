@@ -22,14 +22,15 @@ package de.dbanalytics.devel.matrix2014.sim;
 import de.dbanalytics.devel.matrix2014.matrix.io.GSVMatrixWriter;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.gis.*;
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.PlaceIndex;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.matrix.DefaultMatrixBuilder;
 import de.dbanalytics.spic.matrix.MatrixBuilder;
 import de.dbanalytics.spic.matrix.MatrixSampler;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.sim.MarkovEngineListener;
 import de.dbanalytics.spic.sim.data.CachedPerson;
-import de.dbanalytics.spic.spic2matsim.PlaceConverter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -46,27 +47,18 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
     private final FileIOContext ioContext;
 
     public GSVMatrixSampler(Collection<? extends Person> persons,
-                            DataPool dataPool,
-                            String layerName,
+                            PlaceIndex placeIndex,
+                            Set<Feature> features,
                             Random random,
                             long start,
                             long step,
                             FileIOContext ioContext) {
 
         this.ioContext = ioContext;
-//        ActivityLocationLayer activityLocationLayer = (ActivityLocationLayer) dataPool.get(ActivityLocationLayerLoader.KEY);
-        FacilityData facilityData = (FacilityData) dataPool.get(FacilityDataLoader.KEY);
-        PlaceConverter placeConverter = new PlaceConverter();
-        Set<Place> places = placeConverter.convert(facilityData.getAll());
-        PlaceIndex placeIndex = new PlaceIndex(places);
 
-        ZoneData zoneData = (ZoneData) dataPool.get(ZoneDataLoader.KEY);
-//        ZoneCollection zones = zoneData.getLayer(layerName);
-        ZoneIndex zones = null;
-        System.err.println("Adapt code!");
-        System.exit(-1);
+        ZoneIndex zones = new ZoneIndex(features);
 
-        Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(CommonKeys.LEG_PURPOSE));
+        Collector<String> collector = new LegCollector<>(new AttributeProvider<>(CommonKeys.LEG_PURPOSE));
         Set<String> purposes = new HashSet<>(collector.collect(persons));
         purposes.remove(null);
 

@@ -19,7 +19,6 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.config.MatrixAnalyzerConfigurator;
-import de.dbanalytics.devel.matrix2014.sim.GSVMatrixSampler;
 import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
 import de.dbanalytics.spic.analysis.AnalyzerTaskGroup;
 import de.dbanalytics.spic.analysis.ConcurrentAnalyzerTask;
@@ -134,14 +133,14 @@ public class ExtendedAnalyzerBuilder {
 
         task.addComponent(new AnalyzerTaskGroup<>(samplerTasks, engine.getIOContext(), "matrixAvr"));
 
-        GSVMatrixSampler gsvSampler = new GSVMatrixSampler(engine.getRefPersons(),
-                engine.getDataPool(),
-                "modena",
-                engine.getRandom(),
-                start,
-                step,
-                engine.getIOContext());
-        engine.getEngineListeners().addComponent(gsvSampler);
-        task.addComponent(gsvSampler);
+//        GSVMatrixSampler gsvSampler = new GSVMatrixSampler(engine.getRefPersons(),
+//                engine.getDataPool(),
+//                "modena",
+//                engine.getRandom(),
+//                start,
+//                step,
+//                engine.getIOContext());
+//        engine.getEngineListeners().addComponent(gsvSampler);
+//        task.addComponent(gsvSampler);
     }
 }
