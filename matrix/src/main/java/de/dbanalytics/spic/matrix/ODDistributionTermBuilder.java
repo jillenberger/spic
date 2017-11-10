@@ -178,7 +178,8 @@ public class ODDistributionTermBuilder {
     }
 
     public AnnealingHamiltonian build() {
-        ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, placeIndex.get()).build();
+        String dumpFilePrefix = String.format("%s/%s", ioContext.getRoot(), name);
+        ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, placeIndex.get(), dumpFilePrefix).build();
 
         calibrator.setDistanceThreshold(distanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);

@@ -34,6 +34,7 @@ import de.dbanalytics.spic.sim.data.*;
 import gnu.trove.impl.Constants;
 import gnu.trove.iterator.TIntDoubleIterator;
 import gnu.trove.iterator.TIntObjectIterator;
+import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TIntDoubleHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -420,7 +421,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
         private final TIntObjectHashMap<Point> index2Point;
 
-        public Builder(NumericMatrix refKeyMatrix, ZoneIndex zones, Collection<Place> places) {
+        public Builder(NumericMatrix refKeyMatrix, ZoneIndex zones, Collection<Place> places, String dumpFilePrefix) {
             Set<Feature> zoneSet = new HashSet<>();//zones.getZones();
             /** remove zone with ignore tag */
             for (Feature zone : zones.get()) {
@@ -445,6 +446,25 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                 index++;
             }
 
+            if (dumpFilePrefix != null) {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(dumpFilePrefix + ".id2index.txt"));
+                    writer.write("Zone\tIndex");
+                    writer.newLine();
+                    TObjectIntIterator it = id2Index.iterator();
+                    for (int i = 0; i < id2Index.size(); i++) {
+                        it.advance();
+                        writer.write((String) it.key());
+                        writer.write("\t");
+                        writer.write(String.valueOf(it.value()));
+                        writer.newLine();
+                    }
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             place2Index = new TObjectIntHashMap<>();
 
             for (Place fac : places) {
@@ -455,6 +475,24 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                 place2Index.put(fac, idx);
             }
 
+            if (dumpFilePrefix != null) {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(dumpFilePrefix + ".place2index.txt"));
+                    writer.write("Place\tIndex");
+                    writer.newLine();
+                    TObjectIntIterator it = place2Index.iterator();
+                    for (int i = 0; i < place2Index.size(); i++) {
+                        it.advance();
+                        writer.write((String) it.key());
+                        writer.write("\t");
+                        writer.write(String.valueOf(it.value()));
+                        writer.newLine();
+                    }
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
             refMatrix = new TIntObjectHashMap<>();
             Set<String> keys = refKeyMatrix.keys();

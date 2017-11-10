@@ -87,24 +87,24 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
         Executor.submitAndWait(runnables);
 
-        int countNoZones = 0;
+        double lostVolume = 0;
         int countNullIds = 0;
-        int size = 0;
+        double totalVolume = 0;
         Set<NumericMatrix> matrices = new HashSet<>();
         for(RunThread runnable : runnables) {
             matrices.add(runnable.getMatrix());
-            countNoZones += runnable.getCountNoZones();
+            lostVolume += runnable.getLostVolume();
             countNullIds += runnable.getCountNullIds();
-            size += runnable.getSize();
+            totalVolume += runnable.getTotalVolume();
         }
         NumericMatrix m = new NumericMatrix();
         MatrixOperations.accumulate(matrices, m);
 
-        if (countNoZones > 0) {
-            logger.info(String.format(Locale.US, "%s of %s (%.2f %%) od-pairs skipped because at least one facility cannot be located in a zone.",
-                    countNoZones,
-                    size + countNoZones,
-                    countNoZones / ((double) size + countNoZones) * 100));
+        if (lostVolume > 0) {
+            logger.info(String.format(Locale.US, "%s of %s (%.2f %%) trips skipped because at least one place cannot be located in a zone.",
+                    lostVolume,
+                    totalVolume + lostVolume,
+                    lostVolume / (totalVolume + lostVolume) * 100));
         }
 
         if (countNullIds > 0) {
@@ -115,9 +115,9 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
         return m;
     }
 
-    public void debugDump(String filename) throws IOException {
+    public void debugDump(String filePrefix) throws IOException {
         if (!outOfBoundsPlaces.isEmpty()) {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePrefix + ".oobPlaces.txt"));
             writer.write("Id\tX\tY");
             for (Place place : outOfBoundsPlaces) {
                 writer.newLine();
@@ -129,6 +129,17 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             }
             writer.close();
         }
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePrefix + ".place2zone.txt"));
+        writer.write("Place\tZone");
+        writer.newLine();
+        for (Map.Entry<String, String> entry : zoneIds.entrySet()) {
+            writer.write(entry.getKey());
+            writer.write("\t");
+            writer.write(entry.getValue());
+            writer.newLine();
+        }
+        writer.close();
     }
 
     public class RunThread implements Runnable {
@@ -141,11 +152,11 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
         private final boolean useWeights;
 
-        private int countNoZones;
+        private double lostVolume;
 
         private int countNullIds;
 
-        private int size;
+        private double totalVolume;
 
         public RunThread(Collection<? extends Person> persons, Predicate<Segment> predicate, boolean useWeights) {
             this.persons = persons;
@@ -158,21 +169,25 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             return m;
         }
 
-        public int getCountNoZones() {
-            return countNoZones;
+        public double getLostVolume() {
+            return lostVolume;
         }
 
         public int getCountNullIds() {
             return countNullIds;
         }
 
-        private int getSize() {
-            return size;
+        private double getTotalVolume() {
+            return totalVolume;
         }
 
         @Override
         public void run() {
             for (Person person : persons) {
+                double w = 1.0;
+                if (useWeights)
+                    w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+
                 for (Episode episode : person.getEpisodes()) {
                     for (int i = 0; i < episode.getLegs().size(); i++) {
                         Segment leg = episode.getLegs().get(i);
@@ -188,13 +203,10 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                                 String dest = getZoneId(destPlaceId);
 
                                 if (origin != null && dest != null) {
-                                    double w = 1.0;
-                                    if (useWeights)
-                                        w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
                                     m.add(origin, dest, w);
-                                    size++;
+                                    totalVolume++;
                                 } else {
-                                    countNoZones++;
+                                    lostVolume += w;
                                 }
                             } else {
                                 countNullIds++;

@@ -23,6 +23,7 @@ import gnu.trove.function.TDoubleFunction;
 import gnu.trove.map.TDoubleDoubleMap;
 import gnu.trove.map.TObjectDoubleMap;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
+import gnu.trove.map.hash.TObjectDoubleHashMap;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -69,6 +70,21 @@ public class Histogram {
             double bin = Double.parseDouble(tokens[0]);
             double height = Double.parseDouble(tokens[1]);
             hist.put(bin, height);
+        }
+        reader.close();
+
+        return hist;
+    }
+
+    public static TObjectDoubleMap<String> readLabeledHistogram(String filename) throws IOException {
+        TObjectDoubleMap<String> hist = new TObjectDoubleHashMap<>();
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line = reader.readLine();
+        while ((line = reader.readLine()) != null) {
+            String tokens[] = line.split("\t");
+            String label = tokens[0];
+            double height = Double.parseDouble(tokens[1]);
+            hist.put(label, height);
         }
         reader.close();
 
