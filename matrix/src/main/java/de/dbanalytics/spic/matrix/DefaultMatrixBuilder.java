@@ -204,7 +204,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
                                 if (origin != null && dest != null) {
                                     m.add(origin, dest, w);
-                                    totalVolume++;
+                                    totalVolume += w;
                                 } else {
                                     lostVolume += w;
                                 }
