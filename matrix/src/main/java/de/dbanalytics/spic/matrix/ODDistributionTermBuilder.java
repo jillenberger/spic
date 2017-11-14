@@ -71,6 +71,8 @@ public class ODDistributionTermBuilder {
 
     private long debugInterval = 0;
 
+    private long resetInterval = Long.MAX_VALUE;
+
     private String name;
 
     private AttributeChangeListenerComposite attributeListeners;
@@ -152,6 +154,11 @@ public class ODDistributionTermBuilder {
         return this;
     }
 
+    public ODDistributionTermBuilder resetInterval(long resetInterval) {
+        this.resetInterval = resetInterval;
+        return this;
+    }
+
     public ODDistributionTermBuilder name(String name) {
         this.name = name;
         return this;
@@ -186,6 +193,7 @@ public class ODDistributionTermBuilder {
         calibrator.setUseWeights(useWeights);
         calibrator.setPredicate(predicate);
         calibrator.setNormalize(normalize);
+        calibrator.setResetInterval(resetInterval);
 
         /** Add to facility attribute change listener **/
         if (attributeListeners != null) attributeListeners.addComponent(calibrator);

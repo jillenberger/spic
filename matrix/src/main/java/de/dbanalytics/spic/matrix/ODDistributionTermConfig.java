@@ -56,6 +56,8 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
 
     private static final String THETA_THRESHOLD = "theta_threshold";
 
+    private static final String RESET_INTERVAL = "reset_interval";
+
     private static final String MATRIX_FILE = "matrix_file";
 
     private static final String ZONES_FILE = "zones_file";
@@ -106,6 +108,10 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
         /** debug interval */
         value = config.getValue(DEBUG_INTERVAL);
         if (value != null) builder.debugInterval((long) Double.parseDouble(value));
+
+        /** reset interval */
+        value = config.getValue(RESET_INTERVAL);
+        if (value != null) builder.resetInterval((long) Double.parseDouble(value));
 
         /** name */
         value = config.getValue(NAME);

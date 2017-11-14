@@ -55,15 +55,27 @@ import java.util.Set;
 public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     private final static Logger logger = Logger.getLogger(ODCalibrator.class);
+
     private final TObjectIntHashMap<Place> place2Index;
+
     private final TIntObjectHashMap<Point> index2Point;
+
     private final TIntObjectHashMap<TIntDoubleHashMap> refMatrix;
-    private final long rescaleInterval = (long) 1e7;
+
+    private long rescaleInterval = Long.MAX_VALUE;
+
     private Object placeDataKey;
+
     private TIntObjectHashMap<TIntDoubleHashMap> simMatrix;
+
     private double hamiltonianValue;
+
     private double scaleFactor;
-    private long changeCounter;
+
+//    private long changeCounter;
+
+    private long iterations = 0;
+
     private double distanceThreshold;
 
     private double volumeThreshold;
@@ -94,6 +106,9 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     public void setUseWeights(boolean useWeights) {
         this.useWeights = useWeights;
+        if (useWeights && rescaleInterval == Long.MAX_VALUE) {
+            logger.warn("Using weights but no reset interval specified. Non-integer weights can lead to numerical issues.");
+        }
     }
 
     public void setNormalize(boolean normalize) {
@@ -106,6 +121,10 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     public void setVolumeThreshold(double threshold) {
         this.volumeThreshold = threshold;
+    }
+
+    public void setResetInterval(long interval) {
+        this.rescaleInterval = interval;
     }
 
     private void calculateScaleFactor() {
@@ -188,15 +207,15 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                 if(weightDataKey == null)
                     weightDataKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
 
-                changeCounter++;
-                if (changeCounter % rescaleInterval == 0) {
-                    calculateScaleFactor();
-                    // we need to recalculate the full hamiltonian if the scale factor changes
-                    double h_before = hamiltonianValue/(double)odCount;
-                    initHamiltonian();
-                    double h_after = hamiltonianValue/(double)odCount;
-                    logger.debug(String.format("Hamiltonian reset: before: %s, after: %s", h_before, h_after));
-                }
+//                changeCounter++;
+//                if (changeCounter % rescaleInterval == 0) {
+//                    calculateScaleFactor();
+//                    // we need to recalculate the full hamiltonian if the scale factor changes
+//                    double h_before = hamiltonianValue/(double)odCount;
+//                    initHamiltonian();
+//                    double h_after = hamiltonianValue/(double)odCount;
+//                    logger.debug(String.format("Hamiltonian reset: before: %s, after: %s", h_before, h_after));
+//                }
 
                 CachedSegment act = (CachedSegment) element;
                 int oldIdx = place2Index.get(oldValue);
@@ -257,6 +276,17 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
             calculateScaleFactor();
             initHamiltonian();
         }
+
+        if (iterations > 0 && iterations % rescaleInterval == 0) {
+            double h_old = hamiltonianValue;
+            initSimMatrix(population);
+            calculateScaleFactor();
+            initHamiltonian();
+            if (h_old != hamiltonianValue)
+                logger.trace(String.format("Reset hamiltonian: %s -> %s", h_old, hamiltonianValue));
+        }
+        iterations++;
+
         return hamiltonianValue/(double)odCount;
     }
 
