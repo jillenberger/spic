@@ -480,10 +480,10 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                     BufferedWriter writer = new BufferedWriter(new FileWriter(dumpFilePrefix + ".place2index.txt"));
                     writer.write("Place\tIndex");
                     writer.newLine();
-                    TObjectIntIterator it = place2Index.iterator();
+                    TObjectIntIterator<Place> it = place2Index.iterator();
                     for (int i = 0; i < place2Index.size(); i++) {
                         it.advance();
-                        writer.write((String) it.key());
+                        writer.write(it.key().getId());
                         writer.write("\t");
                         writer.write(String.valueOf(it.value()));
                         writer.newLine();
