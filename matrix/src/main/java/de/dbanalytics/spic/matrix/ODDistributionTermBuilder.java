@@ -190,10 +190,11 @@ public class ODDistributionTermBuilder {
 
         calibrator.setDistanceThreshold(distanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);
+        calibrator.setResetInterval(resetInterval);
         calibrator.setUseWeights(useWeights);
         calibrator.setPredicate(predicate);
         calibrator.setNormalize(normalize);
-        calibrator.setResetInterval(resetInterval);
+
 
         /** Add to facility attribute change listener **/
         if (attributeListeners != null) attributeListeners.addComponent(calibrator);
