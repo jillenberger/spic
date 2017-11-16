@@ -62,7 +62,11 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
     private Object weightDataKey;
     private ErrorFunction errorFunction;
 
-    private double scaleFactor;
+//    private double scaleFactor;
+
+    private double refSum;
+
+    private double simSum;
 
     private double binCount;
 
@@ -71,6 +75,8 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
     private long iterations = 0;
 
     private long resetInterval = Long.MAX_VALUE;
+
+    private boolean cachePredicate = true;
 
     public DiscreteDistributionTerm(TDoubleDoubleMap refDistribution, AbstractCollector<Double, A, A> collector, String key) {
         this.attributeKey = key;
@@ -95,6 +101,10 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
 
     public void setResetInterval(long interval) {
         this.resetInterval = interval;
+    }
+
+    public void setCachePredicate(boolean cachePredicate) {
+        this.cachePredicate = cachePredicate;
     }
 
     private void initHistogram(Collection<? extends Person> simPersons) {
@@ -130,8 +140,10 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
 
         simBuckets = tempFreq;
 
-        double refSum = 0;
-        double simSum = 0;
+//        double refSum = 0;
+//        double simSum = 0;
+        refSum = 0;
+        simSum = 0;
 
         binCount = Math.max(simBuckets.size(), refBuckets.size());
         for (int i = 0; i < binCount; i++) {
@@ -139,11 +151,13 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
             refSum += refBuckets.get(i);
         }
 
-        scaleFactor = simSum / refSum;
+//        scaleFactor = simSum / refSum;
     }
 
     private void initHamiltonian() {
         hamiltonianValue = 0;
+
+        double scaleFactor = simSum / refSum;
 
         for (int i = 0; i < binCount; i++) {
             double simVal = simBuckets.get(i);
@@ -162,17 +176,27 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
                 double delta = 1.0;
                 if (weightDataKey != null) delta = (Double) element.getData(weightDataKey);
 
-                double diff1 = 0;
+                int oldBucket = Integer.MIN_VALUE;
+                int newBucket = Integer.MIN_VALUE;
+
+                boolean oldBucketSet = false;
+                boolean newBucketSet = false;
+
                 if (oldValue != null) {
-                    int bucket = discretizer.index((Double) oldValue);
-                    diff1 = changeBucketContent(bucket, -delta);
+                    oldBucket = discretizer.index((Double) oldValue);
+                    oldBucketSet = true;
                 }
 
-                double diff2 = 0;
                 if (newValue != null) {
-                    int bucket = discretizer.index((Double) newValue);
-                    diff2 = changeBucketContent(bucket, delta);
+                    newBucket = discretizer.index((Double) newValue);
+                    newBucketSet = true;
                 }
+
+                boolean universeChange = !(oldBucketSet == newBucketSet);
+                double diff1 = 0;
+                if (oldBucketSet) diff1 = changeBucketContent(oldBucket, -delta, universeChange);
+                double diff2 = 0;
+                if (newBucketSet) diff2 = changeBucketContent(newBucket, delta, universeChange);
 
                 hamiltonianValue += (diff1 + diff2);
             }
@@ -182,22 +206,33 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
     private boolean evaluatePredicate(CachedElement element) {
         if (predicate == null) return true;
         else {
-            Boolean result = (Boolean) element.getData(predicateResultDataKey);
-            if (result != null) return result;
-            else {
-                result = predicate.test((A) element);
-                element.setData(predicateResultDataKey, result);
-                return result;
+            if (cachePredicate) {
+                Boolean result = (Boolean) element.getData(predicateResultDataKey);
+                if (result != null) return result;
+                else {
+                    result = predicate.test((A) element);
+                    element.setData(predicateResultDataKey, result);
+                    return result;
+                }
+            } else {
+                return predicate.test((A) element);
             }
         }
     }
 
-    private double changeBucketContent(int bucketIndex, double value) {
+    private double changeBucketContent(int bucketIndex, double value, boolean universeChange) {
+        double scaleFactor = simSum / refSum;
+
         double simVal = simBuckets.get(bucketIndex);
         double refVal = refBuckets.get(bucketIndex) * scaleFactor;
         double oldDiff = errorFunction.evaluate(simVal, refVal);
 
         simBuckets.set(bucketIndex, simBuckets.get(bucketIndex) + value);
+
+        if (universeChange) {
+            simSum += value;
+            scaleFactor = simSum / refSum;
+        }
 
         simVal = simBuckets.get(bucketIndex);
         refVal = refBuckets.get(bucketIndex) * scaleFactor;
@@ -239,7 +274,7 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
             writer.write("\t");
             writer.write(String.valueOf(hamiltonianValue));
             writer.write("\t");
-            writer.write(String.valueOf(scaleFactor));
+            writer.write(String.valueOf(simSum / refSum));
             writer.newLine();
         }
         writer.close();
