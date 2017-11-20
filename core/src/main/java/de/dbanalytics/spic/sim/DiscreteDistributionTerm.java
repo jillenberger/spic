@@ -62,8 +62,6 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
     private Object weightDataKey;
     private ErrorFunction errorFunction;
 
-//    private double scaleFactor;
-
     private double refSum;
 
     private double simSum;
@@ -142,14 +140,20 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
 
 //        double refSum = 0;
 //        double simSum = 0;
+        double oldBinCount = binCount;
+        double oldSimSum = simSum;
         refSum = 0;
         simSum = 0;
+
 
         binCount = Math.max(simBuckets.size(), refBuckets.size());
         for (int i = 0; i < binCount; i++) {
             simSum += simBuckets.get(i);
             refSum += refBuckets.get(i);
         }
+
+        if (oldSimSum != simSum) logger.warn(String.format("Sum of sim bins changed: %s -> %s", oldSimSum, simSum));
+        if (oldBinCount != binCount) logger.warn(String.format("Bin count changed: %s -> %s", oldBinCount, binCount));
 
 //        scaleFactor = simSum / refSum;
     }
@@ -176,29 +180,29 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
                 double delta = 1.0;
                 if (weightDataKey != null) delta = (Double) element.getData(weightDataKey);
 
-                int oldBucket = Integer.MIN_VALUE;
-                int newBucket = Integer.MIN_VALUE;
+                int oldBucketIdx = -1;
+                int newBucketIdx = -1;
 
-                boolean oldBucketSet = false;
-                boolean newBucketSet = false;
+                if (oldValue != null) oldBucketIdx = discretizer.index((Double) oldValue);
+                if (newValue != null) newBucketIdx = discretizer.index((Double) newValue);
 
-                if (oldValue != null) {
-                    oldBucket = discretizer.index((Double) oldValue);
-                    oldBucketSet = true;
+                /** If both indices are the same nothing changes in the histogram. */
+                if (oldBucketIdx != newBucketIdx) {
+                    /**
+                     * If oldBucketIndex == -1 then a new sample has been added to the histogram,
+                     * if newBucketIndex == -1 then a sample has been withdrawn from the histogram,
+                     * otherwise the sample just moved to an other bucket.
+                     */
+                    boolean sampleSizeChanged = (oldBucketIdx == -1 || newBucketIdx == -1);
+
+                    double diff1 = 0;
+                    double diff2 = 0;
+
+                    if (oldBucketIdx > -1) diff1 = changeBucketContent(oldBucketIdx, -delta, sampleSizeChanged);
+                    if (newBucketIdx > -1) diff2 = changeBucketContent(newBucketIdx, delta, sampleSizeChanged);
+
+                    hamiltonianValue += (diff1 + diff2);
                 }
-
-                if (newValue != null) {
-                    newBucket = discretizer.index((Double) newValue);
-                    newBucketSet = true;
-                }
-
-                boolean universeChange = !(oldBucketSet == newBucketSet);
-                double diff1 = 0;
-                if (oldBucketSet) diff1 = changeBucketContent(oldBucket, -delta, universeChange);
-                double diff2 = 0;
-                if (newBucketSet) diff2 = changeBucketContent(newBucket, delta, universeChange);
-
-                hamiltonianValue += (diff1 + diff2);
             }
         }
     }
@@ -220,25 +224,47 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
         }
     }
 
-    private double changeBucketContent(int bucketIndex, double value, boolean universeChange) {
+    private double changeBucketContent(int bucketIndex, double value, boolean sampleSizeChanged) {
         double scaleFactor = simSum / refSum;
 
-        double simVal = simBuckets.get(bucketIndex);
-        double refVal = refBuckets.get(bucketIndex) * scaleFactor;
-        double oldDiff = errorFunction.evaluate(simVal, refVal);
+        /**
+         * If the sample size changes, the scale factor changes and all buckets need to be evaluated.
+         */
+        double oldDiff;
+        if (sampleSizeChanged) {
+            oldDiff = evaluateBuckets(scaleFactor);
+        } else {
+            oldDiff = evaluateBucket(bucketIndex, scaleFactor);
+        }
 
         simBuckets.set(bucketIndex, simBuckets.get(bucketIndex) + value);
 
-        if (universeChange) {
+        double newDiff;
+        if (sampleSizeChanged) {
             simSum += value;
             scaleFactor = simSum / refSum;
+            newDiff = evaluateBuckets(scaleFactor);
+        } else {
+            newDiff = evaluateBucket(bucketIndex, scaleFactor);
         }
 
-        simVal = simBuckets.get(bucketIndex);
-        refVal = refBuckets.get(bucketIndex) * scaleFactor;
-        double newDiff = errorFunction.evaluate(simVal, refVal);
-
         return newDiff - oldDiff;
+    }
+
+    private double evaluateBucket(int bucketIndex, double scaleFactor) {
+        double simVal = simBuckets.get(bucketIndex);
+        double refVal = refBuckets.get(bucketIndex) * scaleFactor;
+        return errorFunction.evaluate(simVal, refVal);
+    }
+
+    private double evaluateBuckets(double scaleFactor) {
+        double diff = 0;
+        for (int i = 0; i < binCount; i++) {
+            double simVal = simBuckets.get(i);
+            double refVal = refBuckets.get(i) * scaleFactor;
+            diff += errorFunction.evaluate(simVal, refVal);
+        }
+        return diff;
     }
 
 

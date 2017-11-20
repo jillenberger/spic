@@ -30,9 +30,8 @@ import java.util.Map;
  */
 public abstract class CachedElement implements Attributable {
 
-    private Map<Object, Object> cache;
-
     private final Attributable delegate;
+    private Map<Object, Object> cache;
 
     public CachedElement(Attributable delegate) {
         this.delegate = delegate;
@@ -84,6 +83,7 @@ public abstract class CachedElement implements Attributable {
         return cache.put(key, value);
     }
 
+    //FIXME: As long as this is not synchronized with the delegate, the cache will be rebuild upon call of getData()
     public Object removeData(Object key) {
         initCache();
         return cache.remove(key);
