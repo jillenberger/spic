@@ -68,7 +68,7 @@ public class ExtendedAnalyzerBuilder {
         mAnalyzer.setLegPredicate(engine.getLegPredicate());
         mAnalyzer.setUseWeights(engine.getUseWeights());
 
-        ODPredicate distPredicate = new ZoneDistancePredicate(null, 100000);
+        ODPredicate distPredicate = new ZoneDistancePredicate(null, 100000, Double.MAX_VALUE);
         System.err.println("Deprecated code!");
         System.exit(-1);
 
