@@ -71,7 +71,7 @@ public class ODCalibratorConfigurator {
         System.err.println("Deprecated code!");
         System.exit(-1);
         ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, null, places, null).build();
-        calibrator.setDistanceThreshold(distanceThreshold);
+        calibrator.setMinDistanceThreshold(distanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);
 
         return calibrator;

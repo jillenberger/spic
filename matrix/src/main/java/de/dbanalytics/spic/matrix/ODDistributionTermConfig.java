@@ -36,6 +36,10 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
 
     private static final String DISTANCE_THRESHOLD = "distance_threshold";
 
+    private static final String MIN_DISTANCE_THRESHOLD = "min_distance_threshold";
+
+    private static final String MAX_DISTANCE_THRESHOLD = "max_distance_threshold";
+
     private static final String VOLUME_THRESHOLD = "volume_threshold";
 
     private static final String LOG_INTERVAL = "log_interval";
@@ -95,7 +99,12 @@ public class ODDistributionTermConfig extends Configurator<ODDistributionTermBui
     public ODDistributionTermBuilder configure(ODDistributionTermBuilder builder) {
         /** distance threshold */
         String value = config.getValue(DISTANCE_THRESHOLD);
-        if (value != null) builder.distanceThreshold(Double.parseDouble(value));
+        if (value != null) builder.minDistanceThreshold(Double.parseDouble(value));
+        //TODO: min_distance_threhold overwrites distance_threshold for compatibility
+        value = config.getValue(MIN_DISTANCE_THRESHOLD);
+        if (value != null) builder.minDistanceThreshold(Double.parseDouble(value));
+        value = config.getValue(MAX_DISTANCE_THRESHOLD);
+        if (value != null) builder.maxDistanceThreshold(Double.parseDouble(value));
 
         /** volume threshold */
         value = config.getValue(VOLUME_THRESHOLD);

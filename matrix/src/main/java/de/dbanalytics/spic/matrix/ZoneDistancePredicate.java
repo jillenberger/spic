@@ -33,15 +33,18 @@ public class ZoneDistancePredicate implements ODPredicate<String, Double> {
 
     private final DistanceCalculator calculator;
 
-    private final double threshold;
+    private final double minThreshold;
 
-    public ZoneDistancePredicate(ZoneIndex zoneIndex, double threshold) {
-        this(zoneIndex, threshold, new OrthodromicDistanceCalculator());
+    private final double maxThreshold;
+
+    public ZoneDistancePredicate(ZoneIndex zoneIndex, double minThreshold, double maxThreshold) {
+        this(zoneIndex, minThreshold, maxThreshold, new OrthodromicDistanceCalculator());
     }
 
-    public ZoneDistancePredicate(ZoneIndex zoneIndex, double threshold, DistanceCalculator calculator) {
+    public ZoneDistancePredicate(ZoneIndex zoneIndex, double minThreshold, double maxThreshold, DistanceCalculator calculator) {
         this.zoneIndex = zoneIndex;
-        this.threshold = threshold;
+        this.minThreshold = minThreshold;
+        this.maxThreshold = maxThreshold;
         this.calculator = calculator;
     }
 
@@ -55,7 +58,7 @@ public class ZoneDistancePredicate implements ODPredicate<String, Double> {
             Point p_j = z_j.getGeometry().getCentroid();
             double d = calculator.distance(p_i, p_j);
 
-            return (d >= threshold);
+            return (d >= minThreshold && d < maxThreshold);
         } else {
             return false;
         }

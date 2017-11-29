@@ -47,7 +47,9 @@ public class ODDistributionTermBuilder {
 
     private Predicate<Segment> predicate;
 
-    private double distanceThreshold = 0;
+    private double minDistanceThreshold = 0;
+
+    private double maxDistanceThreshold = Double.MAX_VALUE;
 
     private double volumeThreshold = 0;
 
@@ -94,8 +96,13 @@ public class ODDistributionTermBuilder {
         return this;
     }
 
-    public ODDistributionTermBuilder distanceThreshold(double distanceThreshold) {
-        this.distanceThreshold = distanceThreshold;
+    public ODDistributionTermBuilder minDistanceThreshold(double distanceThreshold) {
+        this.minDistanceThreshold = distanceThreshold;
+        return this;
+    }
+
+    public ODDistributionTermBuilder maxDistanceThreshold(double threshold) {
+        this.maxDistanceThreshold = threshold;
         return this;
     }
 
@@ -188,7 +195,8 @@ public class ODDistributionTermBuilder {
         String dumpFilePrefix = String.format("%s/%s", ioContext.getRoot(), name);
         ODCalibrator calibrator = new ODCalibrator.Builder(refMatrix, zones, placeIndex.get(), dumpFilePrefix).build();
 
-        calibrator.setDistanceThreshold(distanceThreshold);
+        calibrator.setMinDistanceThreshold(minDistanceThreshold);
+        calibrator.setMaxDistanceThreshold(maxDistanceThreshold);
         calibrator.setVolumeThreshold(volumeThreshold);
         calibrator.setResetInterval(resetInterval);
         calibrator.setUseWeights(useWeights);
@@ -246,11 +254,10 @@ public class ODDistributionTermBuilder {
             composite.addComponent(marTask);
 
             DefaultMatrixBuilderFactory factory = new DefaultMatrixBuilderFactory();
-//            ActivityLocationLayer locationLayer = new ActivityLocationLayer(placeIndex);
             MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(placeIndex, zones), composite);
             analyzer.setLegPredicate(predicate);
             analyzer.setVolumeThreshold(volumeThreshold);
-            analyzer.setMatrixPredicate(new ZoneDistancePredicate(zones, distanceThreshold, CartesianDistanceCalculator.getInstance()));
+            analyzer.setMatrixPredicate(new ZoneDistancePredicate(zones, minDistanceThreshold, maxDistanceThreshold, CartesianDistanceCalculator.getInstance()));
             analyzer.setUseWeights(useWeights);
             analyzer.setNormalize(normalize);
             analyzers.addComponent(analyzer);

@@ -72,11 +72,11 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     private double scaleFactor;
 
-//    private long changeCounter;
-
     private long iterations = 0;
 
-    private double distanceThreshold;
+    private double minDistanceThreshold;
+
+    private double maxDistanceThreshold = Double.MAX_VALUE;
 
     private double volumeThreshold;
 
@@ -97,7 +97,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
         this.refMatrix = refMatrix;
         this.place2Index = place2Index;
         this.index2Point = index2Point;
-        this.distanceThreshold = 0;
+        this.minDistanceThreshold = 0;
     }
 
     public void setPredicate(Predicate<Segment> predicate) {
@@ -115,8 +115,12 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
         this.normalize = normalize;
     }
 
-    public void setDistanceThreshold(double threshold) {
-        this.distanceThreshold = threshold;
+    public void setMinDistanceThreshold(double threshold) {
+        this.minDistanceThreshold = threshold;
+    }
+
+    public void setMaxDistanceThreshold(double threshold) {
+        this.maxDistanceThreshold = threshold;
     }
 
     public void setVolumeThreshold(double threshold) {
@@ -129,7 +133,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
 
     private void calculateScaleFactor() {
         if (normalize) {
-            double simSum = calculateSum(simMatrix, distanceThreshold);
+            double simSum = calculateSum(simMatrix, minDistanceThreshold, maxDistanceThreshold);
             scaleFactor = simSum / refSum;
 
             logger.debug(String.format("Recalculated scale factor: %s.", scaleFactor));
@@ -146,7 +150,8 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
             Point p_i = index2Point.get(i);
             for (int j : indices) {
                 Point p_j = index2Point.get(j);
-                if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) >= distanceThreshold) {
+                double d = CartesianDistanceCalculator.getInstance().distance(p_i, p_j);
+                if (d >= minDistanceThreshold && d < maxDistanceThreshold) {
                     double refVal = getCellValue(i, j, refMatrix);
                     if(refVal >= volumeThreshold) {
                         double simVal = getCellValue(i, j, simMatrix);
@@ -273,7 +278,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     @Override
     public double evaluate(Collection<CachedPerson> population) {
         if (simMatrix == null) {
-            refSum = calculateSum(refMatrix, distanceThreshold);
+            refSum = calculateSum(refMatrix, minDistanceThreshold, maxDistanceThreshold);
             initSimMatrix(population);
             calculateScaleFactor();
             initHamiltonian();
@@ -298,8 +303,8 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
             Point p_j = index2Point.get(j);
 
             double refVal = getCellValue(i, j, refMatrix);
-
-            if (refVal >= volumeThreshold && CartesianDistanceCalculator.getInstance().distance(p_i, p_j) >= distanceThreshold) {
+            double d = CartesianDistanceCalculator.getInstance().distance(p_i, p_j);
+            if (refVal >= volumeThreshold && d >= minDistanceThreshold && d < maxDistanceThreshold) {
                 double simVal = getCellValue(i, j, simMatrix);
                 double oldDiff = calculateError(simVal, refVal);
 
@@ -320,14 +325,12 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     }
 
     private void adjustCellValue(int i, int j, double amount, TIntObjectHashMap<TIntDoubleHashMap> matrix) {
-//        if (i >= 0 && j >= 0) {
-            TIntDoubleHashMap row = matrix.get(i);
-            if (row == null) {
-                row = new TIntDoubleHashMap();
-                matrix.put(i, row);
-            }
-            row.adjustOrPutValue(j, amount, amount);
-//        }
+        TIntDoubleHashMap row = matrix.get(i);
+        if (row == null) {
+            row = new TIntDoubleHashMap();
+            matrix.put(i, row);
+        }
+        row.adjustOrPutValue(j, amount, amount);
     }
 
     private double getCellValue(int i, int j, TIntObjectHashMap<TIntDoubleHashMap> matrix) {
@@ -347,7 +350,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
         }
     }
 
-    private double calculateSum(TIntObjectHashMap<TIntDoubleHashMap> matrix, double threshold) {
+    private double calculateSum(TIntObjectHashMap<TIntDoubleHashMap> matrix, double minThreshold, double maxThreshold) {
         double sum = 0;
 
         DistanceCalculator dCalc = CartesianDistanceCalculator.getInstance();
@@ -369,7 +372,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                         Point p_j = index2Point.get(idx_j);
 
                         double d = dCalc.distance(p_i, p_j);
-                        if (d >= threshold) {
+                        if (d >= minThreshold && d < maxThreshold) {
                             sum += colIt.value();
                         }
                     }
@@ -383,7 +386,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     public void debugDump(String filename) throws IOException {
         /** Write debug file */
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-        writer.write("from\tto\tref\tsim\terror\th\tscale\todCount\tdistThres\tvolThres");
+        writer.write("from\tto\tref\tsim\terror\th\tscale\todCount\tminDistThres\tmaxDistThres\tvolThres");
         writer.newLine();
 
         int[] tmpkeys = place2Index.values();
@@ -423,12 +426,21 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                     /** od flags */
                     writer.write("\t");
                     if (p_i != null && p_j != null) {
-                        if (CartesianDistanceCalculator.getInstance().distance(p_i, p_j) >= distanceThreshold) {
+                        double d = CartesianDistanceCalculator.getInstance().distance(p_i, p_j);
+                        if (d >= minDistanceThreshold) {
+                            writer.write("1");
+                        } else {
+                            writer.write("0");
+                        }
+                        writer.write("\t");
+                        if (d < maxDistanceThreshold) {
                             writer.write("1");
                         } else {
                             writer.write("0");
                         }
                     } else {
+                        writer.write("NA");
+                        writer.write("\t");
                         writer.write("NA");
                     }
                     writer.write("\t");
