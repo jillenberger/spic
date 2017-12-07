@@ -19,6 +19,7 @@
 
 package de.dbanalytics.spic.processing;
 
+import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;
@@ -44,13 +45,17 @@ public class TaskRunner {
     }
 
     public static void run(EpisodeTask task, Collection<? extends Person> persons, boolean verbose) {
+        run(task, persons, verbose, null);
+    }
+
+    public static void run(EpisodeTask task, Collection<? extends Person> persons, boolean verbose, Predicate<Episode> predicate) {
         if (verbose) {
             ProgressLogger.init(persons.size(), 2, 10);
         }
 
         for (Person person : persons) {
             for (Episode plan : person.getEpisodes())
-                task.apply(plan);
+                if (predicate == null || predicate.test(plan)) task.apply(plan);
 
             if (verbose)
                 ProgressLogger.step();
@@ -93,32 +98,6 @@ public class TaskRunner {
                 for(Segment act : episode.getActivities()) task.apply(act);
             }
         }, persons);
-    }
-
-    private static final class RunThread implements Runnable {
-
-        private final List<? extends Person> persons;
-
-        private final EpisodeTask task;
-
-        private final boolean verbose;
-
-        public RunThread(List<? extends Person> persons, EpisodeTask task, boolean verbose) {
-            this.persons = persons;
-            this.task = task;
-            this.verbose = verbose;
-        }
-
-        @Override
-        public void run() {
-            for (Person person : persons) {
-                for (Episode plan : person.getEpisodes())
-                    task.apply(plan);
-
-                if (verbose)
-                    ProgressLogger.step();
-            }
-        }
     }
 
     public static void validatePersons(PersonTask task, Collection<? extends Person> persons) {
@@ -173,5 +152,31 @@ public class TaskRunner {
         }
 
         LoggerUtils.enableNewLine();
+    }
+
+    private static final class RunThread implements Runnable {
+
+        private final List<? extends Person> persons;
+
+        private final EpisodeTask task;
+
+        private final boolean verbose;
+
+        public RunThread(List<? extends Person> persons, EpisodeTask task, boolean verbose) {
+            this.persons = persons;
+            this.task = task;
+            this.verbose = verbose;
+        }
+
+        @Override
+        public void run() {
+            for (Person person : persons) {
+                for (Episode plan : person.getEpisodes())
+                    task.apply(plan);
+
+                if (verbose)
+                    ProgressLogger.step();
+            }
+        }
     }
 }
