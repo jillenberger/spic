@@ -28,6 +28,7 @@ import de.dbanalytics.spic.sim.data.CachedPerson;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -86,13 +87,45 @@ public class MatrixSampler implements MatrixBuilder, MarkovEngineListener {
         }
     }
 
+    public void drawSampleFast(Collection<? extends Person> persons) {
+        NumericMatrix sample = builder.build(persons);
+
+        Map<String, Map<String, Double>> rows = sample.getRows();
+        for (Map.Entry<String, Map<String, Double>> row : rows.entrySet()) {
+            String i = row.getKey();
+            for (Map.Entry<String, Double> column : row.getValue().entrySet()) {
+                String j = column.getKey();
+                Double vol = column.getValue();
+                if (vol != null) {
+                    sumMatrix.add(i, j, vol);
+                }
+            }
+        }
+
+        sampleSize++;
+
+        avrMatrix = new NumericMatrix();
+        rows = sumMatrix.getRows();
+        for (Map.Entry<String, Map<String, Double>> row : rows.entrySet()) {
+            String i = row.getKey();
+            for (Map.Entry<String, Double> column : row.getValue().entrySet()) {
+                String j = column.getKey();
+                Double vol = column.getValue();
+                if (vol != null) {
+                    avrMatrix.set(i, j, vol / (double) sampleSize);
+                }
+            }
+        }
+    }
+
     @Override
     public void afterStep(Collection<CachedPerson> population, Collection<? extends Attributable> mutations, boolean accepted) {
         iteration++;
 
         if(iteration >= start && iteration % step == 0) {
             logger.debug(String.format("Drawing matrix sample. Current sample size = %s.", sampleSize));
-            drawSample(population);
+//            drawSample(population);
+            drawSampleFast(population);
             logger.debug("Done drawing matrix sample.");
         }
     }

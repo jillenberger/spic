@@ -55,6 +55,9 @@ public class HashMatrix<K, V> implements Matrix<K, V> {
         return matrix.get(row);
     }
 
+    public Map<K, Map<K, V>> getRows() {
+        return matrix;
+    }
 
     public Set<K> keys() {
         Set<K> keys = new HashSet<>(matrix.keySet());

@@ -21,6 +21,7 @@ package de.dbanalytics.spic.matrix;
 
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -29,7 +30,7 @@ import java.util.Set;
  */
 public class NumericMatrix implements Matrix<String, Double> {
 
-	private final Matrix<String, Double> matrix;
+    private final HashMatrix<String, Double> matrix;
 
 	public NumericMatrix() {
 		matrix = new HashMatrix<>();
@@ -50,6 +51,10 @@ public class NumericMatrix implements Matrix<String, Double> {
 			matrix.set(i, j, val * factor);
 		}
 	}
+
+    public Map<String, Map<String, Double>> getRows() {
+        return matrix.getRows();
+    }
 
     @Override
     public Double set(String row, String column, Double value) {

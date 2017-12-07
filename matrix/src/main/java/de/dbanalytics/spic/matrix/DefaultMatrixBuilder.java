@@ -60,6 +60,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
         this.placeIndex = placeIndex;
         this.zones = zoneIndex;
         zoneIds = new ConcurrentHashMap<>();
+        outOfBoundsPlaces = new HashSet<>();
     }
 
     public void setLegPredicate(Predicate<Segment> predicate) {
@@ -72,13 +73,11 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
     @Override
     public NumericMatrix build(Collection<? extends Person> persons) {
-        outOfBoundsPlaces = new HashSet<>();
-
-        logger.debug("Start building matrix...");
         int n = persons.size() / 10000;
         n = Math.min(n, Executor.getFreePoolSize());
         n = Math.max(1, n);
         List<? extends Person>[] segments = org.matsim.contrib.common.collections.CollectionUtils.split(persons, n);
+        logger.debug(String.format("Start building matrix (%s threads)...", n));
 
         List<RunThread> runnables = new ArrayList<>(n);
         for(List<? extends Person> segment : segments) {
@@ -97,8 +96,11 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             countNullIds += runnable.getCountNullIds();
             totalVolume += runnable.getTotalVolume();
         }
-        NumericMatrix m = new NumericMatrix();
-        MatrixOperations.accumulate(matrices, m);
+
+        logger.debug("Accumulating matrices...");
+//        NumericMatrix m = new NumericMatrix();
+//        MatrixOperations.accumulate(matrices, m);
+        NumericMatrix m = accumulate(matrices);
 
         if (lostVolume > 0) {
             logger.info(String.format(Locale.US, "%s of %s (%.2f %%) trips skipped because at least one place cannot be located in a zone.",
@@ -113,6 +115,27 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
 
         logger.debug("Done building matrix.");
         return m;
+    }
+
+    private NumericMatrix accumulate(Set<NumericMatrix> matrices) {
+        NumericMatrix total = new NumericMatrix();
+
+        for (NumericMatrix m : matrices) {
+            Map<String, Map<String, Double>> rows = m.getRows();
+
+            for (Map.Entry<String, Map<String, Double>> row : rows.entrySet()) {
+                String rowKey = row.getKey();
+                for (Map.Entry<String, Double> column : row.getValue().entrySet()) {
+                    String colKey = column.getKey();
+                    Double val = column.getValue();
+                    if (val != null && val > 0) {
+                        total.add(rowKey, colKey, column.getValue());
+                    }
+                }
+            }
+        }
+
+        return total;
     }
 
     public void debugDump(String filePrefix) throws IOException {
@@ -224,7 +247,9 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             }
 
             String zoneId = zoneIds.get(placeId);
-            if (zoneId == null) zoneId = getOrSetZoneId(placeId);
+            if (zoneId == null) {
+                zoneId = getOrSetZoneId(placeId);
+            }
             return zoneId;
         }
 
@@ -242,6 +267,8 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                     } else {
                         // facility is outside bounds of zones
                         outOfBoundsPlaces.add(place);
+//                        outOfBoundsPlaceIds.add(placeId);
+//                        zoneIds.put(placeId, "-1");
                         return null;
                     }
                 }
