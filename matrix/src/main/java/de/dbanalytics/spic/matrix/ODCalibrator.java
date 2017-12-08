@@ -208,68 +208,59 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if (simMatrix != null) {
             if (this.placeDataKey.equals(dataKey)) {
-                if (this.placeDataKey == null) //FIXME: Does not make sense!
-                    this.placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
-
-                if(weightDataKey == null)
-                    weightDataKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
-
-//                changeCounter++;
-//                if (changeCounter % rescaleInterval == 0) {
-//                    calculateScaleFactor();
-//                    // we need to recalculate the full hamiltonian if the scale factor changes
-//                    double h_before = hamiltonianValue/(double)odCount;
-//                    initHamiltonian();
-//                    double h_after = hamiltonianValue/(double)odCount;
-//                    logger.debug(String.format("Hamiltonian reset: before: %s, after: %s", h_before, h_after));
-//                }
+//                if (this.placeDataKey == null) //FIXME: Does not make sense!
+//                    this.placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
 
                 CachedSegment act = (CachedSegment) element;
                 int oldIdx = place2Index.get(oldValue);
                 int newIdx = place2Index.get(newValue);
-            /*
-            if there is a preceding trip...
-             */
-                CachedSegment toLeg = (CachedSegment) act.previous();
-                if (toLeg != null && (predicate == null || predicate.test(toLeg))) {
-                    CachedSegment prevAct = (CachedSegment) toLeg.previous();
-                    Place fromPlace = (Place) prevAct.getData(placeDataKey);
 
-                    int i = place2Index.get(fromPlace);
-                    int j = oldIdx;
+                /** continue only if zone index changed */
+                if (oldIdx != newIdx) {
+                    if (useWeights && weightDataKey == null)
+                        weightDataKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
 
-                    double w = 1.0;
-                    if(useWeights) w = (Double)toLeg.getData(weightDataKey);
+                    /** process to leg */
+                    CachedSegment toLeg = (CachedSegment) act.previous();
+                    if (toLeg != null && (predicate == null || predicate.test(toLeg))) {
+                        CachedSegment prevAct = (CachedSegment) toLeg.previous();
+                        Place fromPlace = (Place) prevAct.getData(placeDataKey);
 
-                    double diff1 = changeCellContent(i, j, -w);
+                        int i = place2Index.get(fromPlace);
+                        int j = oldIdx;
 
-                    j = newIdx;
+                        double w = 1.0;
+                        if (useWeights) w = (Double) toLeg.getData(weightDataKey);
 
-                    double diff2 = changeCellContent(i, j, w);
+                        double diff1 = changeCellContent(i, j, -w);
 
-                    hamiltonianValue += diff1 + diff2;
-                }
-            /*
-            if there is a succeeding trip...
-             */
-                CachedSegment fromLeg = (CachedSegment) act.next();
-                if (fromLeg != null && (predicate == null || predicate.test(fromLeg))) {
-                    CachedSegment nextAct = (CachedSegment) fromLeg.next();
-                    Place toPlace = (Place) nextAct.getData(placeDataKey);
+                        j = newIdx;
 
-                    int i = oldIdx;
-                    int j = place2Index.get(toPlace);
+                        double diff2 = changeCellContent(i, j, w);
 
-                    double w = 1.0;
-                    if(useWeights) w = (Double)fromLeg.getData(weightDataKey);
+                        hamiltonianValue += diff1 + diff2;
+                    }
 
-                    double diff1 = changeCellContent(i, j, -w);
+                    /** process from leg */
+                    CachedSegment fromLeg = (CachedSegment) act.next();
+                    if (fromLeg != null && (predicate == null || predicate.test(fromLeg))) {
+                        CachedSegment nextAct = (CachedSegment) fromLeg.next();
+                        Place toPlace = (Place) nextAct.getData(placeDataKey);
 
-                    i = newIdx;
+                        int i = oldIdx;
+                        int j = place2Index.get(toPlace);
 
-                    double diff2 = changeCellContent(i, j, w);
+                        double w = 1.0;
+                        if (useWeights) w = (Double) fromLeg.getData(weightDataKey);
 
-                    hamiltonianValue += diff1 + diff2;
+                        double diff1 = changeCellContent(i, j, -w);
+
+                        i = newIdx;
+
+                        double diff2 = changeCellContent(i, j, w);
+
+                        hamiltonianValue += diff1 + diff2;
+                    }
                 }
             }
         }
