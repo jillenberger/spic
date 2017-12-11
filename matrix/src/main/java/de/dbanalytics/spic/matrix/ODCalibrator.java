@@ -377,7 +377,7 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
     public void debugDump(String filename) throws IOException {
         /** Write debug file */
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-        writer.write("from\tto\tref\tsim\terror\th\tscale\todCount\tminDistThres\tmaxDistThres\tvolThres");
+        writer.write("from\tto\tref\tsim\terror\th\tscale\todCount\tdistance\tminDistThres\tmaxDistThres\tvolThres");
         writer.newLine();
 
         int[] tmpkeys = place2Index.values();
@@ -418,6 +418,8 @@ public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
                     writer.write("\t");
                     if (p_i != null && p_j != null) {
                         double d = CartesianDistanceCalculator.getInstance().distance(p_i, p_j);
+                        writer.write(String.valueOf(d));
+                        writer.write("\t");
                         if (d >= minDistanceThreshold) {
                             writer.write("1");
                         } else {
