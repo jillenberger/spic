@@ -37,6 +37,11 @@ public class AttributePredicate<T extends Attributable> implements Predicate<T> 
 
     @Override
     public boolean test(T attributable) {
-        return value.equalsIgnoreCase(attributable.getAttribute(key));
+        if (value == null) {
+            /** Test if attribute is available */
+            return attributable.getAttribute(key) == null;
+        } else {
+            return value.equalsIgnoreCase(attributable.getAttribute(key));
+        }
     }
 }

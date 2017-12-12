@@ -43,7 +43,7 @@ public class ResolveReturnTrips implements EpisodeTask {
                     Segment startAct = episode.getActivities().get(i - 2);
                     act.setAttribute(CommonKeys.ACTIVITY_TYPE, startAct.getAttribute(CommonKeys.ACTIVITY_TYPE));
                 } else {
-                    logger.warn("Detected return trips without outward trip.");
+                    logger.warn("Detected return trip without outward trip.");
                     act.setAttribute(CommonKeys.ACTIVITY_TYPE, null);
                 }
             }

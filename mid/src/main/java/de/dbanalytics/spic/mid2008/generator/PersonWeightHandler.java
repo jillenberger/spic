@@ -33,7 +33,10 @@ public class PersonWeightHandler implements PersonAttributeHandler {
 	@Override
 	public void handle(Person person, Map<String, String> attributes) {
 		double w = Double.parseDouble(attributes.get(VariableNames.PERSON_WEIGHT));
-		person.setAttribute(CommonKeys.PERSON_WEIGHT, String.valueOf(w));
+
+		if (w > 0 && !Double.isNaN(w) && !Double.isInfinite(w)) {
+			person.setAttribute(CommonKeys.PERSON_WEIGHT, String.valueOf(w));
+		}
 	}
 
 }
