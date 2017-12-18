@@ -20,42 +20,57 @@
 package de.dbanalytics.spic.osm.places.run;
 
 
-import com.vividsolutions.jts.geom.Coordinate;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.gis.*;
+import org.apache.log4j.Logger;
 
-import java.io.*;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * Created by johannesillenberger on 27.04.17.
  */
 public class RunCropPlaces {
 
-    public static final void main(String args[]) throws IOException {
+    private static final Logger logger = Logger.getLogger(RunCropPlaces.class);
+
+    public static final void main(String args[]) throws IOException, XMLStreamException {
         String inFile = args[0];
         String outFile = args[1];
         String shapeFile = args[2];
 
-        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(shapeFile, "PLZ8", null);
-
-        BufferedReader reader = new BufferedReader(new FileReader(inFile));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
-
-        String line = reader.readLine();
-        while ((line = reader.readLine()) != null) {
-            String tokens[] = line.split("\t");
-            double lon = Double.parseDouble(tokens[0]);
-            double lat = Double.parseDouble(tokens[1]);
-
-            Zone zone = zones.get(new Coordinate(lon, lat));
-            if (zone != null) {
-                writer.write(line);
-                writer.newLine();
-            }
+        GeoTransformer transformer = null;
+        if (args.length > 3) {
+            int srid = Integer.parseInt(args[3]);
+            transformer = GeoTransformer.WGS84toX(srid);
         }
 
-        writer.close();
-        reader.close();
+        logger.info("Loading places...");
+        PlacesIO placesIO = new PlacesIO();
+        if (transformer != null) placesIO.setGeoTransformer(transformer);
+        Set<Place> places = placesIO.read(inFile);
+
+        logger.info("Loading features...");
+        FeaturesIO featuresIO = new FeaturesIO();
+        if (transformer != null) featuresIO.setTransformer(transformer);
+        Set<Feature> features = featuresIO.read(shapeFile);
+        ZoneIndex zoneIndex = new ZoneIndex(features);
+
+        logger.info("Cropping...");
+        List<Place> subset = new ArrayList<>(places.size());
+        for (Place place : places) {
+            Feature feature = zoneIndex.get(place.getGeometry().getCoordinate());
+            if (feature != null) subset.add(place);
+        }
+        logger.info(String.format(Locale.US, "Removed %s of %s places (%.2f %%).",
+                places.size() - subset.size(),
+                places.size(),
+                (places.size() - subset.size()) / (double) places.size() * 100));
+        logger.info("Writing places...");
+        placesIO.write(subset, outFile);
+        logger.info("Done.");
     }
 }
