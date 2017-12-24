@@ -19,6 +19,7 @@
 
 package de.dbanalytics.spic.sim;
 
+import de.dbanalytics.spic.analysis.NotPredicate;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.PlaceIndex;
@@ -52,7 +53,7 @@ public class RandomPlaceMutatorBuilder implements MutatorBuilder<CachedSegment> 
         Object dataKey = Converters.register(CommonKeys.ACTIVITY_FACILITY, new PlaceConverter(index));
 
         RandomPlaceGenerator generator = new RandomPlaceGenerator(places, random);
-        generator.setPredicate(new IgnoreHomePredicate());
+        generator.setPredicate(new NotPredicate<>(new HomePredicate()));
 
         AttributeMutator attMutator = new AttributeMutator(dataKey, generator, listener);
         RandomActMutator actMutator = new RandomActMutator(attMutator, random);

@@ -27,7 +27,7 @@ import de.dbanalytics.spic.sim.data.CachedElement;
 /**
  * Created by johannesillenberger on 07.06.17.
  */
-public class IgnoreHomePredicate implements Predicate<CachedElement> {
+public class HomePredicate implements Predicate<CachedElement> {
 
     private final Object objectKey = new Object();
 
