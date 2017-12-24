@@ -31,9 +31,9 @@ import java.util.Map.Entry;
  */
 public abstract class PlainElement implements Attributable {
 
-	private Map<String, String> attributes;
-	
-	private Map<String, String> unmodAttribs;
+	private volatile Map<String, String> attributes;
+
+	private volatile Map<String, String> unmodAttribs;
 	
 	public Map<String, String> getAttributes() {
 		initAttriutes();
@@ -76,8 +76,12 @@ public abstract class PlainElement implements Attributable {
 	
 	private void initAttriutes() {
 		if(attributes == null) {
-			attributes = new HashMap<String, String>(5);
-			unmodAttribs = Collections.unmodifiableMap(attributes);
+			synchronized (this) {
+				if (attributes == null) {
+					attributes = new HashMap<>(5);
+					unmodAttribs = Collections.unmodifiableMap(attributes);
+				}
+			}
 		}
 	}
 }

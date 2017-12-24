@@ -32,8 +32,8 @@ public class PlainPerson extends PlainElement implements Person {
 	private String id;
 	
 //	private PlainEpisode plan;
-	
-	private List<Episode> plans = new ArrayList<Episode>();
+
+	private List<Episode> plans = new ArrayList<>(1);
 	
 	public PlainPerson(String id) {
 		this.id = id;		

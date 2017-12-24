@@ -31,7 +31,8 @@ import java.util.Map;
 public abstract class CachedElement implements Attributable {
 
     private final Attributable delegate;
-    private Map<Object, Object> cache;
+
+    private volatile Map<Object, Object> cache;
 
     public CachedElement(Attributable delegate) {
         this.delegate = delegate;
@@ -44,13 +45,6 @@ public abstract class CachedElement implements Attributable {
     @Override
     public String getAttribute(String key) {
         synchronize(key);
-        return delegate.getAttribute(key);
-    }
-
-    /*
-    FIXME: experimental
-     */
-    public String getAttributeDirect(String key) {
         return delegate.getAttribute(key);
     }
 
@@ -90,7 +84,11 @@ public abstract class CachedElement implements Attributable {
     }
 
     private void initCache() {
-        if (cache == null) cache = new IdentityHashMap<>(5);
+        if (cache == null) {
+            synchronized (this) {
+                if (cache == null) cache = new IdentityHashMap<>(5);
+            }
+        }
     }
 
     private Object initObjectValue(Object key) {
