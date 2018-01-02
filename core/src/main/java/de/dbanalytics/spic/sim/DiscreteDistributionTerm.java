@@ -54,7 +54,8 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
     private final Discretizer discretizer;
     private final AbstractCollector<Double, A, A> collector;
     private final String attributeKey;
-    private final Object predicateResultDataKey = new Object();
+    //private final Object predicateResultDataKey = new Object();
+    private final Object predicateResultDataKey = Converters.newObjectKey();
     private DynamicDoubleArray simBuckets;
     private Predicate<A> predicate;
     private Object attributeDataKey;

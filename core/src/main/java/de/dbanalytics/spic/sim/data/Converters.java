@@ -31,19 +31,26 @@ public class Converters {
 
     private static Map<Object, Container> objKeys = new HashMap<>();
 
+    private static int index = 0;
+
     public static Object register(String plainKey, Converter converter) {
         Container c = plainKeys.get(plainKey);
         if(c == null) {
             c = new Container();
             c.plainKey = plainKey;
             c.converter = converter;
-            c.objectKey = new Object();
+            //c.objectKey = new Object();
+            c.objectKey = newObjectKey();
 
             plainKeys.put(plainKey, c);
             objKeys.put(c.objectKey, c);
         }
 
         return c.objectKey;
+    }
+
+    public static Object newObjectKey() {
+        return new Integer(index++);
     }
 
     /**

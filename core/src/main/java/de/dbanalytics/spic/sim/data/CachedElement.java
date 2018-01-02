@@ -20,9 +20,10 @@
 package de.dbanalytics.spic.sim.data;
 
 import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.sim.util.DynamicObjectArray;
 
 import java.util.Collection;
-import java.util.IdentityHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -83,13 +84,10 @@ public abstract class CachedElement implements Attributable {
         return cache.remove(key);
     }
 
-    private void initCache() {
-        if (cache == null) {
-            synchronized (this) {
-                if (cache == null) cache = new IdentityHashMap<>(5);
-            }
-        }
-    }
+    /**
+     * EXPERIMENTAL
+     */
+    private volatile DynamicObjectArray indexedCache;
 
     private Object initObjectValue(Object key) {
         /*
@@ -135,5 +133,29 @@ public abstract class CachedElement implements Attributable {
                 }
             }
         }
+    }
+
+    private void initCache() {
+        if (cache == null) {
+            synchronized (this) {
+                //if (cache == null) cache = new IdentityHashMap<>(5);
+                if (cache == null) cache = new HashMap<>(5);
+            }
+        }
+    }
+
+    public Object getData(int index) {
+        if (indexedCache == null) return null;
+        else return indexedCache.get(index);
+    }
+
+    public void setData(int index, Object data) {
+        if (indexedCache == null) initIndexedCache();
+        indexedCache.set(index, data);
+    }
+
+    private synchronized void initIndexedCache() {
+        if (indexedCache == null) indexedCache = new DynamicObjectArray();
+
     }
 }

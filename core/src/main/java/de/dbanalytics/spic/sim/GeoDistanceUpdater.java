@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.spic.sim;
 
-import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Coordinate;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.gis.Place;
@@ -63,9 +63,15 @@ public class GeoDistanceUpdater implements AttributeChangeListener {
             CachedSegment toLeg = (CachedSegment) act.previous();
             CachedSegment fromLeg = (CachedSegment) act.next();
 
+            Place place1 = (Place) act.getData(placeDataKey);
+            Coordinate c1 = place1.getGeometry().getCoordinate();
+
             if (toLeg != null) {
                 CachedSegment prevAct = (CachedSegment) toLeg.previous();
-                double d = distance(prevAct, act);
+                Place place2 = (Place) prevAct.getData(placeDataKey);
+                Coordinate c2 = place2.getGeometry().getCoordinate();
+                double d = distance(c2, c1);
+                //double d = distance(prevAct, act);
                 Object old = toLeg.getData(geoDistDataKey);
                 toLeg.setData(geoDistDataKey, d);
 
@@ -77,7 +83,10 @@ public class GeoDistanceUpdater implements AttributeChangeListener {
 
             if (fromLeg != null) {
                 CachedSegment nextAct = (CachedSegment) fromLeg.next();
-                double d = distance(act, nextAct);
+                Place place2 = (Place) nextAct.getData(placeDataKey);
+                Coordinate c2 = place2.getGeometry().getCoordinate();
+                double d = distance(c1, c2);
+                //double d = distance(act, nextAct);
                 Object old = fromLeg.getData(geoDistDataKey);
                 fromLeg.setData(geoDistDataKey, d);
 
@@ -89,15 +98,20 @@ public class GeoDistanceUpdater implements AttributeChangeListener {
         }
     }
 
-    private double distance(CachedSegment from, CachedSegment to) {
-        Place place1 = (Place) from.getData(placeDataKey);
-        Place place2 = (Place) to.getData(placeDataKey);
-
-        Point point1 = (Point) place1.getGeometry();
-        Point point2 = (Point) place2.getGeometry();
-
-        double dx = point1.getX() - point2.getX();
-        double dy = point1.getY() - point2.getY();
+    private double distance(Coordinate c1, Coordinate c2) {
+        double dx = c1.x - c2.x;
+        double dy = c1.y - c2.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
+//    private double distance(CachedSegment from, CachedSegment to) {
+//        Place place1 = (Place) from.getData(placeDataKey);
+//        Place place2 = (Place) to.getData(placeDataKey);
+//
+//        Point point1 = (Point) place1.getGeometry();
+//        Point point2 = (Point) place2.getGeometry();
+//
+//        double dx = point1.getX() - point2.getX();
+//        double dy = point1.getY() - point2.getY();
+//        return Math.sqrt(dx * dx + dy * dy);
+//    }
 }
