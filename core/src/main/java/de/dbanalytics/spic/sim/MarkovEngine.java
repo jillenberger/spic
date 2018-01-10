@@ -20,8 +20,13 @@
 package de.dbanalytics.spic.sim;
 
 import de.dbanalytics.spic.data.Attributable;
+import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.sim.data.CachedElement;
+import de.dbanalytics.spic.sim.data.CachedEpisode;
 import de.dbanalytics.spic.sim.data.CachedPerson;
+import de.dbanalytics.spic.sim.data.CachedSegment;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,6 +96,29 @@ public class MarkovEngine {
             }
 
             listener.afterStep(MarkovEngine.this.simPopulation, mutations, accepted);
+        }
+        /** Synchronize all attributes with the delegate population */
+        synchronize();
+    }
+
+    private void synchronize() {
+        for (CachedPerson cachedPerson : simPopulation) {
+            synchronizeAttributes(cachedPerson);
+            for (Episode episode : cachedPerson.getEpisodes()) {
+                synchronizeAttributes((CachedEpisode) episode);
+                for (Segment act : episode.getActivities()) {
+                    synchronizeAttributes((CachedSegment) act);
+                }
+                for (Segment leg : episode.getLegs()) {
+                    synchronizeAttributes((CachedSegment) leg);
+                }
+            }
+        }
+    }
+
+    private void synchronizeAttributes(CachedElement element) {
+        for (String key : element.keys()) {
+            element.getAttribute(key);
         }
     }
 
