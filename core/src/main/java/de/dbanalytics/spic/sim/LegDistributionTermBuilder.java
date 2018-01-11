@@ -220,7 +220,7 @@ public class LegDistributionTermBuilder {
                     writer);
             analyzers.addComponent(analyzer);
 
-            LegHistogramBuilder builder = new LegAttributeHistogramBuilder(attributeKey, discretizer);
+            LegHistogramBuilder builder = new LegAttributeHistogramBuilder(attributeKey, discretizer, useWeights);
             builder.setPredicate(predicate);
 
             HistogramComparator comparator = new HistogramComparator(

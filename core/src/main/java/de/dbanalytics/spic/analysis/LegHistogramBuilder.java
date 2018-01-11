@@ -39,8 +39,17 @@ public class LegHistogramBuilder implements HistogramBuilder {
     private LegPersonCollector<Double> weightsCollector;
 
     public LegHistogramBuilder(ValueProvider<Double, Segment> provider, Discretizer discretizer) {
+        this(provider, discretizer, true); //TODO: Default value is true for compatibility but should be false by design.
+    }
+
+    public LegHistogramBuilder(ValueProvider<Double, Segment> provider, Discretizer discretizer, boolean useWeights) {
         valueCollector = new LegCollector<>(provider);
-        weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.PERSON_WEIGHT));
+        if (useWeights) {
+            weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<>(CommonKeys.PERSON_WEIGHT));
+        } else {
+            weightsCollector = new LegPersonCollector<>(new DefaultWeightProvider());
+        }
+
         builder = new DefaultHistogramBuilder(valueCollector, weightsCollector, discretizer);
     }
 
@@ -52,5 +61,13 @@ public class LegHistogramBuilder implements HistogramBuilder {
     @Override
     public TDoubleDoubleMap build(Collection<? extends Person> persons) {
         return builder.build(persons);
+    }
+
+    private class DefaultWeightProvider implements ValueProvider<Double, Person> {
+
+        @Override
+        public Double get(Person attributable) {
+            return 1.0;
+        }
     }
 }

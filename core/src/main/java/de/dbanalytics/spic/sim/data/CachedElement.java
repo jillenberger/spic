@@ -75,7 +75,8 @@ public abstract class CachedElement implements Attributable {
 
     public Object setData(Object key, Object value) {
         initCache();
-        return cache.put(key, value);
+        return cache.put(key, value); /*TODO: if getData() has been never called before,
+                                        it is never synchronized with the delegate attribute and returns null.*/
     }
 
     //FIXME: As long as this is not synchronized with the delegate, the cache will be rebuild upon call of getData()

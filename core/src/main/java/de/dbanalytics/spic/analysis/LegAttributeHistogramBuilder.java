@@ -18,7 +18,6 @@
  */
 package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.data.Segment;
 import org.matsim.contrib.common.stats.Discretizer;
 
 /**
@@ -27,6 +26,10 @@ import org.matsim.contrib.common.stats.Discretizer;
 public class LegAttributeHistogramBuilder extends LegHistogramBuilder {
 
     public LegAttributeHistogramBuilder(String key, Discretizer discretizer) {
-        super(new NumericAttributeProvider<Segment>(key), discretizer);
+        super(new NumericAttributeProvider<>(key), discretizer);
+    }
+
+    public LegAttributeHistogramBuilder(String key, Discretizer discretizer, boolean useWeights) {
+        super(new NumericAttributeProvider<>(key), discretizer, useWeights);
     }
 }
