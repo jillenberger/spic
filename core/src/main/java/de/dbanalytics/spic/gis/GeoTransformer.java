@@ -46,7 +46,8 @@ public class GeoTransformer {
             CoordinateReferenceSystem targetCrs = factory.createCoordinateReferenceSystem(
                     String.format("EPSG:%s", target));
 
-            forwardTransform = CRS.findMathTransform(sourceCrs, targetCrs);
+            // TODO: Don't know if lenient=true has any unwanted side-effects...?
+            forwardTransform = CRS.findMathTransform(sourceCrs, targetCrs, true);
             backwardTransform = forwardTransform.inverse();
         } catch (FactoryException e) {
             e.printStackTrace();
@@ -57,7 +58,8 @@ public class GeoTransformer {
 
     public GeoTransformer(CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
         try {
-            forwardTransform = CRS.findMathTransform(source, target);
+            // TODO: Don't know if lenient=true has any unwanted side-effects...?
+            forwardTransform = CRS.findMathTransform(source, target, true);
             backwardTransform = forwardTransform.inverse();
         } catch (FactoryException e) {
             e.printStackTrace();
