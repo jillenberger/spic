@@ -24,6 +24,7 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ import java.util.Set;
  */
 public class PopulationWriter {
 
-    public static void write(Set<? extends Person> persons, String basename) throws IOException {
+    public static void write(Collection<? extends Person> persons, String basename) throws IOException {
         TableWriter writer = new TableWriter();
         /*
         Write persons.
@@ -70,13 +71,13 @@ public class PopulationWriter {
         removePersonId(legs);
     }
 
-    static private void addId(Set<? extends Person> persons) {
+    static private void addId(Collection<? extends Person> persons) {
         for(Person p : persons) {
             p.setAttribute("personId", p.getId());
         }
     }
 
-    static private void removeId(Set<? extends Person> persons) {
+    static private void removeId(Collection<? extends Person> persons) {
         for(Person p : persons) {
             p.removeAttribute("personId");
         }
