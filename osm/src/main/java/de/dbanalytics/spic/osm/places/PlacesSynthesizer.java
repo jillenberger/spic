@@ -19,12 +19,18 @@
 
 package de.dbanalytics.spic.osm.places;
 
+import com.vividsolutions.jts.algorithm.locate.IndexedPointInAreaLocator;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Location;
 import de.dbanalytics.spic.gis.GeoTransformer;
 import de.dbanalytics.spic.gis.RTreeWrapper;
 import de.dbanalytics.spic.gis.SpatialIndex;
 import org.apache.log4j.Logger;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.matsim.contrib.common.util.ProgressLogger;
+import org.matsim.contrib.common.util.XORShiftRandom;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -42,12 +48,30 @@ public class PlacesSynthesizer {
 
     private double areaThreshold = 40;
 
+    private double landuseAreaFactor = 10000;
+
+    private int maxTries = 1000;
+
+    private Random random = new XORShiftRandom();
+
     public void setGeoTransformer(GeoTransformer transformer) {
         this.transformer = transformer;
     }
 
     public void setAreaThreshold(double threshold) {
         this.areaThreshold = threshold;
+    }
+
+    public void setLanduseAreaFactor(double factor) {
+        this.landuseAreaFactor = factor;
+    }
+
+    public void setMaxTries(int maxTries) {
+        this.maxTries = maxTries;
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
     }
 
     public void synthesize(Set<OsmFeature> features, String filename) throws IOException {
@@ -61,6 +85,8 @@ public class PlacesSynthesizer {
         processMissingTypes(features);
         logger.info("Cleaning features...");
         cleanFeatures(features);
+        logger.info("Processing land-use...");
+        processLanduse(features);
         logger.info("Writing places...");
         writePlaces(features, filename);
     }
@@ -108,23 +134,76 @@ public class PlacesSynthesizer {
         logger.info(String.format("Wrote %s places.", cnt));
     }
 
+    private void processLanduse(Set<OsmFeature> features) {
+        List<OsmFeature> remove = new ArrayList<>();
+        List<OsmFeature> add = new ArrayList<>();
+
+        GeometryFactory factory = JTSFactoryFinder.getGeometryFactory();
+
+        int exceeded = 0;
+        for (OsmFeature feature : features) {
+            if (feature.isLanduse()) {
+                int n = (int) Math.floor(feature.getGeometry().getArea() / landuseAreaFactor);
+                Envelope env = feature.getGeometry().getEnvelopeInternal();
+                double dx = env.getMaxX() - env.getMinX();
+                double dy = env.getMaxY() - env.getMinY();
+                IndexedPointInAreaLocator locator = new IndexedPointInAreaLocator(feature.getGeometry());
+
+                for (int i = 0; i < n; i++) {
+                    boolean hit = false;
+                    Coordinate coordinate = null;
+
+                    int tries = 0;
+                    while (!hit) {
+                        double x = env.getMinX() + (random.nextDouble() * dx);
+                        double y = env.getMinY() + (random.nextDouble() * dy);
+                        coordinate = new Coordinate(x, y);
+                        hit = (locator.locate(coordinate) == Location.INTERIOR);
+                        tries++;
+
+                        if (tries > maxTries) {
+                            exceeded++;
+                            break;
+                        }
+                    }
+
+                    if (coordinate != null) {
+                        OsmFeature newFeature = new OsmFeature(factory.createPoint(coordinate), OsmFeature.LANDUSE);
+                        for (String type : feature.getPlaceTypes()) {
+                            newFeature.addPlaceType(type);
+                        }
+                        add.add(newFeature);
+                    }
+                }
+
+                remove.add(feature);
+            }
+        }
+
+        for (OsmFeature feature : remove) features.remove(feature);
+        for (OsmFeature feature : add) features.add(feature);
+
+        logger.info(String.format("Generated %s places, removed %s land-use areas.", add.size(), remove.size()));
+        if (exceeded > 0) logger.warn(String.format("Exceeded %s maxTries limit.", exceeded));
+    }
+
     private void cleanFeatures(Set<OsmFeature> features) {
         Set<OsmFeature> remove = new HashSet<>();
         int landuse = 0;
         int buildings = 0;
 
         for (OsmFeature feature : features) {
+//            /*
+//            Remove all land-use areas.
+//            */
+//            if (feature.isLanduse()) {
+//                remove.add(feature);
+//                landuse++;
+//            }
             /*
-            Remove all land-use areas.
-            */
-            if (feature.isLanduse()) {
-                remove.add(feature);
-                landuse++;
-            }
-            /*
-            Remove place types of buildings that are already in child features.
+            Remove place types of buildings or areas that are already in child features.
              */
-            else if (feature.isBuilding() && feature.getChildren() != null) {
+            if ((feature.isBuilding() || feature.isLanduse()) && feature.getChildren() != null) {
                 Set<String> childTypes = new HashSet<>();
                 for (OsmFeature child : feature.getChildren()) {
                     childTypes.addAll(child.getPlaceTypes());
@@ -138,7 +217,9 @@ public class PlacesSynthesizer {
                  */
                 if (feature.getPlaceTypes().isEmpty()) {
                     remove.add(feature);
-                    buildings++;
+
+                    if (feature.isBuilding()) buildings++;
+                    else if (feature.isLanduse()) landuse++;
                 }
             }
         }
