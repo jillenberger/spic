@@ -19,6 +19,8 @@
 package de.dbanalytics.devel.matrix2014.demo;
 
 import de.dbanalytics.devel.matrix2014.analysis.AgeIncomeCorrelation;
+import de.dbanalytics.devel.matrix2014.sim.BivariatMean;
+import de.dbanalytics.devel.matrix2014.sim.UnivariatFrequency;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;

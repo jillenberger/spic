@@ -25,7 +25,7 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
-import de.dbanalytics.spic.sim.UnivariatFrequency2;
+import de.dbanalytics.devel.matrix2014.sim.UnivariatFrequency2;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import gnu.trove.map.TDoubleDoubleMap;
 import org.apache.log4j.Logger;

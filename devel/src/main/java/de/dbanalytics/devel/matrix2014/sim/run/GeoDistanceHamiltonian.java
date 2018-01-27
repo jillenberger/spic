@@ -22,7 +22,7 @@ import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
-import de.dbanalytics.spic.sim.UnivariatFrequency;
+import de.dbanalytics.devel.matrix2014.sim.UnivariatFrequency;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import gnu.trove.list.array.TDoubleArrayList;
 import org.apache.log4j.Logger;

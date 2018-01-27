@@ -28,7 +28,7 @@ import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.processing.CopyPersonAttToLeg;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
-import de.dbanalytics.spic.sim.BivariatMean;
+import de.dbanalytics.devel.matrix2014.sim.BivariatMean;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.MarkovEngineListener;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;

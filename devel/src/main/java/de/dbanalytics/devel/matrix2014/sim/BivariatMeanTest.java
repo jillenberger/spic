@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainPerson;
