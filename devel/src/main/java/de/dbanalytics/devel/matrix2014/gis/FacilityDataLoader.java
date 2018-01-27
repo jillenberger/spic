@@ -19,7 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.gis;
 
-import de.dbanalytics.spic.gis.DataLoader;
+import de.dbanalytics.devel.matrix2014.data.DataLoader;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.Scenario;

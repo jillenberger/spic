@@ -19,7 +19,7 @@
 package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.FacilityData;
 import de.dbanalytics.devel.matrix2014.gis.FacilityDataLoader;
 import de.dbanalytics.spic.sim.*;

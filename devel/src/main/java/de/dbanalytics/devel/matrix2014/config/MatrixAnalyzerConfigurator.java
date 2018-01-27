@@ -19,6 +19,8 @@
 
 package de.dbanalytics.devel.matrix2014.config;
 
+import de.dbanalytics.devel.matrix2014.data.DataLoader;
+import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
 import de.dbanalytics.spic.analysis.FileIOContext;

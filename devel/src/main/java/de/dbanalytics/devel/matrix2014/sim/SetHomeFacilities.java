@@ -20,9 +20,9 @@
 package de.dbanalytics.devel.matrix2014.sim;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.processing.PersonsTask;
 import gnu.trove.function.TDoubleFunction;
 import gnu.trove.impl.Constants;

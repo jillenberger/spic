@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.devel.matrix2014.gis;
 
-import de.dbanalytics.spic.gis.DataLoader;
+import de.dbanalytics.devel.matrix2014.data.DataLoader;
 import org.matsim.core.config.ConfigGroup;
 
 import java.io.IOException;

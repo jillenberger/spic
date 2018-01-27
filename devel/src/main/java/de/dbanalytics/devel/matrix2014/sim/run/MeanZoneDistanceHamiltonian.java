@@ -20,10 +20,10 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.processing.CopyPersonAttToLeg;
 import de.dbanalytics.spic.processing.TaskRunner;

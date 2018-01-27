@@ -19,12 +19,12 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.analysis.ZoneMobilityRate;
+import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.analysis.TripsCounter;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import de.dbanalytics.spic.processing.RemoveLegAttribute;

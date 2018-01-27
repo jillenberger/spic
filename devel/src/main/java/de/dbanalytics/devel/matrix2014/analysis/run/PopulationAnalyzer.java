@@ -26,7 +26,7 @@ import de.dbanalytics.devel.matrix2014.sim.run.RefPopulationBuilder;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.gis.DataPool;
+import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.FacilityDataLoader;
 import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
 import de.dbanalytics.spic.processing.*;

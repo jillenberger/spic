@@ -21,12 +21,12 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.devel.matrix2014.analysis.ZoneMobilityRate;
 import de.dbanalytics.devel.matrix2014.config.ODCalibratorConfigurator;
+import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.data.ReplaceActTypes;
 import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.matrix.ODCalibrator;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.mid2008.MiDValues;

@@ -18,8 +18,8 @@
  */
 package de.dbanalytics.devel.matrix2014.sim.run;
 
+import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.*;
-import de.dbanalytics.spic.gis.*;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
 
