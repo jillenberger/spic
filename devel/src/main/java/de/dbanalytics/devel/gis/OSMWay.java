@@ -17,67 +17,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.osm;
+package de.dbanalytics.devel.gis;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author johannes
  *
  */
-public class OSMNode {
+public class OSMWay {
 
 	private String id;
 	
-	private double longitude;
-	
-	private double latitude;
+	private List<OSMNode> nodes;
 	
 	private Map<String, String> tags;
 	
-	private boolean nodeOfWay = false; //TODO can a node be associated to multiple ways?
-	
-	public OSMNode(String id) {
+	public OSMWay(String id) {
 		this.id = id;
+		this.nodes = new ArrayList<OSMNode>();
+		this.tags = new HashMap<String, String>();
 	}
-
+	
 	public String getId() {
 		return id;
 	}
 	
-	public double getLongitude() {
-		return longitude;
+	public void addNode(OSMNode node) {
+		nodes.add(node);
 	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+	
+	public List<OSMNode> getNodes() {
+		return nodes;
 	}
-
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
+	
 	public void addTag(String key, String value) {
-		if(tags == null)
-			tags = new HashMap<String, String>();
-		
 		tags.put(key, value);
 	}
 	
 	public Map<String, String> tags() {
 		return tags;
-	}
-	
-	public void setNodeOfWay(boolean flag) {
-		nodeOfWay = flag;
-	}
-	
-	public boolean isNodeOfWay() {
-		return nodeOfWay;
 	}
 }

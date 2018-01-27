@@ -33,5 +33,4 @@ public interface SpatialIndex<T extends Feature> {
 
     List<T> queryInside(Geometry geometry);
 
-//    List<T> queryInside(Coordinate center, double radius);
 }

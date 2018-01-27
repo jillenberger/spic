@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.osm;
+package de.dbanalytics.devel.gis;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.osm;
+package de.dbanalytics.devel.gis;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
