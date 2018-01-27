@@ -16,10 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.devel.matrix2014.gis.FacilityData;
+import de.dbanalytics.spic.sim.ValueGenerator;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.CachedSegment;
 import de.dbanalytics.spic.sim.data.Converters;

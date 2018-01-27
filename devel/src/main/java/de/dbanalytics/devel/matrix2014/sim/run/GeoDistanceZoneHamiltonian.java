@@ -19,13 +19,9 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import de.dbanalytics.devel.matrix2014.gis.Zone;
-import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
-import de.dbanalytics.devel.matrix2014.gis.ZoneData;
-import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
+import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.sim.data.*;

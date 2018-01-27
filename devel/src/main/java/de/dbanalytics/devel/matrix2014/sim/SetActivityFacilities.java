@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.devel.matrix2014.gis.FacilityData;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import org.matsim.api.core.v01.Id;
 import org.matsim.contrib.common.util.XORShiftRandom;

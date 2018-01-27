@@ -21,10 +21,9 @@ package de.dbanalytics.devel.matrix2014.data;
 
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.gis.FacilityData;
-import de.dbanalytics.spic.gis.FacilityUtils;
+import de.dbanalytics.devel.matrix2014.gis.FacilityData;
+import de.dbanalytics.devel.matrix2014.gis.FacilityUtils;
 import de.dbanalytics.spic.processing.EpisodeTask;
-import de.dbanalytics.spic.processing.RouteLeg;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;

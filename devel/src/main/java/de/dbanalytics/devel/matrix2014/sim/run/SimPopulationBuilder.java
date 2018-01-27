@@ -19,10 +19,7 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.analysis.ZoneMobilityRate;
-import de.dbanalytics.devel.matrix2014.gis.TransferZoneAttribute;
-import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
-import de.dbanalytics.devel.matrix2014.gis.ZoneData;
-import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
+import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.analysis.TripsCounter;
 import de.dbanalytics.spic.data.*;
@@ -32,7 +29,7 @@ import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import de.dbanalytics.spic.processing.RemoveLegAttribute;
 import de.dbanalytics.spic.processing.TaskRunner;
-import de.dbanalytics.spic.sim.SetActivityFacilities;
+import de.dbanalytics.devel.matrix2014.sim.SetActivityFacilities;
 import de.dbanalytics.devel.matrix2014.sim.SetHomeFacilities;
 import de.dbanalytics.spic.util.Executor;
 import org.apache.log4j.Logger;

@@ -20,10 +20,10 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.gis.DataPool;
-import de.dbanalytics.spic.gis.FacilityData;
-import de.dbanalytics.spic.gis.FacilityDataLoader;
+import de.dbanalytics.devel.matrix2014.gis.FacilityData;
+import de.dbanalytics.devel.matrix2014.gis.FacilityDataLoader;
 import de.dbanalytics.spic.sim.*;
-import de.dbanalytics.spic.sim.data.ActivityFacilityConverter;
+import de.dbanalytics.devel.matrix2014.data.ActivityFacilityConverter;
 import de.dbanalytics.spic.sim.data.Converters;
 
 import java.util.ArrayList;

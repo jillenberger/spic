@@ -16,9 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.spic.sim.data;
+package de.dbanalytics.devel.matrix2014.data;
 
-import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.devel.matrix2014.gis.FacilityData;
+import de.dbanalytics.spic.sim.data.Converter;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacility;
 

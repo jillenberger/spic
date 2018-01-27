@@ -19,6 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.matrix.io;
 
+import de.dbanalytics.devel.matrix2014.gis.FacilityUtils;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.gis.*;

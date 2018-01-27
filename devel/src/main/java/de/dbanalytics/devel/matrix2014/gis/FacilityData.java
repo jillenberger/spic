@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.gis;
+package de.dbanalytics.devel.matrix2014.gis;
 
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.Coord;

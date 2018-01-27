@@ -17,7 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.gis;
+package de.dbanalytics.devel.matrix2014.gis;
+
+import de.dbanalytics.spic.gis.DataLoader;
+import de.dbanalytics.spic.gis.DataPool;
 
 /**
  * @author johannes

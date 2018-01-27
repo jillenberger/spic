@@ -17,11 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.processing;
+package de.dbanalytics.devel.matrix2014.data;
 
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.gis.FacilityData;
+import de.dbanalytics.devel.matrix2014.gis.FacilityData;
+import de.dbanalytics.spic.processing.SegmentTask;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;

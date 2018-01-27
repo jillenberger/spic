@@ -21,6 +21,8 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import de.dbanalytics.devel.matrix2014.data.PersonAttributeUtils;
+import de.dbanalytics.devel.matrix2014.gis.FacilityData;
+import de.dbanalytics.devel.matrix2014.gis.FacilityDataLoader;
 import de.dbanalytics.devel.matrix2014.gis.ZoneData;
 import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
 import de.dbanalytics.spic.data.CommonKeys;

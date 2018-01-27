@@ -17,9 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.gis;
+package de.dbanalytics.devel.matrix2014.gis;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.util.Executor;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
