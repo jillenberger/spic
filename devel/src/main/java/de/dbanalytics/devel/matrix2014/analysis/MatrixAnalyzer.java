@@ -23,7 +23,7 @@ import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.ActivityLocationLayer;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
 import de.dbanalytics.spic.matrix.*;
 import gnu.trove.list.array.TDoubleArrayList;
 import org.apache.log4j.Logger;

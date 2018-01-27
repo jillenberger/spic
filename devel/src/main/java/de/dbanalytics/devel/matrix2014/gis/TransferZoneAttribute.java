@@ -20,9 +20,6 @@
 package de.dbanalytics.devel.matrix2014.gis;
 
 import com.vividsolutions.jts.index.strtree.STRtree;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import org.apache.log4j.Logger;
 

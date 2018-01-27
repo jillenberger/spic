@@ -21,10 +21,7 @@ package de.dbanalytics.devel.matrix2014.matrix.io;
 
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.gis.FacilityUtils;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.matrix.MatrixOperations;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
@@ -55,7 +52,7 @@ public class Matrix2Episodes {
 
     private static final String ZONES_FILE_PARAM = "zonesFile";
 
-    private static final String ZONE_KEY_PARAM = "zoneKey";
+//    private static final String ZONE_KEY_PARAM = "zoneKey";
 
     private static final String FACILITY_FILE_PARAM = "facilityFile";
 
@@ -78,11 +75,9 @@ public class Matrix2Episodes {
         Load zones.
          */
         logger.info("Loading zones...");
-        ZoneCollection zoneCollection = ZoneGeoJsonIO.readFromGeoJSON(
-                group.getValue(ZONES_FILE_PARAM),
-                group.getValue(ZONE_KEY_PARAM),
-                null
-        );
+        Set<Feature> features = new FeaturesIO().read(group.getValue(ZONES_FILE_PARAM));
+        ZoneIndex zoneCollection = new ZoneIndex(features);
+
         /*
         Load facilities.
          */
@@ -124,9 +119,9 @@ public class Matrix2Episodes {
 
     private static final Logger logger = Logger.getLogger(Matrix2Episodes.class);
 
-    private ZoneCollection zoneCollection;
+    private ZoneIndex zoneCollection;
 
-    private Map<Zone, List<ActivityFacility>> zoneFacilities;
+    private Map<Feature, List<ActivityFacility>> zoneFacilities;
 
     private Random random;
 
@@ -134,7 +129,7 @@ public class Matrix2Episodes {
 
     private double threshold;
 
-    public  Matrix2Episodes(ZoneCollection zoneCollection, ActivityFacilities facilities) {
+    public  Matrix2Episodes(ZoneIndex zoneCollection, ActivityFacilities facilities) {
         setRandom(new XORShiftRandom());
         setFactor(1.0);
         setThreshold(0);
@@ -171,7 +166,7 @@ public class Matrix2Episodes {
         ProgressLogger.init(keys.size(), 2, 10);
 
         for(String i : keys) {
-            Zone z_i = zoneCollection.get(i);
+            Feature z_i = zoneCollection.get(i);
             List<ActivityFacility> facs_i = zoneFacilities.get(z_i);
 
             if(facs_i == null || facs_i.isEmpty()) {
@@ -180,7 +175,7 @@ public class Matrix2Episodes {
             } else {
                 if (z_i != null) {
                     for (String j : keys) {
-                        Zone z_j = zoneCollection.get(j);
+                        Feature z_j = zoneCollection.get(j);
                         List<ActivityFacility> facs_j = zoneFacilities.get(z_j);
 
                         if(facs_j == null || facs_j.isEmpty()) {

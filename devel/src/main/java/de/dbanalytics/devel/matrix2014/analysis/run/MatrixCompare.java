@@ -21,8 +21,8 @@ package de.dbanalytics.devel.matrix2014.analysis.run;
 
 import de.dbanalytics.devel.matrix2014.analysis.MatrixIntraVolumeShareCompare;
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
+import de.dbanalytics.devel.matrix2014.gis.ZoneGeoJsonIO;
 import de.dbanalytics.spic.matrix.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;

@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.spic.gis;
+package de.dbanalytics.devel.matrix2014.gis;
 
+import de.dbanalytics.spic.gis.DataLoader;
 import org.matsim.core.config.ConfigGroup;
 
 import java.io.IOException;

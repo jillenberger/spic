@@ -21,8 +21,8 @@ package de.dbanalytics.spic.matrix;
 
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TDoubleDoubleMap;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
@@ -45,7 +45,7 @@ public class GeoDistanceTask implements AnalyzerTask<NumericMatrix> {
 
     private static final Logger logger = Logger.getLogger(GeoDistanceTask.class);
 
-    private final ZoneCollection zones;
+    private final ZoneIndex zones;
 
     private final DistanceCalculator distanceCalculator;
 
@@ -53,11 +53,11 @@ public class GeoDistanceTask implements AnalyzerTask<NumericMatrix> {
 
     private final FileIOContext ioContext;
 
-    public GeoDistanceTask(ZoneCollection zones, FileIOContext ioContext) {
+    public GeoDistanceTask(ZoneIndex zones, FileIOContext ioContext) {
         this(zones, ioContext, new StratifiedDiscretizerBuilder(50, 50), new OrthodromicDistanceCalculator());
     }
 
-    public GeoDistanceTask(ZoneCollection zones, FileIOContext ioContext, DiscretizerBuilder discretizerBuilder, DistanceCalculator calculator) {
+    public GeoDistanceTask(ZoneIndex zones, FileIOContext ioContext, DiscretizerBuilder discretizerBuilder, DistanceCalculator calculator) {
         this.zones = zones;
         this.ioContext = ioContext;
         this.discretizerBuilder = discretizerBuilder;
@@ -106,8 +106,8 @@ public class GeoDistanceTask implements AnalyzerTask<NumericMatrix> {
         Double d = distanceMatrix.get(i, j);
 
         if(d == null) {
-            Zone z_i = zones.get(i);
-            Zone z_j = zones.get(j);
+            Feature z_i = zones.get(i);
+            Feature z_j = zones.get(j);
 
             if(z_i != null && z_j != null) {
                 Point p_i = z_i.getGeometry().getCentroid();

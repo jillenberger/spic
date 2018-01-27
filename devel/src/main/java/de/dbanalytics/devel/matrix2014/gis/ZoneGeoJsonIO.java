@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.gis;
+package de.dbanalytics.devel.matrix2014.gis;
 
 import org.wololo.geojson.Feature;
 import org.wololo.geojson.*;

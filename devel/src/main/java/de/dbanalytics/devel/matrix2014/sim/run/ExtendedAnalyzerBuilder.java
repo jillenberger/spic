@@ -19,6 +19,9 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.config.MatrixAnalyzerConfigurator;
+import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
+import de.dbanalytics.devel.matrix2014.gis.ZoneData;
+import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
 import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
 import de.dbanalytics.spic.analysis.AnalyzerTaskGroup;
 import de.dbanalytics.spic.analysis.ConcurrentAnalyzerTask;

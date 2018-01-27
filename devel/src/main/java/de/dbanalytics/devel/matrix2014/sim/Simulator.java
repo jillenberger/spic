@@ -22,9 +22,7 @@ package de.dbanalytics.devel.matrix2014.sim;
 import de.dbanalytics.devel.matrix2014.analysis.ZoneMobilityRate;
 import de.dbanalytics.devel.matrix2014.config.ODCalibratorConfigurator;
 import de.dbanalytics.devel.matrix2014.data.ReplaceActTypes;
-import de.dbanalytics.devel.matrix2014.gis.TransferZoneAttribute;
-import de.dbanalytics.devel.matrix2014.gis.ValidateFacilities;
-import de.dbanalytics.devel.matrix2014.gis.ZoneSetLAU2Class;
+import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
@@ -215,10 +213,6 @@ public class Simulator {
         dataPool.register(new FacilityDataLoader(config.getParam(MODULE_NAME, "facilities"), null, random), FacilityDataLoader.KEY);
         dataPool.register(new ZoneDataLoader(config.getModule(MODULE_NAME)), ZoneDataLoader.KEY);
 
-        ValidateFacilities.validate(dataPool, "modena");
-        ValidateFacilities.validate(dataPool, "lau2");
-        ValidateFacilities.validate(dataPool, "nuts3");
-        ValidateFacilities.validate(dataPool, "tomtom");
 
         ZoneCollection lau2Zones = ((ZoneData) dataPool.get(ZoneDataLoader.KEY)).getLayer("lau2");
         new ZoneSetLAU2Class().apply(lau2Zones);

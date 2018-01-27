@@ -20,8 +20,7 @@
 package de.dbanalytics.devel.matrix2014.matrix.postprocess;
 
 import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TObjectDoubleMap;
 import org.apache.commons.lang3.tuple.Pair;
@@ -67,7 +66,8 @@ public class SplitDays {
         Load zones...
          */
         logger.info("Loading zones...");
-        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zoneFile, "NO", "modena");
+//        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zoneFile, "NO", "modena");
+        ZoneIndex zones = null;
         /*
         Create dimension calculator.
          */

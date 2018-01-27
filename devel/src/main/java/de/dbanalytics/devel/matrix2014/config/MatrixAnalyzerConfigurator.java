@@ -19,6 +19,9 @@
 
 package de.dbanalytics.devel.matrix2014.config;
 
+import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
+import de.dbanalytics.devel.matrix2014.gis.ZoneData;
+import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
 import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.HistogramWriter;

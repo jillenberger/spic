@@ -38,7 +38,7 @@ import java.util.*;
  */
 public class FacilityUtils {
 
-    public static Map<Zone, List<ActivityFacility>> mapFacilities2Zones(ZoneCollection zoneCollection, ActivityFacilities facilities) {
+    public static Map<Feature, List<ActivityFacility>> mapFacilities2Zones(ZoneIndex zoneCollection, ActivityFacilities facilities) {
         int nThreads = Executor.getFreePoolSize();
         /*
         Split activities into separate lists.
@@ -60,9 +60,9 @@ public class FacilityUtils {
         /*
         Merge results.
          */
-        Set<Zone> zones = zoneCollection.getZones();
-        Map<Zone, List<ActivityFacility>> map = new HashMap<>();
-        for (Zone zone : zones) {
+        Set<Feature> zones = zoneCollection.get();
+        Map<Feature, List<ActivityFacility>> map = new HashMap<>();
+        for (Feature zone : zones) {
             List<ActivityFacility> mergeList = new ArrayList<>();
             for (int i = 0; i < nThreads; i++) {
                 List<ActivityFacility> list = threads.get(i).getMap().get(zone);
@@ -78,16 +78,16 @@ public class FacilityUtils {
 
         private List<? extends ActivityFacility> facilities;
 
-        private ZoneCollection zoneCollection;
+        private ZoneIndex zoneCollection;
 
-        private Map<Zone, List<ActivityFacility>> map;
+        private Map<Feature, List<ActivityFacility>> map;
 
-        public ThreadMapFacilities(List<? extends ActivityFacility> facilities, ZoneCollection zoneCollection) {
+        public ThreadMapFacilities(List<? extends ActivityFacility> facilities, ZoneIndex zoneCollection) {
             this.facilities = facilities;
             this.zoneCollection = zoneCollection;
         }
 
-        public Map<Zone, List<ActivityFacility>> getMap() {
+        public Map<Feature, List<ActivityFacility>> getMap() {
             return map;
         }
 
@@ -97,7 +97,7 @@ public class FacilityUtils {
 
             for (ActivityFacility f : facilities) {
                 Coordinate c = new Coordinate(f.getCoord().getX(), f.getCoord().getY());
-                Zone zone = zoneCollection.get(c);
+                Feature zone = zoneCollection.get(c);
                 if (zone != null) {
                     List<ActivityFacility> list = map.get(zone);
                     if (list == null) {

@@ -21,6 +21,8 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import de.dbanalytics.devel.matrix2014.data.PersonAttributeUtils;
+import de.dbanalytics.devel.matrix2014.gis.ZoneData;
+import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.sim.ValueGenerator;
@@ -50,9 +52,9 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
 
     private final FacilityData facilityData;
 
-    private final ZoneCollection zones;
+    private final ZoneIndex zones;
 
-    private final Map<String, Map<Zone, List<ActivityFacility>>> typeMap;
+    private final Map<String, Map<Feature, List<ActivityFacility>>> typeMap;
 
     private final List<ActivityFacility> allFacilities;
     private final double threshold = 50000;
@@ -64,7 +66,7 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
         facilityData = (FacilityData) dataPool.get(FacilityDataLoader.KEY);
         facilities = facilityData.getAll();
         ZoneData zoneData = (ZoneData) dataPool.get(ZoneDataLoader.KEY);
-        zones = zoneData.getLayer(layer);
+        zones = null; //zoneData.getLayer(layer);
         this.random = random;
         typeMap = new HashMap<>();
 
@@ -81,22 +83,22 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
         this.localProba = proba;
     }
 
-    private Map<Zone, List<ActivityFacility>> buildSegments(String type) {
+    private Map<Feature, List<ActivityFacility>> buildSegments(String type) {
         logger.debug("Initializing facility segments...");
 
         final QuadTree<ActivityFacility> spatialIndex = facilityData.getQuadTree(type);
-        final Map<Zone, List<ActivityFacility>> map = new ConcurrentHashMap<>();
+        final Map<Feature, List<ActivityFacility>> map = new ConcurrentHashMap<>();
 
         int n = Executor.getFreePoolSize();
         n = Math.max(n, 1);
-        List<Zone>[] segments = org.matsim.contrib.common.collections.CollectionUtils.split(zones.getZones(), n);
+        List<Feature>[] segments = org.matsim.contrib.common.collections.CollectionUtils.split(zones.get(), n);
 
         List<Runnable> threads = new ArrayList<>();
         for(int i = 0; i < n; i++) {
             threads.add(new RunThread(segments[i], spatialIndex, map, threshold));
         }
 
-        ProgressLogger.init(zones.getZones().size(), 2, 10);
+        ProgressLogger.init(zones.get().size(), 2, 10);
         Executor.submitAndWait(threads);
         ProgressLogger.terminate();
 
@@ -148,14 +150,14 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
         } else {
             String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
 
-            Map<Zone, List<ActivityFacility>> zoneMap = typeMap.get(type);
+            Map<Feature, List<ActivityFacility>> zoneMap = typeMap.get(type);
             if (zoneMap == null) {
                 zoneMap = buildSegments(type);
                 typeMap.put(type, zoneMap);
             }
 
 
-            Zone zone = zones.get(new Coordinate(home.getCoord().getX(), home.getCoord().getY()));
+            Feature zone = zones.get(new Coordinate(home.getCoord().getX(), home.getCoord().getY()));
             /*
             Zone may be null if zones used for distributing home locations is different.
             Fallback to random facility.
@@ -168,15 +170,15 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
 
     private static class RunThread implements Runnable {
 
-        private final List<Zone> zones;
+        private final List<Feature> zones;
 
         private final QuadTree<ActivityFacility> spatialIndex;
 
-        private final Map<Zone, List<ActivityFacility>> map;
+        private final Map<Feature, List<ActivityFacility>> map;
 
         private final double threshold;
 
-        public RunThread(List<Zone> zones, QuadTree<ActivityFacility> spatialIndex, Map<Zone, List<ActivityFacility>> map, double threshold) {
+        public RunThread(List<Feature> zones, QuadTree<ActivityFacility> spatialIndex, Map<Feature, List<ActivityFacility>> map, double threshold) {
             this.zones = zones;
             this.spatialIndex = spatialIndex;
             this.map = map;
@@ -185,7 +187,7 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
 
         @Override
         public void run() {
-            for (Zone zone : zones) {
+            for (Feature zone : zones) {
                 double x = zone.getGeometry().getCentroid().getX();
                 double y = zone.getGeometry().getCentroid().getY();
                 List<ActivityFacility> local = new ArrayList<>(spatialIndex.getDisk(x, y, threshold));

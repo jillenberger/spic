@@ -18,9 +18,9 @@
  */
 package de.dbanalytics.devel.matrix2014.matrix;
 
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.devel.matrix2014.gis.Zone;
+import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
+import de.dbanalytics.devel.matrix2014.gis.ZoneGeoJsonIO;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;

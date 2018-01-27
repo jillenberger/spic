@@ -19,8 +19,8 @@
 
 package de.dbanalytics.devel.matrix2014.matrix.io;
 
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.matrix.Matrix;
 import de.dbanalytics.spic.matrix.ODPredicate;
 import org.apache.log4j.Logger;
@@ -32,13 +32,13 @@ public class ZoneAttributePredicate implements ODPredicate<String, Double> {
 
     private static final Logger logger = Logger.getLogger(ZoneAttributePredicate.class);
 
-    private final ZoneCollection zones;
+    private final ZoneIndex zones;
 
     private final String key;
 
     private final String value;
 
-    public ZoneAttributePredicate(String key, String value, ZoneCollection zones) {
+    public ZoneAttributePredicate(String key, String value, ZoneIndex zones) {
         this.key = key;
         this.value = value;
         this.zones = zones;
@@ -46,8 +46,8 @@ public class ZoneAttributePredicate implements ODPredicate<String, Double> {
 
     @Override
     public boolean test(String row, String col, Matrix<String, Double> matrix) {
-        Zone zone_i = zones.get(row);
-        Zone zone_j = zones.get(col);
+        Feature zone_i = zones.get(row);
+        Feature zone_j = zones.get(col);
 
         if (zone_i != null && zone_j != null) {
             return (value.equals(zone_i.getAttribute(key)) && value.equals(zone_j.getAttribute(key)));

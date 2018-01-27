@@ -19,9 +19,8 @@
 
 package de.dbanalytics.devel.matrix2014.matrix.io;
 
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.gis.Feature;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.matrix.MatrixOperations;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
@@ -47,12 +46,13 @@ public class PrepareITP {
         VisumOMatrixReader.read(m, inFile);
 
         logger.info("Loading zones...");
-        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zonesFile, "NO", null);
+//        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zonesFile, "NO", null);
+        ZoneIndex zones = null;
 
         logger.info("Checking zones...");
         Set<String> keys = m.keys();
         for(String key : keys) {
-            Zone zone = zones.get(key);
+            Feature zone = zones.get(key);
             if (zone == null) {
                 logger.warn(String.format("Zone %s not found.", key));
             }

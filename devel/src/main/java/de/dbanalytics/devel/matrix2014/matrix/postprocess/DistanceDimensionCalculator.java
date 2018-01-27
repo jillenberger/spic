@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.matrix.postprocess;
 
 import com.vividsolutions.jts.geom.Point;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import org.matsim.contrib.common.gis.DistanceCalculator;
 import org.matsim.contrib.common.stats.Discretizer;
@@ -38,9 +38,9 @@ public class DistanceDimensionCalculator implements DimensionCalculator {
 
     private DistanceCalculator calculator;
 
-    private ZoneCollection zones;
+    private ZoneIndex zones;
 
-    public DistanceDimensionCalculator(ZoneCollection zones, DistanceCalculator calculator, Discretizer discretizer) {
+    public DistanceDimensionCalculator(ZoneIndex zones, DistanceCalculator calculator, Discretizer discretizer) {
         this.zones = zones;
         this.calculator = calculator;
         this.discretizer = discretizer;

@@ -16,27 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package de.dbanalytics.devel.matrix2014.gis;
 
-package de.dbanalytics.devel.matrix2014.sim.run;
-
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * @author johannes
+ * @author jillenberger
  */
-public class ZoneFacilityDensity {
+public class ZoneData {
 
-    public static final String FACILITY_DENSITY_KEY = "facility_density";
+    public static final String POPULATION_KEY = "population";
 
-    public void apply(ZoneCollection zones) {
-        for(Zone zone : zones.getZones()) {
-            String val = zone.getAttribute(ZoneFacilityCount.FACILITY_COUNT_KEY);
-            if(val != null) {
-                int count = Integer.parseInt(val);
-                double rho = count / zone.getGeometry().getArea();
-                zone.setAttribute(FACILITY_DENSITY_KEY, String.valueOf(rho));
-            }
-        }
+    public static final String NAME_KEY = "name";
+
+    private final Map<String, ZoneCollection> layers;
+
+    public ZoneData() {
+        layers = new HashMap<>();
+    }
+
+    public ZoneCollection getLayer(String name) {
+        return layers.get(name);
+    }
+
+    ZoneCollection addLayer(ZoneCollection zones, String name) {
+        return layers.put(name, zones);
     }
 }

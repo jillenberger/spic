@@ -17,9 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.dbanalytics.spic.sim;
+package de.dbanalytics.devel.matrix2014.sim;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import de.dbanalytics.devel.matrix2014.gis.Zone;
+import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
+import de.dbanalytics.devel.matrix2014.gis.ZoneData;
+import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.processing.PersonsTask;

@@ -19,9 +19,6 @@
 
 package de.dbanalytics.devel.matrix2014.gis;
 
-import de.dbanalytics.spic.gis.Zone;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneData;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.FixedBordersDiscretizer;

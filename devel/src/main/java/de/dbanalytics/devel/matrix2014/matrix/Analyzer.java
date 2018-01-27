@@ -21,8 +21,7 @@ package de.dbanalytics.devel.matrix2014.matrix;
 
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.StratifiedDiscretizerBuilder;
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.matrix.GeoDistanceTask;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
@@ -41,7 +40,8 @@ public class Analyzer {
         String outDir = "/Users/johannes/gsv/fpd/telefonica/032016/analysis";
 
         NumericMatrix m = NumericMatrixIO.read(matrixFile);
-        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zonesFile, "plz", "plz5");
+//        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zonesFile, "plz", "plz5");
+        ZoneIndex zones = null;
         FileIOContext ioContext = new FileIOContext(outDir);
 
         GeoDistanceTask task = new GeoDistanceTask(

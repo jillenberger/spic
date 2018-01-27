@@ -19,8 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.matrix.io;
 
-import de.dbanalytics.spic.gis.ZoneCollection;
-import de.dbanalytics.spic.gis.ZoneGeoJsonIO;
+import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.matrix.MatrixOperations;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
@@ -46,7 +45,8 @@ public class PrepareTomTom {
         VisumOMatrixReader.read(m, inFile);
 
         logger.info("Loading zones...");
-        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zonesFile, primaryKey, null);
+//        ZoneCollection zones = ZoneGeoJsonIO.readFromGeoJSON(zonesFile, primaryKey, null);
+        ZoneIndex zones = null;
 
         logger.info("Extracting DE matrix...");
         ZoneAttributePredicate p = new ZoneAttributePredicate("NUTS0_CODE", "DE", zones);

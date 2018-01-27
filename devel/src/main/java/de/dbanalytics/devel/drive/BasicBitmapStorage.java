@@ -16,31 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.spic.gis;
 
-import java.util.HashMap;
-import java.util.Map;
+package de.dbanalytics.devel.drive;
 
 /**
  * @author jillenberger
  */
-public class ZoneData {
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
-    public static final String POPULATION_KEY = "population";
+public class BasicBitmapStorage {
 
-    public static final String NAME_KEY = "name";
+    private final BufferedImage image;
 
-    private final Map<String, ZoneCollection> layers;
-
-    public ZoneData() {
-        layers = new HashMap<>();
+    public BasicBitmapStorage(int width, int height) {
+        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     }
 
-    public ZoneCollection getLayer(String name) {
-        return layers.get(name);
+    public void fill(Color c) {
+        Graphics g = image.getGraphics();
+        g.setColor(c);
+        g.fillRect(0, 0, image.getWidth(), image.getHeight());
     }
 
-    ZoneCollection addLayer(ZoneCollection zones, String name) {
-        return layers.put(name, zones);
+    public void setPixel(int x, int y, Color c) {
+        image.setRGB(x, y, c.getRGB());
+    }
+
+    public Color getPixel(int x, int y) {
+        return new Color(image.getRGB(x, y));
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 }
