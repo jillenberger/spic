@@ -148,7 +148,7 @@ public class AgeIncomeDemo {
         Setup engine listeners...
          */
         logger.info("Setting up engine listeners...");
-        MarkovEngineListenerComposite listeners = new MarkovEngineListenerComposite();
+        McmcSimulationObserverComposite listeners = new McmcSimulationObserverComposite();
 
         listeners.addComponent(new AnalyzerListener(task, ioContext, dumpInterval));
         listeners.addComponent(new HamiltonianLogger(hamiltonian, logInterval, "SystemTemperature"));
@@ -160,7 +160,7 @@ public class AgeIncomeDemo {
         Setup markov engine...
          */
         logger.info("Starting sampling...");
-        MarkovEngine engine = new MarkovEngine(simPersons, hamiltonian, mutators, random);
+        McmcSimulation engine = new McmcSimulation(simPersons, hamiltonian, mutators, random);
         engine.setListener(listeners);
 
         engine.run(iterations+1);

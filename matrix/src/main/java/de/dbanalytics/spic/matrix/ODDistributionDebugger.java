@@ -1,7 +1,7 @@
 package de.dbanalytics.spic.matrix;
 
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.McmcSimulationObserver;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * @author johannes
  */
-public class ODDistributionDebugger implements MarkovEngineListener {
+public class ODDistributionDebugger implements McmcSimulationObserver {
 
     private final String outputDirectory;
 

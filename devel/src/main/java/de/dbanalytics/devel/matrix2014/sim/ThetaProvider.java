@@ -21,7 +21,7 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.sim.Hamiltonian;
-import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.McmcSimulationObserver;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import org.apache.log4j.Logger;
 
@@ -30,7 +30,7 @@ import java.util.Collection;
 /**
  * @author johannes
  */
-public class ThetaProvider implements MarkovEngineListener{
+public class ThetaProvider implements McmcSimulationObserver {
 
     private static final Logger logger = Logger.getLogger(ThetaProvider.class);
 

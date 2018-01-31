@@ -29,10 +29,10 @@ import java.util.Collection;
  * @author johannes
  *
  */
-public class MarkovEngineListenerComposite extends Composite<MarkovEngineListener> implements MarkovEngineListener {
+public class McmcSimulationObserverComposite extends Composite<McmcSimulationObserver> implements McmcSimulationObserver {
 
 	@Override
 	public void afterStep(Collection<CachedPerson> population, Collection<? extends Attributable> mutations, boolean accepted) {
-		for(MarkovEngineListener listener : components) listener.afterStep(population, mutations, accepted);
+		for(McmcSimulationObserver listener : components) listener.afterStep(population, mutations, accepted);
 	}
 }

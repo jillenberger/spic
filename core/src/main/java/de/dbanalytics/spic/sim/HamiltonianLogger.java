@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author johannes
  */
-public class HamiltonianLogger implements MarkovEngineListener {
+public class HamiltonianLogger implements McmcSimulationObserver {
 
     private static final Logger logger = Logger.getLogger(HamiltonianLogger.class);
 

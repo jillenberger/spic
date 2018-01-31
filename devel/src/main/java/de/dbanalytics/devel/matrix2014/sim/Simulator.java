@@ -109,7 +109,7 @@ public class Simulator {
 		/*
 		Setup hamiltonian
 		 */
-        MarkovEngineListenerComposite engineListeners = new MarkovEngineListenerComposite();
+        McmcSimulationObserverComposite engineListeners = new McmcSimulationObserverComposite();
         final HamiltonianComposite hamiltonian = new HamiltonianComposite();
 //        final MutableHamiltonianComposite hamiltonian = new MutableHamiltonianComposite();
         TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.PERSON_WEIGHT), refPersons);
@@ -165,7 +165,7 @@ public class Simulator {
 		/*
 		Setup the sampler.
 		 */
-        MarkovEngine sampler = new MarkovEngine(simPersons, hamiltonian, mutator, random);
+        McmcSimulation sampler = new McmcSimulation(simPersons, hamiltonian, mutator, random);
 
 
 

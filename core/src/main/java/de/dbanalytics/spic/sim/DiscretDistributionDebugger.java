@@ -32,7 +32,7 @@ import java.util.Locale;
 /**
  * @author johannes
  */
-public class DiscretDistributionDebugger implements MarkovEngineListener {
+public class DiscretDistributionDebugger implements McmcSimulationObserver {
 
     private final String outputDirectory;
 

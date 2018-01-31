@@ -28,7 +28,7 @@ import java.util.Collection;
 /**
  * @author johannes
  */
-public class TransitionLogger implements MarkovEngineListener {
+public class TransitionLogger implements McmcSimulationObserver {
 
     private static final Logger logger = Logger.getLogger(TransitionLogger.class);
 

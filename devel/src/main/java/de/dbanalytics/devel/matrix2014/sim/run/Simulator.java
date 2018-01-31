@@ -58,7 +58,7 @@ public class Simulator {
 
     private HamiltonianComposite hamiltonian;
 
-    private MarkovEngineListenerComposite engineListeners;
+    private McmcSimulationObserverComposite engineListeners;
 
     private Set<? extends Person> refPersons;
 
@@ -82,7 +82,7 @@ public class Simulator {
 
         long iterations = (long) Double.parseDouble(config.getParam(Simulator.MODULE_NAME, "iterations"));
 
-        MarkovEngine engine = new Simulator().build(config);
+        McmcSimulation engine = new Simulator().build(config);
         logger.info("Start sampling...");
         engine.run(iterations);
         logger.info("End sampling.");
@@ -102,7 +102,7 @@ public class Simulator {
         return hamiltonian;
     }
 
-    MarkovEngineListenerComposite getEngineListeners() {
+    McmcSimulationObserverComposite getEngineListeners() {
         return engineListeners;
     }
 
@@ -146,14 +146,14 @@ public class Simulator {
         return random;
     }
 
-    public MarkovEngine build(Config config) {
+    public McmcSimulation build(Config config) {
         ConfigGroup configGroup = config.getModule(MODULE_NAME);
         /*
         Initialize composites...
          */
         hamiltonian = new HamiltonianComposite();
         analyzerTasks = new AnalyzerTaskComposite<>();
-        engineListeners = new MarkovEngineListenerComposite();
+        engineListeners = new McmcSimulationObserverComposite();
         attributeListeners = new HashMap<>();
         /*
         Load parameters...
@@ -243,7 +243,7 @@ public class Simulator {
         /*
         Create the markov engine...
          */
-        MarkovEngine engine = new MarkovEngine(simPersons, hamiltonian, mutator, random);
+        McmcSimulation engine = new McmcSimulation(simPersons, hamiltonian, mutator, random);
         engine.setListener(engineListeners);
 
         return engine;

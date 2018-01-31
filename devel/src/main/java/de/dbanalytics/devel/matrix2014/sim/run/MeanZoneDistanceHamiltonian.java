@@ -30,7 +30,7 @@ import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.devel.matrix2014.sim.BivariatMean;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
-import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.McmcSimulationObserver;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import de.dbanalytics.spic.sim.data.Converters;
@@ -228,7 +228,7 @@ public class MeanZoneDistanceHamiltonian {
         return legs;
     }
 
-    private static class ErrorStatsWriter implements MarkovEngineListener {
+    private static class ErrorStatsWriter implements McmcSimulationObserver {
 
         private final String outputDir;
         private final BivariatMean hamiltonian;

@@ -54,7 +54,7 @@ public class LegDistributionTermBuilder {
 
     private double thetaThreshold = 0.005;
 
-    private MarkovEngineListenerComposite engineListeners;
+    private McmcSimulationObserverComposite engineListeners;
 
     private FileIOContext ioContext;
 
@@ -122,7 +122,7 @@ public class LegDistributionTermBuilder {
         return this;
     }
 
-    public LegDistributionTermBuilder engineListeners(MarkovEngineListenerComposite listeners) {
+    public LegDistributionTermBuilder engineListeners(McmcSimulationObserverComposite listeners) {
         this.engineListeners = listeners;
         return this;
     }

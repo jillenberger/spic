@@ -23,7 +23,7 @@ import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.McmcSimulationObserver;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import org.apache.log4j.Logger;
 
@@ -34,7 +34,7 @@ import java.util.Set;
 /**
  * @author johannes
  */
-public class MatrixSampler implements MatrixBuilder, MarkovEngineListener {
+public class MatrixSampler implements MatrixBuilder, McmcSimulationObserver {
 
     private static final Logger logger = Logger.getLogger(MatrixSampler.class);
 

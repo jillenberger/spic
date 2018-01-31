@@ -29,7 +29,7 @@ import de.dbanalytics.spic.matrix.DefaultMatrixBuilder;
 import de.dbanalytics.spic.matrix.MatrixBuilder;
 import de.dbanalytics.spic.matrix.MatrixSampler;
 import de.dbanalytics.spic.matrix.NumericMatrix;
-import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.McmcSimulationObserver;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -40,7 +40,7 @@ import java.util.*;
 /**
  * @author johannes
  */
-public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Person>>, MarkovEngineListener {
+public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Person>>, McmcSimulationObserver {
 
     private final Collection<Pair<MatrixSampler, Map<String, String>>> builders;
 

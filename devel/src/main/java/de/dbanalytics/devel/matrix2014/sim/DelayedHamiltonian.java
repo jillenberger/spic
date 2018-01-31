@@ -21,7 +21,7 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.sim.Hamiltonian;
-import de.dbanalytics.spic.sim.MarkovEngineListener;
+import de.dbanalytics.spic.sim.McmcSimulationObserver;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 
 import java.util.Collection;
@@ -29,7 +29,7 @@ import java.util.Collection;
 /**
  * @author johannes
  */
-public class DelayedHamiltonian implements Hamiltonian, MarkovEngineListener {
+public class DelayedHamiltonian implements Hamiltonian, McmcSimulationObserver {
 
     private final long activationIteration;
 

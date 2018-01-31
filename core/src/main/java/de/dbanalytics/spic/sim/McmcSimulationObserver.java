@@ -27,7 +27,7 @@ import java.util.Collection;
 /**
  * @author johannes
  */
-public interface MarkovEngineListener {
+public interface McmcSimulationObserver {
 
     void afterStep(Collection<CachedPerson> population, Collection<? extends Attributable> mutations, boolean accepted);
 

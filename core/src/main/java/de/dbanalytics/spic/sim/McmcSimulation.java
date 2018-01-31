@@ -36,7 +36,7 @@ import java.util.Random;
 /**
  * @author johannes
  */
-public class MarkovEngine {
+public class McmcSimulation {
 
     private final List<CachedPerson> simPopulation;
 
@@ -46,9 +46,9 @@ public class MarkovEngine {
 
     private final Random random;
 
-    private MarkovEngineListener listener;
+    private McmcSimulationObserver listener;
 
-    public MarkovEngine(Collection<? extends Person> population, Hamiltonian hamiltonian, Mutator mutator, Random random) {
+    public McmcSimulation(Collection<? extends Person> population, Hamiltonian hamiltonian, Mutator mutator, Random random) {
         this.hamiltonian = hamiltonian;
         this.mutator = mutator;
         this.random = random;
@@ -63,7 +63,7 @@ public class MarkovEngine {
     }
 
 
-    public void setListener(MarkovEngineListener listener) {
+    public void setListener(McmcSimulationObserver listener) {
         this.listener = listener;
     }
 
@@ -95,7 +95,7 @@ public class MarkovEngine {
                 }
             }
 
-            listener.afterStep(MarkovEngine.this.simPopulation, mutations, accepted);
+            listener.afterStep(McmcSimulation.this.simPopulation, mutations, accepted);
         }
         /** Synchronize all attributes with the delegate population */
         synchronize();
@@ -122,7 +122,7 @@ public class MarkovEngine {
         }
     }
 
-    private static class DefaultListener implements MarkovEngineListener {
+    private static class DefaultListener implements McmcSimulationObserver {
 
         @Override
         public void afterStep(Collection<CachedPerson> population, Collection<? extends Attributable> mutations, boolean accepted) {

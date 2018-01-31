@@ -31,7 +31,7 @@ import java.util.Collection;
 /**
  * @author johannes
  */
-public class AnnealingHamiltonian implements Hamiltonian, MarkovEngineListener {
+public class AnnealingHamiltonian implements Hamiltonian, McmcSimulationObserver {
 
     private final static Logger logger = Logger.getLogger(AnnealingHamiltonian.class);
 

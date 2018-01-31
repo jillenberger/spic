@@ -21,7 +21,7 @@ package de.dbanalytics.spic.matrix;
 
 import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneIndex;
-import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
+import de.dbanalytics.spic.sim.McmcSimulationObserverComposite;
 
 /**
  * @author jillenberger
@@ -32,9 +32,9 @@ public class MatrixSamplerFactory implements MatrixBuilderFactory {
 
     private final long step;
 
-    private final MarkovEngineListenerComposite listeners;
+    private final McmcSimulationObserverComposite listeners;
 
-    public  MatrixSamplerFactory(long start, long step, MarkovEngineListenerComposite listeners) {
+    public  MatrixSamplerFactory(long start, long step, McmcSimulationObserverComposite listeners) {
         this.start = start;
         this.step = step;
         this.listeners = listeners;

@@ -27,7 +27,7 @@ import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.AttributeObserverComposite;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
-import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
+import de.dbanalytics.spic.sim.McmcSimulationObserverComposite;
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
@@ -79,7 +79,7 @@ public class ODDistributionTermBuilder {
 
     private AttributeObserverComposite attributeListeners;
 
-    private MarkovEngineListenerComposite engineListeners;
+    private McmcSimulationObserverComposite engineListeners;
 
     private FileIOContext ioContext;
 
@@ -176,7 +176,7 @@ public class ODDistributionTermBuilder {
         return this;
     }
 
-    public ODDistributionTermBuilder engineListeners(MarkovEngineListenerComposite engineListeners) {
+    public ODDistributionTermBuilder engineListeners(McmcSimulationObserverComposite engineListeners) {
         this.engineListeners = engineListeners;
         return this;
     }
