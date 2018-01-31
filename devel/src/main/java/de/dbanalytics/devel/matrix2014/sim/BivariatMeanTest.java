@@ -75,19 +75,19 @@ public class BivariatMeanTest extends TestCase {
         Assert.assertEquals(5.0/binCount, mm.evaluate(null));
 
         cachedPerson1.setData(dataKey2, 1.0);
-        mm.onChange(dataKey2, 0.0, 1.0, cachedPerson1);
+        mm.update(dataKey2, 0.0, 1.0, cachedPerson1);
         Assert.assertEquals(4.0/binCount, mm.evaluate(null));
 
         cachedPerson1.setData(dataKey1, 0.0);
-        mm.onChange(dataKey1, 1.0, 0.0, cachedPerson1);
+        mm.update(dataKey1, 1.0, 0.0, cachedPerson1);
         Assert.assertEquals(4.0/binCount, mm.evaluate(null));
 
         cachedPerson1.setData(dataKey2, 0.0);
-        mm.onChange(dataKey2, 1.0, 0.0, cachedPerson1);
+        mm.update(dataKey2, 1.0, 0.0, cachedPerson1);
         Assert.assertEquals(4.0/binCount, mm.evaluate(null));
 
         cachedPerson1.setData(dataKey1, 3.0);
-        mm.onChange(dataKey1, 0.0, 3.0, cachedPerson1);
+        mm.update(dataKey1, 0.0, 3.0, cachedPerson1);
         Assert.assertEquals(1.5/binCount, mm.evaluate(null));
     }
 

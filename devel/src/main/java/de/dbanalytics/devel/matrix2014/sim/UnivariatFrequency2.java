@@ -153,7 +153,7 @@ private final boolean absoluteMode;
 
 
     @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+    public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if(simFreq != null) {
             if (this.dataKey == null) this.dataKey = Converters.getObjectKey(attrKey);
 

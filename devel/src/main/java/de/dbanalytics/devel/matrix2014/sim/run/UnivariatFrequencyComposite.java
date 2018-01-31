@@ -41,7 +41,7 @@ public class UnivariatFrequencyComposite<A extends Attributable> implements Hami
     }
 
     @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+    public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
 
     }
 

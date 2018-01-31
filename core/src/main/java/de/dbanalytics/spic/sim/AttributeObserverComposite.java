@@ -28,9 +28,9 @@ import org.matsim.contrib.common.collections.Composite;
 public class AttributeObserverComposite extends Composite<AttributeObserver> implements AttributeObserver {
 
     @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+    public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         for(int i = 0; i < components.size(); i++) {
-            components.get(i).onChange(dataKey, oldValue, newValue, element);
+            components.get(i).update(dataKey, oldValue, newValue, element);
         }
     }
 }

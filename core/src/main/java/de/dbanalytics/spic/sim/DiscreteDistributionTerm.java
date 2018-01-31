@@ -173,7 +173,7 @@ public class DiscreteDistributionTerm<A extends Attributable> implements Hamilto
 
 
     @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+    public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if (simBuckets != null) {
             if (this.attributeDataKey == null) this.attributeDataKey = Converters.getObjectKey(attributeKey);
 

@@ -211,7 +211,7 @@ public class PurposeHamiltonian {
         }
 
         @Override
-        public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+        public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
             int oldIdx = discretizer.index((Double) oldValue);
             int newIdx = discretizer.index((Double) newValue);
 
@@ -222,8 +222,8 @@ public class PurposeHamiltonian {
 
             Double purpose = (Double) element.getData(purposeIdxObjectKey);
 
-            old.onChange(purposeIdxObjectKey, purpose, null, element);
-            newListener.onChange(purposeIdxObjectKey, null, purpose, element);
+            old.update(purposeIdxObjectKey, purpose, null, element);
+            newListener.update(purposeIdxObjectKey, null, purpose, element);
         }
     }
 

@@ -256,7 +256,7 @@ public class GeoDistanceZoneHamiltonian2 {
         }
 
         @Override
-        public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+        public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
             if(isInitialized) {
                 if (this.dataKey == null) this.dataKey = Converters.register(
                         CommonKeys.LEG_GEO_DISTANCE,
@@ -265,7 +265,7 @@ public class GeoDistanceZoneHamiltonian2 {
                 if (this.dataKey.equals(dataKey)) {
                     UnivariatFrequency2 uf = getHamiltonian(element);
                     double h = uf.evaluate(simPersons);
-                    uf.onChange(dataKey, oldValue, newValue, element);
+                    uf.update(dataKey, oldValue, newValue, element);
                     double h2 = uf.evaluate(simPersons);
 
                     sum += (h2 - h);

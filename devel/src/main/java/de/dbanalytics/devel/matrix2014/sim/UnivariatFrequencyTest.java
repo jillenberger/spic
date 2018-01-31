@@ -77,11 +77,11 @@ public class UnivariatFrequencyTest extends TestCase {
         Assert.assertEquals(3.0/binCount, uf.evaluate(null), 0.0);
 
         c1.setData(dataKey, 1.0);
-        uf.onChange(dataKey, 2.0, 1.0, c1);
+        uf.update(dataKey, 2.0, 1.0, c1);
         Assert.assertEquals(1.5/binCount, uf.evaluate(null), 0.0);
 
         c3.setData(dataKey, 1.0);
-        uf.onChange(dataKey, 3.0, 1.0, c3);
+        uf.update(dataKey, 3.0, 1.0, c3);
         Assert.assertEquals(0.0/binCount, uf.evaluate(null), 0.0);
 
     }

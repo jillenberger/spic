@@ -57,7 +57,7 @@ public class AttributeMutator implements RandomElementMutator {
             if (newValue != null) {
                 element.setData(dataKey, newValue);
 
-                if (listener != null) listener.onChange(dataKey, oldValue, newValue, element);
+                if (listener != null) listener.update(dataKey, oldValue, newValue, element);
 
                 return true;
             } else {
@@ -73,7 +73,7 @@ public class AttributeMutator implements RandomElementMutator {
         Object newValue = element.getData(dataKey);
         element.setData(dataKey, oldValue);
 
-        if (listener != null) listener.onChange(dataKey, newValue, oldValue, element);
+        if (listener != null) listener.update(dataKey, newValue, oldValue, element);
 
     }
 }

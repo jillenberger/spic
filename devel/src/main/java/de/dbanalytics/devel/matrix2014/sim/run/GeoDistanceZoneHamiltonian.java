@@ -239,13 +239,13 @@ public class GeoDistanceZoneHamiltonian {
         }
 
         @Override
-        public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+        public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
             if(this.dataKey == null) this.dataKey = Converters.register(
                     CommonKeys.LEG_GEO_DISTANCE,
                     new DoubleConverter());
 
             if(this.dataKey.equals(dataKey)) {
-                getHamiltonian(element).onChange(dataKey, oldValue, newValue, element);
+                getHamiltonian(element).update(dataKey, oldValue, newValue, element);
             }
 
         }

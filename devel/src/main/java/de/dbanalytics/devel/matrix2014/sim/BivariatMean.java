@@ -182,7 +182,7 @@ public class BivariatMean implements Hamiltonian, AttributeObserver {
     }
 
     @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement person) {
+    public void update(Object dataKey, Object oldValue, Object newValue, CachedElement person) {
         if(xDataKey == null) xDataKey = Converters.getObjectKey(xAttrKey);
         if(yDataKey == null) yDataKey = Converters.getObjectKey(yAttrKey);
 

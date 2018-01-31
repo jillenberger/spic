@@ -205,7 +205,7 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
     }
 
     @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+    public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if (simMatrix != null) {
             if (this.placeDataKey.equals(dataKey)) {
 //                if (this.placeDataKey == null) //FIXME: Does not make sense!

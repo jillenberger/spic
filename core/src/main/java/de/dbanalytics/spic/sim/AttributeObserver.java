@@ -26,6 +26,6 @@ import de.dbanalytics.spic.sim.data.CachedElement;
  */
 public interface AttributeObserver {
 
-    void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element);
+    void update(Object dataKey, Object oldValue, Object newValue, CachedElement element);
 
 }

@@ -55,7 +55,7 @@ public class GeoDistanceUpdater implements AttributeObserver {
     }
 
     @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+    public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if (placeDataKey == null) placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
 
         if (placeDataKey.equals(dataKey)) {
@@ -77,7 +77,7 @@ public class GeoDistanceUpdater implements AttributeObserver {
 
                 if (listener != null) {
                     if (predicate == null || predicate.test(toLeg))
-                        listener.onChange(geoDistDataKey, old, d, toLeg);
+                        listener.update(geoDistDataKey, old, d, toLeg);
                 }
             }
 
@@ -92,7 +92,7 @@ public class GeoDistanceUpdater implements AttributeObserver {
 
                 if (listener != null) {
                     if (predicate == null || predicate.test(fromLeg))
-                        listener.onChange(geoDistDataKey, old, d, fromLeg);
+                        listener.update(geoDistDataKey, old, d, fromLeg);
                 }
             }
         }

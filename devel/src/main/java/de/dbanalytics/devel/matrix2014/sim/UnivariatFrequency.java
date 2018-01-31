@@ -143,7 +143,7 @@ public class UnivariatFrequency implements Hamiltonian, AttributeObserver {
     }
 
     @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
+    public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if (this.dataKey == null) this.dataKey = Converters.getObjectKey(attrKey);
 
         if (this.dataKey.equals(dataKey) && evaluatePredicate(element)) {
