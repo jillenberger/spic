@@ -38,9 +38,9 @@ public class AgeMutatorBuilder implements MutatorBuilder<CachedPerson> {
 
     private final RandomIntGenerator generator;
 
-    private final AttributeChangeListener listener;
+    private final AttributeObserver listener;
 
-    public AgeMutatorBuilder(AttributeChangeListener listener, Random random) {
+    public AgeMutatorBuilder(AttributeObserver listener, Random random) {
         this.listener = listener;
         this.random = random;
         generator = new RandomIntGenerator(random, 0, 100);

@@ -20,17 +20,12 @@
 package de.dbanalytics.spic.sim;
 
 import de.dbanalytics.spic.sim.data.CachedElement;
-import org.matsim.contrib.common.collections.Composite;
 
 /**
  * @author johannes
  */
-public class AttributeChangeListenerComposite extends Composite<AttributeChangeListener> implements AttributeChangeListener {
+public interface AttributeObserver {
 
-    @Override
-    public void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
-        for(int i = 0; i < components.size(); i++) {
-            components.get(i).onChange(dataKey, oldValue, newValue, element);
-        }
-    }
+    void onChange(Object dataKey, Object oldValue, Object newValue, CachedElement element);
+
 }

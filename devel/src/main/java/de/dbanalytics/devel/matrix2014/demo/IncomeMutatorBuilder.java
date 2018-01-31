@@ -38,9 +38,9 @@ public class IncomeMutatorBuilder implements MutatorBuilder<CachedPerson> {
 
     private final RandomIntGenerator generator;
 
-    private final AttributeChangeListener listener;
+    private final AttributeObserver listener;
 
-    public IncomeMutatorBuilder(AttributeChangeListener listener, Random random) {
+    public IncomeMutatorBuilder(AttributeObserver listener, Random random) {
         this.random = random;
         this.listener = listener;
         generator = new RandomIntGenerator(random, 500, 8000);

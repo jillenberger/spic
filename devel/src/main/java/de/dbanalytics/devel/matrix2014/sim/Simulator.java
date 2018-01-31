@@ -146,7 +146,7 @@ public class Simulator {
 		/*
 		Setup listeners for changes on geo distance.
 		 */
-        AttributeChangeListenerComposite geoDistListeners = new AttributeChangeListenerComposite();
+        AttributeObserverComposite geoDistListeners = new AttributeObserverComposite();
         geoDistListeners.addComponent(distDistrTerm);
         geoDistListeners.addComponent(distDistrTerm2);
         geoDistListeners.addComponent(meanDistLau2Term);
@@ -157,7 +157,7 @@ public class Simulator {
         mutatorBuilder.addToBlacklist(ActivityTypes.HOME);
         GeoDistanceUpdaterFacility geoDistanceUpdater = new GeoDistanceUpdaterFacility(geoDistListeners);
         geoDistanceUpdater.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
-        AttributeChangeListenerComposite mutatorListenerComposite = new AttributeChangeListenerComposite();
+        AttributeObserverComposite mutatorListenerComposite = new AttributeObserverComposite();
         mutatorListenerComposite.addComponent(geoDistanceUpdater);
         mutatorListenerComposite.addComponent(odDistribution);
         mutatorBuilder.setListener(mutatorListenerComposite);

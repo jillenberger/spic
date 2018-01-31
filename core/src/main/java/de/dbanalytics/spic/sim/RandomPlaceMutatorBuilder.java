@@ -37,11 +37,11 @@ public class RandomPlaceMutatorBuilder implements MutatorBuilder<CachedSegment> 
 
     private Set<Place> places;
 
-    private AttributeChangeListener listener;
+    private AttributeObserver listener;
 
     private Random random;
 
-    public RandomPlaceMutatorBuilder(Set<Place> places, AttributeChangeListener listener, Random random) {
+    public RandomPlaceMutatorBuilder(Set<Place> places, AttributeObserver listener, Random random) {
         this.places = places;
         this.listener = listener;
         this.random = random;

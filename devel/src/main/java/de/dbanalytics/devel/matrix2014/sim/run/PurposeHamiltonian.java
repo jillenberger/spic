@@ -27,7 +27,7 @@ import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
-import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.AttributeObserver;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.devel.matrix2014.sim.UnivariatFrequency2;
 import de.dbanalytics.spic.sim.config.AnnealingHamiltonianConfigurator;
@@ -191,11 +191,11 @@ public class PurposeHamiltonian {
         return nativeIndices;
     }
 
-    private static class GeoDistanceMediator implements AttributeChangeListener {
+    private static class GeoDistanceMediator implements AttributeObserver {
 
         private Discretizer discretizer;
 
-        private AttributeChangeListener[] listeners;
+        private AttributeObserver[] listeners;
 
         private Object purposeIdxObjectKey;
 
@@ -203,10 +203,10 @@ public class PurposeHamiltonian {
             this.discretizer = discretizer;
             this.purposeIdxObjectKey = purposeIdxObjectKey;
 //            listeners = new ArrayList<>();
-            listeners = new AttributeChangeListener[maxIdx + 1];
+            listeners = new AttributeObserver[maxIdx + 1];
         }
 
-        public void addListener(AttributeChangeListener listener, int idx) {
+        public void addListener(AttributeObserver listener, int idx) {
             listeners[idx] = listener;
         }
 
@@ -215,10 +215,10 @@ public class PurposeHamiltonian {
             int oldIdx = discretizer.index((Double) oldValue);
             int newIdx = discretizer.index((Double) newValue);
 
-//            AttributeChangeListener old = listeners.get(oldIdx);
-//            AttributeChangeListener newListener = listeners.get(newIdx);
-            AttributeChangeListener old = listeners[oldIdx];
-            AttributeChangeListener newListener = listeners[newIdx];
+//            AttributeObserver old = listeners.get(oldIdx);
+//            AttributeObserver newListener = listeners.get(newIdx);
+            AttributeObserver old = listeners[oldIdx];
+            AttributeObserver newListener = listeners[newIdx];
 
             Double purpose = (Double) element.getData(purposeIdxObjectKey);
 

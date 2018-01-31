@@ -66,7 +66,7 @@ public class LegDistributionTermBuilder {
 
     private String name;
 
-    private AttributeChangeListenerComposite attributeListeners;
+    private AttributeObserverComposite attributeListeners;
 
     private long startIteration = 0;
 
@@ -142,7 +142,7 @@ public class LegDistributionTermBuilder {
         return this;
     }
 
-    public LegDistributionTermBuilder attributeListeners(AttributeChangeListenerComposite listener) {
+    public LegDistributionTermBuilder attributeListeners(AttributeObserverComposite listener) {
         this.attributeListeners = listener;
         return this;
     }

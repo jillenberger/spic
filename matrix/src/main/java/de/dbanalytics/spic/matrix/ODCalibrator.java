@@ -28,7 +28,7 @@ import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Feature;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.ZoneIndex;
-import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.AttributeObserver;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.data.*;
 import gnu.trove.impl.Constants;
@@ -52,7 +52,7 @@ import java.util.Set;
 /**
  * @author johannes
  */
-public class ODCalibrator implements Hamiltonian, AttributeChangeListener {
+public class ODCalibrator implements Hamiltonian, AttributeObserver {
 
     private final static Logger logger = Logger.getLogger(ODCalibrator.class);
 

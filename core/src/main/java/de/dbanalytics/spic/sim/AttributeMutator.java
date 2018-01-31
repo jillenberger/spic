@@ -29,7 +29,7 @@ public class AttributeMutator implements RandomElementMutator {
 
     private final Object dataKey;
 
-    private final AttributeChangeListener listener;
+    private final AttributeObserver listener;
 
     private final ValueGenerator generator;
 
@@ -37,7 +37,7 @@ public class AttributeMutator implements RandomElementMutator {
 
     private Predicate<CachedElement> predicate;
 
-    public AttributeMutator(Object dataKey, ValueGenerator generator, AttributeChangeListener listener) {
+    public AttributeMutator(Object dataKey, ValueGenerator generator, AttributeObserver listener) {
         this.dataKey = dataKey;
         this.listener = listener;
         this.generator = generator;

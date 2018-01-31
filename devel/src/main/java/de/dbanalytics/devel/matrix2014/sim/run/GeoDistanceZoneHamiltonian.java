@@ -228,7 +228,7 @@ public class GeoDistanceZoneHamiltonian {
         return indices;
     }
 
-    private static class HamiltonianWrapper implements Hamiltonian, AttributeChangeListener {
+    private static class HamiltonianWrapper implements Hamiltonian, AttributeObserver {
 
         private final List<UnivariatFrequency> hamiltonians;
         private final Object indexDataKey = new Object();

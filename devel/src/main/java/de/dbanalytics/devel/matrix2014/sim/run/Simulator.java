@@ -64,7 +64,7 @@ public class Simulator {
 
     private Set<? extends Person> simPersons;
 
-    private Map<String, AttributeChangeListenerComposite> attributeListeners;
+    private Map<String, AttributeObserverComposite> attributeListeners;
 
     private long loggingInterval;
 
@@ -126,7 +126,7 @@ public class Simulator {
         return simPersons;
     }
 
-    Map<String, AttributeChangeListenerComposite> getAttributeListeners() {
+    Map<String, AttributeObserverComposite> getAttributeListeners() {
         return attributeListeners;
     }
 
@@ -179,8 +179,8 @@ public class Simulator {
         /*
 		Setup listeners for changes on facilities and geo distance.
 		 */
-        attributeListeners.put(CommonKeys.LEG_GEO_DISTANCE, new AttributeChangeListenerComposite());
-        attributeListeners.put(CommonKeys.ACTIVITY_FACILITY, new AttributeChangeListenerComposite());
+        attributeListeners.put(CommonKeys.LEG_GEO_DISTANCE, new AttributeObserverComposite());
+        attributeListeners.put(CommonKeys.ACTIVITY_FACILITY, new AttributeObserverComposite());
 
         GeoDistanceUpdaterFacility geoDistanceUpdater = new GeoDistanceUpdaterFacility(attributeListeners.get(CommonKeys.LEG_GEO_DISTANCE));
 //        geoDistanceUpdater.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));

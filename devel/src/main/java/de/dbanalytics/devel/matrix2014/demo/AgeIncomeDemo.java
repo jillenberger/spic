@@ -133,7 +133,7 @@ public class AgeIncomeDemo {
         Setup mutators...
          */
         logger.info("Setting up mutators...");
-        AttributeChangeListenerComposite changeListerners = new AttributeChangeListenerComposite();
+        AttributeObserverComposite changeListerners = new AttributeObserverComposite();
         changeListerners.addComponent(ageTerm);
         changeListerners.addComponent(incomeTerm);
         changeListerners.addComponent(ageIncomeTerm);

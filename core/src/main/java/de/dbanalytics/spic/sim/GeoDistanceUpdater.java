@@ -30,11 +30,11 @@ import de.dbanalytics.spic.sim.data.DoubleConverter;
 /**
  * @author jillenberger
  */
-public class GeoDistanceUpdater implements AttributeChangeListener {
+public class GeoDistanceUpdater implements AttributeObserver {
 
     private final Object geoDistDataKey = Converters.register(CommonKeys.LEG_GEO_DISTANCE, DoubleConverter.getInstance());
     private Object placeDataKey;
-    private AttributeChangeListener listener;
+    private AttributeObserver listener;
 
     private Predicate<CachedSegment> predicate;
 
@@ -42,7 +42,7 @@ public class GeoDistanceUpdater implements AttributeChangeListener {
         this.listener = null;
     }
 
-    public GeoDistanceUpdater(AttributeChangeListener listener) {
+    public GeoDistanceUpdater(AttributeObserver listener) {
         setListener(listener);
     }
 
@@ -50,7 +50,7 @@ public class GeoDistanceUpdater implements AttributeChangeListener {
         this.predicate = predicate;
     }
 
-    public void setListener(AttributeChangeListener listener) {
+    public void setListener(AttributeObserver listener) {
         this.listener = listener;
     }
 

@@ -23,7 +23,7 @@ import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.AttributeObserver;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.HistogramBuilder;
 import de.dbanalytics.spic.sim.data.CachedElement;
@@ -44,7 +44,7 @@ import java.util.Collection;
 /**
  * @author johannes
  */
-public class UnivariatFrequency2 implements Hamiltonian, AttributeChangeListener {
+public class UnivariatFrequency2 implements Hamiltonian, AttributeObserver {
 
     private final static Logger logger = Logger.getLogger(UnivariatFrequency2.class);
 

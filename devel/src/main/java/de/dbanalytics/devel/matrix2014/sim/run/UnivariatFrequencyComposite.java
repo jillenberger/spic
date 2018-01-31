@@ -21,7 +21,7 @@ package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.AttributeObserver;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.CachedPerson;
@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * @author johannes
  */
-public class UnivariatFrequencyComposite<A extends Attributable> implements Hamiltonian, AttributeChangeListener {
+public class UnivariatFrequencyComposite<A extends Attributable> implements Hamiltonian, AttributeObserver {
 
     public UnivariatFrequencyComposite(List<Predicate<A>> predicates) {
         for(Predicate<A> predicate : predicates) {

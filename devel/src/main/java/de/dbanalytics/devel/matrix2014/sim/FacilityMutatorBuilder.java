@@ -41,7 +41,7 @@ public class FacilityMutatorBuilder implements MutatorBuilder {
 
     private final List<String> blacklist;
 
-    private AttributeChangeListener listener;
+    private AttributeObserver listener;
 
     private DataPool dataPool;
 
@@ -58,7 +58,7 @@ public class FacilityMutatorBuilder implements MutatorBuilder {
         blacklist.add(type);
     }
 
-    public void setListener(AttributeChangeListener listener) {
+    public void setListener(AttributeObserver listener) {
         this.listener = listener;
     }
 

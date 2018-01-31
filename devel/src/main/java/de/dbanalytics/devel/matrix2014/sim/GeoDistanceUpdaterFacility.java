@@ -20,7 +20,7 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.AttributeObserver;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.CachedSegment;
 import de.dbanalytics.spic.sim.data.Converters;
@@ -31,11 +31,11 @@ import org.matsim.facilities.ActivityFacility;
 /**
  * @author jillenberger
  */
-public class GeoDistanceUpdaterFacility implements AttributeChangeListener {
+public class GeoDistanceUpdaterFacility implements AttributeObserver {
 
     private final Object geoDistDataKey = Converters.register(CommonKeys.LEG_GEO_DISTANCE, DoubleConverter.getInstance());
     private Object facDataKey;
-    private AttributeChangeListener listener;
+    private AttributeObserver listener;
 
     private Predicate<CachedSegment> predicate;
 
@@ -43,7 +43,7 @@ public class GeoDistanceUpdaterFacility implements AttributeChangeListener {
         this.listener = null;
     }
 
-    public GeoDistanceUpdaterFacility(AttributeChangeListener listener) {
+    public GeoDistanceUpdaterFacility(AttributeObserver listener) {
         setListener(listener);
     }
 
@@ -51,7 +51,7 @@ public class GeoDistanceUpdaterFacility implements AttributeChangeListener {
         this.predicate = predicate;
     }
 
-    public void setListener(AttributeChangeListener listener) {
+    public void setListener(AttributeObserver listener) {
         this.listener = listener;
     }
 

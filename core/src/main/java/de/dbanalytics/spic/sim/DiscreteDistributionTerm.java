@@ -46,7 +46,7 @@ import java.util.List;
 /**
  * @author johannes
  */
-public class DiscreteDistributionTerm<A extends Attributable> implements Hamiltonian, AttributeChangeListener {
+public class DiscreteDistributionTerm<A extends Attributable> implements Hamiltonian, AttributeObserver {
 
     private final static Logger logger = Logger.getLogger(DiscreteDistributionTerm.class);
 

@@ -21,7 +21,7 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.sim.AttributeChangeListener;
+import de.dbanalytics.spic.sim.AttributeObserver;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.CachedPerson;
@@ -39,7 +39,7 @@ import java.util.Set;
 /**
  * @author johannes
  */
-public class BivariatMean implements Hamiltonian, AttributeChangeListener {
+public class BivariatMean implements Hamiltonian, AttributeObserver {
 
     private Object xDataKey;
 

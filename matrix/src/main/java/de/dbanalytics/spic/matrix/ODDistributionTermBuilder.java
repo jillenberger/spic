@@ -25,7 +25,7 @@ import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
-import de.dbanalytics.spic.sim.AttributeChangeListenerComposite;
+import de.dbanalytics.spic.sim.AttributeObserverComposite;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.spic.sim.MarkovEngineListenerComposite;
 import org.apache.commons.lang3.tuple.Pair;
@@ -77,7 +77,7 @@ public class ODDistributionTermBuilder {
 
     private String name;
 
-    private AttributeChangeListenerComposite attributeListeners;
+    private AttributeObserverComposite attributeListeners;
 
     private MarkovEngineListenerComposite engineListeners;
 
@@ -171,7 +171,7 @@ public class ODDistributionTermBuilder {
         return this;
     }
 
-    public ODDistributionTermBuilder attributeListeners(AttributeChangeListenerComposite attributeListeners) {
+    public ODDistributionTermBuilder attributeListeners(AttributeObserverComposite attributeListeners) {
         this.attributeListeners = attributeListeners;
         return this;
     }
