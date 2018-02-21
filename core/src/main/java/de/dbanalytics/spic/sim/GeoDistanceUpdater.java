@@ -33,8 +33,13 @@ import de.dbanalytics.spic.sim.data.DoubleConverter;
 public class GeoDistanceUpdater implements AttributeObserver {
 
     private final Object geoDistDataKey = Converters.register(CommonKeys.LEG_GEO_DISTANCE, DoubleConverter.getInstance());
+
     private Object placeDataKey;
+
+    /** @deprecated */
     private AttributeObserver listener;
+
+    private AttributeMediator mediator;
 
     private Predicate<CachedSegment> predicate;
 
@@ -42,16 +47,26 @@ public class GeoDistanceUpdater implements AttributeObserver {
         this.listener = null;
     }
 
+    /** @deprecated */
     public GeoDistanceUpdater(AttributeObserver listener) {
         setListener(listener);
+    }
+
+    public GeoDistanceUpdater(AttributeMediator mediator) {
+        setMediator(mediator);
     }
 
     public void setPredicate(Predicate<CachedSegment> predicate) {
         this.predicate = predicate;
     }
 
+    /** @deprecated */
     public void setListener(AttributeObserver listener) {
         this.listener = listener;
+    }
+
+    public void setMediator(AttributeMediator mediator) {
+        this.mediator = mediator;
     }
 
     @Override
@@ -79,6 +94,11 @@ public class GeoDistanceUpdater implements AttributeObserver {
                     if (predicate == null || predicate.test(toLeg))
                         listener.update(geoDistDataKey, old, d, toLeg);
                 }
+
+                if (mediator != null) {
+                    if (predicate == null || predicate.test(toLeg))
+                        mediator.update(toLeg, geoDistDataKey, old, d);
+                }
             }
 
             if (fromLeg != null) {
@@ -93,6 +113,11 @@ public class GeoDistanceUpdater implements AttributeObserver {
                 if (listener != null) {
                     if (predicate == null || predicate.test(fromLeg))
                         listener.update(geoDistDataKey, old, d, fromLeg);
+                }
+
+                if (mediator != null) {
+                    if (predicate == null || predicate.test(fromLeg))
+                        mediator.update(fromLeg, geoDistDataKey, old, d);
                 }
             }
         }
