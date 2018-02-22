@@ -29,7 +29,12 @@ public class AttributeMutator implements RandomElementMutator {
 
     private final Object dataKey;
 
-    private final AttributeObserver listener;
+    /**
+     * @deprecated
+     */
+    private AttributeObserver listener;
+
+    private AttributeMediator mediator;
 
     private final ValueGenerator generator;
 
@@ -37,9 +42,16 @@ public class AttributeMutator implements RandomElementMutator {
 
     private Predicate<CachedElement> predicate;
 
+    /** @deprecated */
     public AttributeMutator(Object dataKey, ValueGenerator generator, AttributeObserver listener) {
         this.dataKey = dataKey;
         this.listener = listener;
+        this.generator = generator;
+    }
+
+    public AttributeMutator(Object dataKey, ValueGenerator generator, AttributeMediator mediator) {
+        this.dataKey = dataKey;
+        this.mediator = mediator;
         this.generator = generator;
     }
 
@@ -59,6 +71,8 @@ public class AttributeMutator implements RandomElementMutator {
 
                 if (listener != null) listener.update(dataKey, oldValue, newValue, element);
 
+                if (mediator != null) mediator.update(element, dataKey, oldValue, newValue);
+
                 return true;
             } else {
                 return false;
@@ -74,6 +88,7 @@ public class AttributeMutator implements RandomElementMutator {
         element.setData(dataKey, oldValue);
 
         if (listener != null) listener.update(dataKey, newValue, oldValue, element);
+        if (mediator != null) mediator.update(element, dataKey, newValue, oldValue);
 
     }
 }
