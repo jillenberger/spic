@@ -49,11 +49,11 @@ public class IOUtils {
         }
     }
 
-    public static OutputStream createOutputStream(String filename) throws IOException {
+    public static BufferedOutputStream createOutputStream(String filename) throws IOException {
         if (filename.endsWith(GZ_SUFFIX)) {
-            return new GZIPOutputStream(new FileOutputStream(filename));
+            return new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(filename)));
         } else {
-            return new FileOutputStream(filename);
+            return new BufferedOutputStream(new FileOutputStream(filename));
         }
     }
 
