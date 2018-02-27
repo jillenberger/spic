@@ -1,6 +1,6 @@
 package de.dbanalytics.spic.gis;
 
-import de.dbanalytics.spic.gis.*;
+import org.apache.log4j.Logger;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -11,6 +11,8 @@ import java.util.Set;
  */
 public class PlaceIndexLoader implements DataLoader {
 
+    private static final Logger logger = Logger.getLogger(PlaceIndexLoader.class);
+
     private final int epsg;
 
     public PlaceIndexLoader(int epsg) {
@@ -20,9 +22,12 @@ public class PlaceIndexLoader implements DataLoader {
     @Override
     public Object load(String filename) {
         try {
+            logger.info("Loading places...");
             PlacesIO placesIO = new PlacesIO();
             placesIO.setGeoTransformer(GeoTransformer.WGS84toX(epsg));
             Set<Place> places = placesIO.read(filename);
+            logger.info(String.format("Loaded %s places.", places.size()));
+
             return new PlaceIndex(places);
 
         } catch (IOException e) {
