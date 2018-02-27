@@ -7,15 +7,15 @@ import org.apache.commons.configuration2.HierarchicalConfiguration;
 
 import java.util.Collection;
 
-public class ReadPersonsJob implements Job {
+public class ReadPopulationJob implements Job {
 
-    private static final String PERSONS_FILE = "personsFile";
+    private static final String POPULATION_FILE = "populationFile";
 
     private String filename;
 
     @Override
     public void configure(HierarchicalConfiguration config) {
-        filename = config.getString(PERSONS_FILE);
+        filename = config.getString(POPULATION_FILE);
     }
 
     @Override
