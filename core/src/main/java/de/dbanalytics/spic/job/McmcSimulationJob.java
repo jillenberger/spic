@@ -113,7 +113,7 @@ public class McmcSimulationJob implements Job {
     }
 
     @Override
-    public Collection<? extends Person> execute(Collection<? extends Person> persons) {
+    public Collection<? extends Person> execute(Collection<? extends Person> population) {
 
         McmcSimulationContextImpl context = new McmcSimulationContextImpl(random);
 
@@ -131,8 +131,8 @@ public class McmcSimulationJob implements Job {
             context.getAttributeMediator().attach(builder.build(context));
         }
 
-        context.run(persons, iterations);
+        context.run(population, iterations);
 
-        return persons;
+        return population;
     }
 }

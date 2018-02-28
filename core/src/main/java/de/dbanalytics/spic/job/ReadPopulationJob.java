@@ -19,7 +19,7 @@ public class ReadPopulationJob implements Job {
     }
 
     @Override
-    public Collection<? extends Person> execute(Collection<? extends Person> persons) {
+    public Collection<? extends Person> execute(Collection<? extends Person> population) {
         return PopulationIO.loadFromXML(filename, new PlainFactory());
     }
 }

@@ -17,9 +17,9 @@ public class LegPurposeFromActTypeJob implements Job {
     }
 
     @Override
-    public Collection<? extends Person> execute(Collection<? extends Person> persons) {
-        TaskRunner.runLegTask(new LegPurposeFromActTypeTask(), persons);
-        return persons;
+    public Collection<? extends Person> execute(Collection<? extends Person> population) {
+        TaskRunner.runLegTask(new LegPurposeFromActTypeTask(), population);
+        return population;
     }
 
     private static class LegPurposeFromActTypeTask implements SegmentTask {

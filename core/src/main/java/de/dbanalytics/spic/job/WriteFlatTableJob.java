@@ -19,12 +19,12 @@ public class WriteFlatTableJob implements Job {
     }
 
     @Override
-    public Collection<? extends Person> execute(Collection<? extends Person> persons) {
+    public Collection<? extends Person> execute(Collection<? extends Person> population) {
         try {
-            PopulationWriter.write(persons, outputDirectory);
+            PopulationWriter.write(population, outputDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return persons;
+        return population;
     }
 }

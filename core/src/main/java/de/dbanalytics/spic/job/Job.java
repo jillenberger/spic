@@ -13,5 +13,5 @@ public interface Job {
 
     void configure(HierarchicalConfiguration config);
 
-    Collection<? extends Person> execute(Collection<? extends Person> persons);
+    Collection<? extends Person> execute(Collection<? extends Person> population);
 }

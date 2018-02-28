@@ -37,7 +37,7 @@ public class AddODZonesJob implements Job {
     }
 
     @Override
-    public Collection<? extends Person> execute(Collection<? extends Person> persons) {
+    public Collection<? extends Person> execute(Collection<? extends Person> population) {
         GeoTransformer transformer = null;
         if (srid > 0) {
             transformer = GeoTransformer.WGS84toX(srid);
@@ -67,8 +67,8 @@ public class AddODZonesJob implements Job {
             }
         }
 
-        TaskRunner.runLegTask(new LegAddODZones(placeIndex, zoneIndex), persons);
+        TaskRunner.runLegTask(new LegAddODZones(placeIndex, zoneIndex), population);
 
-        return persons;
+        return population;
     }
 }
