@@ -462,7 +462,8 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             Set<Feature> zoneSet = new HashSet<>();//zones.getZones();
             /** remove zone with ignore tag */
             for (Feature zone : zones.get()) {
-                String value = zone.getAttribute("Ignore");
+                //TODO: Should attribute keys be always lower case?
+                String value = zone.getAttribute("ignore");
                 if (!"yes".equalsIgnoreCase(value)) {
                     zoneSet.add(zone);
                 }

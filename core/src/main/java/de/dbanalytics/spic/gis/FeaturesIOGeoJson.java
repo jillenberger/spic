@@ -57,6 +57,7 @@ public class FeaturesIOGeoJson {
                 Map<String, String> attributes = new HashMap<>();
                 for (Map.Entry<String, Object> prop : jsonFeature.getProperties().entrySet()) {
                     Object value = prop.getValue();
+                    //TODO: Should attribute keys be always lower case?
                     if (value != null) attributes.put(prop.getKey().toLowerCase(), prop.getValue().toString());
                 }
 
