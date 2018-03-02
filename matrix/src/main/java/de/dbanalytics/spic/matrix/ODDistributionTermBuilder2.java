@@ -19,10 +19,8 @@
 
 package de.dbanalytics.spic.matrix;
 
-import de.dbanalytics.spic.analysis.AnalyzerTaskComposite;
-import de.dbanalytics.spic.analysis.HistogramWriter;
-import de.dbanalytics.spic.analysis.PassThroughDiscretizerBuilder;
-import de.dbanalytics.spic.analysis.Predicate;
+import de.dbanalytics.spic.analysis.*;
+import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.PlaceIndex;
 import de.dbanalytics.spic.gis.ZoneIndex;
@@ -30,6 +28,8 @@ import de.dbanalytics.spic.sim.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.matsim.contrib.common.gis.CartesianDistanceCalculator;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
+
+import java.util.Collection;
 
 /**
  * @author johannes
@@ -233,35 +233,37 @@ public class ODDistributionTermBuilder2 implements McmcSimulationModuleBuilder<H
         }
 
         /** Add hamiltonian analyzer */
-//        if (analyzers != null) {
-            AnalyzerTaskComposite<Pair<NumericMatrix, NumericMatrix>> composite = new AnalyzerTaskComposite<>();
+        AnalyzerTaskComposite<Collection<? extends Person>> analyzers = new AnalyzerTaskComposite<>();
+        AnalyzerTaskGroup<Collection<? extends Person>> group = new AnalyzerTaskGroup<>(analyzers, context.getIoContext(), name);
+        context.addAnalyzer(group);
 
-            HistogramWriter writer = new HistogramWriter(context.getIoContext(), new PassThroughDiscretizerBuilder(new
-                    LinearDiscretizer(0.05), "linear"));
+        AnalyzerTaskComposite<Pair<NumericMatrix, NumericMatrix>> composite = new AnalyzerTaskComposite<>();
 
-            MatrixVolumeCompare volTask = new MatrixVolumeCompare(String.format("matrix.%s.vol", name));
-            volTask.setIoContext(context.getIoContext());
-            volTask.setHistogramWriter(writer);
+        HistogramWriter writer = new HistogramWriter(context.getIoContext(), new PassThroughDiscretizerBuilder(new
+                LinearDiscretizer(0.05), "linear"));
 
-            MatrixDistanceCompare distTask = new MatrixDistanceCompare(String.format("matrix.%s.dist", name), zones);
-            distTask.setFileIoContext(context.getIoContext());
+        MatrixVolumeCompare volTask = new MatrixVolumeCompare(String.format("matrix.%s.vol", name));
+        volTask.setIoContext(context.getIoContext());
+        volTask.setHistogramWriter(writer);
 
-            MatrixMarginalsCompare marTask = new MatrixMarginalsCompare(String.format("matrix.%s", name));
-            marTask.setHistogramWriter(writer);
+        MatrixDistanceCompare distTask = new MatrixDistanceCompare(String.format("matrix.%s.dist", name), zones);
+        distTask.setFileIoContext(context.getIoContext());
 
-            composite.addComponent(volTask);
-            composite.addComponent(distTask);
-            composite.addComponent(marTask);
+        MatrixMarginalsCompare marTask = new MatrixMarginalsCompare(String.format("matrix.%s", name));
+        marTask.setHistogramWriter(writer);
 
-            DefaultMatrixBuilderFactory factory = new DefaultMatrixBuilderFactory();
-            MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(placeIndex, zones), composite);
-            analyzer.setLegPredicate(predicate);
-            analyzer.setVolumeThreshold(volumeThreshold);
-            analyzer.setMatrixPredicate(new ZoneDistancePredicate(zones, minDistanceThreshold, maxDistanceThreshold, CartesianDistanceCalculator.getInstance()));
-            analyzer.setUseWeights(useWeights);
-            analyzer.setNormalize(normalize);
-            context.addAnalyzer(analyzer);
-//        }
+        composite.addComponent(volTask);
+        composite.addComponent(distTask);
+        composite.addComponent(marTask);
+
+        DefaultMatrixBuilderFactory factory = new DefaultMatrixBuilderFactory();
+        MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(placeIndex, zones), composite);
+        analyzer.setLegPredicate(predicate);
+        analyzer.setVolumeThreshold(volumeThreshold);
+        analyzer.setMatrixPredicate(new ZoneDistancePredicate(zones, minDistanceThreshold, maxDistanceThreshold, CartesianDistanceCalculator.getInstance()));
+        analyzer.setUseWeights(useWeights);
+        analyzer.setNormalize(normalize);
+        analyzers.addComponent(analyzer);
 
         return aTerm;
     }

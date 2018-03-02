@@ -160,8 +160,36 @@ public class LegDistributionTermBuilder2 implements McmcSimulationModuleBuilder<
         aTerm.setThetaFactor(thetaFactor);
         context.addEngineListener(aTerm);
 
+        /** Add analyzer and comparator */
+        AnalyzerTaskComposite<Collection<? extends Person>> analyzers = new AnalyzerTaskComposite<>();
+        AnalyzerTaskGroup<Collection<? extends Person>> group = new AnalyzerTaskGroup<>(analyzers, context.getIoContext(), name);
+        context.addAnalyzer(group);
+
+        Discretizer discretizer = new FixedBordersDiscretizer(refDistribution.keys());
+
+        HistogramWriter writer = new HistogramWriter(
+                context.getIoContext(),
+                new PassThroughDiscretizerBuilder(discretizer, "default"));
+        AnalyzerTask<Collection<? extends Person>> analyzer = NumericLegAnalyzer.create(
+                attributeKey,
+                useWeights,
+                predicate,
+                name,
+                writer);
+        analyzers.addComponent(analyzer);
+
+        LegHistogramBuilder builder = new LegAttributeHistogramBuilder(attributeKey, discretizer, useWeights);
+        builder.setPredicate(predicate);
+
+        HistogramComparator comparator = new HistogramComparator(
+                refDistribution,
+                builder,
+                name);
+        comparator.setFileIoContext(context.getIoContext());
+        analyzers.addComponent(comparator);
+
         /** Do some debugging stuff */
-        if (logInterval > 0 ) context.addEngineListener(new HamiltonianLogger(
+        if (logInterval > 0) context.addEngineListener(new HamiltonianLogger(
                 term,
                 logInterval,
                 name,
@@ -177,32 +205,6 @@ public class LegDistributionTermBuilder2 implements McmcSimulationModuleBuilder<
             ));
             aTerm.enableFileLogging(context.getIoContext().getPath() + "/" + name + ".thetaUpdates.txt");
         }
-
-        /** Add analyzer and comparator */
-
-            Discretizer discretizer = new FixedBordersDiscretizer(refDistribution.keys());
-
-            HistogramWriter writer = new HistogramWriter(
-                    context.getIoContext(),
-                    new PassThroughDiscretizerBuilder(discretizer, "default"));
-            AnalyzerTask<Collection<? extends Person>> analyzer = NumericLegAnalyzer.create(
-                    attributeKey,
-                    useWeights,
-                    predicate,
-                    name,
-                    writer);
-            context.addAnalyzer(analyzer);
-
-            LegHistogramBuilder builder = new LegAttributeHistogramBuilder(attributeKey, discretizer, useWeights);
-            builder.setPredicate(predicate);
-
-            HistogramComparator comparator = new HistogramComparator(
-                    refDistribution,
-                    builder,
-                    name);
-            comparator.setFileIoContext(context.getIoContext());
-            context.addAnalyzer(comparator);
-
 
         return aTerm;
     }
