@@ -1,5 +1,6 @@
 package de.dbanalytics.spic.job;
 
+import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.sim.*;
@@ -33,15 +34,19 @@ public class McmcSimulationJob implements Job {
 
     private static final String ATTRIBUTE_OBSERVERS = "attributeObservers.observer";
 
+    private static final String ANALYZERS = "analyzers.analyzer";
+
     private static final String MUTATOR = "mutator";
 
     private Random random;
 
-    private List<McmcSimulationModuleBuilder<Hamiltonian>> hBuilders = new ArrayList<>();
+    private List<McmcSimulationModuleBuilder<Hamiltonian>> hamiltonianBuilders;
 
-    private McmcSimulationModuleBuilder<Mutator> mBuilder;
+    private McmcSimulationModuleBuilder<Mutator> mutatorBuilder;
 
-    private List<McmcSimulationModuleBuilder<AttributeObserver>> attObsBuilders = new ArrayList<>();
+    private List<McmcSimulationModuleBuilder<AttributeObserver>> attObsBuilders;
+
+    private List<McmcSimulationModuleBuilder<AnalyzerTask>> analyzerBuilders;
 
     private FileIOContext ioContext;
 
@@ -67,17 +72,27 @@ public class McmcSimulationJob implements Job {
         dumpInterval = (long) config.getDouble(DUMP_INTERVAL, Long.MAX_VALUE);
         iterations = (long) config.getDouble(ITERATIONS);
 
-        List<String> hamiltonians = config.getList(String.class, HAMILTONIAN);
-        for(String klass : hamiltonians) {
-            hBuilders.add((McmcSimulationModuleBuilder<Hamiltonian>) createInstance(klass, config));
+        List<String> klasses = config.getList(String.class, HAMILTONIAN);
+        hamiltonianBuilders = new ArrayList<>();
+        for (String klass : klasses) {
+            hamiltonianBuilders.add((McmcSimulationModuleBuilder<Hamiltonian>) createInstance(klass, config));
         }
 
-        mBuilder = (McmcSimulationModuleBuilder<Mutator>) createInstance(config.getString(MUTATOR), config);
+        mutatorBuilder = (McmcSimulationModuleBuilder<Mutator>) createInstance(config.getString(MUTATOR), config);
 
-        List<String> observers = config.getList(String.class, ATTRIBUTE_OBSERVERS);
-        if(observers != null) {
-            for (String klass : observers) {
+        klasses = config.getList(String.class, ATTRIBUTE_OBSERVERS);
+        attObsBuilders = new ArrayList<>();
+        if (klasses != null) {
+            for (String klass : klasses) {
                 attObsBuilders.add((McmcSimulationModuleBuilder<AttributeObserver>) createInstance(klass, config));
+            }
+        }
+
+        klasses = config.getList(String.class, ANALYZERS);
+        analyzerBuilders = new ArrayList<>();
+        if (klasses != null) {
+            for (String klass : klasses) {
+                analyzerBuilders.add((McmcSimulationModuleBuilder<AnalyzerTask>) createInstance(klass, config));
             }
         }
     }
@@ -121,14 +136,18 @@ public class McmcSimulationJob implements Job {
         context.setLogInterval(logInterval);
         context.setDumpInterval(dumpInterval);
 
-        for (McmcSimulationModuleBuilder<Hamiltonian> builder : hBuilders) {
+        for (McmcSimulationModuleBuilder<Hamiltonian> builder : hamiltonianBuilders) {
             context.addHamiltonian(builder.build(context));
         }
 
-        context.addMutator(mBuilder.build(context));
+        context.addMutator(mutatorBuilder.build(context));
 
         for (McmcSimulationModuleBuilder<AttributeObserver> builder : attObsBuilders) {
             context.getAttributeMediator().attach(builder.build(context));
+        }
+
+        for (McmcSimulationModuleBuilder<AnalyzerTask> builder : analyzerBuilders) {
+            context.addAnalyzer(builder.build(context));
         }
 
         context.run(population, iterations);
