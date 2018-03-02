@@ -2,6 +2,7 @@ package de.dbanalytics.spic.job;
 
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.io.PopulationIO;
+import de.dbanalytics.spic.util.Executor;
 import org.apache.commons.configuration2.HierarchicalConfiguration;
 import org.apache.commons.configuration2.XMLConfiguration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
@@ -127,6 +128,8 @@ public class JobExecutor {
                 }
             }
         }
+        /** shutdown executor in case it was used */
+        Executor.shutdown();
     }
 
     private static class JobWrapper {
