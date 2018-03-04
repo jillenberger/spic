@@ -192,7 +192,7 @@ public class PopulationIOv2 {
         writer.writeStartDocument();
         writer.writeCharacters(NEW_LINE);
         writer.writeStartElement(POPULATION_ELEMENT);
-        writer.writeAttribute("size", String.valueOf(population.size()));
+        writer.writeAttribute(SIZE, String.valueOf(population.size()));
         writer.writeCharacters(NEW_LINE);
 
         int level = 0;
@@ -205,21 +205,14 @@ public class PopulationIOv2 {
             writer.writeCharacters(NEW_LINE);
             level++;
 
-//            writeAttributes(person, writer, level, true);
             writeAttributes(person, writer, level, false);
 
-//            for (int i = 0; i < level; i++) writer.writeCharacters(SPACES);
-//            writer.writeStartElement(EPISODES_ELEMENT);
-//            writer.writeCharacters(NEW_LINE);
-
             for (Episode episode : person.getEpisodes()) {
-//                level++;
                 for (int i = 0; i < level; i++) writer.writeCharacters(SPACES);
                 writer.writeStartElement(EPISODE_ELEMENT);
                 writer.writeCharacters(NEW_LINE);
                 level++;
 
-//                writeAttributes(episode, writer, level, true);
                 writeAttributes(episode, writer, level, false);
 
                 for (int k = 0; k < episode.getActivities().size(); k++) {
@@ -248,13 +241,8 @@ public class PopulationIOv2 {
                 for (int i = 0; i < level; i++) writer.writeCharacters(SPACES);
                 writer.writeEndElement();
                 writer.writeCharacters(NEW_LINE);
-
-//                level--;
             }
 
-//            for (int i = 0; i < level; i++) writer.writeCharacters(SPACES);
-//            writer.writeEndElement();
-//            writer.writeCharacters(NEW_LINE);
             level--;
 
             for (int i = 0; i < level; i++) writer.writeCharacters(SPACES);
