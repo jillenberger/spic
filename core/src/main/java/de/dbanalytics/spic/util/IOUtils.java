@@ -43,9 +43,9 @@ public class IOUtils {
 
     public static InputStream createInputStream(String filename) throws IOException {
         if (filename.endsWith(GZ_SUFFIX)) {
-            return new GZIPInputStream(new FileInputStream(filename));
+            return new BufferedInputStream(new GZIPInputStream(new FileInputStream(filename)));
         } else {
-            return new FileInputStream(filename);
+            return new BufferedInputStream(new FileInputStream(filename));
         }
     }
 
