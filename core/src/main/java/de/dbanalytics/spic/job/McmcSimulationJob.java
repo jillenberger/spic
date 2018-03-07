@@ -5,11 +5,8 @@ import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.sim.*;
 import org.apache.commons.configuration2.HierarchicalConfiguration;
-import org.apache.commons.configuration2.ex.ConfigurationRuntimeException;
 import org.matsim.contrib.common.util.XORShiftRandom;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -75,16 +72,16 @@ public class McmcSimulationJob implements Job {
         List<String> klasses = config.getList(String.class, HAMILTONIAN);
         hamiltonianBuilders = new ArrayList<>();
         for (String klass : klasses) {
-            hamiltonianBuilders.add((McmcSimulationModuleBuilder<Hamiltonian>) createInstance(klass, config));
+            hamiltonianBuilders.add((McmcSimulationModuleBuilder<Hamiltonian>) ConfigUtils.createInstance(klass, config));
         }
 
-        mutatorBuilder = (McmcSimulationModuleBuilder<Mutator>) createInstance(config.getString(MUTATOR), config);
+        mutatorBuilder = (McmcSimulationModuleBuilder<Mutator>) ConfigUtils.createInstance(config.getString(MUTATOR), config);
 
         klasses = config.getList(String.class, ATTRIBUTE_OBSERVERS);
         attObsBuilders = new ArrayList<>();
         if (klasses != null) {
             for (String klass : klasses) {
-                attObsBuilders.add((McmcSimulationModuleBuilder<AttributeObserver>) createInstance(klass, config));
+                attObsBuilders.add((McmcSimulationModuleBuilder<AttributeObserver>) ConfigUtils.createInstance(klass, config));
             }
         }
 
@@ -92,39 +89,9 @@ public class McmcSimulationJob implements Job {
         analyzerBuilders = new ArrayList<>();
         if (klasses != null) {
             for (String klass : klasses) {
-                analyzerBuilders.add((McmcSimulationModuleBuilder<AnalyzerTask>) createInstance(klass, config));
+                analyzerBuilders.add((McmcSimulationModuleBuilder<AnalyzerTask>) ConfigUtils.createInstance(klass, config));
             }
         }
-    }
-
-    private Object createInstance(String klass, HierarchicalConfiguration config) {
-        try {
-            /** create instance */
-            Class<? extends Configurator> clazz = Class.forName(klass).asSubclass(Configurator.class);
-            Constructor<? extends Configurator> ctor = clazz.getConstructor();
-            Configurator configurator = ctor.newInstance();
-
-            /** configure if config node found */
-            HierarchicalConfiguration subConfig = null;
-            try {
-                subConfig = config.configurationAt(configurator.getClass().getSimpleName());
-            } catch (ConfigurationRuntimeException e) {
-
-            }
-            return configurator.configure(subConfig);
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override
