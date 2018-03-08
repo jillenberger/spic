@@ -74,13 +74,7 @@ public class ODDistributionTermBuilder2 implements McmcSimulationModuleBuilder<H
 
     private String name;
 
-//    private AttributeObserverComposite attributeListeners;
-
-//    private McmcSimulationObserverComposite engineListeners;
-
-//    private FileIOContext ioContext;
-
-//    private AnalyzerTaskComposite<Collection<? extends Person>> analyzers;
+    private boolean attachAnalyzers = true;
 
     public ODDistributionTermBuilder2(NumericMatrix refMatrix, PlaceIndex placeIndex, ZoneIndex zones) {
         this.refMatrix = refMatrix;
@@ -168,25 +162,10 @@ public class ODDistributionTermBuilder2 implements McmcSimulationModuleBuilder<H
         return this;
     }
 
-//    public ODDistributionTermBuilder2 attributeListeners(AttributeObserverComposite attributeListeners) {
-//        this.attributeListeners = attributeListeners;
-//        return this;
-//    }
-//
-//    public ODDistributionTermBuilder2 engineListeners(McmcSimulationObserverComposite engineListeners) {
-//        this.engineListeners = engineListeners;
-//        return this;
-//    }
-//
-//    public ODDistributionTermBuilder2 ioContext(FileIOContext ioContext) {
-//        this.ioContext = ioContext;
-//        return this;
-//    }
-//
-//    public ODDistributionTermBuilder2 analyzers(AnalyzerTaskComposite<Collection<? extends Person>> analyzers) {
-//        this.analyzers = analyzers;
-//        return this;
-//    }
+    public ODDistributionTermBuilder2 attachAnalyzers(boolean flag) {
+        this.attachAnalyzers = flag;
+        return this;
+    }
 
     @Override
     public Hamiltonian build(McmcSimulationContext context) {
@@ -204,7 +183,6 @@ public class ODDistributionTermBuilder2 implements McmcSimulationModuleBuilder<H
 
         /** Add to facility attribute change listener **/
         context.getAttributeMediator().attach(calibrator);
-//        if (attributeListeners != null) attributeListeners.addComponent(calibrator);
 
         /** Wrap in an annealing hamiltonian */
         AnnealingHamiltonian aTerm = new AnnealingHamiltonian(calibrator, thetaMin, thetaMax);
@@ -213,7 +191,6 @@ public class ODDistributionTermBuilder2 implements McmcSimulationModuleBuilder<H
         aTerm.setThetaThreshold(thetaThreshold);
         aTerm.setThetaFactor(thetaFactor);
         context.addEngineListener(aTerm);
-//        if (engineListeners != null) engineListeners.addComponent(aTerm);
 
         /** Do some debugging stuff */
         if (logInterval > 0) context.addEngineListener(new HamiltonianLogger(
@@ -233,37 +210,39 @@ public class ODDistributionTermBuilder2 implements McmcSimulationModuleBuilder<H
         }
 
         /** Add hamiltonian analyzer */
-        AnalyzerTaskComposite<Collection<? extends Person>> analyzers = new AnalyzerTaskComposite<>();
-        AnalyzerTaskGroup<Collection<? extends Person>> group = new AnalyzerTaskGroup<>(analyzers, context.getIoContext(), name);
-        context.addAnalyzer(group);
+        if (attachAnalyzers) {
+            AnalyzerTaskComposite<Collection<? extends Person>> analyzers = new AnalyzerTaskComposite<>();
+            AnalyzerTaskGroup<Collection<? extends Person>> group = new AnalyzerTaskGroup<>(analyzers, context.getIoContext(), name);
+            context.addAnalyzer(group);
 
-        AnalyzerTaskComposite<Pair<NumericMatrix, NumericMatrix>> composite = new AnalyzerTaskComposite<>();
+            AnalyzerTaskComposite<Pair<NumericMatrix, NumericMatrix>> composite = new AnalyzerTaskComposite<>();
 
-        HistogramWriter writer = new HistogramWriter(context.getIoContext(), new PassThroughDiscretizerBuilder(new
-                LinearDiscretizer(0.05), "linear"));
+            HistogramWriter writer = new HistogramWriter(context.getIoContext(), new PassThroughDiscretizerBuilder(new
+                    LinearDiscretizer(0.05), "linear"));
 
-        MatrixVolumeCompare volTask = new MatrixVolumeCompare(String.format("matrix.%s.vol", name));
-        volTask.setIoContext(context.getIoContext());
-        volTask.setHistogramWriter(writer);
+            MatrixVolumeCompare volTask = new MatrixVolumeCompare(String.format("matrix.%s.vol", name));
+            volTask.setIoContext(context.getIoContext());
+            volTask.setHistogramWriter(writer);
 
-        MatrixDistanceCompare distTask = new MatrixDistanceCompare(String.format("matrix.%s.dist", name), zones);
-        distTask.setFileIoContext(context.getIoContext());
+            MatrixDistanceCompare distTask = new MatrixDistanceCompare(String.format("matrix.%s.dist", name), zones);
+            distTask.setFileIoContext(context.getIoContext());
 
-        MatrixMarginalsCompare marTask = new MatrixMarginalsCompare(String.format("matrix.%s", name));
-        marTask.setHistogramWriter(writer);
+            MatrixMarginalsCompare marTask = new MatrixMarginalsCompare(String.format("matrix.%s", name));
+            marTask.setHistogramWriter(writer);
 
-        composite.addComponent(volTask);
-        composite.addComponent(distTask);
-        composite.addComponent(marTask);
+            composite.addComponent(volTask);
+            composite.addComponent(distTask);
+            composite.addComponent(marTask);
 
-        DefaultMatrixBuilderFactory factory = new DefaultMatrixBuilderFactory();
-        MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(placeIndex, zones), composite);
-        analyzer.setLegPredicate(predicate);
-        analyzer.setVolumeThreshold(volumeThreshold);
-        analyzer.setMatrixPredicate(new ZoneDistancePredicate(zones, minDistanceThreshold, maxDistanceThreshold, CartesianDistanceCalculator.getInstance()));
-        analyzer.setUseWeights(useWeights);
-        analyzer.setNormalize(normalize);
-        analyzers.addComponent(analyzer);
+            DefaultMatrixBuilderFactory factory = new DefaultMatrixBuilderFactory();
+            MatrixComparator analyzer = new MatrixComparator(refMatrix, factory.create(placeIndex, zones), composite);
+            analyzer.setLegPredicate(predicate);
+            analyzer.setVolumeThreshold(volumeThreshold);
+            analyzer.setMatrixPredicate(new ZoneDistancePredicate(zones, minDistanceThreshold, maxDistanceThreshold, CartesianDistanceCalculator.getInstance()));
+            analyzer.setUseWeights(useWeights);
+            analyzer.setNormalize(normalize);
+            analyzers.addComponent(analyzer);
+        }
 
         return aTerm;
     }

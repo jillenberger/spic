@@ -23,13 +23,14 @@ import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.ActivityTypes;
 import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.sim.data.CachedElement;
+import de.dbanalytics.spic.sim.data.Converters;
 
 /**
  * Created by johannesillenberger on 07.06.17.
  */
 public class HomePredicate implements Predicate<CachedElement> {
 
-    private final Object objectKey = new Object();
+    private final Object objectKey = Converters.newObjectKey();
 
     @Override
     public boolean test(CachedElement cachedElement) {
