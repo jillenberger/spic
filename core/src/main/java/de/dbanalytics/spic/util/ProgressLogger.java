@@ -69,6 +69,13 @@ public class ProgressLogger {
         LoggerUtils.enableNewLine();
     }
 
+    public void stop(String endMessage) {
+        System.out.print("\r");
+        delegate.info(message + " " + percentage + " % (" + endMessage + ")");
+        System.out.println();
+        LoggerUtils.enableNewLine();
+    }
+
     private synchronized void print() {
         System.out.print("\r");
         delegate.info(message + " " + percentage + " %");

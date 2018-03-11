@@ -94,7 +94,9 @@ public class PopulationIOv2 {
         populationIOv2.write(population, "/Users/jillenberger/Desktop/popv2.2.xml");
     }
 
-    public Set<Person> read(String filename) throws IOException, XMLStreamException {
+    public static Set<Person> read(String filename) throws IOException, XMLStreamException {
+        long time = System.currentTimeMillis();
+        
         InputFactoryImpl factory = new InputFactoryImpl();
         factory.configureForSpeed();
         XMLEventReader reader = factory.createXMLEventReader(IOUtils.createInputStream(filename));
@@ -179,12 +181,21 @@ public class PopulationIOv2 {
             }
         }
 
-        if (progressLogger != null) progressLogger.stop();
+        if (progressLogger != null) {
+            progressLogger.stop(String.format(
+                    "%s people in %.2f secs.",
+                    population.size(),
+                    (System.currentTimeMillis() - time) / 1000.0));
+        }
 
         return population;
     }
 
-    public void write(Collection<Person> population, String filename) throws IOException, XMLStreamException {
+    public static void write(Collection<Person> population, String filename) throws IOException, XMLStreamException {
+        ProgressLogger progressLogger = new ProgressLogger(logger);
+        progressLogger.start("Writing population...", population.size());
+        long time = System.currentTimeMillis();
+
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
         BufferedOutputStream stream = IOUtils.createOutputStream(filename);
         XMLStreamWriter writer = outputFactory.createXMLStreamWriter(stream);
@@ -249,6 +260,8 @@ public class PopulationIOv2 {
             writer.writeEndElement();
             writer.writeCharacters(NEW_LINE);
             level--;
+
+            progressLogger.step();
         }
 
         writer.writeEndElement();
@@ -258,9 +271,14 @@ public class PopulationIOv2 {
         writer.flush();
         writer.close();
         stream.close();
+
+        progressLogger.stop(String.format(
+                "%s people in %.2f secs.",
+                population.size(),
+                (System.currentTimeMillis() - time) / 1000.0));
     }
 
-    private void writeAttributes(Attributable attributable, XMLStreamWriter writer, int level, boolean wrap) throws XMLStreamException {
+    private static void writeAttributes(Attributable attributable, XMLStreamWriter writer, int level, boolean wrap) throws XMLStreamException {
         if (wrap) {
             for (int i = 0; i < level; i++) writer.writeCharacters(SPACES);
             writer.writeStartElement(ATTRIBUTES_ELEMENT);
