@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package spic;
+
+option java_package = "de.dbanalytics.devel.io";
+option java_outer_classname = "PbfContainers";
+
+message PbfAttribute {
+    string key = 1;
+    string value = 2;
+}
+
+message PbfSegment {
+     repeated PbfAttribute attributes = 1;
+}
+
+message PbfEpisode {
+     repeated PbfAttribute attributes = 1;
+     repeated PbfSegment segments = 2;
+}
+
+message PbfPerson {
+    string id = 1;
+    repeated PbfAttribute attributes = 2;
+    repeated PbfEpisode episodes = 3;
+}
+message PbfPopulation {
+    repeated PbfPerson population = 1;
+}

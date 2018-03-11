@@ -96,7 +96,7 @@ public class PopulationIOv2 {
 
     public static Set<Person> read(String filename) throws IOException, XMLStreamException {
         long time = System.currentTimeMillis();
-        
+
         InputFactoryImpl factory = new InputFactoryImpl();
         factory.configureForSpeed();
         XMLEventReader reader = factory.createXMLEventReader(IOUtils.createInputStream(filename));
