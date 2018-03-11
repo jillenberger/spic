@@ -45,9 +45,7 @@ import org.matsim.contrib.common.gis.DistanceCalculator;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author johannes
@@ -459,7 +457,8 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
         private final TIntObjectHashMap<Point> index2Point;
 
         public Builder(NumericMatrix refKeyMatrix, ZoneIndex zones, Collection<Place> places, String dumpFilePrefix) {
-            Set<Feature> zoneSet = new HashSet<>();//zones.getZones();
+//            Set<Feature> zoneSet = new LinkedHashSet<>();
+            List<Feature> zoneSet = new ArrayList<>(zones.get().size());
             /** remove zone with ignore tag */
             for (Feature zone : zones.get()) {
                 //TODO: Should attribute keys be always lower case?

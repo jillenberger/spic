@@ -29,41 +29,41 @@ import org.apache.commons.configuration2.HierarchicalConfiguration;
 public class ODDistributionTermConfig2 implements Configurator<ODDistributionTermBuilder2> {
 
     /** @deprecated */
-    private static final String DISTANCE_THRESHOLD = "distanceThreshold";
+    public static final String DISTANCE_THRESHOLD = "distanceThreshold";
 
-    private static final String MIN_DISTANCE_THRESHOLD = "minDistanceThreshold";
+    public static final String MIN_DISTANCE_THRESHOLD = "minDistanceThreshold";
 
-    private static final String MAX_DISTANCE_THRESHOLD = "maxDistanceThreshold";
+    public static final String MAX_DISTANCE_THRESHOLD = "maxDistanceThreshold";
 
-    private static final String VOLUME_THRESHOLD = "volumeThreshold";
+    public static final String VOLUME_THRESHOLD = "volumeThreshold";
 
-    private static final String LOG_INTERVAL = "logInterval";
+    public static final String LOG_INTERVAL = "logInterval";
 
-    private static final String DEBUG_INTERVAL = "debugInterval";
+    public static final String DEBUG_INTERVAL = "debugInterval";
 
-    private static final String NAME = "name";
+    public static final String NAME = "name";
 
-    private static final String START_ITERATION = "startIteration";
+    public static final String START_ITERATION = "startIteration";
 
-    private static final String THETA_MAX = "thetaMax";
+    public static final String THETA_MAX = "thetaMax";
 
-    private static final String THETA_MIN = "thetaMin";
+    public static final String THETA_MIN = "thetaMin";
 
-    private static final String THETA_FACTOR = "thetaFactor";
+    public static final String THETA_FACTOR = "thetaFactor";
 
-    private static final String THETA_INTERVAL = "thetaInterval";
+    public static final String THETA_INTERVAL = "thetaInterval";
 
-    private static final String THETA_THRESHOLD = "thetaThreshold";
+    public static final String THETA_THRESHOLD = "thetaThreshold";
 
-    private static final String RESET_INTERVAL = "resetInterval";
+    public static final String RESET_INTERVAL = "resetInterval";
 
-    private static final String MATRIX_FILE = "matrixFile";
+    public static final String MATRIX_FILE = "matrixFile";
 
-    private static final String ZONES_FILE = "zonesFile";
+    public static final String ZONES_FILE = "zonesFile";
 
-    private static final String PLACES_FILE = "placesFile";
+    public static final String PLACES_FILE = "placesFile";
 
-    private static final String EPSG = "epsg";
+    public static final String EPSG = "epsg";
 
     @Override
     public ODDistributionTermBuilder2 configure(HierarchicalConfiguration config) {
