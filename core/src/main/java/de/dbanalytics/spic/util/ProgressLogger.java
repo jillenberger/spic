@@ -38,7 +38,11 @@ public class ProgressLogger {
 
     private long max;
 
+    private int step;
+
     private AtomicLong count;
+
+    private boolean relativeMode = true;
 
     public ProgressLogger(Logger delegate) {
         this.delegate = delegate;
@@ -47,37 +51,64 @@ public class ProgressLogger {
     public void start(String message, long max) {
         this.message = message;
         this.max = max;
+        this.step = 0;
         this.percentage = new AtomicInteger(0);
         this.count = new AtomicLong(0);
+        relativeMode = true;
 
         LoggerUtils.disableNewLine();
-        print();
+        printRel();
+    }
+
+    public void start(String message, int step) {
+        this.message = message;
+        this.max = 0;
+        this.step = step;
+        this.percentage = null;
+        this.count = new AtomicLong(0);
+        relativeMode = false;
+
+        LoggerUtils.disableNewLine();
+        printAbs();
     }
 
     public void step() {
         count.incrementAndGet();
-        int tmp = (int) Math.floor(count.get() / (double) max * 100);
-        if (tmp != percentage.get()) {
-            percentage.set(tmp);
-            print();
+        if (relativeMode) {
+            int tmp = (int) Math.floor(count.get() / (double) max * 100);
+            if (tmp != percentage.get()) {
+                percentage.set(tmp);
+                printRel();
+            }
+        } else {
+            if (count.get() % step == 0) {
+                printAbs();
+            }
         }
     }
 
     public void stop() {
-        print();
+        if (relativeMode) printRel();
+        else printAbs();
         System.out.println();
         LoggerUtils.enableNewLine();
     }
 
     public void stop(String endMessage) {
         System.out.print("\r");
-        delegate.info(message + " " + percentage + " % (" + endMessage + ")");
+        if (relativeMode) delegate.info(message + " " + percentage + " % (" + endMessage + ")");
+        else delegate.info(message + " " + count + " (" + endMessage + ")");
         System.out.println();
         LoggerUtils.enableNewLine();
     }
 
-    private synchronized void print() {
+    private synchronized void printRel() {
         System.out.print("\r");
         delegate.info(message + " " + percentage + " %");
+    }
+
+    private synchronized void printAbs() {
+        System.out.print("\r");
+        delegate.info(message + " " + count);
     }
 }

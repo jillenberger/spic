@@ -23,6 +23,8 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.util.IOUtils;
+import de.dbanalytics.spic.util.ProgressLogger;
+import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 
 import javax.xml.namespace.QName;
@@ -32,15 +34,14 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author jillenberger
  */
 public class PlacesIO {
+
+    private static final Logger logger = Logger.getLogger(PlacesIO.class);
 
     private static final String PLACES_ELEMENT = "places";
 
@@ -66,8 +67,14 @@ public class PlacesIO {
 
     private GeoTransformer transformer = GeoTransformer.identityTransformer();
 
+    private boolean verbose = true;
+
     public void setGeoTransformer(GeoTransformer transformer) {
         this.transformer = transformer;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 
     public Set<Place> read(String filename) throws IOException, XMLStreamException {
@@ -77,6 +84,10 @@ public class PlacesIO {
         GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
         Set<Place> places = null;
         Place place = null;
+
+        ProgressLogger progressLogger = null;
+        if (verbose) progressLogger = new ProgressLogger(logger);
+        long time = System.currentTimeMillis();
 
         while (reader.hasNext()) {
             XMLEvent event = reader.nextEvent();
@@ -90,6 +101,7 @@ public class PlacesIO {
                     Init places set.
                      */
                     places = new LinkedHashSet<>();
+                    if (verbose) progressLogger.start("Loading places...", 5000);
 
                 } else if (localName.equals(PLACE_ELEMENT)) {
                     /*
@@ -129,8 +141,20 @@ public class PlacesIO {
                 For safety, release place pointer.
                  */
                 EndElement endElement = event.asEndElement();
-                if (endElement.getName().getLocalPart().equals(PLACE_ELEMENT)) place = null;
+                if (endElement.getName().getLocalPart().equals(PLACE_ELEMENT)) {
+                    place = null;
+                    if (verbose) progressLogger.step();
+                }
             }
+        }
+
+        if (verbose) {
+            progressLogger.stop(String.format(
+                    Locale.US,
+                    "%s places in %.2f secs.",
+                    places.size(),
+                    (System.currentTimeMillis() - time) / 1000.0));
+
         }
 
         return places;
