@@ -287,12 +287,15 @@ public class PopulationIOv2 {
         }
 
         for (String key : attributable.keys()) {
-            for (int i = 0; i < level; i++) writer.writeCharacters(SPACES);
-            writer.writeStartElement(ATTRIBUTE_ELEMENT);
-            writer.writeAttribute(NAME_ATTRIBUTE, key);
-            writer.writeCharacters(attributable.getAttribute(key));
-            writer.writeEndElement();
-            writer.writeCharacters(NEW_LINE);
+            String value = attributable.getAttribute(key);
+            if (value != null) {
+                for (int i = 0; i < level; i++) writer.writeCharacters(SPACES);
+                writer.writeStartElement(ATTRIBUTE_ELEMENT);
+                writer.writeAttribute(NAME_ATTRIBUTE, key);
+                writer.writeCharacters(value);
+                writer.writeEndElement();
+                writer.writeCharacters(NEW_LINE);
+            }
         }
 
         if (wrap) {
