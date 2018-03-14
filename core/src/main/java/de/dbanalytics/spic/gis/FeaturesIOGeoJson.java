@@ -19,6 +19,7 @@
 
 package de.dbanalytics.spic.gis;
 
+import de.dbanalytics.spic.util.ProgressLogger;
 import org.apache.log4j.Logger;
 import org.wololo.geojson.FeatureCollection;
 import org.wololo.geojson.GeoJSON;
@@ -41,8 +42,14 @@ public class FeaturesIOGeoJson {
 
     private GeoTransformer transformer = GeoTransformer.identityTransformer();
 
+    private boolean verbose = true;
+
     public void setGeoTransformer(GeoTransformer transformer) {
         this.transformer = transformer;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 
     public Set<Feature> read(String filename) throws IOException {
@@ -50,9 +57,14 @@ public class FeaturesIOGeoJson {
         GeoJSON jsonData = GeoJSONFactory.create(data);
 
         if (jsonData instanceof FeatureCollection) {
+            long time = System.currentTimeMillis();
+            ProgressLogger progressLogger = new ProgressLogger(logger);
+
             GeoJSONReader reader = new GeoJSONReader();
             Set<Feature> features = new LinkedHashSet<>();
             FeatureCollection jsonFeatures = (FeatureCollection) jsonData;
+
+            if (verbose) progressLogger.start("Loading features", jsonFeatures.getFeatures().length);
             for (org.wololo.geojson.Feature jsonFeature : jsonFeatures.getFeatures()) {
                 Map<String, String> attributes = new HashMap<>();
                 for (Map.Entry<String, Object> prop : jsonFeature.getProperties().entrySet()) {
@@ -68,6 +80,16 @@ public class FeaturesIOGeoJson {
                 }
                 transformer.forward(feature.getGeometry());
                 features.add(feature);
+
+                if (verbose) progressLogger.step();
+            }
+
+            if (verbose) {
+                progressLogger.stop(String.format(
+                        Locale.US,
+                        "%s features in %.2f secs",
+                        features.size(),
+                        (System.currentTimeMillis() - time) / 1000.0));
             }
             return features;
         } else {

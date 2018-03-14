@@ -18,11 +18,9 @@ public class ZoneIndexLoader implements DataLoader {
     @Override
     public Object load(String filename) {
         try {
-            logger.info("Loading zones...");
             FeaturesIO featuresIO = new FeaturesIO();
             featuresIO.setTransformer(GeoTransformer.WGS84toX(epsg));
             Set<Feature> features = featuresIO.read(filename);
-            logger.info(String.format("Loaded %s zones.", features.size()));
 
             return new ZoneIndex(features);
         } catch (IOException e) {
