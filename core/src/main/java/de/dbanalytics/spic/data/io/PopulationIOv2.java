@@ -39,6 +39,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -71,28 +72,6 @@ public class PopulationIOv2 {
     private static final String NEW_LINE = "\n";
 
     private static final String SPACES = "    ";
-
-    public static void main(String[] args) throws IOException, XMLStreamException, InterruptedException {
-//        Thread.sleep(10000);
-        long time = System.currentTimeMillis();
-        Set<Person> population = PopulationIO.loadFromXML("/Users/jillenberger/Dropbox/work/hamburg/pop.prepare.xml", new PlainFactory());
-        System.out.println("read v1 took " + (System.currentTimeMillis() - time) + " ms");
-
-        time = System.currentTimeMillis();
-        PopulationIOv2 populationIOv2 = new PopulationIOv2();
-        populationIOv2.write(population, "/Users/jillenberger/Desktop/popv2.xml");
-        System.out.println("write v2 took " + (System.currentTimeMillis() - time) + " ms");
-
-        time = System.currentTimeMillis();
-        PopulationIO.writeToXML("/Users/jillenberger/Desktop/pop.xml.gz", population);
-        System.out.println("write v1 took " + (System.currentTimeMillis() - time) + " ms");
-
-        time = System.currentTimeMillis();
-        populationIOv2.read("/Users/jillenberger/Desktop/popv2.xml");
-        System.out.println("read v2 took " + (System.currentTimeMillis() - time) + " ms");
-
-        populationIOv2.write(population, "/Users/jillenberger/Desktop/popv2.2.xml");
-    }
 
     public static Set<Person> read(String filename) throws IOException, XMLStreamException {
         long time = System.currentTimeMillis();
@@ -128,6 +107,8 @@ public class PopulationIOv2 {
                         progressLogger.start("Loading population...", size);
                     } else {
                         population = new LinkedHashSet<>();
+                        progressLogger = new ProgressLogger(logger);
+                        progressLogger.startAbs("Loading population...", 5000);
                     }
 
                 } else if (localName.equals(PERSON_ELEMENT)) {
@@ -183,6 +164,7 @@ public class PopulationIOv2 {
 
         if (progressLogger != null) {
             progressLogger.stop(String.format(
+                    Locale.US,
                     "%s people in %.2f secs.",
                     population.size(),
                     (System.currentTimeMillis() - time) / 1000.0));

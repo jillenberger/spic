@@ -4,6 +4,7 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.io.flattable.PopulationWriter;
 import org.apache.commons.configuration2.HierarchicalConfiguration;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -21,6 +22,7 @@ public class WriteFlatTableJob implements Job {
     @Override
     public Collection<? extends Person> execute(Collection<? extends Person> population) {
         try {
+            new File(outputDirectory).mkdirs();
             PopulationWriter.write(population, outputDirectory);
         } catch (IOException e) {
             e.printStackTrace();

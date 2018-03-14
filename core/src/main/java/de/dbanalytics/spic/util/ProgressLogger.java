@@ -60,7 +60,7 @@ public class ProgressLogger {
         printRel();
     }
 
-    public void start(String message, int step) {
+    public void startAbs(String message, int step) {
         this.message = message;
         this.max = 0;
         this.step = step;

@@ -21,11 +21,11 @@ package de.dbanalytics.spic.data.io;
 
 import de.dbanalytics.spic.data.Factory;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.util.IOUtils;
 import org.apache.log4j.Logger;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -38,7 +38,7 @@ public class PopulationIO {
 
     public static <P extends Person> Set<P> loadFromXML(String file, Factory factory) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = IOUtils.createBufferedReader(file);
             String line = reader.readLine();
             line = reader.readLine();
             reader.close();

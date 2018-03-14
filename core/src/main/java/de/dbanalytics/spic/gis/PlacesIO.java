@@ -101,7 +101,7 @@ public class PlacesIO {
                     Init places set.
                      */
                     places = new LinkedHashSet<>();
-                    if (verbose) progressLogger.start("Loading places...", 5000);
+                    if (verbose) progressLogger.startAbs("Loading places...", 5000);
 
                 } else if (localName.equals(PLACE_ELEMENT)) {
                     /*
