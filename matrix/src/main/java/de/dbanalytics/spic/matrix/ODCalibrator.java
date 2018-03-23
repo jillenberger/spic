@@ -90,6 +90,8 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
 
     private int odCount;
 
+    private BufferedWriter debugWriter;
+
     public ODCalibrator(TIntObjectHashMap<TIntDoubleHashMap> refMatrix, TObjectIntHashMap<Place>
             place2Index, TIntObjectHashMap<Point> index2Point) {
         this.refMatrix = refMatrix;
@@ -129,12 +131,35 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
         this.rescaleInterval = interval;
     }
 
+    public void setDebugFile(String filename) {
+        try {
+            debugWriter = new BufferedWriter(new FileWriter(filename));
+            debugWriter.write("iter\tinitTime\tsimSum\trefSum\tscale\todCount\thOld\thNew");
+            debugWriter.newLine();
+            debugWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void calculateScaleFactor() {
         if (normalize) {
             double simSum = calculateSum(simMatrix, minDistanceThreshold, maxDistanceThreshold);
             scaleFactor = simSum / refSum;
 
-            logger.debug(String.format("Recalculated scale factor: %s.", scaleFactor));
+//            logger.debug(String.format("Recalculated scale factor: %s.", scaleFactor));
+            if (debugWriter != null) {
+                try {
+                    debugWriter.write("\t");
+                    debugWriter.write(String.valueOf(simSum));
+                    debugWriter.write("\t");
+                    debugWriter.write(String.valueOf(refSum));
+                    debugWriter.write("\t");
+                    debugWriter.write(String.valueOf(scaleFactor));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
             scaleFactor = 1.0;
         }
@@ -160,11 +185,20 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             }
         }
 
-        logger.debug(String.format("Calibrating against %s OD pairs.", odCount));
+//        logger.debug(String.format("Calibrating against %s OD pairs.", odCount));
+        if (debugWriter != null) {
+            try {
+                debugWriter.write("\t");
+                debugWriter.write(String.valueOf(odCount));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initSimMatrix(Collection<? extends CachedPerson> persons) {
-        logger.debug("Initializing simulation matrix...");
+//        logger.debug("Initializing simulation matrix...");
+        long time = System.currentTimeMillis();
 
         if (this.placeDataKey == null)
             this.placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
@@ -199,7 +233,16 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             }
         }
 
-        logger.debug("Done.");
+//        logger.debug("Done.");
+        if (debugWriter != null) {
+            try {
+                debugWriter.write(String.valueOf(iterations));
+                debugWriter.write("\t");
+                debugWriter.write(String.valueOf(System.currentTimeMillis() - time));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -271,6 +314,16 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             initSimMatrix(population);
             calculateScaleFactor();
             initHamiltonian();
+
+            if (debugWriter != null) {
+                try {
+                    debugWriter.write("\t0\t0");
+                    debugWriter.newLine();
+                    debugWriter.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         if (iterations > 0 && iterations % rescaleInterval == 0) {
@@ -278,8 +331,22 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             initSimMatrix(population);
             calculateScaleFactor();
             initHamiltonian();
-            if (h_old != hamiltonianValue)
-                logger.trace(String.format("Reset hamiltonian: %s -> %s", h_old, hamiltonianValue));
+            if (h_old != hamiltonianValue) {
+//                logger.trace(String.format("Reset hamiltonian: %s -> %s", h_old, hamiltonianValue));
+                if (debugWriter != null) {
+                    try {
+                        debugWriter.write("\t");
+                        debugWriter.write(String.valueOf(h_old));
+                        debugWriter.write("\t");
+                        debugWriter.write(String.valueOf(hamiltonianValue));
+                        debugWriter.newLine();
+                        debugWriter.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
         }
         iterations++;
 

@@ -203,10 +203,11 @@ public class ODDistributionTermBuilder2 implements McmcSimulationModuleBuilder<H
         if (debugInterval > 0 && context.getIoContext() != null) {
             context.addEngineListener(new ODDistributionDebugger(
                     calibrator,
-                    name + ".interState",
+                    name + ".internState",
                     context.getIoContext().getPath(),
                     debugInterval));
             aTerm.enableFileLogging(context.getIoContext().getPath() + "/" + name + ".thetaUpdates.txt");
+            calibrator.setDebugFile(context.getIoContext().getPath() + "/" + name + ".debug.txt");
         }
 
         /** Add hamiltonian analyzer */

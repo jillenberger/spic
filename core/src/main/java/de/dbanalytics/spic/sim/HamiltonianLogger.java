@@ -51,11 +51,11 @@ public class HamiltonianLogger implements McmcSimulationObserver {
 
     private static final String TAB = "\t";
 
-    private final String outdir;
-
     private final DecimalFormat format;
 
     private final String name;
+
+    private boolean silent;
 
     public HamiltonianLogger(Hamiltonian h, int logInterval, String name) {
         this(h, logInterval, name, null);
@@ -69,7 +69,6 @@ public class HamiltonianLogger implements McmcSimulationObserver {
         this.h = h;
         this.logInterval = logInterval;
         this.startIteration = startIteration;
-        this.outdir = outdir;
 
         if(name == null)
             this.name = h.getClass().getSimpleName();
@@ -90,13 +89,18 @@ public class HamiltonianLogger implements McmcSimulationObserver {
         }
     }
 
+    public void setSilent(boolean silent) {
+        this.silent = silent;
+    }
+
     @Override
     public void afterStep(Collection<CachedPerson> population, Collection<? extends Attributable> mutations, boolean accepted) {
         if(iter.get() % logInterval == 0) {
             long iterNow = iter.get();
             if (iterNow >= startIteration) {
                 double hVal = h.evaluate(population);
-                logger.info(String.format("%s [%s]: %s", name, format.format(iterNow), hVal));
+
+                if (!silent) logger.info(String.format("%s [%s]: %s", name, format.format(iterNow), hVal));
 
                 if (writer != null) {
                     try {
@@ -110,7 +114,7 @@ public class HamiltonianLogger implements McmcSimulationObserver {
                     }
                 }
             } else {
-                logger.info(String.format("%s [%s]: <<inactive>>", name, format.format(iterNow)));
+                if (!silent) logger.info(String.format("%s [%s]: <<inactive>>", name, format.format(iterNow)));
             }
         }
 
