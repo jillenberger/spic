@@ -19,8 +19,9 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
+import de.dbanalytics.spic.util.IOUtils;
+
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,8 +47,9 @@ public abstract class RowHandler {
 	}
 	
 	public void read(String file) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		
+//		BufferedReader reader = new BufferedReader(new FileReader(file));
+		BufferedReader reader = IOUtils.createBufferedReader(file);
+
 		String line = reader.readLine();
 		String keys[] = line.split(separator, -1);
 		Map<String, String> attributes = new HashMap<String, String>(keys.length);
