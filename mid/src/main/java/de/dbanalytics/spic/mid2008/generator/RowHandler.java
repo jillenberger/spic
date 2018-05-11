@@ -47,7 +47,6 @@ public abstract class RowHandler {
 	}
 	
 	public void read(String file) throws IOException {
-//		BufferedReader reader = new BufferedReader(new FileReader(file));
 		BufferedReader reader = IOUtils.createBufferedReader(file);
 
 		String line = reader.readLine();

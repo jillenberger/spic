@@ -147,7 +147,6 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             double simSum = calculateSum(simMatrix, minDistanceThreshold, maxDistanceThreshold);
             scaleFactor = simSum / refSum;
 
-//            logger.debug(String.format("Recalculated scale factor: %s.", scaleFactor));
             if (debugWriter != null) {
                 try {
                     debugWriter.write("\t");
@@ -176,16 +175,13 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
                 double d = CartesianDistanceCalculator.getInstance().distance(p_i, p_j);
                 if (d >= minDistanceThreshold && d < maxDistanceThreshold) {
                     double refVal = getCellValue(i, j, refMatrix);
-                    if(refVal >= volumeThreshold) {
-                        double simVal = getCellValue(i, j, simMatrix);
-                        hamiltonianValue += calculateError(simVal, refVal);
-                        odCount++;
-                    }
+                    double simVal = getCellValue(i, j, simMatrix);
+                    hamiltonianValue += calculateError(simVal, refVal);
+                    odCount++;
                 }
             }
         }
 
-//        logger.debug(String.format("Calibrating against %s OD pairs.", odCount));
         if (debugWriter != null) {
             try {
                 debugWriter.write("\t");
@@ -197,7 +193,6 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
     }
 
     private void initSimMatrix(Collection<? extends CachedPerson> persons) {
-//        logger.debug("Initializing simulation matrix...");
         long time = System.currentTimeMillis();
 
         if (this.placeDataKey == null)
@@ -233,7 +228,6 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             }
         }
 
-//        logger.debug("Done.");
         if (debugWriter != null) {
             try {
                 debugWriter.write(String.valueOf(iterations));
@@ -249,9 +243,6 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
     public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
         if (simMatrix != null) {
             if (this.placeDataKey.equals(dataKey)) {
-//                if (this.placeDataKey == null) //FIXME: Does not make sense!
-//                    this.placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
-
                 CachedSegment act = (CachedSegment) element;
                 int oldIdx = place2Index.get(oldValue);
                 int newIdx = place2Index.get(newValue);
@@ -332,7 +323,6 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             calculateScaleFactor();
             initHamiltonian();
             if (h_old != hamiltonianValue) {
-//                logger.trace(String.format("Reset hamiltonian: %s -> %s", h_old, hamiltonianValue));
                 if (debugWriter != null) {
                     try {
                         debugWriter.write("\t");
@@ -360,7 +350,8 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
 
             double refVal = getCellValue(i, j, refMatrix);
             double d = CartesianDistanceCalculator.getInstance().distance(p_i, p_j);
-            if (refVal >= volumeThreshold && d >= minDistanceThreshold && d < maxDistanceThreshold) {
+
+            if (d >= minDistanceThreshold && d < maxDistanceThreshold) {
                 double simVal = getCellValue(i, j, simMatrix);
                 double oldDiff = calculateError(simVal, refVal);
 
@@ -397,12 +388,19 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
 
     private double calculateError(double simVal, double refVal) {
         simVal = simVal / scaleFactor;
-        if (refVal > 0) {
+        if (refVal >= volumeThreshold && refVal > 0) {
             return Math.abs(simVal - refVal) / refVal;
         } else {
-            if (simVal == 0) return 0;
-            else return simVal;
-            // Not sure if scaleFactor is the appropriate normalization...
+            if (simVal < volumeThreshold) {
+                return 0;
+            } else {
+                if (volumeThreshold > 0) {
+                    return (simVal - volumeThreshold) / volumeThreshold;
+                } else {
+                    return simVal; //TODO: introduce a scaling parameter here?
+                }
+
+            }
         }
     }
 
@@ -524,7 +522,6 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
         private final TIntObjectHashMap<Point> index2Point;
 
         public Builder(NumericMatrix refKeyMatrix, ZoneIndex zones, Collection<Place> places, String dumpFilePrefix) {
-//            Set<Feature> zoneSet = new LinkedHashSet<>();
             List<Feature> zoneSet = new ArrayList<>(zones.get().size());
             /** remove zone with ignore tag */
             for (Feature zone : zones.get()) {
