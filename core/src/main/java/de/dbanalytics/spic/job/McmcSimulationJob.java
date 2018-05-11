@@ -71,8 +71,10 @@ public class McmcSimulationJob implements Job {
 
         List<String> klasses = config.getList(String.class, HAMILTONIAN);
         hamiltonianBuilders = new ArrayList<>();
-        for (String klass : klasses) {
-            hamiltonianBuilders.add((McmcSimulationModuleBuilder<Hamiltonian>) ConfigUtils.createInstance(klass, config));
+        if (klasses != null) {
+            for (String klass : klasses) {
+                hamiltonianBuilders.add((McmcSimulationModuleBuilder<Hamiltonian>) ConfigUtils.createInstance(klass, config));
+            }
         }
 
         mutatorBuilder = (McmcSimulationModuleBuilder<Mutator>) ConfigUtils.createInstance(config.getString(MUTATOR), config);
