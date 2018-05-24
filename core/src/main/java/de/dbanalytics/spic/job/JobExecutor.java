@@ -52,6 +52,8 @@ public class JobExecutor {
         JobExecutor executor = new JobExecutor();
         executor.configure(config.configurationAt(JOB_EXECUTOR_TAG));
         executor.run();
+
+        Executor.shutdown();
     }
 
     public void configure(HierarchicalConfiguration config) {
