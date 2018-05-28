@@ -39,10 +39,10 @@ public class SpeedCompare {
         for (Pair<Node, Node> pair : pairs) {
             Node start = pair.getLeft();
             Node end = pair.getRight();
-            Pair<Double, Double> r = osrmRouter.getTravelTime(start.getLongitude(), start.getLatitude(), end.getLongitude(), end.getLatitude(), false);
-            if (r != null) {
-                osrmTTs[i] = r.getRight();
-                osrmDists[i] = r.getLeft();
+            Route route = osrmRouter.query(start.getLongitude(), start.getLatitude(), end.getLongitude(), end.getLatitude());
+            if (route != null) {
+                osrmTTs[i] = route.traveltime();
+                osrmDists[i] = route.distance();
             } else {
                 invalid++;
             }
@@ -60,7 +60,7 @@ public class SpeedCompare {
         for (Pair<Node, Node> pair : pairs) {
             Node start = pair.getLeft();
             Node end = pair.getRight();
-            RoutingResult r = ghRouter.query(start.getLatitude(), start.getLongitude(), end.getLatitude(), end.getLongitude());
+            GhRoute r = ghRouter.query(start.getLatitude(), start.getLongitude(), end.getLatitude(), end.getLongitude());
             if (r != null) {
                 r.getPath();
                 ghTTs[i] = r.getTraveltime();

@@ -51,7 +51,7 @@ import java.util.*;
 /**
  * @author johannes
  */
-public class GraphHopperWrapper {
+public class GraphHopperWrapper implements RoutingService {
 
     private static final Logger logger = Logger.getLogger(GraphHopperWrapper.class);
 
@@ -223,7 +223,7 @@ public class GraphHopperWrapper {
         return theNode;
     }
 
-    public RoutingResult query(double fromLat, double fromLon, double toLat, double toLon) {
+    public GhRoute query(double fromLat, double fromLon, double toLat, double toLon) {
         LocationIndex index = hopper.getLocationIndex();
         GraphHopperStorage graph = hopper.getGraphHopperStorage();
 
@@ -243,7 +243,7 @@ public class GraphHopperWrapper {
         Path path = algorithm.calcPath(fromNodeId, toNodeId);
 
         if (path.isFound()) {
-            return new RoutingResult(path, ghEdge2Nodes);
+            return new GhRoute(path, ghEdge2Nodes);
         } else {
             return null;
         }

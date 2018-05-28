@@ -25,9 +25,9 @@ import de.dbanalytics.spic.gis.ZoneIndex;
 import de.dbanalytics.spic.matrix.NumericMatrix;
 import de.dbanalytics.spic.matrix.NumericMatrixIO;
 import de.dbanalytics.spic.osm.graph.Edge;
+import de.dbanalytics.spic.osm.graph.GhRoute;
 import de.dbanalytics.spic.osm.graph.GraphHopperWrapper;
 import de.dbanalytics.spic.osm.graph.Node;
-import de.dbanalytics.spic.osm.graph.RoutingResult;
 import de.dbanalytics.spic.util.ProgressLogger;
 import gnu.trove.iterator.TObjectDoubleIterator;
 import gnu.trove.map.TObjectDoubleMap;
@@ -89,7 +89,7 @@ public class RunMatrixAssignment {
                         Feature zone_i = zoneIndex.get(row);
                         Feature zone_j = zoneIndex.get(col);
 
-                        RoutingResult result = router.query(
+                        GhRoute result = router.query(
                                 zone_i.getGeometry().getCentroid().getY(),
                                 zone_i.getGeometry().getCentroid().getX(),
                                 zone_j.getGeometry().getCentroid().getY(),

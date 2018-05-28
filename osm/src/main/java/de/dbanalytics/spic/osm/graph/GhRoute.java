@@ -31,25 +31,53 @@ import java.util.List;
 /**
  * @author johannes
  */
-public class RoutingResult {
+public class GhRoute implements Route, RouteLeg {
 
-    private static final Logger logger = Logger.getLogger(RoutingResult.class);
+    private static final Logger logger = Logger.getLogger(GhRoute.class);
 
     private final Path ghPath;
 
     private final TIntObjectMap<List<Node>> ghEdge2Nodes;
 
-    public RoutingResult(Path ghPath, TIntObjectMap<List<Node>> ghEdge2Nodes) {
+    private List<RouteLeg> routeLegs = new ArrayList<>(1);
+
+    private long[] nodes;
+
+    public GhRoute(Path ghPath, TIntObjectMap<List<Node>> ghEdge2Nodes) {
         this.ghPath = ghPath;
         this.ghEdge2Nodes = ghEdge2Nodes;
+        routeLegs.add(this);
     }
 
     public double getDistance() {
         return ghPath.getDistance();
     }
 
+    public double distance() {
+        return ghPath.getDistance();
+    }
+
     public double getTraveltime() {
         return ghPath.getTime();
+    }
+
+    public double traveltime() {
+        return ghPath.getTime() / 1000.0;
+    }
+
+    public List<RouteLeg> routeLegs() {
+        return routeLegs;
+    }
+
+    public long[] nodes() {
+        if (nodes == null) {
+            List<Node> path = getPath();
+            nodes = new long[path.size()];
+            for (int i = 0; i < path.size(); i++) {
+                nodes[i] = path.get(i).getId();
+            }
+        }
+        return nodes;
     }
 
     public List<Node> getPath() {

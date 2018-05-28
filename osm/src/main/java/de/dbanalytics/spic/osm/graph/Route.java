@@ -1,11 +1,13 @@
 package de.dbanalytics.spic.osm.graph;
 
-public interface RouteLeg {
+import java.util.List;
+
+public interface Route {
 
     double traveltime();
 
     double distance();
 
-    long[] nodes();
+    List<RouteLeg> routeLegs();
 
 }
