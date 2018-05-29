@@ -23,11 +23,12 @@ public class GoogleRoutingService implements RoutingService {
             DirectionsResult result = DirectionsApi.newRequest(context).
                     origin(new LatLng(fromLat, fromLon)).
                     destination(new LatLng(toLat, toLon)).
+                    mode(TravelMode.DRIVING).
                     alternatives(false).
                     units(Unit.METRIC).
                     await();
 
-            if (result.routes.length > 1) {
+            if (result.routes.length > 0) {
                 DirectionsRoute route = result.routes[0];
                 return new GoogleRoute(route.legs);
             } else {

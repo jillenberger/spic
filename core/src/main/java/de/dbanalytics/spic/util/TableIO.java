@@ -3,12 +3,8 @@ package de.dbanalytics.spic.util;
 import com.google.common.collect.ArrayTable;
 import com.google.common.collect.Table;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TableIO {
@@ -50,6 +46,34 @@ public class TableIO {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static void write(Table<Integer, String, String> table, String filename, String separator) throws IOException {
+        Set<Integer> rows = new TreeSet<>(table.rowKeySet());
+        List<String> columns = new ArrayList<>(table.columnKeySet());
+
+        if (columns.size() > 0) {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            /** write header */
+            writer.write(columns.get(0));
+            for (int i = 1; i < columns.size(); i++) {
+                writer.write(separator);
+                writer.write(columns.get(i));
+            }
+            writer.newLine();
+            /** write body */
+            for (Integer row : rows) {
+                writer.write(table.get(row, columns.get(0)));
+                for (int i = 1; i < columns.size(); i++) {
+                    writer.write(separator);
+                    String val = table.get(row, columns.get(i));
+                    if (val == null) val = "";
+                    writer.write(val);
+                }
+                writer.newLine();
+            }
+            writer.close();
         }
     }
 }

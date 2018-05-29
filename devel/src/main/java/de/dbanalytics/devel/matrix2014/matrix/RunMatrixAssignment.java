@@ -90,10 +90,9 @@ public class RunMatrixAssignment {
                         Feature zone_j = zoneIndex.get(col);
 
                         GhRoute result = router.query(
-                                zone_i.getGeometry().getCentroid().getY(),
-                                zone_i.getGeometry().getCentroid().getX(),
-                                zone_j.getGeometry().getCentroid().getY(),
-                                zone_j.getGeometry().getCentroid().getX());
+                                zone_i.getGeometry().getCentroid().getX(), zone_i.getGeometry().getCentroid().getY(),
+                                zone_j.getGeometry().getCentroid().getX(), zone_j.getGeometry().getCentroid().getY()
+                        );
 
                         if (result != null) {
                             List<Node> nodes = result.getPath();

@@ -223,7 +223,7 @@ public class GraphHopperWrapper implements RoutingService {
         return theNode;
     }
 
-    public GhRoute query(double fromLat, double fromLon, double toLat, double toLon) {
+    public GhRoute query(double fromLon, double fromLat, double toLon, double toLat) {
         LocationIndex index = hopper.getLocationIndex();
         GraphHopperStorage graph = hopper.getGraphHopperStorage();
 

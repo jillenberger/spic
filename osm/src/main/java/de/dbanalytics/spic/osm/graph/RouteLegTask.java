@@ -68,7 +68,7 @@ public class RouteLegTask implements SegmentTask {
         transformer.backward(fromCoord);
         transformer.backward(toCoord);
 
-        GhRoute result = router.query(fromCoord[1], fromCoord[0], toCoord[1], toCoord[0]);
+        GhRoute result = router.query(fromCoord[0], fromCoord[1], toCoord[0], toCoord[1]);
 
         if (result != null) {
             TLongArrayList nodes = result.getPathAsOsmIds();
