@@ -13,8 +13,8 @@ public class GoogleRoutingService implements RoutingService {
 
     private final GeoApiContext context;
 
-    public GoogleRoutingService() {
-        context = new GeoApiContext.Builder().apiKey("AIzaSyAuOJcus0GOeoUTYYV4W6UWeFsiX6iCXSA").build();
+    public GoogleRoutingService(String apikey) {
+        context = new GeoApiContext.Builder().apiKey(apikey).build();
     }
 
     @Override
