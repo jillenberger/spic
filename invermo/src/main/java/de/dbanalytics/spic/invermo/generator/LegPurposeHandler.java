@@ -32,29 +32,29 @@ public class LegPurposeHandler implements LegAttributeHandler {
 	@Override
 	public void handle(Attributable leg, String key, String value) {
 		if(key.endsWith("zweck1")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "vacations");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "vacations");
 		} else if(key.endsWith("zweck2")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "shop");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "shop");
 		} else if(key.endsWith("zweck3")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "leisure");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "leisure");
 		} else if(key.endsWith("zweck4")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "leisure");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "leisure");
 		} else if(key.endsWith("zweck5")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "visit");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "visit");
 		} else if(key.endsWith("zweck6")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "culture");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "culture");
 		} else if(key.endsWith("zweck7")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "misc");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "misc");
 		} else if(key.endsWith("zweck8")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "business");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "business");
 		} else if(key.endsWith("zweck9")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, "misc");
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "misc");
 		} else if(key.endsWith("zweck10")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, getSubType(value));
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, getSubType(value));
 		} else if(key.endsWith("zweck11")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, getSubType(value));
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, getSubType(value));
 		} else if(key.endsWith("zweck12")) {
-			leg.setAttribute(CommonKeys.LEG_PURPOSE, getSubType(value));
+			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, getSubType(value));
 		}
 	}
 	

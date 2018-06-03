@@ -49,7 +49,7 @@ public class Validator {
 
         Set<Person> persons = PopulationIO.loadFromXML(inFile, new PlainFactory());
 
-        TaskRunner.validatePersons(new ValidateMissingAttribute(CommonKeys.PERSON_WEIGHT), persons);
+        TaskRunner.validatePersons(new ValidateMissingAttribute(CommonKeys.WEIGHT), persons);
         TaskRunner.validatePersons(new ValidatePersonWeight(), persons);
         TaskRunner.validatePersons(new ValidateNoLegs(), persons);
         TaskRunner.validatePersons(new ValidateNoPlans(), persons);

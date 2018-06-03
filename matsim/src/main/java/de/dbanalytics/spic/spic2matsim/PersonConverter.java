@@ -86,8 +86,8 @@ public class PersonConverter {
                 /*
                 Create and add activity.
                  */
-                String type = actSegment.getAttribute(CommonKeys.ACTIVITY_TYPE);
-                Place place = placeIndex.get(actSegment.getAttribute(CommonKeys.ACTIVITY_FACILITY));
+                String type = actSegment.getAttribute(CommonKeys.TYPE);
+                Place place = placeIndex.get(actSegment.getAttribute(CommonKeys.PLACE));
                 Activity matsimAct = factory.createActivityFromCoord(
                         type,
                         new Coord(place.getGeometry().getCoordinate().x, place.getGeometry().getCoordinate().y));
@@ -96,23 +96,23 @@ public class PersonConverter {
                 /*
                 Transfer attributes.
                  */
-                String startTime = actSegment.getAttribute(CommonKeys.ACTIVITY_START_TIME);
+                String startTime = actSegment.getAttribute(CommonKeys.START_TIME);
                 matsimAct.setStartTime((int) Double.parseDouble(startTime));
 
-                String endTime = actSegment.getAttribute(CommonKeys.ACTIVITY_END_TIME);
+                String endTime = actSegment.getAttribute(CommonKeys.END_TIME);
                 matsimAct.setEndTime((int) Double.parseDouble(endTime));
                 /*
                 Create and add leg.
                  */
                 if (i < episode.getLegs().size()) {
                     Segment legSegment = episode.getLegs().get(i);
-                    String mode = legSegment.getAttribute(CommonKeys.LEG_MODE);
+                    String mode = legSegment.getAttribute(CommonKeys.MODE);
                     Leg matsimLeg = factory.createLeg(mode);
                     matsimPlan.addLeg(matsimLeg);
                     /*
                     Transfer attributes
                      */
-                    matsimLeg.setDepartureTime(Double.parseDouble(legSegment.getAttribute(CommonKeys.LEG_START_TIME)));
+                    matsimLeg.setDepartureTime(Double.parseDouble(legSegment.getAttribute(CommonKeys.DEPARTURE_TIME)));
                 }
             }
         }

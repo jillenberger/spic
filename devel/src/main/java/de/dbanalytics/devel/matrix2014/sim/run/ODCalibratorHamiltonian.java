@@ -44,12 +44,12 @@ public class ODCalibratorHamiltonian {
 
         hamiltonian.setUseWeights(engine.getUseWeights());
         //hamiltonian.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
-        hamiltonian.setPredicate(new AttributePredicate<>(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
+        hamiltonian.setPredicate(new AttributePredicate<>(CommonKeys.MODE, CommonValues.LEG_MODE_CAR));
 
         AnnealingHamiltonian annealingHamiltonian = AnnealingHamiltonianConfigurator.configure(hamiltonian,
                 configGroup);
         engine.getHamiltonian().addComponent(annealingHamiltonian);
-        engine.getAttributeListeners().get(CommonKeys.ACTIVITY_FACILITY).addComponent(hamiltonian);
+        engine.getAttributeListeners().get(CommonKeys.PLACE).addComponent(hamiltonian);
         engine.getEngineListeners().addComponent(annealingHamiltonian);
         /*
         Add a hamiltonian logger.

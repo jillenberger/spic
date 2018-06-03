@@ -85,16 +85,16 @@ public class ReweightJourneys implements PersonsTask {
             if (person.getEpisodes().size() > 1) {
                 logger.warn("Runs only with one leg per person");
             } else {
-                double w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+                double w = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
 
                 Episode episode = person.getEpisodes().get(0);
                 if (episode.getLegs().size() > 1) {
                     logger.warn("Runs only with one leg per person");
                 } else {
                     Segment leg = episode.getLegs().get(0);
-                    String value = leg.getAttribute(CommonKeys.LEG_GEO_DISTANCE);
+                    String value = leg.getAttribute(CommonKeys.BEELINE_DISTANCE);
                     if (value != null) {
-                        if(CommonValues.LEG_MODE_CAR.equalsIgnoreCase(leg.getAttribute(CommonKeys.LEG_MODE))) {
+                        if(CommonValues.LEG_MODE_CAR.equalsIgnoreCase(leg.getAttribute(CommonKeys.MODE))) {
                             double d = Double.parseDouble(value);
                             d = discretizer.discretize(d);
 
@@ -161,15 +161,15 @@ public class ReweightJourneys implements PersonsTask {
             if (it3.key() >= threshold) {
                 double f = weigths.get(it3.key());
                 for (Person person : it3.value()) {
-                    double w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+                    double w = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
                     w = w * f;
-                    person.setAttribute(CommonKeys.PERSON_WEIGHT, String.valueOf(w));
+                    person.setAttribute(CommonKeys.WEIGHT, String.valueOf(w));
                 }
             } else {
                 for (Person person : it3.value()) {
-                    double w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+                    double w = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
                     w = w * 0.5;
-                    person.setAttribute(CommonKeys.PERSON_WEIGHT, String.valueOf(w));
+                    person.setAttribute(CommonKeys.WEIGHT, String.valueOf(w));
                 }
             }
         }

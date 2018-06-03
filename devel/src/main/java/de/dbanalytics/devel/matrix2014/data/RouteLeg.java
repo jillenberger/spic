@@ -55,8 +55,8 @@ public class RouteLeg implements SegmentTask {
         Segment next = segment.next();
 
         if(prev != null && next != null) {
-            String prevId = prev.getAttribute(CommonKeys.ACTIVITY_FACILITY);
-            String nextId = next.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+            String prevId = prev.getAttribute(CommonKeys.PLACE);
+            String nextId = next.getAttribute(CommonKeys.PLACE);
 
             if(prevId != null && nextId != null) {
                 ActivityFacility startFac = facilityData.getAll().getFacilities().get(Id.create(prevId, ActivityFacility.class));

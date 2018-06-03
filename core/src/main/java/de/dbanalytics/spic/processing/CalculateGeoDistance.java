@@ -42,8 +42,8 @@ public class CalculateGeoDistance implements EpisodeTask {
             Segment from = episode.getActivities().get(i);
             Segment to = episode.getActivities().get(i + 1);
 
-            String idFrom = from.getAttribute(CommonKeys.ACTIVITY_FACILITY);
-            String idTo = to.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+            String idFrom = from.getAttribute(CommonKeys.PLACE);
+            String idTo = to.getAttribute(CommonKeys.PLACE);
 
             Place placeFrom = placeIndex.get(idFrom);
             Place placeTo = placeIndex.get(idTo);
@@ -53,7 +53,7 @@ public class CalculateGeoDistance implements EpisodeTask {
             double d = Math.sqrt(dx*dx + dy*dy);
 
             Segment leg = episode.getLegs().get(i);
-            leg.setAttribute(CommonKeys.LEG_GEO_DISTANCE, String.valueOf(d));
+            leg.setAttribute(CommonKeys.BEELINE_DISTANCE, String.valueOf(d));
         }
     }
 }

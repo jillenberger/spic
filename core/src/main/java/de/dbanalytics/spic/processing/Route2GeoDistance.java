@@ -38,7 +38,7 @@ public class Route2GeoDistance implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for(Attributable leg : episode.getLegs()) {
-            String routeDist = leg.getAttribute(CommonKeys.LEG_ROUTE_DISTANCE);
+            String routeDist = leg.getAttribute(CommonKeys.TRIP_DISTANCE);
             if(routeDist != null) {
                 double rDist = Double.parseDouble(routeDist);
 
@@ -49,7 +49,7 @@ public class Route2GeoDistance implements EpisodeTask {
                     e.printStackTrace();
                 }
 
-                leg.setAttribute(CommonKeys.LEG_GEO_DISTANCE, String.valueOf(gDist));
+                leg.setAttribute(CommonKeys.BEELINE_DISTANCE, String.valueOf(gDist));
             }
         }
     }

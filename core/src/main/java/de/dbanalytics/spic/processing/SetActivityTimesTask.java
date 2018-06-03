@@ -30,23 +30,23 @@ public class SetActivityTimesTask implements EpisodeTask {
     public void apply(Episode episode) {
         if (episode.getActivities().size() == 1) {
             Segment act = episode.getActivities().get(0);
-            act.setAttribute(CommonKeys.ACTIVITY_START_TIME, "0");
-            act.setAttribute(CommonKeys.ACTIVITY_END_TIME, "86400");
+            act.setAttribute(CommonKeys.START_TIME, "0");
+            act.setAttribute(CommonKeys.END_TIME, "86400");
         } else {
 
             for (int i = 0; i < episode.getActivities().size(); i++) {
                 Segment act = episode.getActivities().get(i);
 
-                if (i == 0) act.setAttribute(CommonKeys.ACTIVITY_START_TIME, "0");
+                if (i == 0) act.setAttribute(CommonKeys.START_TIME, "0");
                 else
-                    act.setAttribute(CommonKeys.ACTIVITY_START_TIME, act.previous().getAttribute(CommonKeys.LEG_END_TIME));
+                    act.setAttribute(CommonKeys.START_TIME, act.previous().getAttribute(CommonKeys.ARRIVAL_TIME));
 
                 if (i == episode.getActivities().size() - 1) {
-                    int startTime = Integer.parseInt(act.getAttribute(CommonKeys.ACTIVITY_START_TIME));
+                    int startTime = Integer.parseInt(act.getAttribute(CommonKeys.START_TIME));
                     startTime = Math.max(startTime + 1, 86400);
-                    act.setAttribute(CommonKeys.ACTIVITY_END_TIME, String.valueOf(startTime));
+                    act.setAttribute(CommonKeys.END_TIME, String.valueOf(startTime));
                 } else {
-                    act.setAttribute(CommonKeys.ACTIVITY_END_TIME, act.next().getAttribute(CommonKeys.LEG_START_TIME));
+                    act.setAttribute(CommonKeys.END_TIME, act.next().getAttribute(CommonKeys.DEPARTURE_TIME));
                 }
             }
         }

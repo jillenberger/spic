@@ -38,13 +38,13 @@ public class ResolveReturnTrips implements EpisodeTask {
     public void apply(Episode episode) {
         for (int i = 0; i < episode.getActivities().size(); i++) {
             Segment act = episode.getActivities().get(i);
-            if (RETURN_TYPE.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+            if (RETURN_TYPE.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
                 if (i > 1) {
                     Segment startAct = episode.getActivities().get(i - 2);
-                    act.setAttribute(CommonKeys.ACTIVITY_TYPE, startAct.getAttribute(CommonKeys.ACTIVITY_TYPE));
+                    act.setAttribute(CommonKeys.TYPE, startAct.getAttribute(CommonKeys.TYPE));
                 } else {
                     logger.warn("Detected return trip without outward trip.");
-                    act.setAttribute(CommonKeys.ACTIVITY_TYPE, null);
+                    act.setAttribute(CommonKeys.TYPE, null);
                 }
             }
         }

@@ -63,13 +63,13 @@ public class LegPurposeHandler implements LegAttributeHandler {
         String mainTypeLabel = mapping.get(mainTypeCode);
 
         if(mainTypeLabel == null) mainTypeLabel = ActivityTypes.MISC;
-        leg.setAttribute(CommonKeys.LEG_PURPOSE, mainTypeLabel);
+        leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, mainTypeLabel);
         /*
         Second, override the main purpose if a sub purpose label is available.
          */
         String subTypeCode = attributes.get(VariableNames.LEG_SUB_TYPE);
         String subTypeLabel = mapping.get(subTypeCode);
 
-        if(subTypeLabel != null) leg.setAttribute(CommonKeys.LEG_PURPOSE, subTypeLabel);
+        if(subTypeLabel != null) leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, subTypeLabel);
     }
 }

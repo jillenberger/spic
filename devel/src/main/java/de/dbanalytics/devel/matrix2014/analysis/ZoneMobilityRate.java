@@ -106,7 +106,7 @@ public class ZoneMobilityRate implements AnalyzerTask<Collection<? extends Perso
 
         for (Person person : persons) {
             String category = person.getAttribute(categoryKey);
-            Double weight = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+            Double weight = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
             if (category != null) {
                 double personTrips = 0;
                 for (Episode episode : person.getEpisodes()) {

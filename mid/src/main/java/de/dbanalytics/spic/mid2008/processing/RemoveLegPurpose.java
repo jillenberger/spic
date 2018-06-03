@@ -38,8 +38,8 @@ public class RemoveLegPurpose implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for (Segment leg : episode.getLegs()) {
-            if (purpose.equalsIgnoreCase(leg.getAttribute(CommonKeys.LEG_PURPOSE))) {
-                leg.setAttribute(CommonKeys.LEG_PURPOSE, null);
+            if (purpose.equalsIgnoreCase(leg.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
+                leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, null);
             }
         }
     }

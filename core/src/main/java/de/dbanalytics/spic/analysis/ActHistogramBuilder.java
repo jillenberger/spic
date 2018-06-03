@@ -41,7 +41,7 @@ public class ActHistogramBuilder implements HistogramBuilder {
 
     public ActHistogramBuilder(ValueProvider<Double, Segment> provider, Discretizer discretizer) {
         valueCollector = new ActCollector<>(provider);
-        weightsCollector = new ActPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.PERSON_WEIGHT));
+        weightsCollector = new ActPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.WEIGHT));
         builder = new DefaultHistogramBuilder(valueCollector, weightsCollector, discretizer);
     }
 

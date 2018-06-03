@@ -56,7 +56,7 @@ public class AnalyseInfermo {
         @Override
         public void apply(Episode episode) {
             for(Segment leg : episode.getLegs()) {
-                leg.setAttribute(CommonKeys.LEG_GEO_DISTANCE, "100000");
+                leg.setAttribute(CommonKeys.BEELINE_DISTANCE, "100000");
             }
         }
     }

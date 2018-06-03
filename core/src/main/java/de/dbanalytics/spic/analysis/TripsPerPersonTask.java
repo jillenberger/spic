@@ -36,7 +36,7 @@ public class TripsPerPersonTask {
         DiscretizerBuilder builder = new PassThroughDiscretizerBuilder(new LinearDiscretizer(1.0), "linear");
         HistogramWriter writer = new HistogramWriter(ioContext, builder);
 
-        ValueProvider<Double, Person> weightsProvider = new NumericAttributeProvider<>(CommonKeys.PERSON_WEIGHT);
+        ValueProvider<Double, Person> weightsProvider = new NumericAttributeProvider<>(CommonKeys.WEIGHT);
         EpisodePersonCollector<Double> weightsCollector = new EpisodePersonCollector<>(weightsProvider);
 
         NumericAnalyzer analyzer = new NumericAnalyzer(collector, weightsCollector, "nTrips", writer);

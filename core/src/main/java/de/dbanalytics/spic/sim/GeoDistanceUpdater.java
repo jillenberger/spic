@@ -32,7 +32,7 @@ import de.dbanalytics.spic.sim.data.DoubleConverter;
  */
 public class GeoDistanceUpdater implements AttributeObserver {
 
-    private final Object geoDistDataKey = Converters.register(CommonKeys.LEG_GEO_DISTANCE, DoubleConverter.getInstance());
+    private final Object geoDistDataKey = Converters.register(CommonKeys.BEELINE_DISTANCE, DoubleConverter.getInstance());
 
     private Object placeDataKey;
 
@@ -71,7 +71,7 @@ public class GeoDistanceUpdater implements AttributeObserver {
 
     @Override
     public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
-        if (placeDataKey == null) placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
+        if (placeDataKey == null) placeDataKey = Converters.getObjectKey(CommonKeys.PLACE);
 
         if (placeDataKey.equals(dataKey)) {
             CachedSegment act = (CachedSegment) element;

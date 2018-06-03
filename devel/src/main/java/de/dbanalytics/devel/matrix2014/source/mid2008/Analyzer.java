@@ -63,7 +63,7 @@ public class Analyzer {
 //		persons = PersonCloner.weightedClones((Collection<PlainPerson>) persons, 1000000, random);
 //		logger.info(String.format("Generated %s persons.", persons.size()));
 
-		TaskRunner.validatePersons(new ValidateMissingAttribute(CommonKeys.PERSON_WEIGHT), persons);
+		TaskRunner.validatePersons(new ValidateMissingAttribute(CommonKeys.WEIGHT), persons);
 		TaskRunner.validatePersons(new ValidatePersonWeight(), persons);
 		TaskRunner.run(new Route2GeoDistance(new Simulator.Route2GeoDistFunction()), persons);
 
@@ -72,7 +72,7 @@ public class Analyzer {
 		HistogramWriter hWriter = new HistogramWriter(ioContext, new PassThroughDiscretizerBuilder(new
 				LinearDiscretizer(50000), "linear"));
 
-		AnalyzerTask task = NumericLegAnalyzer.create(CommonKeys.LEG_GEO_DISTANCE, true, predicate, "car", hWriter);
+		AnalyzerTask task = NumericLegAnalyzer.create(CommonKeys.BEELINE_DISTANCE, true, predicate, "car", hWriter);
 		AnalyzerTaskRunner.run(persons, task, ioContext);
 	}
 

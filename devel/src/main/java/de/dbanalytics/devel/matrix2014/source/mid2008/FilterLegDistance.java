@@ -33,7 +33,7 @@ public class FilterLegDistance implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for(Segment leg : episode.getLegs()) {
-            String value = leg.getAttribute(CommonKeys.LEG_ROUTE_DISTANCE);
+            String value = leg.getAttribute(CommonKeys.TRIP_DISTANCE);
             if(value != null) {
                 double d = Double.parseDouble(value);
                 if(d > 400000) {

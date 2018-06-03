@@ -36,19 +36,19 @@ public class JourneyModeHandler implements LegAttributeHandler {
 		String mode = attributes.get(VariableNames.JOURNEY_MODE);
 		
 		if(mode.equalsIgnoreCase("1")) {
-			leg.setAttribute(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR);
+			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
 		} else if(mode.equalsIgnoreCase("2")) {
-			leg.setAttribute(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_PT);
+			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_PT);
 		} else if(mode.equalsIgnoreCase("3")) {
-			leg.setAttribute(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_PT);
+			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_PT);
 		} else if(mode.equalsIgnoreCase("4")) {
-			leg.setAttribute(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_PT);
+			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_PT);
 		} else if(mode.equalsIgnoreCase("5")) {
-			leg.setAttribute(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_BIKE);
+			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_BIKE);
 		} else if(mode.equalsIgnoreCase("6")) {
-			leg.setAttribute(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_PT);
+			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_PT);
 		} else {
-			leg.setAttribute(CommonKeys.LEG_MODE, "undefined");
+			leg.setAttribute(CommonKeys.MODE, "undefined");
 		}
 	}
 

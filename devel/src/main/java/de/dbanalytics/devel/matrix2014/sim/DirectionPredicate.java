@@ -72,8 +72,8 @@ public class DirectionPredicate implements Predicate<Segment> {
         String prevType = null;
         String nextType = null;
 
-        if(prev != null) prevType = prev.getAttribute(CommonKeys.ACTIVITY_TYPE);
-        if(next != null) nextType = next.getAttribute(CommonKeys.ACTIVITY_TYPE);
+        if(prev != null) prevType = prev.getAttribute(CommonKeys.TYPE);
+        if(next != null) nextType = next.getAttribute(CommonKeys.TYPE);
 
         String value;
 

@@ -48,7 +48,7 @@ public class ImputeActTypes implements PersonsTask {
         for (Person p : persons) {
             for (Episode e : p.getEpisodes()) {
                 for (Segment s : e.getActivities()) {
-                    String type = s.getAttribute(CommonKeys.ACTIVITY_TYPE);
+                    String type = s.getAttribute(CommonKeys.TYPE);
                     if (type != null) counts.adjustOrPutValue(type, 1, 1);
                 }
             }
@@ -70,7 +70,7 @@ public class ImputeActTypes implements PersonsTask {
             for (Episode e : p.getEpisodes()) {
                 for (int i = 0; i < e.getActivities().size(); i++) {
                     Segment act = e.getActivities().get(i);
-                    String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+                    String type = act.getAttribute(CommonKeys.TYPE);
                     if (type == null) {
 
                         if (i == 0) {
@@ -78,7 +78,7 @@ public class ImputeActTypes implements PersonsTask {
                             /** Home act if next is not already home */
                             if (e.getActivities().size() > 1) {
                                 Segment next = e.getActivities().get(i + 1);
-                                if (ActivityTypes.HOME.equalsIgnoreCase(next.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+                                if (ActivityTypes.HOME.equalsIgnoreCase(next.getAttribute(CommonKeys.TYPE))) {
                                     type = set.randomWeightedChoice();
                                 }
                             }
@@ -87,7 +87,7 @@ public class ImputeActTypes implements PersonsTask {
                             /** Home act if prev is not already home */
                             if (e.getActivities().size() > 1) {
                                 Segment prev = e.getActivities().get(i - 1);
-                                if (ActivityTypes.HOME.equalsIgnoreCase(prev.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+                                if (ActivityTypes.HOME.equalsIgnoreCase(prev.getAttribute(CommonKeys.TYPE))) {
                                     type = set.randomWeightedChoice();
                                 }
                             }
@@ -95,7 +95,7 @@ public class ImputeActTypes implements PersonsTask {
                             type = set.randomWeightedChoice();
                         }
 
-                        act.setAttribute(CommonKeys.ACTIVITY_TYPE, type);
+                        act.setAttribute(CommonKeys.TYPE, type);
 
                         if (ActivityTypes.HOME.equalsIgnoreCase(type)) countHome++;
                         else countNonHome++;

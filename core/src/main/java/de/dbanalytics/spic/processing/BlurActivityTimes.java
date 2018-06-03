@@ -57,7 +57,7 @@ public class BlurActivityTimes implements EpisodeTask {
         this.random = random;
         this.discretizer = new LinearDiscretizer(3600);
         HistogramBuilder builder = new LegAttributeHistogramBuilder(
-                CommonKeys.LEG_START_TIME,
+                CommonKeys.DEPARTURE_TIME,
                 discretizer);
         TDoubleDoubleMap hist = builder.build(persons);
         hist = Histogram.normalize((TDoubleDoubleHashMap) hist);
@@ -91,7 +91,7 @@ public class BlurActivityTimes implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for (Segment leg : episode.getLegs()) {
-            String startVal = leg.getAttribute(CommonKeys.LEG_START_TIME);
+            String startVal = leg.getAttribute(CommonKeys.DEPARTURE_TIME);
 
             if (startVal != null) {
                 double start = Double.parseDouble(startVal);
@@ -112,14 +112,14 @@ public class BlurActivityTimes implements EpisodeTask {
                     if (x > 190000) {
                         System.out.println("Opps");
                     }
-                    leg.setAttribute(CommonKeys.LEG_START_TIME, String.valueOf(x));
+                    leg.setAttribute(CommonKeys.DEPARTURE_TIME, String.valueOf(x));
 
-                    String endVal = leg.getAttribute(CommonKeys.LEG_END_TIME);
+                    String endVal = leg.getAttribute(CommonKeys.ARRIVAL_TIME);
                     if (endVal != null) {
                         double end = Double.parseDouble(endVal);
                         double newEnd = x + (end - start);
 
-                        leg.setAttribute(CommonKeys.LEG_END_TIME, String.valueOf(newEnd));
+                        leg.setAttribute(CommonKeys.ARRIVAL_TIME, String.valueOf(newEnd));
                     }
                     try {
                         writer.write(x_right + "\t" + x);

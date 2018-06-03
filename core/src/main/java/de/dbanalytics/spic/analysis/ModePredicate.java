@@ -27,6 +27,6 @@ import de.dbanalytics.spic.data.CommonKeys;
 public class ModePredicate extends LegAttributePredicate {
 
     public ModePredicate(String mode) {
-        super(CommonKeys.LEG_MODE, mode);
+        super(CommonKeys.MODE, mode);
     }
 }

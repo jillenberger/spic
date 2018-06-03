@@ -196,7 +196,7 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
         long time = System.currentTimeMillis();
 
         if (this.placeDataKey == null)
-            this.placeDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
+            this.placeDataKey = Converters.getObjectKey(CommonKeys.PLACE);
 
         simMatrix = new TIntObjectHashMap<>();
 
@@ -205,7 +205,7 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             // TODO: Would be more consistent to use a leg weight here.
             // This is urgent and needs to be addressed. HomeLocator may change person weights, if not in sync with
             // leg weights everything is a mess!!!
-            if(useWeights) weight = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+            if(useWeights) weight = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
 
             for (Episode episode : person.getEpisodes()) {
                 for (int i = 1; i < episode.getActivities().size(); i++) {
@@ -250,7 +250,7 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
                 /** continue only if zone index changed */
                 if (oldIdx != newIdx) {
                     if (useWeights && weightDataKey == null)
-                        weightDataKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
+                        weightDataKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
 
                     /** process to leg */
                     CachedSegment toLeg = (CachedSegment) act.previous();

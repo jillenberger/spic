@@ -78,7 +78,7 @@ public class SplitDays {
         Run matrix splitter...
          */
         MatrixSplitter splitter = new MatrixSplitter(CommonKeys.DAY, shareTable);
-        splitter.addDimensionCalculator(CommonKeys.LEG_GEO_DISTANCE, calculator);
+        splitter.addDimensionCalculator(CommonKeys.BEELINE_DISTANCE, calculator);
 
         logger.info("Processing matrix...");
         splitter.process(sourceFile, targetFile);

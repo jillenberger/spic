@@ -34,14 +34,14 @@ public class SetActivityTypeTask implements EpisodeTask {
 	@Override
 	public void apply(Episode episode) {
 		if(episode.getLegs().isEmpty()) {
-			episode.getActivities().get(0).setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.HOME);
+			episode.getActivities().get(0).setAttribute(CommonKeys.TYPE, ActivityTypes.HOME);
 		}
 		
 		for(int i = 0; i < episode.getLegs().size(); i++) {
 			Attributable leg = episode.getLegs().get(i);
 			Attributable act = episode.getActivities().get(i + 1);
 			
-			act.setAttribute(CommonKeys.ACTIVITY_TYPE, leg.getAttribute(CommonKeys.LEG_PURPOSE));
+			act.setAttribute(CommonKeys.TYPE, leg.getAttribute(CommonKeys.TRAVEL_PURPOSE));
 		}
 
 	}

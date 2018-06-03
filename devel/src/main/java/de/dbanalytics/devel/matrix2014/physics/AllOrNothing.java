@@ -74,7 +74,7 @@ public class AllOrNothing {
 
         for (Person p : persons) {
             if(!p.getEpisodes().isEmpty()) {
-                double weight = Double.parseDouble(p.getAttribute(CommonKeys.PERSON_WEIGHT));
+                double weight = Double.parseDouble(p.getAttribute(CommonKeys.WEIGHT));
                 Episode e = p.getEpisodes().get(0);
 
                 for (Segment leg : e.getLegs()) {

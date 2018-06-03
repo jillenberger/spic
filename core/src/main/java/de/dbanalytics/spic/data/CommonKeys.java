@@ -25,38 +25,35 @@ package de.dbanalytics.spic.data;
  */
 public interface CommonKeys {
 	
-	String PERSON_WEIGHT = "weight"; //TODO: rename to "weight" only
+	String WEIGHT = "weight";
 
-	String LEG_START_TIME = "startTime";
+	String DEPARTURE_TIME = "departure_time";
 	
-	String LEG_END_TIME = "endTime";
+	String ARRIVAL_TIME = "arrival_time";
 	
-	String LEG_PURPOSE = "purpose";
+	String TRAVEL_PURPOSE = "travel_purpose";
 
-	@Deprecated
-	String LEG_ROUNDTRIP = "roundTrip";
-	
-	String LEG_ROUTE_DISTANCE = "routeDistance";
+	String TRIP_DISTANCE = "trip_distance";
 
-	String LEG_GEO_DISTANCE = "geoDistance";
+	String BEELINE_DISTANCE = "beeline_distance";
 
-	String LEG_MODE = "mode";
+	String MODE = "mode";
 
 	String LEG_ROUTE = "route";
 
-	String ACTIVITY_TYPE = "type";
+	String TYPE = "type";
 	
-	String ACTIVITY_START_TIME = "startTime";
+	String START_TIME = "start_time";
 	
-	String ACTIVITY_END_TIME = "endTime";
+	String END_TIME = "end_time";
 	
-	String ACTIVITY_FACILITY = "activityFacility";
+	String PLACE = "place";
 	
 	String DELETE = "delete";
 	
 	String DAY = "day";
 
-	String DATA_SOURCE = "datasource";
+	String DATA_SOURCE = "data_source";
 	
 	String HH_INCOME = "hhincome";
 	

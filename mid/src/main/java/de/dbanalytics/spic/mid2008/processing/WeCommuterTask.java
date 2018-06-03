@@ -31,13 +31,13 @@ public class WeCommuterTask implements SegmentTask {
 
     @Override
     public void apply(Segment segment) {
-        if (ActivityTypes.WECOMMUTER.equalsIgnoreCase(segment.getAttribute(CommonKeys.LEG_PURPOSE))) {
+        if (ActivityTypes.WECOMMUTER.equalsIgnoreCase(segment.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
             Segment prev = segment.previous();
             Segment next = segment.next();
-            if (ActivityTypes.HOME.equalsIgnoreCase(prev.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
-                next.setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.WORK);
+            if (ActivityTypes.HOME.equalsIgnoreCase(prev.getAttribute(CommonKeys.TYPE))) {
+                next.setAttribute(CommonKeys.TYPE, ActivityTypes.WORK);
             } else {
-                next.setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.HOME);
+                next.setAttribute(CommonKeys.TYPE, ActivityTypes.HOME);
             }
         }
     }

@@ -58,7 +58,7 @@ public class CalcGeoDistance implements EpisodeTask {
 				
 				double d = dCalc.distance(source, dest);
 
-				leg.setAttribute(CommonKeys.LEG_GEO_DISTANCE, String.valueOf(d));
+				leg.setAttribute(CommonKeys.BEELINE_DISTANCE, String.valueOf(d));
 			}
 		}
 

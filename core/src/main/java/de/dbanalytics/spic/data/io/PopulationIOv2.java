@@ -21,6 +21,7 @@ package de.dbanalytics.spic.data.io;
 
 import com.fasterxml.aalto.stax.InputFactoryImpl;
 import de.dbanalytics.spic.data.*;
+import de.dbanalytics.spic.data.io.flattable.AttributeMapper;
 import de.dbanalytics.spic.util.IOUtils;
 import de.dbanalytics.spic.util.ProgressLogger;
 import org.apache.log4j.Logger;
@@ -122,6 +123,12 @@ public class PopulationIOv2 {
                     /** add attributes to the current element */
                     String name = startElement.getAttributeByName(nameQName).getValue();
                     String value = reader.nextEvent().asCharacters().getData();
+
+                    //TODO: remove when stable
+                    name = AttributeMapper.mapKey(name);
+                    value = AttributeMapper.mapValue(value);
+                    //TODO: insert name.toLowerCase when stable
+
                     attributable.setAttribute(name, value);
 
                 } else if (localName.equals(EPISODE_ELEMENT)) {

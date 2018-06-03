@@ -58,8 +58,8 @@ public class SetActivityPlaces implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for (Segment act : episode.getActivities()) {
-            if (act.getAttribute(CommonKeys.ACTIVITY_FACILITY) == null) {
-                String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+            if (act.getAttribute(CommonKeys.PLACE) == null) {
+                String type = act.getAttribute(CommonKeys.TYPE);
                 Place place = null;
                 Segment toLeg = act.previous();
                 /*
@@ -68,9 +68,9 @@ public class SetActivityPlaces implements EpisodeTask {
                 if (toLeg != null) {
                     Segment prevAct = toLeg.previous();
 
-                    Place origin = placeIndex.get(prevAct.getAttribute(CommonKeys.ACTIVITY_FACILITY));
+                    Place origin = placeIndex.get(prevAct.getAttribute(CommonKeys.PLACE));
 
-                    String distance = toLeg.getAttribute(CommonKeys.LEG_GEO_DISTANCE);
+                    String distance = toLeg.getAttribute(CommonKeys.BEELINE_DISTANCE);
                     double d = fallbackDistance;
                     if (distance != null) d = Double.parseDouble(distance);
 
@@ -96,7 +96,7 @@ public class SetActivityPlaces implements EpisodeTask {
                     place = getRandomPlace(type);
                 }
 
-                act.setAttribute(CommonKeys.ACTIVITY_FACILITY, place.getId().toString());
+                act.setAttribute(CommonKeys.PLACE, place.getId().toString());
             }
         }
     }

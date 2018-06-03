@@ -39,7 +39,7 @@ public class JourneyDistanceHandler implements LegAttributeHandler {
 
 			if (dist <= 20000) { //range according to mid documentation
 				dist *= 1000;
-				leg.setAttribute(CommonKeys.LEG_GEO_DISTANCE, String.valueOf(dist));
+				leg.setAttribute(CommonKeys.BEELINE_DISTANCE, String.valueOf(dist));
 			}
 		}
 	}

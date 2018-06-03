@@ -68,7 +68,7 @@ public class FacilityMutatorBuilder implements MutatorBuilder {
 
     @Override
     public Mutator build() {
-        Object dataKey = Converters.register(CommonKeys.ACTIVITY_FACILITY, ActivityFacilityConverter.getInstance(facilityData));
+        Object dataKey = Converters.register(CommonKeys.PLACE, ActivityFacilityConverter.getInstance(facilityData));
 
 //        RandomFacilityGenerator generator = new RandomFacilityGenerator(facilityData);
 //        LocalFacilityGenerator generator = new LocalFacilityGenerator(facilityData, random);

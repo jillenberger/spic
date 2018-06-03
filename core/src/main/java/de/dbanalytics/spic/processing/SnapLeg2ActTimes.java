@@ -32,10 +32,10 @@ public class SnapLeg2ActTimes implements SegmentTask {
         Segment prev = segment.previous();
         Segment next = segment.next();
 
-        String start = prev.getAttribute(CommonKeys.ACTIVITY_END_TIME);
-        String end = next.getAttribute(CommonKeys.ACTIVITY_START_TIME);
+        String start = prev.getAttribute(CommonKeys.END_TIME);
+        String end = next.getAttribute(CommonKeys.START_TIME);
 
-        if(start != null) segment.setAttribute(CommonKeys.LEG_START_TIME, start);
-        if(end != null) segment.setAttribute(CommonKeys.LEG_END_TIME, end);
+        if(start != null) segment.setAttribute(CommonKeys.DEPARTURE_TIME, start);
+        if(end != null) segment.setAttribute(CommonKeys.ARRIVAL_TIME, end);
     }
 }

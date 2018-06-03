@@ -209,7 +209,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             for (Person person : persons) {
                 double w = 1.0;
                 if (useWeights)
-                    w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+                    w = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
 
                 for (Episode episode : person.getEpisodes()) {
                     for (int i = 0; i < episode.getLegs().size(); i++) {
@@ -218,8 +218,8 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                             Segment prev = episode.getActivities().get(i);
                             Segment next = episode.getActivities().get(i + 1);
 
-                            String originPlaceId = prev.getAttribute(CommonKeys.ACTIVITY_FACILITY);
-                            String destPlaceId = next.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+                            String originPlaceId = prev.getAttribute(CommonKeys.PLACE);
+                            String destPlaceId = next.getAttribute(CommonKeys.PLACE);
 
                             if (originPlaceId != null && destPlaceId != null) {
                                 String origin = getZoneId(originPlaceId);

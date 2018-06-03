@@ -63,7 +63,7 @@ public class GeoDistNumTripsTask implements AnalyzerTask<Collection<? extends Pe
                 double sum = 0;
                 for(Segment leg : e.getLegs()) {
                     if(predicate == null || predicate.test(leg)) {
-                        String value = leg.getAttribute(CommonKeys.LEG_GEO_DISTANCE);
+                        String value = leg.getAttribute(CommonKeys.BEELINE_DISTANCE);
                         if(value != null) {
                             sum += Double.parseDouble(value);
                             trips++;

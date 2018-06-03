@@ -93,7 +93,7 @@ public class MeanZoneDistanceHamiltonian {
                 refValues,
                 simLegs,
                 PERSON_ZONE_IDX,
-                CommonKeys.LEG_GEO_DISTANCE,
+                CommonKeys.BEELINE_DISTANCE,
                 new LinearDiscretizer(1.0),
                 engine.getUseWeights());
 
@@ -102,7 +102,7 @@ public class MeanZoneDistanceHamiltonian {
                 configGroup);
         engine.getHamiltonian().addComponent(annealingHamiltonian);
         engine.getEngineListeners().addComponent(annealingHamiltonian);
-        engine.getAttributeListeners().get(CommonKeys.LEG_GEO_DISTANCE).addComponent(hamiltonian);
+        engine.getAttributeListeners().get(CommonKeys.BEELINE_DISTANCE).addComponent(hamiltonian);
 
         String errOut = engine.getIOContext().getRoot() + "/meanZoneDistance";
         new File(errOut).mkdirs();
@@ -125,8 +125,8 @@ public class MeanZoneDistanceHamiltonian {
             Facility f = null;
             for (Episode episode : person.getEpisodes()) {
                 for (Segment act : episode.getActivities()) {
-                    if (ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
-                        String facilityId = act.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+                    if (ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+                        String facilityId = act.getAttribute(CommonKeys.PLACE);
                         f = facilities.getFacilities().get(Id.create(facilityId, ActivityFacility.class));
                         break;
                     }
@@ -163,7 +163,7 @@ public class MeanZoneDistanceHamiltonian {
             Predicate<Segment> predicate = PredicateAndComposite.create(engine.getLegPredicate(), lauPred);
 
             NumericAnalyzer analyzer = NumericLegAnalyzer.create(
-                    CommonKeys.LEG_GEO_DISTANCE,
+                    CommonKeys.BEELINE_DISTANCE,
                     engine.getUseWeights(),
                     predicate,
                     null,
@@ -180,7 +180,7 @@ public class MeanZoneDistanceHamiltonian {
     private static TIntDoubleMap generateRefValues(Collection<? extends Person> refPersons, Simulator engine, TObjectIntMap<Zone> indices) {
         TIntDoubleMap values = new TIntDoubleHashMap();
         NumericAnalyzer analyzer = NumericLegAnalyzer.create(
-                CommonKeys.LEG_GEO_DISTANCE,
+                CommonKeys.BEELINE_DISTANCE,
                 engine.getUseWeights(),
                 engine.getLegPredicate(),
                 null,

@@ -38,7 +38,7 @@ public class FactorLegHistogramBuilder {
 
     public FactorLegHistogramBuilder(ValueProvider<String, Segment> provider) {
         valueCollector = new LegCollector<>(provider);
-        weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.PERSON_WEIGHT));
+        weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.WEIGHT));
         builder = new FactorHistogramBuilder(valueCollector, weightsCollector);
     }
 

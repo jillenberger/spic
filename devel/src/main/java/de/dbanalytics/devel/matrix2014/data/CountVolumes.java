@@ -81,7 +81,7 @@ public class CountVolumes implements AnalyzerTask<Collection<? extends Person>> 
             for (Episode episode : person.getEpisodes()) {
                 if (episodePredicate == null || episodePredicate.test(episode)) {
 
-                    String weightString = episode.getPerson().getAttribute(CommonKeys.PERSON_WEIGHT);
+                    String weightString = episode.getPerson().getAttribute(CommonKeys.WEIGHT);
                     if (weightString != null) {
                         double weight = Double.parseDouble(weightString);
 

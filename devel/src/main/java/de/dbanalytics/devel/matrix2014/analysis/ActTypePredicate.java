@@ -36,6 +36,6 @@ public class ActTypePredicate implements Predicate<Segment> {
 
     @Override
     public boolean test(Segment segment) {
-        return type.equalsIgnoreCase(segment.getAttribute(CommonKeys.ACTIVITY_TYPE));
+        return type.equalsIgnoreCase(segment.getAttribute(CommonKeys.TYPE));
     }
 }

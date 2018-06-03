@@ -33,8 +33,8 @@ public class ValidateMissingLegTimes implements EpisodeTask {
 	@Override
 	public void apply(Episode episode) {
 		for(Attributable leg : episode.getLegs()) {
-			String start = leg.getAttribute(CommonKeys.LEG_START_TIME);
-			String end = leg.getAttribute(CommonKeys.LEG_END_TIME);
+			String start = leg.getAttribute(CommonKeys.DEPARTURE_TIME);
+			String end = leg.getAttribute(CommonKeys.ARRIVAL_TIME);
 
 			if(start == null || end == null) {
 				episode.setAttribute(CommonKeys.DELETE, CommonValues.TRUE);

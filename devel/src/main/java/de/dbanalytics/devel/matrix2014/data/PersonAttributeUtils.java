@@ -31,8 +31,8 @@ public class PersonAttributeUtils {
     public static ActivityFacility getHomeFacility(Person p, ActivityFacilities facilities) {
         for(Episode e : p.getEpisodes()) {
             for(Segment act : e.getActivities()) {
-                if(ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
-                    String attr = act.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+                if(ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+                    String attr = act.getAttribute(CommonKeys.PLACE);
                     if(attr != null) {
                         Id<ActivityFacility> id = Id.create(attr, ActivityFacility.class);
                         return facilities.getFacilities().get(id);

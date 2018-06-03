@@ -55,36 +55,36 @@ public class ResolveRoundTripsTask implements EpisodeTask {
             int i = idx + offset;
 
             Attributable toLeg = episode.getLegs().get(i - 2);
-            int toLegStart = Integer.parseInt(toLeg.getAttribute(CommonKeys.LEG_START_TIME));
-            int toLegEnd = Integer.parseInt(toLeg.getAttribute(CommonKeys.LEG_END_TIME));
+            int toLegStart = Integer.parseInt(toLeg.getAttribute(CommonKeys.DEPARTURE_TIME));
+            int toLegEnd = Integer.parseInt(toLeg.getAttribute(CommonKeys.ARRIVAL_TIME));
             int dur = toLegEnd - toLegStart;
             /*
 			 * half the leg duration and distance
 			 */
-            toLeg.setAttribute(CommonKeys.LEG_END_TIME, String.valueOf(toLegStart + dur / 2 - 1));
-            String distStr = toLeg.getAttribute(CommonKeys.LEG_ROUTE_DISTANCE);
+            toLeg.setAttribute(CommonKeys.ARRIVAL_TIME, String.valueOf(toLegStart + dur / 2 - 1));
+            String distStr = toLeg.getAttribute(CommonKeys.TRIP_DISTANCE);
             if (distStr != null) {
                 double dist = Double.parseDouble(distStr);
-                toLeg.setAttribute(CommonKeys.LEG_ROUTE_DISTANCE, String.valueOf(dist / 2.0));
+                toLeg.setAttribute(CommonKeys.TRIP_DISTANCE, String.valueOf(dist / 2.0));
             }
 			/*
 			 * insert a dummy activity with duration 1 s.
 			 */
             Segment act = factory.newSegment();
-            String prevType = episode.getActivities().get(i - 2).getAttribute(CommonKeys.ACTIVITY_TYPE);
-            act.setAttribute(CommonKeys.ACTIVITY_TYPE, prevType);
+            String prevType = episode.getActivities().get(i - 2).getAttribute(CommonKeys.TYPE);
+            act.setAttribute(CommonKeys.TYPE, prevType);
             episode.insertActivity(act, i);
 			/*
 			 * insert a return leg with half the duration and distance
 			 */
             Segment fromLeg = factory.newSegment();
-            fromLeg.setAttribute(CommonKeys.LEG_START_TIME, String.valueOf(toLegStart + dur / 2));
-            fromLeg.setAttribute(CommonKeys.LEG_END_TIME, String.valueOf(toLegEnd));
-            fromLeg.setAttribute(CommonKeys.LEG_ROUTE_DISTANCE, toLeg.getAttribute(CommonKeys.LEG_ROUTE_DISTANCE));
-            fromLeg.setAttribute(CommonKeys.LEG_MODE, toLeg.getAttribute(CommonKeys.LEG_MODE));
+            fromLeg.setAttribute(CommonKeys.DEPARTURE_TIME, String.valueOf(toLegStart + dur / 2));
+            fromLeg.setAttribute(CommonKeys.ARRIVAL_TIME, String.valueOf(toLegEnd));
+            fromLeg.setAttribute(CommonKeys.TRIP_DISTANCE, toLeg.getAttribute(CommonKeys.TRIP_DISTANCE));
+            fromLeg.setAttribute(CommonKeys.MODE, toLeg.getAttribute(CommonKeys.MODE));
 
             Attributable nextAct = episode.getActivities().get(i);
-            fromLeg.setAttribute(CommonKeys.LEG_PURPOSE, nextAct.getAttribute(CommonKeys.ACTIVITY_TYPE));
+            fromLeg.setAttribute(CommonKeys.TRAVEL_PURPOSE, nextAct.getAttribute(CommonKeys.TYPE));
             episode.insertLeg(fromLeg, i - 1);
 
             offset += 1;

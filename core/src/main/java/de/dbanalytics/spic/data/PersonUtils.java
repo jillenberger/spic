@@ -42,7 +42,7 @@ public class PersonUtils {
         TObjectDoubleHashMap<Person> weights = new TObjectDoubleHashMap<>(persons.size());
         double maxW = 0;
         for(Person person : persons) {
-            String wStr = person.getAttribute(CommonKeys.PERSON_WEIGHT);
+            String wStr = person.getAttribute(CommonKeys.WEIGHT);
             double w = 0;
             if(wStr != null) {
                 w = Double.parseDouble(wStr);
@@ -66,7 +66,7 @@ public class PersonUtils {
                 builder.append(clones.size());
 
                 Person clone = PersonUtils.deepCopy(template, builder.toString(), factory);
-                clone.setAttribute(CommonKeys.PERSON_WEIGHT, "1.0");
+                clone.setAttribute(CommonKeys.WEIGHT, "1.0");
                 clones.add(clone);
                 ProgressLogger.step();
             }

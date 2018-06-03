@@ -112,7 +112,7 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
     public Object newValue(CachedElement act) {
         CachedPerson person = (CachedPerson) ((CachedSegment) act).getEpisode().getPerson();
 
-        String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+        String type = act.getAttribute(CommonKeys.TYPE);
         boolean ignore = true;
         if (type != null) {
             ignore = blacklist.contains(type);
@@ -151,7 +151,7 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
         if(home == null) {
             return allFacilities;
         } else {
-            String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+            String type = act.getAttribute(CommonKeys.TYPE);
 
             Map<Feature, List<ActivityFacility>> zoneMap = typeMap.get(type);
             if (zoneMap == null) {

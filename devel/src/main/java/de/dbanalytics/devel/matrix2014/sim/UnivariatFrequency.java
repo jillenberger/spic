@@ -85,7 +85,7 @@ public class UnivariatFrequency implements Hamiltonian, AttributeObserver {
         this.absoluteMode = absoluteMode;
         this.useWeights = useWeights;
 
-        if(useWeights) weightKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
+        if(useWeights) weightKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
 
         refFreq = initHistogram(refElements, attrKey, useWeights);
         simFreq = initHistogram(simElements, attrKey, useWeights);
@@ -131,7 +131,7 @@ public class UnivariatFrequency implements Hamiltonian, AttributeObserver {
                 double weight = 1.0;
 
                 if(useWeights) {
-                    String strWeight = element.getAttribute(CommonKeys.PERSON_WEIGHT);
+                    String strWeight = element.getAttribute(CommonKeys.WEIGHT);
                     weight = Double.parseDouble(strWeight);
                 }
 

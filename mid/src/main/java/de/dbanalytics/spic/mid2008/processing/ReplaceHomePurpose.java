@@ -33,9 +33,9 @@ public class ReplaceHomePurpose implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for (Segment leg : episode.getLegs()) {
-            if (ActivityTypes.HOME.equalsIgnoreCase(leg.getAttribute(CommonKeys.LEG_PURPOSE))) {
+            if (ActivityTypes.HOME.equalsIgnoreCase(leg.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
                 Segment prev = leg.previous();
-                leg.setAttribute(CommonKeys.LEG_PURPOSE, prev.getAttribute(CommonKeys.ACTIVITY_TYPE));
+                leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, prev.getAttribute(CommonKeys.TYPE));
             }
         }
     }

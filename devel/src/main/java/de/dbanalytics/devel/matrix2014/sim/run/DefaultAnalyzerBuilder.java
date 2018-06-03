@@ -60,14 +60,14 @@ public class DefaultAnalyzerBuilder {
                 100000, Integer.MAX_VALUE}), "100KM"));
 
         composite.addComponent(NumericLegAnalyzer.create(
-                CommonKeys.LEG_ROUTE_DISTANCE,
+                CommonKeys.TRIP_DISTANCE,
                 engine.getUseWeights(),
                 engine.getLegPredicate(),
                 engine.getLegPredicateName(),
                 histogramWriter));
 
         composite.addComponent(NumericLegAnalyzer.create(
-                CommonKeys.LEG_GEO_DISTANCE, engine.getUseWeights(),
+                CommonKeys.BEELINE_DISTANCE, engine.getUseWeights(),
                 engine.getLegPredicate(),
                 engine.getLegPredicateName(),
                 histogramWriter));
@@ -77,7 +77,7 @@ public class DefaultAnalyzerBuilder {
             Predicate<Segment> predicate = PredicateAndComposite.create(engine.getLegPredicate(), lauPred);
             String label = String.format("car.lau%s", klass);
             composite.addComponent(NumericLegAnalyzer.create(
-                    CommonKeys.LEG_GEO_DISTANCE,
+                    CommonKeys.BEELINE_DISTANCE,
                     engine.getUseWeights(),
                     predicate,
                     label,
@@ -87,7 +87,7 @@ public class DefaultAnalyzerBuilder {
         Predicate<Segment> inTown = new LegAttributePredicate(MiDKeys.LEG_DESTINATION, MiDValues.IN_TOWN);
         Predicate<Segment> predicate = PredicateAndComposite.create(engine.getLegPredicate(), inTown);
         composite.addComponent(NumericLegAnalyzer.create(
-                CommonKeys.LEG_GEO_DISTANCE, engine.getUseWeights(),
+                CommonKeys.BEELINE_DISTANCE, engine.getUseWeights(),
                 predicate,
                 engine.getLegPredicateName() + ".inTown",
                 histogramWriter));
@@ -95,7 +95,7 @@ public class DefaultAnalyzerBuilder {
         Predicate<Segment> outOfTown = new LegAttributePredicate(MiDKeys.LEG_DESTINATION, MiDValues.OUT_OF_TOWN);
         predicate = PredicateAndComposite.create(engine.getLegPredicate(), outOfTown);
         composite.addComponent(NumericLegAnalyzer.create(
-                CommonKeys.LEG_GEO_DISTANCE,
+                CommonKeys.BEELINE_DISTANCE,
                 engine.getUseWeights(),
                 predicate,
                 engine.getLegPredicateName() + ".outOfTown",
@@ -132,7 +132,7 @@ public class DefaultAnalyzerBuilder {
         person weights
          */
         task.addComponent(new NumericAnalyzer(new PersonCollector<>(
-                new NumericAttributeProvider<Person>(CommonKeys.PERSON_WEIGHT)),
+                new NumericAttributeProvider<Person>(CommonKeys.WEIGHT)),
                 "weights",
                 new HistogramWriter(
                         engine.getIOContext(),

@@ -33,7 +33,7 @@ import org.matsim.facilities.ActivityFacility;
  */
 public class GeoDistanceUpdaterFacility implements AttributeObserver {
 
-    private final Object geoDistDataKey = Converters.register(CommonKeys.LEG_GEO_DISTANCE, DoubleConverter.getInstance());
+    private final Object geoDistDataKey = Converters.register(CommonKeys.BEELINE_DISTANCE, DoubleConverter.getInstance());
     private Object facDataKey;
     private AttributeObserver listener;
 
@@ -57,7 +57,7 @@ public class GeoDistanceUpdaterFacility implements AttributeObserver {
 
     @Override
     public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
-        if (facDataKey == null) facDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
+        if (facDataKey == null) facDataKey = Converters.getObjectKey(CommonKeys.PLACE);
 
         if (facDataKey.equals(dataKey)) {
             CachedSegment act = (CachedSegment) element;

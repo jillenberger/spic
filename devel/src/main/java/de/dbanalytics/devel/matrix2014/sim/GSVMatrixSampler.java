@@ -58,13 +58,13 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
 
         ZoneIndex zones = new ZoneIndex(features);
 
-        Collector<String> collector = new LegCollector<>(new AttributeProvider<>(CommonKeys.LEG_PURPOSE));
+        Collector<String> collector = new LegCollector<>(new AttributeProvider<>(CommonKeys.TRAVEL_PURPOSE));
         Set<String> purposes = new HashSet<>(collector.collect(persons));
         purposes.remove(null);
 
         builders = new ArrayList<>();
 
-        Predicate<Segment> modePredicate = new LegAttributePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR);
+        Predicate<Segment> modePredicate = new LegAttributePredicate(CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
 
         for(String purpose : purposes) {
             builders.add(buildPair(
@@ -98,7 +98,7 @@ public class GSVMatrixSampler implements AnalyzerTask<Collection<? extends Perso
                                                                long start,
                                                                long step) {
 
-        Predicate<Segment> purposePredicate = new LegAttributePredicate(CommonKeys.LEG_PURPOSE, purpose);
+        Predicate<Segment> purposePredicate = new LegAttributePredicate(CommonKeys.TRAVEL_PURPOSE, purpose);
         Predicate<Segment> outPredicate = new DirectionPredicate(direction, true, random);
 
         Predicate<Segment> andPredicate = PredicateAndComposite.create(

@@ -51,8 +51,8 @@ public class RouteLegTask implements SegmentTask {
         Segment from = segment.previous();
         Segment to = segment.next();
 
-        String fromPlaceId = from.getAttribute(CommonKeys.ACTIVITY_FACILITY);
-        String toPlaceId = to.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+        String fromPlaceId = from.getAttribute(CommonKeys.PLACE);
+        String toPlaceId = to.getAttribute(CommonKeys.PLACE);
 
         Place fromPlace = placeIndex.get(fromPlaceId);
         Place toPlace = placeIndex.get(toPlaceId);

@@ -39,8 +39,8 @@ public class LegModeValidator implements SegmentTask, EpisodeTask, PersonTask, P
 
     @Override
     public void apply(Segment segment) {
-        String mode = segment.getAttribute(CommonKeys.LEG_MODE);
-        if(mode == null) segment.setAttribute(CommonKeys.LEG_MODE, DEFAULT_LEG_MODE);
+        String mode = segment.getAttribute(CommonKeys.MODE);
+        if(mode == null) segment.setAttribute(CommonKeys.MODE, DEFAULT_LEG_MODE);
     }
 
     @Override

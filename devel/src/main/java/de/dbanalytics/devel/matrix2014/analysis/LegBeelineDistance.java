@@ -42,8 +42,8 @@ public class LegBeelineDistance implements ValueProvider<Double, Segment> {
         Segment prev = leg.previous();
         Segment next = leg.next();
 
-        String prevFacId = prev.getAttribute(CommonKeys.ACTIVITY_FACILITY);
-        String nextFacId = next.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+        String prevFacId = prev.getAttribute(CommonKeys.PLACE);
+        String nextFacId = next.getAttribute(CommonKeys.PLACE);
 
         ActivityFacility prevFac = facilities.getFacilities().get(Id.create(prevFacId, ActivityFacility.class));
         ActivityFacility nextFac = facilities.getFacilities().get(Id.create(nextFacId, ActivityFacility.class));

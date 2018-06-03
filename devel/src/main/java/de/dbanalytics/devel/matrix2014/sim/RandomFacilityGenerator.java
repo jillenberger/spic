@@ -53,7 +53,7 @@ public class RandomFacilityGenerator implements ValueGenerator {
         /*
         Won't work if activity types change.
          */
-        String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+        String type = act.getAttribute(CommonKeys.TYPE);
         boolean ignore = false;
 //        Boolean ignore = (Boolean) act.getData(IGNORE_KEY);
 //        if (ignore == null) {

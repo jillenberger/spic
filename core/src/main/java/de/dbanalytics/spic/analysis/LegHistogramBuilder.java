@@ -45,7 +45,7 @@ public class LegHistogramBuilder implements HistogramBuilder {
     public LegHistogramBuilder(ValueProvider<Double, Segment> provider, Discretizer discretizer, boolean useWeights) {
         valueCollector = new LegCollector<>(provider);
         if (useWeights) {
-            weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<>(CommonKeys.PERSON_WEIGHT));
+            weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<>(CommonKeys.WEIGHT));
         } else {
             weightsCollector = new LegPersonCollector<>(new DefaultWeightProvider());
         }

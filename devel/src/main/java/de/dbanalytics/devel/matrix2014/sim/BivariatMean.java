@@ -78,7 +78,7 @@ public class BivariatMean implements Hamiltonian, AttributeObserver {
         this.xDataDiscr = xDataDiscr;
         this.useWeights = useWeights;
 
-        if(useWeights) weightKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
+        if(useWeights) weightKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
 
         initReferenceValues(refElements, xAttrKey, yAttrKey, useWeights);
         initSimulationValues(simElements, xAttrKey, yAttrKey, useWeights);
@@ -95,7 +95,7 @@ public class BivariatMean implements Hamiltonian, AttributeObserver {
         this.xDataDiscr = xDataDiscr;
         this.useWeights = useWeights;
 
-        if(useWeights) weightKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
+        if(useWeights) weightKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
 
 //        initReferenceValues(refElements, xAttrKey, yAttrKey, useWeights);
         referenceValues = new DynamicDoubleArray(1, Double.NaN);
@@ -158,7 +158,7 @@ public class BivariatMean implements Hamiltonian, AttributeObserver {
 
                 double weight = 1.0;
                 if(useWeights) {
-                    weight = Double.parseDouble(element.getAttribute(CommonKeys.PERSON_WEIGHT));
+                    weight = Double.parseDouble(element.getAttribute(CommonKeys.WEIGHT));
                     yVal = yVal * weight;
                 }
 

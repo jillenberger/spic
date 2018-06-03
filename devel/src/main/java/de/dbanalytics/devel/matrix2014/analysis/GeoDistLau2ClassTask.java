@@ -57,7 +57,7 @@ public class GeoDistLau2ClassTask implements AnalyzerTask<Collection<? extends P
             for (Episode plan : person.getEpisodes()) {
                 for (Attributable leg : plan.getLegs()) {
 
-                    String yStr = leg.getAttribute(CommonKeys.LEG_GEO_DISTANCE);
+                    String yStr = leg.getAttribute(CommonKeys.BEELINE_DISTANCE);
 
                     if (xStr != null && yStr != null) {
                         xVals.add(Double.parseDouble(xStr));

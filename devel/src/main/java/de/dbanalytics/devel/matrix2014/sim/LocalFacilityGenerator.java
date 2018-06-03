@@ -61,7 +61,7 @@ public class LocalFacilityGenerator implements ValueGenerator {
         /*
         Won't work if activity types change.
          */
-        String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+        String type = act.getAttribute(CommonKeys.TYPE);
         boolean ignore = false;
             if (type != null) {
                 if (blacklist.contains(type)) ignore = true;
@@ -72,7 +72,7 @@ public class LocalFacilityGenerator implements ValueGenerator {
             if(leg != null) prev = (CachedSegment) leg.previous();
 
             if(prev != null) {
-                if(facilityDataKey == null) facilityDataKey = Converters.getObjectKey(CommonKeys.ACTIVITY_FACILITY);
+                if(facilityDataKey == null) facilityDataKey = Converters.getObjectKey(CommonKeys.PLACE);
                 ActivityFacility prefFac = (ActivityFacility) prev.getData(facilityDataKey);
                 for(int i = 0; i < 100; i++) {
                     ActivityFacility newFac = facilityData.randomFacility(type);

@@ -37,18 +37,18 @@ public class ActTimeValidator implements EpisodeTask {
     public void apply(Episode episode) {
         double offset = DEFAULT_OFFSET;
         for(Segment act : episode.getActivities()) {
-            String start = act.getAttribute(CommonKeys.ACTIVITY_START_TIME);
+            String start = act.getAttribute(CommonKeys.START_TIME);
             if(start == null) {
                 offset += DEFAULT_STEP;
-                act.setAttribute(CommonKeys.ACTIVITY_START_TIME, String.valueOf(offset));
+                act.setAttribute(CommonKeys.START_TIME, String.valueOf(offset));
             } else {
                 offset = Double.parseDouble(start);
             }
 
-            String end = act.getAttribute(CommonKeys.ACTIVITY_END_TIME);
+            String end = act.getAttribute(CommonKeys.END_TIME);
             if(end == null) {
                 offset += DEFAULT_STEP;
-                act.setAttribute(CommonKeys.ACTIVITY_END_TIME, String.valueOf(offset));
+                act.setAttribute(CommonKeys.END_TIME, String.valueOf(offset));
             } else {
                 offset = Double.parseDouble(end);
             }

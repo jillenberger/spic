@@ -147,7 +147,7 @@ public class LegDistributionTermBuilder2 implements McmcSimulationModuleBuilder<
         term.setErrorFunction(function);
         if (predicate != null) term.setPredicate(predicate);
         term.setResetInterval(resetInterval);
-        if (useWeights) term.setUseWeights(CommonKeys.PERSON_WEIGHT); //TODO: Better use a more generic key?
+        if (useWeights) term.setUseWeights(CommonKeys.WEIGHT); //TODO: Better use a more generic key?
 
         /** Add to attribute listeners */
         context.getAttributeMediator().attach(term);

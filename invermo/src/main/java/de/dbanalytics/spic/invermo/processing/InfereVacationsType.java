@@ -36,7 +36,7 @@ public class InfereVacationsType implements EpisodeTask {
 	public void apply(Episode plan) {
 		boolean hasVacations = false;
 		for (Attributable act : plan.getActivities()) {
-			if ("vacations".equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+			if ("vacations".equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
 				hasVacations = true;
 				break;
 			}
@@ -48,8 +48,8 @@ public class InfereVacationsType implements EpisodeTask {
 			Attributable first = plan.getLegs().get(0);
 			Attributable last = plan.getLegs().get(plan.getLegs().size() - 1);
 
-			String startStr = first.getAttribute(CommonKeys.LEG_START_TIME);
-			String endStr = last.getAttribute(CommonKeys.LEG_END_TIME);
+			String startStr = first.getAttribute(CommonKeys.DEPARTURE_TIME);
+			String endStr = last.getAttribute(CommonKeys.ARRIVAL_TIME);
 
 			if (startStr != null && endStr != null) {
 				DateTime start = SplitPlanTask.formatter.parseDateTime(startStr);
@@ -61,21 +61,21 @@ public class InfereVacationsType implements EpisodeTask {
 			}
 			
 			for (Attributable act : plan.getActivities()) {
-				if ("vacations".equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
+				if ("vacations".equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
 					if (isLong) {
-						act.setAttribute(CommonKeys.ACTIVITY_TYPE, "vacations_long");
+						act.setAttribute(CommonKeys.TYPE, "vacations_long");
 					} else {
-						act.setAttribute(CommonKeys.ACTIVITY_TYPE, "vacations_short");
+						act.setAttribute(CommonKeys.TYPE, "vacations_short");
 					}
 				}
 			}
 
 			for (Segment leg : plan.getLegs()) {
-				if ("vacations".equalsIgnoreCase(leg.getAttribute(CommonKeys.LEG_PURPOSE))) {
+				if ("vacations".equalsIgnoreCase(leg.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
 					if (isLong) {
-						leg.setAttribute(CommonKeys.LEG_PURPOSE, "vacations_long");
+						leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "vacations_long");
 					} else {
-						leg.setAttribute(CommonKeys.LEG_PURPOSE, "vacations_short");
+						leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "vacations_short");
 					}
 				}
 			}

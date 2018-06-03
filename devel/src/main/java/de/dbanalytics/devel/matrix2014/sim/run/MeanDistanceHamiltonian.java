@@ -64,7 +64,7 @@ public class MeanDistanceHamiltonian {
                 refLegs,
                 simLegs,
                 MiDKeys.PERSON_LAU2_CLASS,
-                CommonKeys.LEG_GEO_DISTANCE,
+                CommonKeys.BEELINE_DISTANCE,
                 new LinearDiscretizer(1.0),
                 engine.getUseWeights());
 
@@ -73,7 +73,7 @@ public class MeanDistanceHamiltonian {
                 configGroup);
         engine.getHamiltonian().addComponent(annealingHamiltonian);
         engine.getEngineListeners().addComponent(annealingHamiltonian);
-        engine.getAttributeListeners().get(CommonKeys.LEG_GEO_DISTANCE).addComponent(hamiltonian);
+        engine.getAttributeListeners().get(CommonKeys.BEELINE_DISTANCE).addComponent(hamiltonian);
         /*
         Add a hamiltonian logger.
          */

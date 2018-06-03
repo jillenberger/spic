@@ -81,7 +81,7 @@ private final boolean absoluteMode;
         this.absoluteMode = absoluteMode;
         this.useWeights = useWeights;
 
-        if(useWeights) weightKey = Converters.register(CommonKeys.PERSON_WEIGHT, DoubleConverter.getInstance());
+        if(useWeights) weightKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
 
         refFreq = DynamicArrayBuilder.build(refHist, discretizer);
     }

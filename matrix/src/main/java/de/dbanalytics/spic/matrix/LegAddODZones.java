@@ -31,8 +31,8 @@ public class LegAddODZones implements SegmentTask {
         Segment prev = segment.previous();
         Segment next = segment.next();
 
-        Place from = placeIndex.get(prev.getAttribute(CommonKeys.ACTIVITY_FACILITY));
-        Place to = placeIndex.get(next.getAttribute(CommonKeys.ACTIVITY_FACILITY));
+        Place from = placeIndex.get(prev.getAttribute(CommonKeys.PLACE));
+        Place to = placeIndex.get(next.getAttribute(CommonKeys.PLACE));
 
         Feature fromZone = zones.get(from.getGeometry().getCoordinate());
         Feature toZone = zones.get(to.getGeometry().getCoordinate());

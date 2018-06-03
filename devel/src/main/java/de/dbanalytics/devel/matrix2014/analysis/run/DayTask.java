@@ -51,7 +51,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
         /*
         Get all purposes.
          */
-        LegCollector<String> purposeCollector = new LegCollector<>(new AttributeProvider<>(CommonKeys.LEG_PURPOSE));
+        LegCollector<String> purposeCollector = new LegCollector<>(new AttributeProvider<>(CommonKeys.TRAVEL_PURPOSE));
         Set<String> purposes = new HashSet<>(purposeCollector.collect(persons));
         purposes.remove(null);
         /*
@@ -70,7 +70,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
         List<Pair<Map<String, String>, TObjectDoubleMap<String>>> shareHists = new ArrayList<>();
         List<Pair<Map<String, String>, TObjectDoubleMap<String>>> absoluteHists = new ArrayList<>();
 
-        Predicate<Segment> modePredicate = new LegAttributePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR);
+        Predicate<Segment> modePredicate = new LegAttributePredicate(CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
 
         TDoubleArrayList borders = new TDoubleArrayList();
         borders.add(-1);
@@ -81,7 +81,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
         Discretizer discretizer = new FixedBordersDiscretizer(borders.toArray());
 
         for (String purpose : purposes) {
-            Predicate<Segment> purposePredicate = new LegAttributePredicate(CommonKeys.LEG_PURPOSE, purpose);
+            Predicate<Segment> purposePredicate = new LegAttributePredicate(CommonKeys.TRAVEL_PURPOSE, purpose);
 
             for (String season : seasons) {
                 Predicate<Segment> seasonPredicate = new LegPersonAttributePredicate(SetSeason.SEASON_KEY, season);
@@ -101,7 +101,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
                                 distPrediate,
                                 dayPredicate);
 
-                        LegPersonCollector<Double> counter = new LegPersonCollector(new NumericAttributeProvider<>(CommonKeys.PERSON_WEIGHT));
+                        LegPersonCollector<Double> counter = new LegPersonCollector(new NumericAttributeProvider<>(CommonKeys.WEIGHT));
                         counter.setPredicate(predicate);
                         List<Double> weights = counter.collect(persons);
                         hist.put(day, sum(weights));
@@ -114,10 +114,10 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
                     }
 
                     Map<String, String> dimensions = new HashMap<>();
-                    dimensions.put(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR);
-                    dimensions.put(CommonKeys.LEG_PURPOSE, purpose);
+                    dimensions.put(CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
+                    dimensions.put(CommonKeys.TRAVEL_PURPOSE, purpose);
                     dimensions.put(SetSeason.SEASON_KEY, season);
-                    dimensions.put(CommonKeys.LEG_GEO_DISTANCE, String.valueOf(borders.get(idx)));
+                    dimensions.put(CommonKeys.BEELINE_DISTANCE, String.valueOf(borders.get(idx)));
 
                     absoluteHists.add(new ImmutablePair<>(dimensions, hist));
                     Histogram.normalize(histShare);
@@ -202,7 +202,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
 
         @Override
         public boolean test(Segment segment) {
-            String val = segment.getAttribute(CommonKeys.LEG_GEO_DISTANCE);
+            String val = segment.getAttribute(CommonKeys.BEELINE_DISTANCE);
             if(val != null) {
                 double d = Double.parseDouble(val);
                 int idx = discretizer.index(d);

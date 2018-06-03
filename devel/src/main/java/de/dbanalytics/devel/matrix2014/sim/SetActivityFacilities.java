@@ -59,8 +59,8 @@ public class SetActivityFacilities implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for(Segment act : episode.getActivities()) {
-            if(act.getAttribute(CommonKeys.ACTIVITY_FACILITY) == null) {
-                String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+            if(act.getAttribute(CommonKeys.PLACE) == null) {
+                String type = act.getAttribute(CommonKeys.TYPE);
                 ActivityFacility facility = null;
                 Segment toLeg = act.previous();
                 /*
@@ -69,11 +69,11 @@ public class SetActivityFacilities implements EpisodeTask {
                 if(toLeg != null) {
                     Segment prevAct = toLeg.previous();
                     Id<ActivityFacility> originId = Id.create(
-                            prevAct.getAttribute(CommonKeys.ACTIVITY_FACILITY),
+                            prevAct.getAttribute(CommonKeys.PLACE),
                             ActivityFacility.class);
                     ActivityFacility origin = data.getAll().getFacilities().get(originId);
 
-                    String distance = toLeg.getAttribute(CommonKeys.LEG_GEO_DISTANCE);
+                    String distance = toLeg.getAttribute(CommonKeys.BEELINE_DISTANCE);
                     double d = fallbackDistance;
                     if(distance != null) d = Double.parseDouble(distance);
 
@@ -99,7 +99,7 @@ public class SetActivityFacilities implements EpisodeTask {
                     facility = data.randomFacility(type);
                 }
 
-                act.setAttribute(CommonKeys.ACTIVITY_FACILITY, facility.getId().toString());
+                act.setAttribute(CommonKeys.PLACE, facility.getId().toString());
             }
         }
     }

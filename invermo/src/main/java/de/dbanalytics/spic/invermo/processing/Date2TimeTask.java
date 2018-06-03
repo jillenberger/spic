@@ -40,7 +40,7 @@ public class Date2TimeTask implements EpisodeTask {
 		LocalDateTime reference = null;
 		
 		for(Attributable leg : plan.getLegs()) {
-			String start = leg.getAttribute(CommonKeys.LEG_START_TIME);
+			String start = leg.getAttribute(CommonKeys.DEPARTURE_TIME);
 			if(start != null) {
 				if(reference == null) {
 					reference = getReference(start);
@@ -49,13 +49,13 @@ public class Date2TimeTask implements EpisodeTask {
 				LocalDateTime startDate = SplitPlanTask.formatter.parseLocalDateTime(start);
 				Seconds secs = Seconds.secondsBetween(reference, startDate);
 				
-				leg.setAttribute(CommonKeys.LEG_START_TIME, String.valueOf(secs.getSeconds()));
+				leg.setAttribute(CommonKeys.DEPARTURE_TIME, String.valueOf(secs.getSeconds()));
 				if(!leg.keys().contains(MiDKeys.PERSON_MONTH)) {
 					setPlanDate(startDate, plan);
 				}
 			}
 			
-			String end = leg.getAttribute(CommonKeys.LEG_END_TIME);
+			String end = leg.getAttribute(CommonKeys.ARRIVAL_TIME);
 			if(end != null) {
 				if(reference == null) {
 					reference = getReference(end);
@@ -64,7 +64,7 @@ public class Date2TimeTask implements EpisodeTask {
 				LocalDateTime endDate = SplitPlanTask.formatter.parseLocalDateTime(end);
 				Seconds secs = Seconds.secondsBetween(reference, endDate);
 				
-				leg.setAttribute(CommonKeys.LEG_END_TIME, String.valueOf(secs.getSeconds()));
+				leg.setAttribute(CommonKeys.ARRIVAL_TIME, String.valueOf(secs.getSeconds()));
 				
 				if(!leg.keys().contains(MiDKeys.PERSON_MONTH)) {
 					setPlanDate(endDate, plan);

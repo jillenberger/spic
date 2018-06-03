@@ -47,9 +47,9 @@ public class InputeDaysTask implements PersonTask {
             if(day != null) {
                 for(Episode episode : person.getEpisodes()) {
                     for(Segment leg : episode.getLegs()) {
-                        String mode = leg.getAttribute(CommonKeys.LEG_MODE);
+                        String mode = leg.getAttribute(CommonKeys.MODE);
 //                        if(CommonValues.LEG_MODE_CAR.equalsIgnoreCase(mode)) {
-                            String purpose = leg.getAttribute(CommonKeys.LEG_PURPOSE);
+                            String purpose = leg.getAttribute(CommonKeys.TRAVEL_PURPOSE);
                             if (purpose != null) {
                                 TObjectIntHashMap<String> days = matrix.get(purpose);
                                 if (days == null) {
@@ -100,7 +100,7 @@ public class InputeDaysTask implements PersonTask {
             Episode episode = person.getEpisodes().get(0);
             if(MiDValues.MID_JOUNREYS.equalsIgnoreCase(episode.getAttribute(CommonKeys.DATA_SOURCE))) {
                 Segment leg = episode.getLegs().get(0);
-                String purpose = leg.getAttribute(CommonKeys.LEG_PURPOSE);
+                String purpose = leg.getAttribute(CommonKeys.TRAVEL_PURPOSE);
 
                 day = map.get(purpose).randomWeightedChoice();
 

@@ -71,19 +71,19 @@ public class ActTypeDistanceTask implements AnalyzerTask<Collection<? extends Pe
     @Override
     public void analyze(Collection<? extends Person> persons, List<StatsContainer> containers) {
         Collector<String> collector;
-        if(prevActMode) collector = new PrevCollector<>(new AttributeProvider<>(CommonKeys.ACTIVITY_TYPE));
-        else collector = new LegNextCollector<>(new AttributeProvider<>(CommonKeys.ACTIVITY_TYPE));
+        if(prevActMode) collector = new PrevCollector<>(new AttributeProvider<>(CommonKeys.TYPE));
+        else collector = new LegNextCollector<>(new AttributeProvider<>(CommonKeys.TYPE));
 
         Set<String> types = new HashSet<>(collector.collect(persons));
         types.remove(null);
 
-        LegAttributeHistogramBuilder builder = new LegAttributeHistogramBuilder(CommonKeys.LEG_GEO_DISTANCE, discretizer);
+        LegAttributeHistogramBuilder builder = new LegAttributeHistogramBuilder(CommonKeys.BEELINE_DISTANCE, discretizer);
 
         Map<String, TDoubleDoubleMap> histograms = new HashMap<>();
         for(String type : types) {
             Predicate<Segment> predicate;
-            if(prevActMode) predicate = new PrevAttributePredicate(CommonKeys.ACTIVITY_TYPE, type);
-            else predicate = new NextAttributePredicate(CommonKeys.ACTIVITY_TYPE, type);
+            if(prevActMode) predicate = new PrevAttributePredicate(CommonKeys.TYPE, type);
+            else predicate = new NextAttributePredicate(CommonKeys.TYPE, type);
 
             if(legPredicate != null) predicate = PredicateAndComposite.create(predicate, legPredicate);
             builder.setPredicate(predicate);

@@ -35,7 +35,7 @@ public class SetActivityTypes implements EpisodeTask {
 	public void apply(Episode plan) {
 		for(Attributable act : plan.getActivities()) {
 			if(InvermoKeys.HOME.equals(act.getAttribute(InvermoKeys.LOCATION))) {
-				act.setAttribute(CommonKeys.ACTIVITY_TYPE, InvermoKeys.HOME);
+				act.setAttribute(CommonKeys.TYPE, InvermoKeys.HOME);
 			}
 		}
 		
@@ -44,7 +44,7 @@ public class SetActivityTypes implements EpisodeTask {
 			Attributable act = plan.getActivities().get(i + 1);
 			
 			if(!InvermoKeys.HOME.equals(act.getAttribute(InvermoKeys.LOCATION))) {
-				act.setAttribute(CommonKeys.ACTIVITY_TYPE, leg.getAttribute(CommonKeys.LEG_PURPOSE));
+				act.setAttribute(CommonKeys.TYPE, leg.getAttribute(CommonKeys.TRAVEL_PURPOSE));
 			}
 		}
 

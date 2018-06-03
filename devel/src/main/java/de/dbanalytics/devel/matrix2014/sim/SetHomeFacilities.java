@@ -191,7 +191,7 @@ public class SetHomeFacilities implements PersonsTask {
 
         double globalWSum = 0;
         for(Person p : persons) {
-            globalWSum += Double.parseDouble(p.getAttribute(CommonKeys.PERSON_WEIGHT));
+            globalWSum += Double.parseDouble(p.getAttribute(CommonKeys.WEIGHT));
         }
 
         TObjectDoubleIterator<Zone> it = probabilities.iterator();
@@ -230,7 +230,7 @@ public class SetHomeFacilities implements PersonsTask {
                         ActivityFacility f = facilities.get(random.nextInt(facilities.size()));
                         setHomeFacility(p, f);
                         personIdx++;
-                        wsum += Double.parseDouble(p.getAttribute(CommonKeys.PERSON_WEIGHT));
+                        wsum += Double.parseDouble(p.getAttribute(CommonKeys.WEIGHT));
 
                         ProgressLogger.step();
                     } else {
@@ -266,8 +266,8 @@ public class SetHomeFacilities implements PersonsTask {
 
             for (Episode episode : person.getEpisodes()) {
                 for (Segment act : episode.getActivities()) {
-                    if (ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
-                        if (act.getAttribute(CommonKeys.ACTIVITY_FACILITY) == null) {
+                    if (ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+                        if (act.getAttribute(CommonKeys.PLACE) == null) {
                             invalid = true;
                             break;
                         }
@@ -290,8 +290,8 @@ public class SetHomeFacilities implements PersonsTask {
     private void setHomeFacility(Person person, ActivityFacility facility) {
         for (Episode e : person.getEpisodes()) {
             for (Segment act : e.getActivities()) {
-                if (ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.ACTIVITY_TYPE))) {
-                    act.setAttribute(CommonKeys.ACTIVITY_FACILITY, facility.getId().toString());
+                if (ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+                    act.setAttribute(CommonKeys.PLACE, facility.getId().toString());
                 }
             }
         }

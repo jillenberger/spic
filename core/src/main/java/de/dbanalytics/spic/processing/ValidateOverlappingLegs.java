@@ -33,8 +33,8 @@ public class ValidateOverlappingLegs implements EpisodeTask {
 	@Override
 	public void apply(Episode episode) {
 		for(int i = 1; i < episode.getLegs().size(); i++) {
-			String startTime = episode.getLegs().get(i).getAttribute(CommonKeys.LEG_START_TIME);
-			String endTime = episode.getLegs().get(i - 1).getAttribute(CommonKeys.LEG_END_TIME);
+			String startTime = episode.getLegs().get(i).getAttribute(CommonKeys.DEPARTURE_TIME);
+			String endTime = episode.getLegs().get(i - 1).getAttribute(CommonKeys.ARRIVAL_TIME);
 
 			if(startTime != null && endTime != null) {
 				double s = Double.parseDouble(startTime);

@@ -50,7 +50,7 @@ public class RandomPlaceMutatorBuilder implements MutatorBuilder<CachedSegment> 
     @Override
     public Mutator<CachedSegment> build() {
         PlaceIndex index = new PlaceIndex(places);
-        Object dataKey = Converters.register(CommonKeys.ACTIVITY_FACILITY, new PlaceConverter(index));
+        Object dataKey = Converters.register(CommonKeys.PLACE, new PlaceConverter(index));
 
         RandomPlaceGenerator generator = new RandomPlaceGenerator(places, random);
         generator.setPredicate(new NotPredicate<>(new HomePredicate()));

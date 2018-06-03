@@ -60,7 +60,7 @@ public class FacilityDistanceProvider implements ValueProvider<Double, Segment> 
     }
 
     private ActivityFacility getFacility(Segment act) {
-        String facilityId = act.getAttribute(CommonKeys.ACTIVITY_FACILITY);
+        String facilityId = act.getAttribute(CommonKeys.PLACE);
         Id<ActivityFacility> facilityObjId = Id.create(facilityId, ActivityFacility.class);
         ActivityFacility fac = facilities.getFacilities().get(facilityObjId);
         return  fac;

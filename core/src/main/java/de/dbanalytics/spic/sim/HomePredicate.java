@@ -37,7 +37,7 @@ public class HomePredicate implements Predicate<CachedElement> {
         Boolean result = (Boolean) cachedElement.getData(objectKey);
 
         if (result == null) {
-            String type = cachedElement.getAttribute(CommonKeys.ACTIVITY_TYPE);
+            String type = cachedElement.getAttribute(CommonKeys.TYPE);
             result = ActivityTypes.HOME.equalsIgnoreCase(type);
             cachedElement.setData(objectKey, result);
         }

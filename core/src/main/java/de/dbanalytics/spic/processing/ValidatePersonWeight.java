@@ -29,7 +29,7 @@ public class ValidatePersonWeight implements PersonTask {
 
     @Override
     public void apply(Person person) {
-        double w = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+        double w = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
         boolean valid = true;
         if(Double.isInfinite(w)) valid = false;
         else if(Double.isNaN(w)) valid = false;

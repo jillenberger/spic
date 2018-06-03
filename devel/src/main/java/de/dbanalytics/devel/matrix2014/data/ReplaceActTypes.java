@@ -61,11 +61,11 @@ public class ReplaceActTypes implements EpisodeTask {
 		for (Attributable act : plan.getActivities()) {
 			String origType = act.getAttribute(ORIGINAL_TYPE);
 			if (origType == null) {
-				String type = act.getAttribute(CommonKeys.ACTIVITY_TYPE);
+				String type = act.getAttribute(CommonKeys.TYPE);
 				act.setAttribute(ORIGINAL_TYPE, type);
 				String newType = getTypeMapping().get(type);
 				if (newType != null) {
-					act.setAttribute(CommonKeys.ACTIVITY_TYPE, newType);
+					act.setAttribute(CommonKeys.TYPE, newType);
 				}
 			}
 		}

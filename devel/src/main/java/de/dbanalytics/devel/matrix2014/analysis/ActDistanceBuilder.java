@@ -67,7 +67,7 @@ public class ActDistanceBuilder {
 
         LegPersonCollector<Double> weightCollector = null;
         if (useWeights) {
-            ValueProvider<Double, Person> weightProvider = new NumericAttributeProvider<>(CommonKeys.PERSON_WEIGHT);
+            ValueProvider<Double, Person> weightProvider = new NumericAttributeProvider<>(CommonKeys.WEIGHT);
             weightCollector = new LegPersonCollector<>(weightProvider);
             if (predicate != null) weightCollector.setPredicate(predicate);
         }

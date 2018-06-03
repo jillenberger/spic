@@ -39,7 +39,7 @@ public class SetFirstActivityTypeTask implements EpisodeTask {
 
             String origin = firstLeg.getAttribute(MiDKeys.LEG_ORIGIN);
             if (ActivityTypes.HOME.equals(origin) || ActivityTypes.WORK.equals(origin)) {
-                firstAct.setAttribute(CommonKeys.ACTIVITY_TYPE, origin);
+                firstAct.setAttribute(CommonKeys.TYPE, origin);
             }
 
         }

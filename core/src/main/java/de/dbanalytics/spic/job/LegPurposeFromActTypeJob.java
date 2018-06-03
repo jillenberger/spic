@@ -26,8 +26,8 @@ public class LegPurposeFromActTypeJob implements Job {
 
         @Override
         public void apply(Segment segment) {
-            String type = segment.next().getAttribute(CommonKeys.ACTIVITY_TYPE);
-            segment.setAttribute(CommonKeys.LEG_PURPOSE, type);
+            String type = segment.next().getAttribute(CommonKeys.TYPE);
+            segment.setAttribute(CommonKeys.TRAVEL_PURPOSE, type);
         }
     }
 }

@@ -35,7 +35,7 @@ public class VacationsTypeTask implements EpisodeTask {
 	@Override
 	public void apply(Episode plan) {
 		for (Attributable act : plan.getActivities()) {
-			if (act.getAttribute(CommonKeys.ACTIVITY_TYPE).equalsIgnoreCase(ActivityTypes.LEISURE)) {
+			if (act.getAttribute(CommonKeys.TYPE).equalsIgnoreCase(ActivityTypes.LEISURE)) {
 				String val = plan.getAttribute(MiDKeys.JOURNEY_DAYS);
 				int days = 0;
 
@@ -43,9 +43,9 @@ public class VacationsTypeTask implements EpisodeTask {
 					days = Integer.parseInt(val);
 				
 				if (days > 4) {
-					act.setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.VACATION_LONG);
+					act.setAttribute(CommonKeys.TYPE, ActivityTypes.VACATION_LONG);
 				} else  if(days > 1 && days <= 4) {
-					act.setAttribute(CommonKeys.ACTIVITY_TYPE, ActivityTypes.VACATION_SHORT);
+					act.setAttribute(CommonKeys.TYPE, ActivityTypes.VACATION_SHORT);
 				}
 
 			}

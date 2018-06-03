@@ -43,7 +43,7 @@ public class LegModeHandler implements LegAttributeHandler {
 	private void setMode(String key, String modeKey, String value, String mode, Attributable leg) {
 		if(key.endsWith(modeKey)) {
 			if(value.equals("1")) {
-				if(leg.setAttribute(CommonKeys.LEG_MODE, mode) != null) {
+				if(leg.setAttribute(CommonKeys.MODE, mode) != null) {
 					System.err.println("Overwriting mode key");
 				}
 			}

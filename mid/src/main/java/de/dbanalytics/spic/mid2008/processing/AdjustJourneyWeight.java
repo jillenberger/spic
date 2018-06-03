@@ -30,11 +30,11 @@ public class AdjustJourneyWeight implements PersonTask {
 
     @Override
     public void apply(Person person) {
-        double weight = Double.parseDouble(person.getAttribute(CommonKeys.PERSON_WEIGHT));
+        double weight = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
         weight = weight / 75.0;
 //        weight = weight / 45.0; // 3 month time frame
 //        weight = weight / 30.0; // 3 month time frame
 //        weight = weight / 365.0;
-        person.setAttribute(CommonKeys.PERSON_WEIGHT, String.valueOf(weight));
+        person.setAttribute(CommonKeys.WEIGHT, String.valueOf(weight));
     }
 }
