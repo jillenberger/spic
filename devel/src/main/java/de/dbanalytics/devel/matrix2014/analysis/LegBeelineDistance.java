@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.spic.analysis.ValueProvider;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 import org.matsim.api.core.v01.Id;
 import org.matsim.facilities.ActivityFacilities;
@@ -42,8 +42,8 @@ public class LegBeelineDistance implements ValueProvider<Double, Segment> {
         Segment prev = leg.previous();
         Segment next = leg.next();
 
-        String prevFacId = prev.getAttribute(CommonKeys.PLACE);
-        String nextFacId = next.getAttribute(CommonKeys.PLACE);
+        String prevFacId = prev.getAttribute(Attributes.KEY.PLACE);
+        String nextFacId = next.getAttribute(Attributes.KEY.PLACE);
 
         ActivityFacility prevFac = facilities.getFacilities().get(Id.create(prevFacId, ActivityFacility.class));
         ActivityFacility nextFac = facilities.getFacilities().get(Id.create(nextFacId, ActivityFacility.class));

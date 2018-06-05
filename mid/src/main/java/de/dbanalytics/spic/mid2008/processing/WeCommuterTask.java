@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.processing;
 
 import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.processing.SegmentTask;
 
@@ -31,13 +31,13 @@ public class WeCommuterTask implements SegmentTask {
 
     @Override
     public void apply(Segment segment) {
-        if (ActivityTypes.WECOMMUTER.equalsIgnoreCase(segment.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
+        if (ActivityTypes.WECOMMUTER.equalsIgnoreCase(segment.getAttribute(Attributes.KEY.TRAVEL_PURPOSE))) {
             Segment prev = segment.previous();
             Segment next = segment.next();
-            if (ActivityTypes.HOME.equalsIgnoreCase(prev.getAttribute(CommonKeys.TYPE))) {
-                next.setAttribute(CommonKeys.TYPE, ActivityTypes.WORK);
+            if (ActivityTypes.HOME.equalsIgnoreCase(prev.getAttribute(Attributes.KEY.TYPE))) {
+                next.setAttribute(Attributes.KEY.TYPE, ActivityTypes.WORK);
             } else {
-                next.setAttribute(CommonKeys.TYPE, ActivityTypes.HOME);
+                next.setAttribute(Attributes.KEY.TYPE, ActivityTypes.HOME);
             }
         }
     }

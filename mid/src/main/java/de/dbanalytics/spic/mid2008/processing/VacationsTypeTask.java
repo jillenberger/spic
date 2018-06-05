@@ -19,10 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.processing;
 
-import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.processing.EpisodeTask;
 
@@ -35,7 +32,7 @@ public class VacationsTypeTask implements EpisodeTask {
 	@Override
 	public void apply(Episode plan) {
 		for (Attributable act : plan.getActivities()) {
-			if (act.getAttribute(CommonKeys.TYPE).equalsIgnoreCase(ActivityTypes.LEISURE)) {
+			if (act.getAttribute(Attributes.KEY.TYPE).equalsIgnoreCase(ActivityTypes.LEISURE)) {
 				String val = plan.getAttribute(MiDKeys.JOURNEY_DAYS);
 				int days = 0;
 
@@ -43,9 +40,9 @@ public class VacationsTypeTask implements EpisodeTask {
 					days = Integer.parseInt(val);
 				
 				if (days > 4) {
-					act.setAttribute(CommonKeys.TYPE, ActivityTypes.VACATION_LONG);
+					act.setAttribute(Attributes.KEY.TYPE, ActivityTypes.VACATION_LONG);
 				} else  if(days > 1 && days <= 4) {
-					act.setAttribute(CommonKeys.TYPE, ActivityTypes.VACATION_SHORT);
+					act.setAttribute(Attributes.KEY.TYPE, ActivityTypes.VACATION_SHORT);
 				}
 
 			}

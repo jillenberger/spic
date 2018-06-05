@@ -18,10 +18,7 @@
  */
 package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import org.matsim.contrib.common.stats.Correlations;
@@ -63,7 +60,7 @@ public class GeoDistNumTripsTask implements AnalyzerTask<Collection<? extends Pe
                 double sum = 0;
                 for(Segment leg : e.getLegs()) {
                     if(predicate == null || predicate.test(leg)) {
-                        String value = leg.getAttribute(CommonKeys.BEELINE_DISTANCE);
+                        String value = leg.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
                         if(value != null) {
                             sum += Double.parseDouble(value);
                             trips++;

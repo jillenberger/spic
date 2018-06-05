@@ -22,7 +22,7 @@ package de.dbanalytics.devel.matrix2014.sim;
 import de.dbanalytics.devel.matrix2014.matrix.io.GSVMatrixWriter;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 
 import java.util.Random;
@@ -72,8 +72,8 @@ public class DirectionPredicate implements Predicate<Segment> {
         String prevType = null;
         String nextType = null;
 
-        if(prev != null) prevType = prev.getAttribute(CommonKeys.TYPE);
-        if(next != null) nextType = next.getAttribute(CommonKeys.TYPE);
+        if(prev != null) prevType = prev.getAttribute(Attributes.KEY.TYPE);
+        if(next != null) nextType = next.getAttribute(Attributes.KEY.TYPE);
 
         String value;
 

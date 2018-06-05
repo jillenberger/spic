@@ -46,7 +46,7 @@ public class Simulator {
     private static final boolean USE_WEIGHTS = true;
 
     private static final Predicate<Segment> DEFAULT_LEG_PREDICATE = new LegAttributePredicate(
-            CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
+            Attributes.KEY.MODE, Attributes.MODE.CAR);
 //    private static final Predicate<Segment> DEFAULT_LEG_PREDICATE = null;
 
     private static final String DEFAULT_PREDICATE_NAME = "car";
@@ -179,13 +179,13 @@ public class Simulator {
         /*
 		Setup listeners for changes on facilities and geo distance.
 		 */
-        attributeListeners.put(CommonKeys.BEELINE_DISTANCE, new AttributeObserverComposite());
-        attributeListeners.put(CommonKeys.PLACE, new AttributeObserverComposite());
+        attributeListeners.put(Attributes.KEY.BEELINE_DISTANCE, new AttributeObserverComposite());
+        attributeListeners.put(Attributes.KEY.PLACE, new AttributeObserverComposite());
 
-        GeoDistanceUpdaterFacility geoDistanceUpdater = new GeoDistanceUpdaterFacility(attributeListeners.get(CommonKeys.BEELINE_DISTANCE));
-//        geoDistanceUpdater.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
+        GeoDistanceUpdaterFacility geoDistanceUpdater = new GeoDistanceUpdaterFacility(attributeListeners.get(Attributes.KEY.BEELINE_DISTANCE));
+//        geoDistanceUpdater.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.CAR));
 
-        attributeListeners.get(CommonKeys.PLACE).addComponent(geoDistanceUpdater);
+        attributeListeners.get(Attributes.KEY.PLACE).addComponent(geoDistanceUpdater);
         /*
         Build default analyzer...
          */
@@ -194,8 +194,8 @@ public class Simulator {
         Build hamiltonians...
          */
         if(getUseWeights()) {
-            TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.WEIGHT), refPersons);
-            TaskRunner.run(new CopyPersonAttToLeg(CommonKeys.WEIGHT), simPersons);
+            TaskRunner.run(new CopyPersonAttToLeg(Attributes.KEY.WEIGHT), refPersons);
+            TaskRunner.run(new CopyPersonAttToLeg(Attributes.KEY.WEIGHT), simPersons);
         }
 
         hamiltonianAnalyzers = new ConcurrentAnalyzerTask<>();
@@ -237,7 +237,7 @@ public class Simulator {
 		 */
         FacilityMutatorBuilder mutatorBuilder = new FacilityMutatorBuilder(dataPool, random);
         mutatorBuilder.addToBlacklist(ActivityTypes.HOME);
-        mutatorBuilder.setListener(attributeListeners.get(CommonKeys.PLACE));
+        mutatorBuilder.setListener(attributeListeners.get(Attributes.KEY.PLACE));
         mutatorBuilder.setProximityProbability(Double.parseDouble(configGroup.getValue("proximityProba")));
         Mutator<? extends Attributable> mutator = mutatorBuilder.build();
         /*

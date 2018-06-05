@@ -19,7 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.sim;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.devel.matrix2014.gis.FacilityData;
@@ -59,8 +59,8 @@ public class SetActivityFacilities implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for(Segment act : episode.getActivities()) {
-            if(act.getAttribute(CommonKeys.PLACE) == null) {
-                String type = act.getAttribute(CommonKeys.TYPE);
+            if(act.getAttribute(Attributes.KEY.PLACE) == null) {
+                String type = act.getAttribute(Attributes.KEY.TYPE);
                 ActivityFacility facility = null;
                 Segment toLeg = act.previous();
                 /*
@@ -69,11 +69,11 @@ public class SetActivityFacilities implements EpisodeTask {
                 if(toLeg != null) {
                     Segment prevAct = toLeg.previous();
                     Id<ActivityFacility> originId = Id.create(
-                            prevAct.getAttribute(CommonKeys.PLACE),
+                            prevAct.getAttribute(Attributes.KEY.PLACE),
                             ActivityFacility.class);
                     ActivityFacility origin = data.getAll().getFacilities().get(originId);
 
-                    String distance = toLeg.getAttribute(CommonKeys.BEELINE_DISTANCE);
+                    String distance = toLeg.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
                     double d = fallbackDistance;
                     if(distance != null) d = Double.parseDouble(distance);
 
@@ -99,7 +99,7 @@ public class SetActivityFacilities implements EpisodeTask {
                     facility = data.randomFacility(type);
                 }
 
-                act.setAttribute(CommonKeys.PLACE, facility.getId().toString());
+                act.setAttribute(Attributes.KEY.PLACE, facility.getId().toString());
             }
         }
     }

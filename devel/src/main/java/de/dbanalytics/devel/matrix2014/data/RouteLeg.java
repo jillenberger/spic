@@ -19,7 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.data;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.devel.matrix2014.gis.FacilityData;
 import de.dbanalytics.spic.processing.SegmentTask;
@@ -55,8 +55,8 @@ public class RouteLeg implements SegmentTask {
         Segment next = segment.next();
 
         if(prev != null && next != null) {
-            String prevId = prev.getAttribute(CommonKeys.PLACE);
-            String nextId = next.getAttribute(CommonKeys.PLACE);
+            String prevId = prev.getAttribute(Attributes.KEY.PLACE);
+            String nextId = next.getAttribute(Attributes.KEY.PLACE);
 
             if(prevId != null && nextId != null) {
                 ActivityFacility startFac = facilityData.getAll().getFacilities().get(Id.create(prevId, ActivityFacility.class));
@@ -79,7 +79,7 @@ public class RouteLeg implements SegmentTask {
                 builder.append(SEPARATOR);
                 builder.append(endLinkId.toString());
 
-                segment.setAttribute(CommonKeys.LEG_ROUTE, builder.toString());
+                segment.setAttribute(Attributes.KEY.LEG_ROUTE, builder.toString());
             }
         }
     }

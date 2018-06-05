@@ -19,8 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.CommonValues;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 
 import java.util.Map;
@@ -35,15 +34,15 @@ public class LegModeHandler implements LegAttributeHandler {
 	public void handle(Segment leg, Map<String, String> attributes) {
 		String mode = attributes.get(VariableNames.LEG_MODE);
 		if(mode.equalsIgnoreCase("1")) {
-			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_PED);
+			leg.setAttribute(Attributes.KEY.MODE, Attributes.MODE.WALK);
 		} else if(mode.equalsIgnoreCase("2")) {
-			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_BIKE);
+			leg.setAttribute(Attributes.KEY.MODE, Attributes.MODE.BIKE);
 		} else if(mode.equalsIgnoreCase("3")) {
-			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_RIDE);
+			leg.setAttribute(Attributes.KEY.MODE, Attributes.MODE.RIDE);
 		} else if(mode.equalsIgnoreCase("4")) {
-			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
+			leg.setAttribute(Attributes.KEY.MODE, Attributes.MODE.CAR);
 		} else if(mode.equalsIgnoreCase("5")) {
-			leg.setAttribute(CommonKeys.MODE, CommonValues.LEG_MODE_PT);
+			leg.setAttribute(Attributes.KEY.MODE, Attributes.MODE.PT);
 		}
 
 	}

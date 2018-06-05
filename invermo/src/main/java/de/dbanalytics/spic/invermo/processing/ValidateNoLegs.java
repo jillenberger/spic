@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.invermo.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.processing.PersonTask;
 
@@ -32,7 +32,7 @@ public class ValidateNoLegs implements PersonTask {
 	@Override
 	public void apply(Person person) {
 		if(person.getEpisodes().get(0).getLegs().size() == 0) {
-			person.setAttribute(CommonKeys.DELETE, "true");
+			person.setAttribute(Attributes.KEY.DELETE, "true");
 		}
 
 	}

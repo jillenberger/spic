@@ -20,10 +20,7 @@
 package de.dbanalytics.spic.mid2008.processing;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import gnu.trove.iterator.TObjectDoubleIterator;
 import gnu.trove.map.TObjectDoubleMap;
@@ -44,7 +41,7 @@ public class GuessMissingPurposes implements EpisodeTask {
     private Predicate<Segment> distancePredicate;
 
     public GuessMissingPurposes(Collection<? extends Person> refPersons, Predicate<Segment> predicate, Random random) {
-        FactorLegHistogramBuilder builder = new FactorLegHistogramBuilder(new AttributeProvider<Segment>(CommonKeys.TRAVEL_PURPOSE));
+        FactorLegHistogramBuilder builder = new FactorLegHistogramBuilder(new AttributeProvider<Segment>(Attributes.KEY.TRAVEL_PURPOSE));
         /*
         short distances
          */
@@ -75,14 +72,14 @@ public class GuessMissingPurposes implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for (Segment leg : episode.getLegs()) {
-            if (leg.getAttribute(CommonKeys.TRAVEL_PURPOSE) == null) {
+            if (leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE) == null) {
                 String purpose;
                 if (distancePredicate.test(leg))
                     purpose = shortChoiceSet.randomWeightedChoice();
                 else
                     purpose = longChoiceSet.randomWeightedChoice();
 
-                leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, purpose);
+                leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, purpose);
             }
         }
     }
@@ -91,7 +88,7 @@ public class GuessMissingPurposes implements EpisodeTask {
 
         @Override
         public boolean test(Segment segment) {
-            String val = segment.getAttribute(CommonKeys.BEELINE_DISTANCE);
+            String val = segment.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
             if (val != null) {
                 double dist = Double.parseDouble(val);
                 if (dist < 100000) return true;

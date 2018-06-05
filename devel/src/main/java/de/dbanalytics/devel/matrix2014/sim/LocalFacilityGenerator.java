@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.devel.matrix2014.sim;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.devel.matrix2014.gis.FacilityData;
 import de.dbanalytics.spic.sim.ValueGenerator;
 import de.dbanalytics.spic.sim.data.CachedElement;
@@ -61,7 +61,7 @@ public class LocalFacilityGenerator implements ValueGenerator {
         /*
         Won't work if activity types change.
          */
-        String type = act.getAttribute(CommonKeys.TYPE);
+        String type = act.getAttribute(Attributes.KEY.TYPE);
         boolean ignore = false;
             if (type != null) {
                 if (blacklist.contains(type)) ignore = true;
@@ -72,7 +72,7 @@ public class LocalFacilityGenerator implements ValueGenerator {
             if(leg != null) prev = (CachedSegment) leg.previous();
 
             if(prev != null) {
-                if(facilityDataKey == null) facilityDataKey = Converters.getObjectKey(CommonKeys.PLACE);
+                if(facilityDataKey == null) facilityDataKey = Converters.getObjectKey(Attributes.KEY.PLACE);
                 ActivityFacility prefFac = (ActivityFacility) prev.getData(facilityDataKey);
                 for(int i = 0; i < 100; i++) {
                     ActivityFacility newFac = facilityData.randomFacility(type);

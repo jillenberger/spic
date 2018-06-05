@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.sim;
 
 import de.dbanalytics.spic.analysis.Predicate;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.sim.data.CachedElement;
 
@@ -62,7 +62,7 @@ public class RandomPlaceGenerator implements ValueGenerator {
     @Override
     public Object newValue(CachedElement element) {
         if (predicate == null || predicate.test(element)) {
-            String type = element.getAttribute(CommonKeys.TYPE);
+            String type = element.getAttribute(Attributes.KEY.TYPE);
             List<Place> places = index.get(type);
             if (places != null) return places.get(random.nextInt(places.size()));
             else return null;

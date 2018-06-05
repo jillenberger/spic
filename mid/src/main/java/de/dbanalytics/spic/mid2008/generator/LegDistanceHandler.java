@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 
 import java.util.Map;
@@ -37,9 +37,9 @@ public class LegDistanceHandler implements LegAttributeHandler {
 		double d = Double.parseDouble(att);
 		if (d <= 950) {
 			d = d * 1000;
-			leg.setAttribute(CommonKeys.TRIP_DISTANCE, String.valueOf(d));
+			leg.setAttribute(Attributes.KEY.TRIP_DISTANCE, String.valueOf(d));
 		} else {
-			leg.setAttribute(CommonKeys.TRIP_DISTANCE, null);
+			leg.setAttribute(Attributes.KEY.TRIP_DISTANCE, null);
 		}
 	}
 }

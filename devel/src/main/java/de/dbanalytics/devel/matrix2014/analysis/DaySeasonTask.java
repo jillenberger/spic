@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.mid2008.MiDKeys;
@@ -40,10 +40,10 @@ public class DaySeasonTask implements de.dbanalytics.spic.analysis.AnalyzerTask<
 
     @Override
     public void analyze(Collection<? extends Person> persons, List<StatsContainer> containers) {
-        Collector<String> dayCollector = new LegPersonCollector<>(new AttributeProvider<Person>(CommonKeys.DAY));
+        Collector<String> dayCollector = new LegPersonCollector<>(new AttributeProvider<Person>(Attributes.KEY.WEEKDAY));
         Collector<String> seasonCollector = new LegPersonCollector<>(new AttributeProvider<Person>(MiDKeys
                 .PERSON_MONTH));
-        Collector<String> purposeCollector = new LegCollector<>(new AttributeProvider<Segment>(CommonKeys.TRAVEL_PURPOSE));
+        Collector<String> purposeCollector = new LegCollector<>(new AttributeProvider<Segment>(Attributes.KEY.TRAVEL_PURPOSE));
 
         List<String> days = dayCollector.collect(persons);
         List<String> months = seasonCollector.collect(persons);

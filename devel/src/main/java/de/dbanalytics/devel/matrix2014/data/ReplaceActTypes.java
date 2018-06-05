@@ -19,10 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.data;
 
-import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.processing.EpisodeTask;
 
 import java.util.HashMap;
@@ -61,11 +58,11 @@ public class ReplaceActTypes implements EpisodeTask {
 		for (Attributable act : plan.getActivities()) {
 			String origType = act.getAttribute(ORIGINAL_TYPE);
 			if (origType == null) {
-				String type = act.getAttribute(CommonKeys.TYPE);
+				String type = act.getAttribute(Attributes.KEY.TYPE);
 				act.setAttribute(ORIGINAL_TYPE, type);
 				String newType = getTypeMapping().get(type);
 				if (newType != null) {
-					act.setAttribute(CommonKeys.TYPE, newType);
+					act.setAttribute(Attributes.KEY.TYPE, newType);
 				}
 			}
 		}

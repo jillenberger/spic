@@ -43,13 +43,13 @@ public class InputeDaysTask implements PersonTask {
         Map<String, TObjectIntHashMap<String>> matrix = new HashMap<>();
 
         for(Person person : persons) {
-            String day = person.getAttribute(CommonKeys.DAY);
+            String day = person.getAttribute(Attributes.KEY.WEEKDAY);
             if(day != null) {
                 for(Episode episode : person.getEpisodes()) {
                     for(Segment leg : episode.getLegs()) {
-                        String mode = leg.getAttribute(CommonKeys.MODE);
+                        String mode = leg.getAttribute(Attributes.KEY.MODE);
 //                        if(CommonValues.LEG_MODE_CAR.equalsIgnoreCase(mode)) {
-                            String purpose = leg.getAttribute(CommonKeys.TRAVEL_PURPOSE);
+                            String purpose = leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE);
                             if (purpose != null) {
                                 TObjectIntHashMap<String> days = matrix.get(purpose);
                                 if (days == null) {
@@ -95,16 +95,16 @@ public class InputeDaysTask implements PersonTask {
 
     @Override
     public void apply(Person person) {
-        String day = person.getAttribute(CommonKeys.DAY);
+        String day = person.getAttribute(Attributes.KEY.WEEKDAY);
         if(day == null) {
             Episode episode = person.getEpisodes().get(0);
-            if(MiDValues.MID_JOUNREYS.equalsIgnoreCase(episode.getAttribute(CommonKeys.DATA_SOURCE))) {
+            if(MiDValues.MID_JOUNREYS.equalsIgnoreCase(episode.getAttribute(Attributes.KEY.DATA_SOURCE))) {
                 Segment leg = episode.getLegs().get(0);
-                String purpose = leg.getAttribute(CommonKeys.TRAVEL_PURPOSE);
+                String purpose = leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE);
 
                 day = map.get(purpose).randomWeightedChoice();
 
-                person.setAttribute(CommonKeys.DAY, day);
+                person.setAttribute(Attributes.KEY.WEEKDAY, day);
             }
         }
     }

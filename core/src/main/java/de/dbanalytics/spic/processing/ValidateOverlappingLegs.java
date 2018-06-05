@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.processing;
 
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.data.Episode;
 
@@ -33,15 +33,15 @@ public class ValidateOverlappingLegs implements EpisodeTask {
 	@Override
 	public void apply(Episode episode) {
 		for(int i = 1; i < episode.getLegs().size(); i++) {
-			String startTime = episode.getLegs().get(i).getAttribute(CommonKeys.DEPARTURE_TIME);
-			String endTime = episode.getLegs().get(i - 1).getAttribute(CommonKeys.ARRIVAL_TIME);
+			String startTime = episode.getLegs().get(i).getAttribute(Attributes.KEY.DEPARTURE_TIME);
+			String endTime = episode.getLegs().get(i - 1).getAttribute(Attributes.KEY.ARRIVAL_TIME);
 
 			if(startTime != null && endTime != null) {
 				double s = Double.parseDouble(startTime);
 				double e = Double.parseDouble(endTime);
 
 				if(s < e) {
-					episode.setAttribute(CommonKeys.DELETE, CommonValues.TRUE);
+					episode.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
 					return;
 				}
 			}

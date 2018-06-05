@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.processing.PersonTask;
 
@@ -30,11 +30,11 @@ public class AdjustJourneyWeight implements PersonTask {
 
     @Override
     public void apply(Person person) {
-        double weight = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
+        double weight = Double.parseDouble(person.getAttribute(Attributes.KEY.WEIGHT));
         weight = weight / 75.0;
 //        weight = weight / 45.0; // 3 month time frame
 //        weight = weight / 30.0; // 3 month time frame
 //        weight = weight / 365.0;
-        person.setAttribute(CommonKeys.WEIGHT, String.valueOf(weight));
+        person.setAttribute(Attributes.KEY.WEIGHT, String.valueOf(weight));
     }
 }

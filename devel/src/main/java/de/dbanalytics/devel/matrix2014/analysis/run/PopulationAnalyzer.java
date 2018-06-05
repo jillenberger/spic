@@ -83,10 +83,10 @@ public class PopulationAnalyzer {
         logger.info(String.format("Loaded %s persons.", persons.size()));
 
         logger.info("Validating persons...");
-        TaskRunner.validatePersons(new ValidateMissingAttribute(CommonKeys.WEIGHT), persons);
+        TaskRunner.validatePersons(new ValidateMissingAttribute(Attributes.KEY.WEIGHT), persons);
         TaskRunner.validatePersons(new ValidatePersonWeight(), persons);
 
-        Predicate<Segment> carPredicate = new LegAttributePredicate(CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
+        Predicate<Segment> carPredicate = new LegAttributePredicate(Attributes.KEY.MODE, Attributes.MODE.CAR);
 
         TaskRunner.run(new RefPopulationBuilder.SetVacationsPurpose(), persons);
         TaskRunner.run(new RefPopulationBuilder.ReplaceHomePurpose(), persons);
@@ -122,12 +122,12 @@ public class PopulationAnalyzer {
         @Override
         public void apply(Episode episode) {
             for(Segment leg : episode.getLegs()) {
-                String dist = leg.getAttribute(CommonKeys.BEELINE_DISTANCE);
-                String purpose = leg.getAttribute(CommonKeys.TRAVEL_PURPOSE);
+                String dist = leg.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
+                String purpose = leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE);
                 if(dist != null && purpose != null) {
                     double d = Double.parseDouble(dist);
                     if(d > 100000 && purpose.equalsIgnoreCase(ActivityTypes.WORK)) {
-                        leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, ActivityTypes.WECOMMUTER);
+                        leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, ActivityTypes.WECOMMUTER);
                     }
                 }
             }

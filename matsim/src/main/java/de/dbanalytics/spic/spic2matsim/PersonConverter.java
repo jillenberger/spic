@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.spic2matsim;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Place;
@@ -86,8 +86,8 @@ public class PersonConverter {
                 /*
                 Create and add activity.
                  */
-                String type = actSegment.getAttribute(CommonKeys.TYPE);
-                Place place = placeIndex.get(actSegment.getAttribute(CommonKeys.PLACE));
+                String type = actSegment.getAttribute(Attributes.KEY.TYPE);
+                Place place = placeIndex.get(actSegment.getAttribute(Attributes.KEY.PLACE));
                 Activity matsimAct = factory.createActivityFromCoord(
                         type,
                         new Coord(place.getGeometry().getCoordinate().x, place.getGeometry().getCoordinate().y));
@@ -96,23 +96,23 @@ public class PersonConverter {
                 /*
                 Transfer attributes.
                  */
-                String startTime = actSegment.getAttribute(CommonKeys.START_TIME);
+                String startTime = actSegment.getAttribute(Attributes.KEY.START_TIME);
                 matsimAct.setStartTime((int) Double.parseDouble(startTime));
 
-                String endTime = actSegment.getAttribute(CommonKeys.END_TIME);
+                String endTime = actSegment.getAttribute(Attributes.KEY.END_TIME);
                 matsimAct.setEndTime((int) Double.parseDouble(endTime));
                 /*
                 Create and add leg.
                  */
                 if (i < episode.getLegs().size()) {
                     Segment legSegment = episode.getLegs().get(i);
-                    String mode = legSegment.getAttribute(CommonKeys.MODE);
+                    String mode = legSegment.getAttribute(Attributes.KEY.MODE);
                     Leg matsimLeg = factory.createLeg(mode);
                     matsimPlan.addLeg(matsimLeg);
                     /*
                     Transfer attributes
                      */
-                    matsimLeg.setDepartureTime(Double.parseDouble(legSegment.getAttribute(CommonKeys.DEPARTURE_TIME)));
+                    matsimLeg.setDepartureTime(Double.parseDouble(legSegment.getAttribute(Attributes.KEY.DEPARTURE_TIME)));
                 }
             }
         }

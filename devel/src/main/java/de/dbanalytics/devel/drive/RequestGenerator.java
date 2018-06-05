@@ -116,8 +116,8 @@ public class RequestGenerator {
             Collections.sort(trips, new Comparator<Segment>() {
                 @Override
                 public int compare(Segment segment, Segment t1) {
-                    double time1 = Double.parseDouble(segment.getAttribute(CommonKeys.DEPARTURE_TIME));
-                    double time2 = Double.parseDouble(t1.getAttribute(CommonKeys.DEPARTURE_TIME));
+                    double time1 = Double.parseDouble(segment.getAttribute(Attributes.KEY.DEPARTURE_TIME));
+                    double time2 = Double.parseDouble(t1.getAttribute(Attributes.KEY.DEPARTURE_TIME));
                     int r = Double.compare(time1, time2);
                     if (r == 0) {
                         if (segment.equals(t1)) return 0;
@@ -139,7 +139,7 @@ public class RequestGenerator {
         for (Segment leg : trips) {
             writer.write(leg.getEpisode().getPerson().getId().toString());
             writer.write(SEPARATOR);
-            int startTime = (int) Double.parseDouble(leg.getAttribute(CommonKeys.DEPARTURE_TIME));
+            int startTime = (int) Double.parseDouble(leg.getAttribute(Attributes.KEY.DEPARTURE_TIME));
             /** TODO: temporary fix: randomize start time*/
             double offset = (random.nextDouble() - 0.5) * 2 * 300;
             startTime += offset;
@@ -148,8 +148,8 @@ public class RequestGenerator {
             writer.write(lt.toString("HH:mm:ss"));
             writer.write(SEPARATOR);
 
-            String idStart = leg.previous().getAttribute(CommonKeys.PLACE);
-            String idEnd = leg.next().getAttribute(CommonKeys.PLACE);
+            String idStart = leg.previous().getAttribute(Attributes.KEY.PLACE);
+            String idEnd = leg.next().getAttribute(Attributes.KEY.PLACE);
 
             ActivityFacility facStart = facilities.get(Id.create(idStart, ActivityFacility.class));
             ActivityFacility facEnd = facilities.get(Id.create(idEnd, ActivityFacility.class));
@@ -185,8 +185,8 @@ public class RequestGenerator {
         Segment prevAct = leg.previous();
         Segment nextAct = leg.next();
 
-        Id<ActivityFacility> prevId = Id.create(prevAct.getAttribute(CommonKeys.PLACE), ActivityFacility.class);
-        Id<ActivityFacility> nextId = Id.create(nextAct.getAttribute(CommonKeys.PLACE), ActivityFacility.class);
+        Id<ActivityFacility> prevId = Id.create(prevAct.getAttribute(Attributes.KEY.PLACE), ActivityFacility.class);
+        Id<ActivityFacility> nextId = Id.create(nextAct.getAttribute(Attributes.KEY.PLACE), ActivityFacility.class);
 
         ActivityFacility prevFac = facilities.getFacilities().get(prevId);
         ActivityFacility nextFac = facilities.getFacilities().get(nextId);

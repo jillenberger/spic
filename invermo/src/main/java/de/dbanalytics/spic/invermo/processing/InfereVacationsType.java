@@ -19,10 +19,7 @@
 
 package de.dbanalytics.spic.invermo.processing;
 
-import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import org.joda.time.DateTime;
 
@@ -36,7 +33,7 @@ public class InfereVacationsType implements EpisodeTask {
 	public void apply(Episode plan) {
 		boolean hasVacations = false;
 		for (Attributable act : plan.getActivities()) {
-			if ("vacations".equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+			if ("vacations".equalsIgnoreCase(act.getAttribute(Attributes.KEY.TYPE))) {
 				hasVacations = true;
 				break;
 			}
@@ -48,8 +45,8 @@ public class InfereVacationsType implements EpisodeTask {
 			Attributable first = plan.getLegs().get(0);
 			Attributable last = plan.getLegs().get(plan.getLegs().size() - 1);
 
-			String startStr = first.getAttribute(CommonKeys.DEPARTURE_TIME);
-			String endStr = last.getAttribute(CommonKeys.ARRIVAL_TIME);
+			String startStr = first.getAttribute(Attributes.KEY.DEPARTURE_TIME);
+			String endStr = last.getAttribute(Attributes.KEY.ARRIVAL_TIME);
 
 			if (startStr != null && endStr != null) {
 				DateTime start = SplitPlanTask.formatter.parseDateTime(startStr);
@@ -61,21 +58,21 @@ public class InfereVacationsType implements EpisodeTask {
 			}
 			
 			for (Attributable act : plan.getActivities()) {
-				if ("vacations".equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+				if ("vacations".equalsIgnoreCase(act.getAttribute(Attributes.KEY.TYPE))) {
 					if (isLong) {
-						act.setAttribute(CommonKeys.TYPE, "vacations_long");
+						act.setAttribute(Attributes.KEY.TYPE, "vacations_long");
 					} else {
-						act.setAttribute(CommonKeys.TYPE, "vacations_short");
+						act.setAttribute(Attributes.KEY.TYPE, "vacations_short");
 					}
 				}
 			}
 
 			for (Segment leg : plan.getLegs()) {
-				if ("vacations".equalsIgnoreCase(leg.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
+				if ("vacations".equalsIgnoreCase(leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE))) {
 					if (isLong) {
-						leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "vacations_long");
+						leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, "vacations_long");
 					} else {
-						leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, "vacations_short");
+						leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, "vacations_short");
 					}
 				}
 			}

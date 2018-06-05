@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.devel.matrix2014.sim;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.devel.matrix2014.gis.FacilityData;
 import de.dbanalytics.spic.sim.ValueGenerator;
 import de.dbanalytics.spic.sim.data.CachedElement;
@@ -53,7 +53,7 @@ public class RandomFacilityGenerator implements ValueGenerator {
         /*
         Won't work if activity types change.
          */
-        String type = act.getAttribute(CommonKeys.TYPE);
+        String type = act.getAttribute(Attributes.KEY.TYPE);
         boolean ignore = false;
 //        Boolean ignore = (Boolean) act.getData(IGNORE_KEY);
 //        if (ignore == null) {

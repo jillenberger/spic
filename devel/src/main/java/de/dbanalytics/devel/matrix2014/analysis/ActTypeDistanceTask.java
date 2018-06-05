@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import gnu.trove.map.TDoubleDoubleMap;
@@ -71,19 +71,19 @@ public class ActTypeDistanceTask implements AnalyzerTask<Collection<? extends Pe
     @Override
     public void analyze(Collection<? extends Person> persons, List<StatsContainer> containers) {
         Collector<String> collector;
-        if(prevActMode) collector = new PrevCollector<>(new AttributeProvider<>(CommonKeys.TYPE));
-        else collector = new LegNextCollector<>(new AttributeProvider<>(CommonKeys.TYPE));
+        if(prevActMode) collector = new PrevCollector<>(new AttributeProvider<>(Attributes.KEY.TYPE));
+        else collector = new LegNextCollector<>(new AttributeProvider<>(Attributes.KEY.TYPE));
 
         Set<String> types = new HashSet<>(collector.collect(persons));
         types.remove(null);
 
-        LegAttributeHistogramBuilder builder = new LegAttributeHistogramBuilder(CommonKeys.BEELINE_DISTANCE, discretizer);
+        LegAttributeHistogramBuilder builder = new LegAttributeHistogramBuilder(Attributes.KEY.BEELINE_DISTANCE, discretizer);
 
         Map<String, TDoubleDoubleMap> histograms = new HashMap<>();
         for(String type : types) {
             Predicate<Segment> predicate;
-            if(prevActMode) predicate = new PrevAttributePredicate(CommonKeys.TYPE, type);
-            else predicate = new NextAttributePredicate(CommonKeys.TYPE, type);
+            if(prevActMode) predicate = new PrevAttributePredicate(Attributes.KEY.TYPE, type);
+            else predicate = new NextAttributePredicate(Attributes.KEY.TYPE, type);
 
             if(legPredicate != null) predicate = PredicateAndComposite.create(predicate, legPredicate);
             builder.setPredicate(predicate);

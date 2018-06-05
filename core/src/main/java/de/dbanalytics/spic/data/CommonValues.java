@@ -24,20 +24,6 @@ package de.dbanalytics.spic.data;
  */
 public interface CommonValues {
 
-    String MONDAY = "mon";
-
-    String TUESDAY = "tue";
-
-    String WEDNESDAY = "wed";
-
-    String THURSDAY = "thu";
-
-    String FRIDAY = "fri";
-
-    String SATURDAY = "sat";
-
-    String SUNDAY = "sun";
-
     String MALE = "male";
 
     String FEMALE = "female";
@@ -47,11 +33,6 @@ public interface CommonValues {
     String SOMETIMES = "sometimes";
 
     String NEVER = "never";
-    String LEG_MODE_PED = "walk";
-    String LEG_MODE_BIKE = "bike";
-    String LEG_MODE_CAR = "car";
-    String LEG_MODE_RIDE = "ride";
-    String LEG_MODE_PT = "pt";
 
     String TRUE = "true";
 }

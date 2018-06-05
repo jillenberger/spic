@@ -21,10 +21,7 @@ package de.dbanalytics.spic.matrix;
 
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.analysis.Predicate;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.Feature;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.ZoneIndex;
@@ -196,7 +193,7 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
         long time = System.currentTimeMillis();
 
         if (this.placeDataKey == null)
-            this.placeDataKey = Converters.getObjectKey(CommonKeys.PLACE);
+            this.placeDataKey = Converters.getObjectKey(Attributes.KEY.PLACE);
 
         simMatrix = new TIntObjectHashMap<>();
 
@@ -205,7 +202,7 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
             // TODO: Would be more consistent to use a leg weight here.
             // This is urgent and needs to be addressed. HomeLocator may change person weights, if not in sync with
             // leg weights everything is a mess!!!
-            if(useWeights) weight = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
+            if(useWeights) weight = Double.parseDouble(person.getAttribute(Attributes.KEY.WEIGHT));
 
             for (Episode episode : person.getEpisodes()) {
                 for (int i = 1; i < episode.getActivities().size(); i++) {
@@ -250,7 +247,7 @@ public class ODCalibrator implements Hamiltonian, AttributeObserver {
                 /** continue only if zone index changed */
                 if (oldIdx != newIdx) {
                     if (useWeights && weightDataKey == null)
-                        weightDataKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
+                        weightDataKey = Converters.register(Attributes.KEY.WEIGHT, DoubleConverter.getInstance());
 
                     /** process to leg */
                     CachedSegment toLeg = (CachedSegment) act.previous();

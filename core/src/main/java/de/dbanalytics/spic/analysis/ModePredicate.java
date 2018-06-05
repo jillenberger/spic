@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 
 /**
  * @author johannes
@@ -27,6 +27,6 @@ import de.dbanalytics.spic.data.CommonKeys;
 public class ModePredicate extends LegAttributePredicate {
 
     public ModePredicate(String mode) {
-        super(CommonKeys.MODE, mode);
+        super(Attributes.KEY.MODE, mode);
     }
 }

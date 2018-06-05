@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 
 import java.util.Map;
@@ -39,7 +39,7 @@ public class JourneyDistanceHandler implements LegAttributeHandler {
 
 			if (dist <= 20000) { //range according to mid documentation
 				dist *= 1000;
-				leg.setAttribute(CommonKeys.BEELINE_DISTANCE, String.valueOf(dist));
+				leg.setAttribute(Attributes.KEY.BEELINE_DISTANCE, String.valueOf(dist));
 			}
 		}
 	}

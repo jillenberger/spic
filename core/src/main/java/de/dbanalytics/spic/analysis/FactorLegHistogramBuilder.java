@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import gnu.trove.map.TObjectDoubleMap;
@@ -38,7 +38,7 @@ public class FactorLegHistogramBuilder {
 
     public FactorLegHistogramBuilder(ValueProvider<String, Segment> provider) {
         valueCollector = new LegCollector<>(provider);
-        weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.WEIGHT));
+        weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<Person>(Attributes.KEY.WEIGHT));
         builder = new FactorHistogramBuilder(valueCollector, weightsCollector);
     }
 

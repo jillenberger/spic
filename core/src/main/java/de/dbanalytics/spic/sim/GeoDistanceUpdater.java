@@ -20,7 +20,7 @@ package de.dbanalytics.spic.sim;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import de.dbanalytics.spic.analysis.Predicate;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.CachedSegment;
@@ -32,7 +32,7 @@ import de.dbanalytics.spic.sim.data.DoubleConverter;
  */
 public class GeoDistanceUpdater implements AttributeObserver {
 
-    private final Object geoDistDataKey = Converters.register(CommonKeys.BEELINE_DISTANCE, DoubleConverter.getInstance());
+    private final Object geoDistDataKey = Converters.register(Attributes.KEY.BEELINE_DISTANCE, DoubleConverter.getInstance());
 
     private Object placeDataKey;
 
@@ -71,7 +71,7 @@ public class GeoDistanceUpdater implements AttributeObserver {
 
     @Override
     public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
-        if (placeDataKey == null) placeDataKey = Converters.getObjectKey(CommonKeys.PLACE);
+        if (placeDataKey == null) placeDataKey = Converters.getObjectKey(Attributes.KEY.PLACE);
 
         if (placeDataKey.equals(dataKey)) {
             CachedSegment act = (CachedSegment) element;

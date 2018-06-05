@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.invermo.run;
 
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
@@ -49,7 +49,7 @@ public class Validator {
 
         Set<Person> persons = PopulationIO.loadFromXML(inFile, new PlainFactory());
 
-        TaskRunner.validatePersons(new ValidateMissingAttribute(CommonKeys.WEIGHT), persons);
+        TaskRunner.validatePersons(new ValidateMissingAttribute(Attributes.KEY.WEIGHT), persons);
         TaskRunner.validatePersons(new ValidatePersonWeight(), persons);
         TaskRunner.validatePersons(new ValidateNoLegs(), persons);
         TaskRunner.validatePersons(new ValidateNoPlans(), persons);

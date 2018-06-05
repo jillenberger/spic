@@ -109,7 +109,7 @@ public class SimPopulationBuilder {
         }
 
         logger.info("Recalculate geo distances...");
-        TaskRunner.run(new RemoveLegAttribute(CommonKeys.BEELINE_DISTANCE), simPersons);
+        TaskRunner.run(new RemoveLegAttribute(Attributes.KEY.BEELINE_DISTANCE), simPersons);
         throw new RuntimeException("Obsolete code.");
 //        TaskRunner.run(new CalculateGeoDistance((FacilityData) dataPool.get(FacilityDataLoader.KEY)), simPersons);
 
@@ -135,7 +135,7 @@ public class SimPopulationBuilder {
 
         TripsCounter counter = new TripsCounter(legPredicate);
         for (Person p : refPersons) {
-            double w = Double.parseDouble(p.getAttribute(CommonKeys.WEIGHT));
+            double w = Double.parseDouble(p.getAttribute(Attributes.KEY.WEIGHT));
             if (counter.get(p.getEpisodes().get(0)) == 1) {
                 wsum2 += w;
                 persons2.add(p);
@@ -156,8 +156,8 @@ public class SimPopulationBuilder {
         logger.info(String.format("Cloning sim persons with weight %s...", w2));
         Set<? extends Person> simPersons2 = PersonUtils.weightedCopy(persons2, new PlainFactory(), n2, random);
 
-        for (Person p : simPersons1) p.setAttribute(CommonKeys.WEIGHT, String.valueOf(w1));
-        for (Person p : simPersons2) p.setAttribute(CommonKeys.WEIGHT, String.valueOf(w2));
+        for (Person p : simPersons1) p.setAttribute(Attributes.KEY.WEIGHT, String.valueOf(w1));
+        for (Person p : simPersons2) p.setAttribute(Attributes.KEY.WEIGHT, String.valueOf(w2));
 
         Set<Person> all = new LinkedHashSet<>();
         all.addAll(simPersons1);

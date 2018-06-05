@@ -18,10 +18,7 @@
  */
 package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.CommonValues;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.*;
 import org.matsim.contrib.common.stats.LinearDiscretizer;
 
 /**
@@ -30,13 +27,13 @@ import org.matsim.contrib.common.stats.LinearDiscretizer;
 public class TripsPerPersonTask {
 
     public NumericAnalyzer build(FileIOContext ioContext) {
-        ValueProvider<Double, Episode> provider = new TripsCounter(new ModePredicate(CommonValues.LEG_MODE_CAR));
+        ValueProvider<Double, Episode> provider = new TripsCounter(new ModePredicate(Attributes.MODE.CAR));
         EpisodeCollector<Double> collector = new EpisodeCollector<>(provider);
 
         DiscretizerBuilder builder = new PassThroughDiscretizerBuilder(new LinearDiscretizer(1.0), "linear");
         HistogramWriter writer = new HistogramWriter(ioContext, builder);
 
-        ValueProvider<Double, Person> weightsProvider = new NumericAttributeProvider<>(CommonKeys.WEIGHT);
+        ValueProvider<Double, Person> weightsProvider = new NumericAttributeProvider<>(Attributes.KEY.WEIGHT);
         EpisodePersonCollector<Double> weightsCollector = new EpisodePersonCollector<>(weightsProvider);
 
         NumericAnalyzer analyzer = new NumericAnalyzer(collector, weightsCollector, "nTrips", writer);

@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import gnu.trove.map.TDoubleDoubleMap;
@@ -63,15 +63,15 @@ public class LegPurposeDistanceTask implements AnalyzerTask<Collection<? extends
 
     @Override
     public void analyze(Collection<? extends Person> persons, List<StatsContainer> containers) {
-        Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(CommonKeys.TRAVEL_PURPOSE));
+        Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(Attributes.KEY.TRAVEL_PURPOSE));
         Set<String> types = new HashSet<>(collector.collect(persons));
         types.remove(null);
 
-        LegAttributeHistogramBuilder builder = new LegAttributeHistogramBuilder(CommonKeys.BEELINE_DISTANCE, discretizer);
+        LegAttributeHistogramBuilder builder = new LegAttributeHistogramBuilder(Attributes.KEY.BEELINE_DISTANCE, discretizer);
 
         Map<String, TDoubleDoubleMap> histograms = new HashMap<>();
         for(String type : types) {
-            Predicate<Segment> predicate = new LegAttributePredicate(CommonKeys.TRAVEL_PURPOSE, type);
+            Predicate<Segment> predicate = new LegAttributePredicate(Attributes.KEY.TRAVEL_PURPOSE, type);
             if(legPredicate != null) predicate = PredicateAndComposite.create(predicate, legPredicate);
             builder.setPredicate(predicate);
 

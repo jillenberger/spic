@@ -74,11 +74,11 @@ public class AllOrNothing {
 
         for (Person p : persons) {
             if(!p.getEpisodes().isEmpty()) {
-                double weight = Double.parseDouble(p.getAttribute(CommonKeys.WEIGHT));
+                double weight = Double.parseDouble(p.getAttribute(Attributes.KEY.WEIGHT));
                 Episode e = p.getEpisodes().get(0);
 
                 for (Segment leg : e.getLegs()) {
-                    String route = leg.getAttribute(CommonKeys.LEG_ROUTE);
+                    String route = leg.getAttribute(Attributes.KEY.LEG_ROUTE);
 
                     if (route != null) {
 //                        String linkIds[] = route.split(" ");

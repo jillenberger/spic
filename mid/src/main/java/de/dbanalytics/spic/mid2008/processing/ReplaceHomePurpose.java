@@ -19,10 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.processing;
 
-import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
@@ -33,9 +30,9 @@ public class ReplaceHomePurpose implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for (Segment leg : episode.getLegs()) {
-            if (ActivityTypes.HOME.equalsIgnoreCase(leg.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
+            if (ActivityTypes.HOME.equalsIgnoreCase(leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE))) {
                 Segment prev = leg.previous();
-                leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, prev.getAttribute(CommonKeys.TYPE));
+                leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, prev.getAttribute(Attributes.KEY.TYPE));
             }
         }
     }

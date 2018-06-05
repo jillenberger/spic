@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 
 import java.util.Map;
@@ -35,7 +35,7 @@ public class PersonWeightHandler implements PersonAttributeHandler {
 		double w = Double.parseDouble(attributes.get(VariableNames.PERSON_WEIGHT));
 
 		if (w > 0 && !Double.isNaN(w) && !Double.isInfinite(w)) {
-			person.setAttribute(CommonKeys.WEIGHT, String.valueOf(w));
+			person.setAttribute(Attributes.KEY.WEIGHT, String.valueOf(w));
 		}
 	}
 

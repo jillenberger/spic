@@ -1,6 +1,6 @@
 package de.dbanalytics.spic.job;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.processing.SegmentTask;
@@ -26,8 +26,8 @@ public class LegPurposeFromActTypeJob implements Job {
 
         @Override
         public void apply(Segment segment) {
-            String type = segment.next().getAttribute(CommonKeys.TYPE);
-            segment.setAttribute(CommonKeys.TRAVEL_PURPOSE, type);
+            String type = segment.next().getAttribute(Attributes.KEY.TYPE);
+            segment.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, type);
         }
     }
 }

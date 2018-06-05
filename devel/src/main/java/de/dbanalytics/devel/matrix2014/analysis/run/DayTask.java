@@ -51,7 +51,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
         /*
         Get all purposes.
          */
-        LegCollector<String> purposeCollector = new LegCollector<>(new AttributeProvider<>(CommonKeys.TRAVEL_PURPOSE));
+        LegCollector<String> purposeCollector = new LegCollector<>(new AttributeProvider<>(Attributes.KEY.TRAVEL_PURPOSE));
         Set<String> purposes = new HashSet<>(purposeCollector.collect(persons));
         purposes.remove(null);
         /*
@@ -63,14 +63,14 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
         /*
         Get all days
          */
-        PersonCollector<String> dayCollector = new PersonCollector<>(new AttributeProvider<>(CommonKeys.DAY));
+        PersonCollector<String> dayCollector = new PersonCollector<>(new AttributeProvider<>(Attributes.KEY.WEEKDAY));
         Set<String> days = new HashSet<>(dayCollector.collect(persons));
         days.remove(null);
 
         List<Pair<Map<String, String>, TObjectDoubleMap<String>>> shareHists = new ArrayList<>();
         List<Pair<Map<String, String>, TObjectDoubleMap<String>>> absoluteHists = new ArrayList<>();
 
-        Predicate<Segment> modePredicate = new LegAttributePredicate(CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
+        Predicate<Segment> modePredicate = new LegAttributePredicate(Attributes.KEY.MODE, Attributes.MODE.CAR);
 
         TDoubleArrayList borders = new TDoubleArrayList();
         borders.add(-1);
@@ -81,7 +81,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
         Discretizer discretizer = new FixedBordersDiscretizer(borders.toArray());
 
         for (String purpose : purposes) {
-            Predicate<Segment> purposePredicate = new LegAttributePredicate(CommonKeys.TRAVEL_PURPOSE, purpose);
+            Predicate<Segment> purposePredicate = new LegAttributePredicate(Attributes.KEY.TRAVEL_PURPOSE, purpose);
 
             for (String season : seasons) {
                 Predicate<Segment> seasonPredicate = new LegPersonAttributePredicate(SetSeason.SEASON_KEY, season);
@@ -93,7 +93,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
                     TObjectDoubleMap<String> histShare = new TObjectDoubleHashMap<>();
 
                     for (String day : days) {
-                        Predicate<Segment> dayPredicate = new LegPersonAttributePredicate(CommonKeys.DAY, day);
+                        Predicate<Segment> dayPredicate = new LegPersonAttributePredicate(Attributes.KEY.WEEKDAY, day);
 
                         Predicate<Segment> predicate = PredicateAndComposite.create(modePredicate,
                                 purposePredicate,
@@ -101,7 +101,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
                                 distPrediate,
                                 dayPredicate);
 
-                        LegPersonCollector<Double> counter = new LegPersonCollector(new NumericAttributeProvider<>(CommonKeys.WEIGHT));
+                        LegPersonCollector<Double> counter = new LegPersonCollector(new NumericAttributeProvider<>(Attributes.KEY.WEIGHT));
                         counter.setPredicate(predicate);
                         List<Double> weights = counter.collect(persons);
                         hist.put(day, sum(weights));
@@ -114,10 +114,10 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
                     }
 
                     Map<String, String> dimensions = new HashMap<>();
-                    dimensions.put(CommonKeys.MODE, CommonValues.LEG_MODE_CAR);
-                    dimensions.put(CommonKeys.TRAVEL_PURPOSE, purpose);
+                    dimensions.put(Attributes.KEY.MODE, Attributes.MODE.CAR);
+                    dimensions.put(Attributes.KEY.TRAVEL_PURPOSE, purpose);
                     dimensions.put(SetSeason.SEASON_KEY, season);
-                    dimensions.put(CommonKeys.BEELINE_DISTANCE, String.valueOf(borders.get(idx)));
+                    dimensions.put(Attributes.KEY.BEELINE_DISTANCE, String.valueOf(borders.get(idx)));
 
                     absoluteHists.add(new ImmutablePair<>(dimensions, hist));
                     Histogram.normalize(histShare);
@@ -202,7 +202,7 @@ public class DayTask implements AnalyzerTask<Collection<? extends Person>> {
 
         @Override
         public boolean test(Segment segment) {
-            String val = segment.getAttribute(CommonKeys.BEELINE_DISTANCE);
+            String val = segment.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
             if(val != null) {
                 double d = Double.parseDouble(val);
                 int idx = discretizer.index(d);

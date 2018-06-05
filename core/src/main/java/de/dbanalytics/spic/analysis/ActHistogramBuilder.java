@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.sim.HistogramBuilder;
@@ -41,7 +41,7 @@ public class ActHistogramBuilder implements HistogramBuilder {
 
     public ActHistogramBuilder(ValueProvider<Double, Segment> provider, Discretizer discretizer) {
         valueCollector = new ActCollector<>(provider);
-        weightsCollector = new ActPersonCollector<>(new NumericAttributeProvider<Person>(CommonKeys.WEIGHT));
+        weightsCollector = new ActPersonCollector<>(new NumericAttributeProvider<Person>(Attributes.KEY.WEIGHT));
         builder = new DefaultHistogramBuilder(valueCollector, weightsCollector, discretizer);
     }
 

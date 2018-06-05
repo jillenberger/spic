@@ -69,7 +69,7 @@ public class GeoDistanceHamiltonian {
         UnivariatFrequency hamiltonian = new UnivariatFrequency(
                 refLegs,
                 simLegs,
-                CommonKeys.BEELINE_DISTANCE,
+                Attributes.KEY.BEELINE_DISTANCE,
                 discretizer,
                 engine.getUseWeights());
 
@@ -82,7 +82,7 @@ public class GeoDistanceHamiltonian {
         /*
         Add the hamiltonian to the geo distance attribute change listener.
          */
-        engine.getAttributeListeners().get(CommonKeys.BEELINE_DISTANCE).addComponent(hamiltonian);
+        engine.getAttributeListeners().get(Attributes.KEY.BEELINE_DISTANCE).addComponent(hamiltonian);
         /*
         Add a geo distance analyzer.
          */
@@ -90,7 +90,7 @@ public class GeoDistanceHamiltonian {
                 engine.getIOContext(),
                 new PassThroughDiscretizerBuilder(discretizer, "default"));
         AnalyzerTask<Collection<? extends Person>> analyzer = NumericLegAnalyzer.create(
-                CommonKeys.BEELINE_DISTANCE,
+                Attributes.KEY.BEELINE_DISTANCE,
                 engine.getUseWeights(),
                 engine.getLegPredicate(),
                 engine.getLegPredicateName(),
@@ -101,7 +101,7 @@ public class GeoDistanceHamiltonian {
          */
         engine.getEngineListeners().addComponent(new HamiltonianLogger(hamiltonian,
                 engine.getLoggingInterval(),
-                CommonKeys.BEELINE_DISTANCE,
+                Attributes.KEY.BEELINE_DISTANCE,
                 engine.getIOContext().getRoot()));
     }
 

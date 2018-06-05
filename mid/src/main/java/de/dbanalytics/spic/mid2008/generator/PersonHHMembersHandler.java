@@ -19,8 +19,8 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
-import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.mid2008.MiDKeys;
 
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class PersonHHMembersHandler implements PersonAttributeHandler {
 			int num = Integer.parseInt(val);
 			
 			if(num >= 1 && num <= 11) {
-				person.setAttribute(CommonKeys.HH_MEMBERS, String.valueOf(num));
+				person.setAttribute(MiDKeys.HH_MEMBERS, String.valueOf(num));
 			}
 		}
 

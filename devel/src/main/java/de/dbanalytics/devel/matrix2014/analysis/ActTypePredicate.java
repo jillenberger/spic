@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.spic.analysis.Predicate;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 
 /**
@@ -36,6 +36,6 @@ public class ActTypePredicate implements Predicate<Segment> {
 
     @Override
     public boolean test(Segment segment) {
-        return type.equalsIgnoreCase(segment.getAttribute(CommonKeys.TYPE));
+        return type.equalsIgnoreCase(segment.getAttribute(Attributes.KEY.TYPE));
     }
 }

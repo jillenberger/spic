@@ -99,7 +99,7 @@ public class GeoDistanceZoneHamiltonian {
                 UnivariatFrequency hamiltonian = new UnivariatFrequency(
                         refLegs,
                         simLegs,
-                        CommonKeys.BEELINE_DISTANCE,
+                        Attributes.KEY.BEELINE_DISTANCE,
                         discretizer,
                         engine.getUseWeights());
 
@@ -125,7 +125,7 @@ public class GeoDistanceZoneHamiltonian {
         /*
         Add the hamiltonian to the geo distance attribute change listener.
          */
-        engine.getAttributeListeners().get(CommonKeys.BEELINE_DISTANCE).addComponent(hamiltonian);
+        engine.getAttributeListeners().get(Attributes.KEY.BEELINE_DISTANCE).addComponent(hamiltonian);
         /*
         Add a geo distance analyzer.
          */
@@ -133,7 +133,7 @@ public class GeoDistanceZoneHamiltonian {
                 engine.getIOContext(),
                 new PassThroughDiscretizerBuilder(discretizer, "default"));
         AnalyzerTask<Collection<? extends Person>> analyzer = NumericLegAnalyzer.create(
-                CommonKeys.BEELINE_DISTANCE,
+                Attributes.KEY.BEELINE_DISTANCE,
                 engine.getUseWeights(),
                 engine.getLegPredicate(),
                 engine.getLegPredicateName(),
@@ -144,7 +144,7 @@ public class GeoDistanceZoneHamiltonian {
          */
         engine.getEngineListeners().addComponent(new HamiltonianLogger(hamiltonian,
                 engine.getLoggingInterval(),
-                CommonKeys.BEELINE_DISTANCE,
+                Attributes.KEY.BEELINE_DISTANCE,
                 engine.getIOContext().getRoot()));
 
         logger.debug("Done setting up hamiltonian.");
@@ -196,8 +196,8 @@ public class GeoDistanceZoneHamiltonian {
             Facility f = null;
             for (Episode episode : person.getEpisodes()) {
                 for (Segment act : episode.getActivities()) {
-                    if (ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
-                        String facilityId = act.getAttribute(CommonKeys.PLACE);
+                    if (ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(Attributes.KEY.TYPE))) {
+                        String facilityId = act.getAttribute(Attributes.KEY.PLACE);
                         f = facilities.getFacilities().get(Id.create(facilityId, ActivityFacility.class));
                         break;
                     }
@@ -241,7 +241,7 @@ public class GeoDistanceZoneHamiltonian {
         @Override
         public void update(Object dataKey, Object oldValue, Object newValue, CachedElement element) {
             if(this.dataKey == null) this.dataKey = Converters.register(
-                    CommonKeys.BEELINE_DISTANCE,
+                    Attributes.KEY.BEELINE_DISTANCE,
                     new DoubleConverter());
 
             if(this.dataKey.equals(dataKey)) {

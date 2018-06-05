@@ -24,45 +24,5 @@ package de.dbanalytics.spic.data;
  *
  */
 public interface CommonKeys {
-	
-	String WEIGHT = "weight";
-
-	String DEPARTURE_TIME = "departure_time";
-	
-	String ARRIVAL_TIME = "arrival_time";
-	
-	String TRAVEL_PURPOSE = "travel_purpose";
-
-	String TRIP_DISTANCE = "trip_distance";
-
-	String BEELINE_DISTANCE = "beeline_distance";
-
-	String MODE = "mode";
-
-	String LEG_ROUTE = "route";
-
-	String TYPE = "type";
-	
-	String START_TIME = "start_time";
-	
-	String END_TIME = "end_time";
-	
-	String PLACE = "place";
-	
-	String DELETE = "delete";
-	
-	String DAY = "day";
-
-	String DATA_SOURCE = "data_source";
-	
-	String HH_INCOME = "hhincome";
-	
-	String HH_MEMBERS = "hhmembers";
-	
-	String PERSON_AGE = "age";
-
-	String PERSON_SEX = "sex";
-
-	String PERSON_CARAVAIL = "caravail";
 
 }

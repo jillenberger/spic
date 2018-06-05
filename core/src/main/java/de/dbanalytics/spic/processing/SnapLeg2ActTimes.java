@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 
 /**
@@ -32,10 +32,10 @@ public class SnapLeg2ActTimes implements SegmentTask {
         Segment prev = segment.previous();
         Segment next = segment.next();
 
-        String start = prev.getAttribute(CommonKeys.END_TIME);
-        String end = next.getAttribute(CommonKeys.START_TIME);
+        String start = prev.getAttribute(Attributes.KEY.END_TIME);
+        String end = next.getAttribute(Attributes.KEY.START_TIME);
 
-        if(start != null) segment.setAttribute(CommonKeys.DEPARTURE_TIME, start);
-        if(end != null) segment.setAttribute(CommonKeys.ARRIVAL_TIME, end);
+        if(start != null) segment.setAttribute(Attributes.KEY.DEPARTURE_TIME, start);
+        if(end != null) segment.setAttribute(Attributes.KEY.ARRIVAL_TIME, end);
     }
 }

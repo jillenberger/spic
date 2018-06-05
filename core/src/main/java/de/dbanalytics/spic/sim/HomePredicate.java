@@ -21,7 +21,7 @@ package de.dbanalytics.spic.sim;
 
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.sim.data.CachedElement;
 import de.dbanalytics.spic.sim.data.Converters;
 
@@ -37,7 +37,7 @@ public class HomePredicate implements Predicate<CachedElement> {
         Boolean result = (Boolean) cachedElement.getData(objectKey);
 
         if (result == null) {
-            String type = cachedElement.getAttribute(CommonKeys.TYPE);
+            String type = cachedElement.getAttribute(Attributes.KEY.TYPE);
             result = ActivityTypes.HOME.equalsIgnoreCase(type);
             cachedElement.setData(objectKey, result);
         }

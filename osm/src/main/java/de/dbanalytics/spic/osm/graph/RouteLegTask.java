@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.osm.graph;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.GeoTransformer;
 import de.dbanalytics.spic.gis.Place;
@@ -51,8 +51,8 @@ public class RouteLegTask implements SegmentTask {
         Segment from = segment.previous();
         Segment to = segment.next();
 
-        String fromPlaceId = from.getAttribute(CommonKeys.PLACE);
-        String toPlaceId = to.getAttribute(CommonKeys.PLACE);
+        String fromPlaceId = from.getAttribute(Attributes.KEY.PLACE);
+        String toPlaceId = to.getAttribute(Attributes.KEY.PLACE);
 
         Place fromPlace = placeIndex.get(fromPlaceId);
         Place toPlace = placeIndex.get(toPlaceId);
@@ -79,7 +79,7 @@ public class RouteLegTask implements SegmentTask {
                 builder.append(String.valueOf(nodes.get(i)));
             }
 
-            segment.setAttribute(CommonKeys.LEG_ROUTE, builder.toString());
+            segment.setAttribute(Attributes.KEY.LEG_ROUTE, builder.toString());
         }
     }
 }

@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.invermo.processing;
 
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.invermo.InvermoKeys;
 import de.dbanalytics.spic.processing.EpisodeTask;
@@ -35,7 +35,7 @@ public class SetActivityTypes implements EpisodeTask {
 	public void apply(Episode plan) {
 		for(Attributable act : plan.getActivities()) {
 			if(InvermoKeys.HOME.equals(act.getAttribute(InvermoKeys.LOCATION))) {
-				act.setAttribute(CommonKeys.TYPE, InvermoKeys.HOME);
+				act.setAttribute(Attributes.KEY.TYPE, InvermoKeys.HOME);
 			}
 		}
 		
@@ -44,7 +44,7 @@ public class SetActivityTypes implements EpisodeTask {
 			Attributable act = plan.getActivities().get(i + 1);
 			
 			if(!InvermoKeys.HOME.equals(act.getAttribute(InvermoKeys.LOCATION))) {
-				act.setAttribute(CommonKeys.TYPE, leg.getAttribute(CommonKeys.TRAVEL_PURPOSE));
+				act.setAttribute(Attributes.KEY.TYPE, leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE));
 			}
 		}
 

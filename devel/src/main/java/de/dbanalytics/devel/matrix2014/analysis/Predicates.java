@@ -43,7 +43,7 @@ public class Predicates {
         for(Person person : persons) {
             for(Episode episode : person.getEpisodes()) {
                 for(Segment act : episode.getActivities()) {
-                    String type = act.getAttribute(CommonKeys.TYPE);
+                    String type = act.getAttribute(Attributes.KEY.TYPE);
                     if(type != null ) {
                         if(ignoreHome) {
                             if(!ActivityTypes.HOME.equalsIgnoreCase(type))
@@ -80,7 +80,7 @@ public class Predicates {
         for(Person person : persons) {
             for(Episode episode : person.getEpisodes()) {
                 for(Segment leg : episode.getLegs()) {
-                    String mode = leg.getAttribute(CommonKeys.MODE);
+                    String mode = leg.getAttribute(Attributes.KEY.MODE);
                     if(mode != null)
                         modes.add(mode);
                 }

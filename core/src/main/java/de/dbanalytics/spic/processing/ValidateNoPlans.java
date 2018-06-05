@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.data.Person;
 
@@ -32,7 +32,7 @@ public class ValidateNoPlans implements PersonTask {
 	@Override
 	public void apply(Person person) {
 		if(person.getEpisodes().size() == 0) {
-			person.setAttribute(CommonKeys.DELETE, CommonValues.TRUE);
+			person.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
 		}
 
 	}

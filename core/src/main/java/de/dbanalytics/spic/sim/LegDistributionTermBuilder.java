@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.sim;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import gnu.trove.map.TDoubleDoubleMap;
@@ -174,7 +174,7 @@ public class LegDistributionTermBuilder {
         term.setErrorFunction(function);
         if (predicate != null) term.setPredicate(predicate);
         term.setResetInterval(resetInterval);
-        if (useWeights) term.setUseWeights(CommonKeys.WEIGHT); //TODO: Better use a more generic key?
+        if (useWeights) term.setUseWeights(Attributes.KEY.WEIGHT); //TODO: Better use a more generic key?
 
         /** Add to attribute listeners */
         if (attributeListeners != null) attributeListeners.addComponent(term);

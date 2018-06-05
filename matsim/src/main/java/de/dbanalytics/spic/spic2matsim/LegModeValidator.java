@@ -19,10 +19,7 @@
 
 package de.dbanalytics.spic.spic2matsim;
 
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import de.dbanalytics.spic.processing.PersonTask;
 import de.dbanalytics.spic.processing.PersonsTask;
@@ -39,8 +36,8 @@ public class LegModeValidator implements SegmentTask, EpisodeTask, PersonTask, P
 
     @Override
     public void apply(Segment segment) {
-        String mode = segment.getAttribute(CommonKeys.MODE);
-        if(mode == null) segment.setAttribute(CommonKeys.MODE, DEFAULT_LEG_MODE);
+        String mode = segment.getAttribute(Attributes.KEY.MODE);
+        if(mode == null) segment.setAttribute(Attributes.KEY.MODE, DEFAULT_LEG_MODE);
     }
 
     @Override

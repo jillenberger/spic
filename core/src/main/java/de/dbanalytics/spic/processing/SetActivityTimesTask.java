@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.spic.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
 
@@ -30,23 +30,23 @@ public class SetActivityTimesTask implements EpisodeTask {
     public void apply(Episode episode) {
         if (episode.getActivities().size() == 1) {
             Segment act = episode.getActivities().get(0);
-            act.setAttribute(CommonKeys.START_TIME, "0");
-            act.setAttribute(CommonKeys.END_TIME, "86400");
+            act.setAttribute(Attributes.KEY.START_TIME, "0");
+            act.setAttribute(Attributes.KEY.END_TIME, "86400");
         } else {
 
             for (int i = 0; i < episode.getActivities().size(); i++) {
                 Segment act = episode.getActivities().get(i);
 
-                if (i == 0) act.setAttribute(CommonKeys.START_TIME, "0");
+                if (i == 0) act.setAttribute(Attributes.KEY.START_TIME, "0");
                 else
-                    act.setAttribute(CommonKeys.START_TIME, act.previous().getAttribute(CommonKeys.ARRIVAL_TIME));
+                    act.setAttribute(Attributes.KEY.START_TIME, act.previous().getAttribute(Attributes.KEY.ARRIVAL_TIME));
 
                 if (i == episode.getActivities().size() - 1) {
-                    int startTime = Integer.parseInt(act.getAttribute(CommonKeys.START_TIME));
+                    int startTime = Integer.parseInt(act.getAttribute(Attributes.KEY.START_TIME));
                     startTime = Math.max(startTime + 1, 86400);
-                    act.setAttribute(CommonKeys.END_TIME, String.valueOf(startTime));
+                    act.setAttribute(Attributes.KEY.END_TIME, String.valueOf(startTime));
                 } else {
-                    act.setAttribute(CommonKeys.END_TIME, act.next().getAttribute(CommonKeys.DEPARTURE_TIME));
+                    act.setAttribute(Attributes.KEY.END_TIME, act.next().getAttribute(Attributes.KEY.DEPARTURE_TIME));
                 }
             }
         }

@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Place;
@@ -42,8 +42,8 @@ public class CalculateGeoDistance implements EpisodeTask {
             Segment from = episode.getActivities().get(i);
             Segment to = episode.getActivities().get(i + 1);
 
-            String idFrom = from.getAttribute(CommonKeys.PLACE);
-            String idTo = to.getAttribute(CommonKeys.PLACE);
+            String idFrom = from.getAttribute(Attributes.KEY.PLACE);
+            String idTo = to.getAttribute(Attributes.KEY.PLACE);
 
             Place placeFrom = placeIndex.get(idFrom);
             Place placeTo = placeIndex.get(idTo);
@@ -53,7 +53,7 @@ public class CalculateGeoDistance implements EpisodeTask {
             double d = Math.sqrt(dx*dx + dy*dy);
 
             Segment leg = episode.getLegs().get(i);
-            leg.setAttribute(CommonKeys.BEELINE_DISTANCE, String.valueOf(d));
+            leg.setAttribute(Attributes.KEY.BEELINE_DISTANCE, String.valueOf(d));
         }
     }
 }

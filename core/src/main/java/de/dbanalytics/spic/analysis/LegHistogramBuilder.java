@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.sim.HistogramBuilder;
@@ -45,7 +45,7 @@ public class LegHistogramBuilder implements HistogramBuilder {
     public LegHistogramBuilder(ValueProvider<Double, Segment> provider, Discretizer discretizer, boolean useWeights) {
         valueCollector = new LegCollector<>(provider);
         if (useWeights) {
-            weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<>(CommonKeys.WEIGHT));
+            weightsCollector = new LegPersonCollector<>(new NumericAttributeProvider<>(Attributes.KEY.WEIGHT));
         } else {
             weightsCollector = new LegPersonCollector<>(new DefaultWeightProvider());
         }

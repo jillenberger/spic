@@ -21,7 +21,7 @@ package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.sim.AttributeObserver;
 import de.dbanalytics.spic.sim.Hamiltonian;
@@ -85,7 +85,7 @@ public class UnivariatFrequency implements Hamiltonian, AttributeObserver {
         this.absoluteMode = absoluteMode;
         this.useWeights = useWeights;
 
-        if(useWeights) weightKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
+        if(useWeights) weightKey = Converters.register(Attributes.KEY.WEIGHT, DoubleConverter.getInstance());
 
         refFreq = initHistogram(refElements, attrKey, useWeights);
         simFreq = initHistogram(simElements, attrKey, useWeights);
@@ -131,7 +131,7 @@ public class UnivariatFrequency implements Hamiltonian, AttributeObserver {
                 double weight = 1.0;
 
                 if(useWeights) {
-                    String strWeight = element.getAttribute(CommonKeys.WEIGHT);
+                    String strWeight = element.getAttribute(Attributes.KEY.WEIGHT);
                     weight = Double.parseDouble(strWeight);
                 }
 

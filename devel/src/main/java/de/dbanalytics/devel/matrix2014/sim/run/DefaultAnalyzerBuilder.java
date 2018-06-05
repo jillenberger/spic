@@ -24,7 +24,7 @@ import de.dbanalytics.devel.matrix2014.analysis.SetSeason;
 import de.dbanalytics.devel.matrix2014.analysis.ZoneMobilityRate;
 import de.dbanalytics.devel.matrix2014.matrix.postprocess.SeasonTask;
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
@@ -60,14 +60,14 @@ public class DefaultAnalyzerBuilder {
                 100000, Integer.MAX_VALUE}), "100KM"));
 
         composite.addComponent(NumericLegAnalyzer.create(
-                CommonKeys.TRIP_DISTANCE,
+                Attributes.KEY.TRIP_DISTANCE,
                 engine.getUseWeights(),
                 engine.getLegPredicate(),
                 engine.getLegPredicateName(),
                 histogramWriter));
 
         composite.addComponent(NumericLegAnalyzer.create(
-                CommonKeys.BEELINE_DISTANCE, engine.getUseWeights(),
+                Attributes.KEY.BEELINE_DISTANCE, engine.getUseWeights(),
                 engine.getLegPredicate(),
                 engine.getLegPredicateName(),
                 histogramWriter));
@@ -77,7 +77,7 @@ public class DefaultAnalyzerBuilder {
             Predicate<Segment> predicate = PredicateAndComposite.create(engine.getLegPredicate(), lauPred);
             String label = String.format("car.lau%s", klass);
             composite.addComponent(NumericLegAnalyzer.create(
-                    CommonKeys.BEELINE_DISTANCE,
+                    Attributes.KEY.BEELINE_DISTANCE,
                     engine.getUseWeights(),
                     predicate,
                     label,
@@ -87,7 +87,7 @@ public class DefaultAnalyzerBuilder {
         Predicate<Segment> inTown = new LegAttributePredicate(MiDKeys.LEG_DESTINATION, MiDValues.IN_TOWN);
         Predicate<Segment> predicate = PredicateAndComposite.create(engine.getLegPredicate(), inTown);
         composite.addComponent(NumericLegAnalyzer.create(
-                CommonKeys.BEELINE_DISTANCE, engine.getUseWeights(),
+                Attributes.KEY.BEELINE_DISTANCE, engine.getUseWeights(),
                 predicate,
                 engine.getLegPredicateName() + ".inTown",
                 histogramWriter));
@@ -95,7 +95,7 @@ public class DefaultAnalyzerBuilder {
         Predicate<Segment> outOfTown = new LegAttributePredicate(MiDKeys.LEG_DESTINATION, MiDValues.OUT_OF_TOWN);
         predicate = PredicateAndComposite.create(engine.getLegPredicate(), outOfTown);
         composite.addComponent(NumericLegAnalyzer.create(
-                CommonKeys.BEELINE_DISTANCE,
+                Attributes.KEY.BEELINE_DISTANCE,
                 engine.getUseWeights(),
                 predicate,
                 engine.getLegPredicateName() + ".outOfTown",
@@ -132,7 +132,7 @@ public class DefaultAnalyzerBuilder {
         person weights
          */
         task.addComponent(new NumericAnalyzer(new PersonCollector<>(
-                new NumericAttributeProvider<Person>(CommonKeys.WEIGHT)),
+                new NumericAttributeProvider<Person>(Attributes.KEY.WEIGHT)),
                 "weights",
                 new HistogramWriter(
                         engine.getIOContext(),

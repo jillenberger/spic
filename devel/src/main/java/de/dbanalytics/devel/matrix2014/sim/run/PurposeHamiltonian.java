@@ -20,10 +20,7 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
@@ -83,7 +80,7 @@ public class PurposeHamiltonian {
 
         Object key = Converters.register(PURPOSE_IDX_KEY, new DoubleConverter());
         GeoDistanceMediator mediator = new GeoDistanceMediator(discretizer, key, borders.size()-1);
-        engine.getAttributeListeners().get(CommonKeys.BEELINE_DISTANCE).addComponent(mediator);
+        engine.getAttributeListeners().get(Attributes.KEY.BEELINE_DISTANCE).addComponent(mediator);
 
         logger.info("Initializing purpose hamiltonians...");
         for(int dIdx = 1; dIdx < borders.size() - 1; dIdx++) {
@@ -114,7 +111,7 @@ public class PurposeHamiltonian {
             /*
             Add histogram comparator.
              */
-            String predicateName = String.format("%s.%s", CommonKeys.TRAVEL_PURPOSE, borders.get(dIdx));
+            String predicateName = String.format("%s.%s", Attributes.KEY.TRAVEL_PURPOSE, borders.get(dIdx));
             HistogramComparator comparator = new HistogramComparator(
                     refHist,
                     builder,
@@ -135,7 +132,7 @@ public class PurposeHamiltonian {
     }
 
     private static Map<String, Integer> makePurposeIndex(Collection<? extends Person> persons) {
-        Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(CommonKeys.TRAVEL_PURPOSE));
+        Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(Attributes.KEY.TRAVEL_PURPOSE));
         Set<String> purposes = new HashSet<>(collector.collect(persons));
         purposes.remove(null);
 
@@ -155,7 +152,7 @@ public class PurposeHamiltonian {
             @Override
             public void apply(Episode episode) {
                 for(Segment leg : episode.getLegs()) {
-                    String purpose = leg.getAttribute(CommonKeys.TRAVEL_PURPOSE);
+                    String purpose = leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE);
                     Integer idx = purpose2Index.get(purpose);
                     if(idx != null) leg.setAttribute(PURPOSE_IDX_KEY, idx.toString());
                 }
@@ -170,7 +167,7 @@ public class PurposeHamiltonian {
             @Override
             public void apply(Episode episode) {
                 for(Segment leg : episode.getLegs()) {
-                    String val = leg.getAttribute(CommonKeys.BEELINE_DISTANCE);
+                    String val = leg.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
                     if(val != null) {
                         double dist = Double.parseDouble(val);
                         int idx = discretizer.index(dist);
@@ -240,7 +237,7 @@ public class PurposeHamiltonian {
 
         @Override
         public boolean test(Segment segment) {
-            String val = segment.getAttribute(CommonKeys.BEELINE_DISTANCE);
+            String val = segment.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
             if(val != null) {
                 double d = Double.parseDouble(val);
                 int idx = discretizer.index(d);

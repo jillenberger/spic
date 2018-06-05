@@ -103,12 +103,12 @@ public class SplitPlanTask implements PersonTask {
 	}
 	
 	private DateTime getDate(Attributable leg) {
-		String time = leg.getAttribute(CommonKeys.DEPARTURE_TIME);
+		String time = leg.getAttribute(Attributes.KEY.DEPARTURE_TIME);
 		if(time == null) {
 			/*
 			 * This may have undesired effects in the case of over night trips.
 			 */
-			time = leg.getAttribute(CommonKeys.ARRIVAL_TIME);
+			time = leg.getAttribute(Attributes.KEY.ARRIVAL_TIME);
 		}
 		
 		if(time != null) {

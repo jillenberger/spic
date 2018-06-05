@@ -19,7 +19,7 @@
 package de.dbanalytics.spic.processing;
 
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
@@ -38,7 +38,7 @@ public class Route2GeoDistance implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for(Attributable leg : episode.getLegs()) {
-            String routeDist = leg.getAttribute(CommonKeys.TRIP_DISTANCE);
+            String routeDist = leg.getAttribute(Attributes.KEY.TRIP_DISTANCE);
             if(routeDist != null) {
                 double rDist = Double.parseDouble(routeDist);
 
@@ -49,7 +49,7 @@ public class Route2GeoDistance implements EpisodeTask {
                     e.printStackTrace();
                 }
 
-                leg.setAttribute(CommonKeys.BEELINE_DISTANCE, String.valueOf(gDist));
+                leg.setAttribute(Attributes.KEY.BEELINE_DISTANCE, String.valueOf(gDist));
             }
         }
     }

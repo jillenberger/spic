@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.invermo.InvermoKeys;
 import de.dbanalytics.spic.processing.EpisodeTask;
@@ -58,7 +58,7 @@ public class CalcGeoDistance implements EpisodeTask {
 				
 				double d = dCalc.distance(source, dest);
 
-				leg.setAttribute(CommonKeys.BEELINE_DISTANCE, String.valueOf(d));
+				leg.setAttribute(Attributes.KEY.BEELINE_DISTANCE, String.valueOf(d));
 			}
 		}
 

@@ -20,10 +20,7 @@
 package de.dbanalytics.spic.processing;
 
 
-import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.*;
 
 /**
  * @author johannes
@@ -34,14 +31,14 @@ public class SetActivityTypeTask implements EpisodeTask {
 	@Override
 	public void apply(Episode episode) {
 		if(episode.getLegs().isEmpty()) {
-			episode.getActivities().get(0).setAttribute(CommonKeys.TYPE, ActivityTypes.HOME);
+			episode.getActivities().get(0).setAttribute(Attributes.KEY.TYPE, ActivityTypes.HOME);
 		}
 		
 		for(int i = 0; i < episode.getLegs().size(); i++) {
 			Attributable leg = episode.getLegs().get(i);
 			Attributable act = episode.getActivities().get(i + 1);
 			
-			act.setAttribute(CommonKeys.TYPE, leg.getAttribute(CommonKeys.TRAVEL_PURPOSE));
+			act.setAttribute(Attributes.KEY.TYPE, leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE));
 		}
 
 	}

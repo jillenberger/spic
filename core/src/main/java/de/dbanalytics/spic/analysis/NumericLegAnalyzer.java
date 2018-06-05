@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.spic.analysis;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 
@@ -39,7 +39,7 @@ public class NumericLegAnalyzer {
 
         LegPersonCollector<Double> weightCollector = null;
         if (useWeights) {
-            ValueProvider<Double, Person> weightProvider = new NumericAttributeProvider<>(CommonKeys.WEIGHT);
+            ValueProvider<Double, Person> weightProvider = new NumericAttributeProvider<>(Attributes.KEY.WEIGHT);
             weightCollector = new LegPersonCollector<>(weightProvider);
             if (predicate != null) weightCollector.setPredicate(predicate);
         }

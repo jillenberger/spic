@@ -164,10 +164,10 @@ public class PopulationIOv2 {
                     attributable = episode;
                     //TODO: remove when stable
                     // replace departure_time with start_time
-                    String value = attributable.getAttribute(CommonKeys.DEPARTURE_TIME);
+                    String value = attributable.getAttribute(Attributes.KEY.DEPARTURE_TIME);
                     if (value != null) {
-                        attributable.setAttribute(CommonKeys.START_TIME, value);
-                        attributable.removeAttribute(CommonKeys.DEPARTURE_TIME);
+                        attributable.setAttribute(Attributes.KEY.START_TIME, value);
+                        attributable.removeAttribute(Attributes.KEY.DEPARTURE_TIME);
                     }
                     //TODO: remove when stable
                 } else if (localName.equals(LEG_ELEMENT)) {

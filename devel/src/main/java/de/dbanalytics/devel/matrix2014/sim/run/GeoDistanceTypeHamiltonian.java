@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
@@ -65,7 +65,7 @@ public class GeoDistanceTypeHamiltonian {
 //        Discretizer discretizer = new LinearDiscretizer(50000);
 
 //        Collector<String> collector = new LegCollector<>(new AttributeProvider<>(ReplaceActTypes.ORIGINAL_TYPE));
-        Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(CommonKeys.TRAVEL_PURPOSE));
+        Collector<String> collector = new LegCollector<>(new AttributeProvider<Segment>(Attributes.KEY.TRAVEL_PURPOSE));
         Set<String> types = new HashSet<>(collector.collect(engine.getRefPersons()));
         types.remove(null);
 
@@ -74,26 +74,26 @@ public class GeoDistanceTypeHamiltonian {
         for(String type : types) {
 
 //            Predicate<Segment> typePredicate = new LegAttributePredicate(ReplaceActTypes.ORIGINAL_TYPE, type);
-            Predicate<Segment> typePredicate = new LegAttributePredicate(CommonKeys.TRAVEL_PURPOSE, type);
+            Predicate<Segment> typePredicate = new LegAttributePredicate(Attributes.KEY.TRAVEL_PURPOSE, type);
             Predicate<Segment> predicate = PredicateAndComposite.create(
                     engine.getLegPredicate(),
                     typePredicate);
 
-            LegCollector<Double> distCollector = new LegCollector<>(new NumericAttributeProvider<Segment>(CommonKeys.BEELINE_DISTANCE));
+            LegCollector<Double> distCollector = new LegCollector<>(new NumericAttributeProvider<Segment>(Attributes.KEY.BEELINE_DISTANCE));
             distCollector.setPredicate(predicate);
             List<Double> dists = distCollector.collect(engine.getRefPersons());
             dists.add(1000000.0);
             double[] values = CollectionUtils.toNativeArray(dists);
             Discretizer discretizer = FixedSampleSizeDiscretizer.create(values, 1, 10);
 
-            LegAttributeHistogramBuilder refHistBuilder = new LegAttributeHistogramBuilder(CommonKeys.BEELINE_DISTANCE, discretizer);
+            LegAttributeHistogramBuilder refHistBuilder = new LegAttributeHistogramBuilder(Attributes.KEY.BEELINE_DISTANCE, discretizer);
             refHistBuilder.setPredicate(predicate);
             TDoubleDoubleMap refHist = refHistBuilder.build(engine.getRefPersons());
 
             UnivariatFrequency2 hamiltonian = new UnivariatFrequency2(
                     refHist,
                     refHistBuilder,
-                    CommonKeys.BEELINE_DISTANCE,
+                    Attributes.KEY.BEELINE_DISTANCE,
                     discretizer,
                     engine.getUseWeights(),
                     false);
@@ -107,16 +107,16 @@ public class GeoDistanceTypeHamiltonian {
         /*
         Add the hamiltonian to the geo distance attribute change listener.
          */
-            engine.getAttributeListeners().get(CommonKeys.BEELINE_DISTANCE).addComponent(hamiltonian);
+            engine.getAttributeListeners().get(Attributes.KEY.BEELINE_DISTANCE).addComponent(hamiltonian);
         /*
         Add a geo distance analyzer.
          */
-            String predicateName = String.format("%s.%s.%s", CommonKeys.BEELINE_DISTANCE, engine.getLegPredicateName(), type);
+            String predicateName = String.format("%s.%s.%s", Attributes.KEY.BEELINE_DISTANCE, engine.getLegPredicateName(), type);
             HistogramWriter writer = new HistogramWriter(
                     engine.getIOContext(),
                     new PassThroughDiscretizerBuilder(discretizer, "default"));
             AnalyzerTask<Collection<? extends Person>> analyzer = NumericLegAnalyzer.create(
-                    CommonKeys.BEELINE_DISTANCE,
+                    Attributes.KEY.BEELINE_DISTANCE,
                     engine.getUseWeights(),
                     predicate,
                     predicateName,

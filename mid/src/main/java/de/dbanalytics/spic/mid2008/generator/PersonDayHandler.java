@@ -19,8 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.CommonValues;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 
 import java.util.Map;
@@ -36,19 +35,19 @@ public class PersonDayHandler implements PersonAttributeHandler {
 		String day = attributes.get(VariableNames.SURVEY_DAY);
 
 		if(day.equalsIgnoreCase("1")) {
-			person.setAttribute(CommonKeys.DAY, CommonValues.MONDAY);
+			person.setAttribute(Attributes.KEY.WEEKDAY, Attributes.WEEKDAY.MONDAY);
 		} else if(day.equalsIgnoreCase("2")) {
-			person.setAttribute(CommonKeys.DAY, CommonValues.TUESDAY);
+			person.setAttribute(Attributes.KEY.WEEKDAY, Attributes.WEEKDAY.TUESDAY);
 		} else if(day.equalsIgnoreCase("3")) {
-			person.setAttribute(CommonKeys.DAY, CommonValues.WEDNESDAY);
+			person.setAttribute(Attributes.KEY.WEEKDAY, Attributes.WEEKDAY.WEDNESDAY);
 		} else if(day.equalsIgnoreCase("4")) {
-			person.setAttribute(CommonKeys.DAY, CommonValues.THURSDAY);
+			person.setAttribute(Attributes.KEY.WEEKDAY, Attributes.WEEKDAY.THURSDAY);
 		} else if(day.equalsIgnoreCase("5")) {
-			person.setAttribute(CommonKeys.DAY, CommonValues.FRIDAY);
+			person.setAttribute(Attributes.KEY.WEEKDAY, Attributes.WEEKDAY.FRIDAY);
 		} else if(day.equalsIgnoreCase("6")) {
-			person.setAttribute(CommonKeys.DAY, CommonValues.SATURDAY);
+			person.setAttribute(Attributes.KEY.WEEKDAY, Attributes.WEEKDAY.SATURDAY);
 		} else if(day.equalsIgnoreCase("7")) {
-			person.setAttribute(CommonKeys.DAY, CommonValues.SUNDAY);
+			person.setAttribute(Attributes.KEY.WEEKDAY, Attributes.WEEKDAY.SUNDAY);
 		}
 	}
 

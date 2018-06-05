@@ -202,7 +202,7 @@ public class Matrix2Episodes {
                                             String destFac = facs_j.get(random.nextInt(facs_j.size())).getId().toString();
 
                                             Person p = buildPerson(String.valueOf(idCounter++), originFac, destFac);
-                                            p.setAttribute(CommonKeys.WEIGHT, String.valueOf(w));
+                                            p.setAttribute(Attributes.KEY.WEIGHT, String.valueOf(w));
 
                                             persons.add(p);
                                         }
@@ -238,14 +238,14 @@ public class Matrix2Episodes {
         p.addEpisode(e);
 
         Segment originAct = new PlainSegment();
-        originAct.setAttribute(CommonKeys.PLACE, origin);
+        originAct.setAttribute(Attributes.KEY.PLACE, origin);
         e.addActivity(originAct);
 
         Segment trip = new PlainSegment();
         e.addLeg(trip);
 
         Segment destinationAct = new PlainSegment();
-        destinationAct.setAttribute(CommonKeys.PLACE, destination);
+        destinationAct.setAttribute(Attributes.KEY.PLACE, destination);
         e.addActivity(destinationAct);
 
         return p;

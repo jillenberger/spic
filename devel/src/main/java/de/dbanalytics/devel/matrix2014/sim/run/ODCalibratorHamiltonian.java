@@ -20,8 +20,7 @@ package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.devel.matrix2014.config.ODCalibratorConfigurator;
 import de.dbanalytics.spic.analysis.AttributePredicate;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.CommonValues;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.matrix.ODCalibrator;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
@@ -43,13 +42,13 @@ public class ODCalibratorHamiltonian {
                 .configure(configGroup);
 
         hamiltonian.setUseWeights(engine.getUseWeights());
-        //hamiltonian.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.LEG_MODE_CAR));
-        hamiltonian.setPredicate(new AttributePredicate<>(CommonKeys.MODE, CommonValues.LEG_MODE_CAR));
+        //hamiltonian.setPredicate(new CachedModePredicate(CommonKeys.LEG_MODE, CommonValues.CAR));
+        hamiltonian.setPredicate(new AttributePredicate<>(Attributes.KEY.MODE, Attributes.MODE.CAR));
 
         AnnealingHamiltonian annealingHamiltonian = AnnealingHamiltonianConfigurator.configure(hamiltonian,
                 configGroup);
         engine.getHamiltonian().addComponent(annealingHamiltonian);
-        engine.getAttributeListeners().get(CommonKeys.PLACE).addComponent(hamiltonian);
+        engine.getAttributeListeners().get(Attributes.KEY.PLACE).addComponent(hamiltonian);
         engine.getEngineListeners().addComponent(annealingHamiltonian);
         /*
         Add a hamiltonian logger.

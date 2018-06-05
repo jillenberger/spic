@@ -19,10 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.run;
 
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.PlainFactory;
-import de.dbanalytics.spic.data.PlainPerson;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.mid2008.generator.*;
 import de.dbanalytics.spic.processing.IsolateEpisodes;
@@ -99,7 +96,7 @@ public class Generator {
         PopulationIO.writeToXML(String.format("%s/mid2008.xml", outDir), persons);
 
         logger.info("Isolating persons...");
-        IsolateEpisodes isolator = new IsolateEpisodes(CommonKeys.DATA_SOURCE, factory);
+        IsolateEpisodes isolator = new IsolateEpisodes(Attributes.KEY.DATA_SOURCE, factory);
         TaskRunner.run(isolator, persons);
 
         Map<String, Set<Person>> populations = isolator.getPopulations();

@@ -20,10 +20,7 @@
 package de.dbanalytics.spic.matrix;
 
 import de.dbanalytics.spic.analysis.Predicate;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.gis.Feature;
 import de.dbanalytics.spic.gis.Place;
 import de.dbanalytics.spic.gis.PlaceIndex;
@@ -209,7 +206,7 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
             for (Person person : persons) {
                 double w = 1.0;
                 if (useWeights)
-                    w = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
+                    w = Double.parseDouble(person.getAttribute(Attributes.KEY.WEIGHT));
 
                 for (Episode episode : person.getEpisodes()) {
                     for (int i = 0; i < episode.getLegs().size(); i++) {
@@ -218,8 +215,8 @@ public class DefaultMatrixBuilder implements MatrixBuilder {
                             Segment prev = episode.getActivities().get(i);
                             Segment next = episode.getActivities().get(i + 1);
 
-                            String originPlaceId = prev.getAttribute(CommonKeys.PLACE);
-                            String destPlaceId = next.getAttribute(CommonKeys.PLACE);
+                            String originPlaceId = prev.getAttribute(Attributes.KEY.PLACE);
+                            String destPlaceId = next.getAttribute(Attributes.KEY.PLACE);
 
                             if (originPlaceId != null && destPlaceId != null) {
                                 String origin = getZoneId(originPlaceId);

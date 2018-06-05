@@ -105,7 +105,7 @@ public class RouteLegs {
             for(Episode e : p.getEpisodes()) {
                 for(Segment l : e.getLegs()) {
                     total++;
-                    if(l.getAttribute(CommonKeys.LEG_ROUTE) == null) failed++;
+                    if(l.getAttribute(Attributes.KEY.LEG_ROUTE) == null) failed++;
                 }
             }
         }

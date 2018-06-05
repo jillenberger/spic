@@ -19,7 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.matrix.postprocess;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.gis.ZoneIndex;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TObjectDoubleMap;
@@ -77,8 +77,8 @@ public class SplitDays {
         /*
         Run matrix splitter...
          */
-        MatrixSplitter splitter = new MatrixSplitter(CommonKeys.DAY, shareTable);
-        splitter.addDimensionCalculator(CommonKeys.BEELINE_DISTANCE, calculator);
+        MatrixSplitter splitter = new MatrixSplitter(Attributes.KEY.WEEKDAY, shareTable);
+        splitter.addDimensionCalculator(Attributes.KEY.BEELINE_DISTANCE, calculator);
 
         logger.info("Processing matrix...");
         splitter.process(sourceFile, targetFile);

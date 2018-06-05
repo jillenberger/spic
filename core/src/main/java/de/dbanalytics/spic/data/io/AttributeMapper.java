@@ -1,6 +1,6 @@
 package de.dbanalytics.spic.data.io;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,15 +16,16 @@ public class AttributeMapper {
 
     static {
         keyMap = new HashMap<>();
-        keyMap.put("startTime", CommonKeys.DEPARTURE_TIME);
-        keyMap.put("endTime", CommonKeys.ARRIVAL_TIME);
-        keyMap.put("purpose", CommonKeys.TRAVEL_PURPOSE);
-        keyMap.put("routeDistance", CommonKeys.TRIP_DISTANCE);
-        keyMap.put("geoDistance", CommonKeys.BEELINE_DISTANCE);
+        keyMap.put("startTime", Attributes.KEY.DEPARTURE_TIME);
+        keyMap.put("endTime", Attributes.KEY.ARRIVAL_TIME);
+        keyMap.put("purpose", Attributes.KEY.TRAVEL_PURPOSE);
+        keyMap.put("routeDistance", Attributes.KEY.TRIP_DISTANCE);
+        keyMap.put("geoDistance", Attributes.KEY.BEELINE_DISTANCE);
 //        keyMap.put("startTime", CommonKeys.START_TIME); // Ambiguous
-        keyMap.put("endTime", CommonKeys.END_TIME);
-        keyMap.put("activityFacility", CommonKeys.PLACE);
-        keyMap.put("datasource", CommonKeys.DATA_SOURCE);
+        keyMap.put("endTime", Attributes.KEY.END_TIME);
+        keyMap.put("activityFacility", Attributes.KEY.PLACE);
+        keyMap.put("datasource", Attributes.KEY.DATA_SOURCE);
+        keyMap.put("day", Attributes.KEY.WEEKDAY);
 
         valueMap = new HashMap<>();
     }

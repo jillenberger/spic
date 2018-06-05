@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Place;
@@ -58,8 +58,8 @@ public class SetActivityPlaces implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for (Segment act : episode.getActivities()) {
-            if (act.getAttribute(CommonKeys.PLACE) == null) {
-                String type = act.getAttribute(CommonKeys.TYPE);
+            if (act.getAttribute(Attributes.KEY.PLACE) == null) {
+                String type = act.getAttribute(Attributes.KEY.TYPE);
                 Place place = null;
                 Segment toLeg = act.previous();
                 /*
@@ -68,9 +68,9 @@ public class SetActivityPlaces implements EpisodeTask {
                 if (toLeg != null) {
                     Segment prevAct = toLeg.previous();
 
-                    Place origin = placeIndex.get(prevAct.getAttribute(CommonKeys.PLACE));
+                    Place origin = placeIndex.get(prevAct.getAttribute(Attributes.KEY.PLACE));
 
-                    String distance = toLeg.getAttribute(CommonKeys.BEELINE_DISTANCE);
+                    String distance = toLeg.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
                     double d = fallbackDistance;
                     if (distance != null) d = Double.parseDouble(distance);
 
@@ -96,7 +96,7 @@ public class SetActivityPlaces implements EpisodeTask {
                     place = getRandomPlace(type);
                 }
 
-                act.setAttribute(CommonKeys.PLACE, place.getId().toString());
+                act.setAttribute(Attributes.KEY.PLACE, place.getId().toString());
             }
         }
     }

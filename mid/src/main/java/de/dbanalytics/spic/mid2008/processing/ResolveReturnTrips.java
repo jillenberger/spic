@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.processing.EpisodeTask;
@@ -38,13 +38,13 @@ public class ResolveReturnTrips implements EpisodeTask {
     public void apply(Episode episode) {
         for (int i = 0; i < episode.getActivities().size(); i++) {
             Segment act = episode.getActivities().get(i);
-            if (RETURN_TYPE.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+            if (RETURN_TYPE.equalsIgnoreCase(act.getAttribute(Attributes.KEY.TYPE))) {
                 if (i > 1) {
                     Segment startAct = episode.getActivities().get(i - 2);
-                    act.setAttribute(CommonKeys.TYPE, startAct.getAttribute(CommonKeys.TYPE));
+                    act.setAttribute(Attributes.KEY.TYPE, startAct.getAttribute(Attributes.KEY.TYPE));
                 } else {
                     logger.warn("Detected return trip without outward trip.");
-                    act.setAttribute(CommonKeys.TYPE, null);
+                    act.setAttribute(Attributes.KEY.TYPE, null);
                 }
             }
         }

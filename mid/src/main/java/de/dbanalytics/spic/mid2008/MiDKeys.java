@@ -42,4 +42,14 @@ public interface MiDKeys {
 	String LEG_PERSONS = "legpersons";
 
     String JOURNEY_WEIGHT = "journeyweight";
+
+    String HH_INCOME = "hhincome";
+
+	String HH_MEMBERS = "hhmembers";
+
+	String PERSON_AGE = "age";
+
+	String PERSON_SEX = "sex";
+
+	String PERSON_CARAVAIL = "caravail";
 }

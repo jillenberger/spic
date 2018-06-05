@@ -23,10 +23,7 @@ import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.analysis.StatsContainer;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.devel.matrix2014.gis.Zone;
 import de.dbanalytics.devel.matrix2014.gis.ZoneCollection;
 import de.dbanalytics.devel.matrix2014.gis.ZoneData;
@@ -106,7 +103,7 @@ public class ZoneMobilityRate implements AnalyzerTask<Collection<? extends Perso
 
         for (Person person : persons) {
             String category = person.getAttribute(categoryKey);
-            Double weight = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
+            Double weight = Double.parseDouble(person.getAttribute(Attributes.KEY.WEIGHT));
             if (category != null) {
                 double personTrips = 0;
                 for (Episode episode : person.getEpisodes()) {

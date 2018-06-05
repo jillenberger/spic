@@ -34,9 +34,9 @@ public class InsertHomePlanTask implements PersonTask {
 		if(person.getEpisodes().isEmpty()) {
 			Episode plan = new PlainEpisode();
 			PlainSegment act = new PlainSegment();
-			act.setAttribute(CommonKeys.TYPE, "home");
-			act.setAttribute(CommonKeys.START_TIME, "0");
-			act.setAttribute(CommonKeys.END_TIME, "86400");
+			act.setAttribute(Attributes.KEY.TYPE, "home");
+			act.setAttribute(Attributes.KEY.START_TIME, "0");
+			act.setAttribute(Attributes.KEY.END_TIME, "86400");
 			act.setAttribute(InvermoKeys.LOCATION, "home");
 			
 			plan.addActivity(act);

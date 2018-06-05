@@ -19,7 +19,7 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 
 import java.util.Map;
@@ -35,10 +35,10 @@ public class LegTimeHandler implements LegAttributeHandler {
 	@Override
 	public void handle(Segment leg, Map<String, String> attributes) {
         Integer time = calcSeconds(attributes, true);
-        if (time != null) leg.setAttribute(CommonKeys.DEPARTURE_TIME, String.valueOf(time));
+        if (time != null) leg.setAttribute(Attributes.KEY.DEPARTURE_TIME, String.valueOf(time));
 
 		time = calcSeconds(attributes, false);
-        if (time != null) leg.setAttribute(CommonKeys.ARRIVAL_TIME, String.valueOf(time));
+        if (time != null) leg.setAttribute(Attributes.KEY.ARRIVAL_TIME, String.valueOf(time));
 
 	}
 

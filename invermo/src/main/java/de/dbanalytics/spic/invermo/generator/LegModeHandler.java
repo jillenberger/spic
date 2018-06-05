@@ -20,8 +20,7 @@
 package de.dbanalytics.spic.invermo.generator;
 
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.CommonValues;
+import de.dbanalytics.spic.data.Attributes;
 
 /**
  * @author johannes
@@ -34,16 +33,16 @@ public class LegModeHandler implements LegAttributeHandler {
 		setMode(key, "hvm1", value, "plane", leg);
 		setMode(key, "hvm2", value, "rail", leg);
 		setMode(key, "hvm3", value, "rail", leg);
-		setMode(key, "hvm6", value, CommonValues.LEG_MODE_CAR, leg);
-		setMode(key, "hvm7", value, CommonValues.LEG_MODE_CAR, leg);
-		setMode(key, "hvm9", value, CommonValues.LEG_MODE_CAR, leg);
-		setMode(key, "hvm10", value, CommonValues.LEG_MODE_CAR, leg);
+		setMode(key, "hvm6", value, Attributes.MODE.CAR, leg);
+		setMode(key, "hvm7", value, Attributes.MODE.CAR, leg);
+		setMode(key, "hvm9", value, Attributes.MODE.CAR, leg);
+		setMode(key, "hvm10", value, Attributes.MODE.CAR, leg);
 	}
 
 	private void setMode(String key, String modeKey, String value, String mode, Attributable leg) {
 		if(key.endsWith(modeKey)) {
 			if(value.equals("1")) {
-				if(leg.setAttribute(CommonKeys.MODE, mode) != null) {
+				if(leg.setAttribute(Attributes.KEY.MODE, mode) != null) {
 					System.err.println("Overwriting mode key");
 				}
 			}

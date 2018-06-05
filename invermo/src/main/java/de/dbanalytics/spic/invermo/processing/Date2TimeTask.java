@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.invermo.processing;
 
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.processing.EpisodeTask;
@@ -40,7 +40,7 @@ public class Date2TimeTask implements EpisodeTask {
 		LocalDateTime reference = null;
 		
 		for(Attributable leg : plan.getLegs()) {
-			String start = leg.getAttribute(CommonKeys.DEPARTURE_TIME);
+			String start = leg.getAttribute(Attributes.KEY.DEPARTURE_TIME);
 			if(start != null) {
 				if(reference == null) {
 					reference = getReference(start);
@@ -49,13 +49,13 @@ public class Date2TimeTask implements EpisodeTask {
 				LocalDateTime startDate = SplitPlanTask.formatter.parseLocalDateTime(start);
 				Seconds secs = Seconds.secondsBetween(reference, startDate);
 				
-				leg.setAttribute(CommonKeys.DEPARTURE_TIME, String.valueOf(secs.getSeconds()));
+				leg.setAttribute(Attributes.KEY.DEPARTURE_TIME, String.valueOf(secs.getSeconds()));
 				if(!leg.keys().contains(MiDKeys.PERSON_MONTH)) {
 					setPlanDate(startDate, plan);
 				}
 			}
 			
-			String end = leg.getAttribute(CommonKeys.ARRIVAL_TIME);
+			String end = leg.getAttribute(Attributes.KEY.ARRIVAL_TIME);
 			if(end != null) {
 				if(reference == null) {
 					reference = getReference(end);
@@ -64,7 +64,7 @@ public class Date2TimeTask implements EpisodeTask {
 				LocalDateTime endDate = SplitPlanTask.formatter.parseLocalDateTime(end);
 				Seconds secs = Seconds.secondsBetween(reference, endDate);
 				
-				leg.setAttribute(CommonKeys.ARRIVAL_TIME, String.valueOf(secs.getSeconds()));
+				leg.setAttribute(Attributes.KEY.ARRIVAL_TIME, String.valueOf(secs.getSeconds()));
 				
 				if(!leg.keys().contains(MiDKeys.PERSON_MONTH)) {
 					setPlanDate(endDate, plan);
@@ -81,7 +81,7 @@ public class Date2TimeTask implements EpisodeTask {
 	
 	private void setPlanDate(LocalDateTime dateTime, Episode plan) {
 		plan.setAttribute(MiDKeys.PERSON_MONTH, dateTime.monthOfYear().getAsShortText(Locale.US));
-		plan.setAttribute(CommonKeys.DAY, dateTime.dayOfWeek().getAsShortText(Locale.US));
+		plan.setAttribute(Attributes.KEY.WEEKDAY, dateTime.dayOfWeek().getAsShortText(Locale.US));
 	}
 
 }

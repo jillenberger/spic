@@ -19,7 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.demo;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.mid2008.MiDKeys;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import de.dbanalytics.spic.sim.data.Converters;
@@ -45,7 +45,7 @@ public class IncomeMutatorBuilder implements MutatorBuilder<CachedPerson> {
         this.listener = listener;
         generator = new RandomIntGenerator(random, 500, 8000);
 
-        incomeDataKey = Converters.register(CommonKeys.HH_INCOME, DoubleConverter.getInstance());
+        incomeDataKey = Converters.register(MiDKeys.HH_INCOME, DoubleConverter.getInstance());
 
     }
 

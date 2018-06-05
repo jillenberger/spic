@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.ActivityTypes;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 
 import java.util.Map;
@@ -36,17 +36,17 @@ public class JourneyPurposeHandler implements LegAttributeHandler {
 		String purpose = attributes.get(VariableNames.JOURNEY_PURPOSE);
 		
 		if(purpose.equalsIgnoreCase("1")) {
-			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, ActivityTypes.LEISURE);
+			leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, ActivityTypes.LEISURE);
 		} else if(purpose.equalsIgnoreCase("2")) {
-			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, ActivityTypes.LEISURE);
+			leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, ActivityTypes.LEISURE);
 		} else if(purpose.equalsIgnoreCase("3")) {
-			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, ActivityTypes.LEISURE);
+			leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, ActivityTypes.LEISURE);
 		} else if(purpose.equalsIgnoreCase("4")) {
-			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, ActivityTypes.BUSINESS);
+			leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, ActivityTypes.BUSINESS);
 		} else if(purpose.equalsIgnoreCase("5")) {
-			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, ActivityTypes.WECOMMUTER);
+			leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, ActivityTypes.WECOMMUTER);
 		} else {
-			leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, ActivityTypes.MISC);
+			leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, ActivityTypes.MISC);
 		}
 	}
 

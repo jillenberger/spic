@@ -26,7 +26,7 @@ import de.dbanalytics.devel.matrix2014.gis.FacilityData;
 import de.dbanalytics.devel.matrix2014.gis.FacilityDataLoader;
 import de.dbanalytics.devel.matrix2014.gis.ZoneData;
 import de.dbanalytics.devel.matrix2014.gis.ZoneDataLoader;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.gis.*;
 import de.dbanalytics.spic.sim.ValueGenerator;
 import de.dbanalytics.spic.sim.data.CachedElement;
@@ -112,7 +112,7 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
     public Object newValue(CachedElement act) {
         CachedPerson person = (CachedPerson) ((CachedSegment) act).getEpisode().getPerson();
 
-        String type = act.getAttribute(CommonKeys.TYPE);
+        String type = act.getAttribute(Attributes.KEY.TYPE);
         boolean ignore = true;
         if (type != null) {
             ignore = blacklist.contains(type);
@@ -151,7 +151,7 @@ public class SegmentedFacilityGenerator implements ValueGenerator {
         if(home == null) {
             return allFacilities;
         } else {
-            String type = act.getAttribute(CommonKeys.TYPE);
+            String type = act.getAttribute(Attributes.KEY.TYPE);
 
             Map<Feature, List<ActivityFacility>> zoneMap = typeMap.get(type);
             if (zoneMap == null) {

@@ -44,7 +44,7 @@ public class RefPopulationBuilder {
         logger.info(String.format("Loaded %s persons.", refPersons.size()));
 
         logger.info("Preparing reference simulation...");
-        TaskRunner.validatePersons(new ValidateMissingAttribute(CommonKeys.WEIGHT), refPersons);
+        TaskRunner.validatePersons(new ValidateMissingAttribute(Attributes.KEY.WEIGHT), refPersons);
         TaskRunner.validatePersons(new ValidatePersonWeight(), refPersons);
 
         TaskRunner.run(new SetVacationsPurpose(), refPersons);
@@ -67,11 +67,11 @@ public class RefPopulationBuilder {
         @Override
         public void apply(Episode episode) {
             for(Segment act : episode.getActivities()) {
-                if (ActivityTypes.VACATION_LONG.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+                if (ActivityTypes.VACATION_LONG.equalsIgnoreCase(act.getAttribute(Attributes.KEY.TYPE))) {
                     replace(act, ActivityTypes.VACATION_LONG);
                 }
 
-                if (ActivityTypes.VACATION_SHORT.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
+                if (ActivityTypes.VACATION_SHORT.equalsIgnoreCase(act.getAttribute(Attributes.KEY.TYPE))) {
                     replace(act, ActivityTypes.VACATION_SHORT);
                 }
             }
@@ -82,11 +82,11 @@ public class RefPopulationBuilder {
             Segment next = act.next();
 
             if(prev != null) {
-                prev.setAttribute(CommonKeys.TRAVEL_PURPOSE, type);
+                prev.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, type);
             }
 
             if(next != null) {
-                next.setAttribute(CommonKeys.TRAVEL_PURPOSE, type);
+                next.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, type);
             }
         }
     }
@@ -96,9 +96,9 @@ public class RefPopulationBuilder {
         @Override
         public void apply(Episode episode) {
             for(Segment leg : episode.getLegs()) {
-                if(ActivityTypes.HOME.equalsIgnoreCase(leg.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
+                if(ActivityTypes.HOME.equalsIgnoreCase(leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE))) {
                     Segment prev = leg.previous();
-                    leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, prev.getAttribute(CommonKeys.TYPE));
+                    leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, prev.getAttribute(Attributes.KEY.TYPE));
                 }
             }
         }
@@ -125,9 +125,9 @@ public class RefPopulationBuilder {
         @Override
         public void apply(Episode episode) {
             for(Segment leg : episode.getLegs()) {
-                String purpose = leg.getAttribute(CommonKeys.TRAVEL_PURPOSE);
+                String purpose = leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE);
                 String replace = getMapping().get(purpose);
-                if(replace != null) leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, replace);
+                if(replace != null) leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, replace);
             }
         }
     }
@@ -143,8 +143,8 @@ public class RefPopulationBuilder {
         @Override
         public void apply(Episode episode) {
             for(Segment leg : episode.getLegs()) {
-                if(purpose.equalsIgnoreCase(leg.getAttribute(CommonKeys.TRAVEL_PURPOSE))) {
-                    leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, null);
+                if(purpose.equalsIgnoreCase(leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE))) {
+                    leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, null);
                 }
             }
         }
@@ -159,7 +159,7 @@ public class RefPopulationBuilder {
         private Predicate<Segment> distancePredicate;
 
         public GuessMissingPurposes(Collection<? extends Person> refPersons, Predicate<Segment> predicate, Random random) {
-            FactorLegHistogramBuilder builder = new FactorLegHistogramBuilder(new AttributeProvider<Segment>(CommonKeys.TRAVEL_PURPOSE));
+            FactorLegHistogramBuilder builder = new FactorLegHistogramBuilder(new AttributeProvider<Segment>(Attributes.KEY.TRAVEL_PURPOSE));
             /*
             short distances
              */
@@ -190,14 +190,14 @@ public class RefPopulationBuilder {
         @Override
         public void apply(Episode episode) {
             for(Segment leg : episode.getLegs()) {
-                if(leg.getAttribute(CommonKeys.TRAVEL_PURPOSE) == null) {
+                if(leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE) == null) {
                     String purpose;
                     if(distancePredicate.test(leg))
                         purpose = shortChoiceSet.randomWeightedChoice();
                     else
                         purpose = longChoiceSet.randomWeightedChoice();
 
-                    leg.setAttribute(CommonKeys.TRAVEL_PURPOSE, purpose);
+                    leg.setAttribute(Attributes.KEY.TRAVEL_PURPOSE, purpose);
                 }
             }
         }
@@ -206,7 +206,7 @@ public class RefPopulationBuilder {
 
             @Override
             public boolean test(Segment segment) {
-                String val = segment.getAttribute(CommonKeys.BEELINE_DISTANCE);
+                String val = segment.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
                 if(val != null) {
                     double dist = Double.parseDouble(val);
                     if(dist < 100000) return true;
@@ -224,9 +224,9 @@ public class RefPopulationBuilder {
         public void apply(Episode episode) {
             for(int i = 1; i < episode.getActivities().size(); i++) {
                 Segment act = episode.getActivities().get(i);
-                if(!ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(CommonKeys.TYPE))) {
-                    String purpose = act.previous().getAttribute(CommonKeys.TRAVEL_PURPOSE);
-                    act.setAttribute(CommonKeys.TYPE, purpose);
+                if(!ActivityTypes.HOME.equalsIgnoreCase(act.getAttribute(Attributes.KEY.TYPE))) {
+                    String purpose = act.previous().getAttribute(Attributes.KEY.TRAVEL_PURPOSE);
+                    act.setAttribute(Attributes.KEY.TYPE, purpose);
                 }
             }
         }

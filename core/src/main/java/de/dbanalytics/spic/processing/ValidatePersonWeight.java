@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.spic.processing;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.data.Person;
 
@@ -29,14 +29,14 @@ public class ValidatePersonWeight implements PersonTask {
 
     @Override
     public void apply(Person person) {
-        double w = Double.parseDouble(person.getAttribute(CommonKeys.WEIGHT));
+        double w = Double.parseDouble(person.getAttribute(Attributes.KEY.WEIGHT));
         boolean valid = true;
         if(Double.isInfinite(w)) valid = false;
         else if(Double.isNaN(w)) valid = false;
         else if(w == 0) valid = false;
 
         if(!valid) {
-            person.setAttribute(CommonKeys.DELETE, CommonValues.TRUE);
+            person.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
         }
     }
 }

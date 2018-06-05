@@ -189,7 +189,7 @@ public class FileReader {
 					episode = new PlainEpisode();
 					episode.setAttribute(InvermoKeys.PLAN_ID, planId);
 					person.addEpisode(episode);
-					episode.setAttribute(CommonKeys.DATA_SOURCE, InvermoValues.INVERMO);
+					episode.setAttribute(Attributes.KEY.DATA_SOURCE, InvermoValues.INVERMO);
 
 				}
 				

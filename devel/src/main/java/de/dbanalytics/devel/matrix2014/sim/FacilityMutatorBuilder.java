@@ -18,7 +18,7 @@
  */
 package de.dbanalytics.devel.matrix2014.sim;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.FacilityData;
 import de.dbanalytics.devel.matrix2014.gis.FacilityDataLoader;
@@ -68,7 +68,7 @@ public class FacilityMutatorBuilder implements MutatorBuilder {
 
     @Override
     public Mutator build() {
-        Object dataKey = Converters.register(CommonKeys.PLACE, ActivityFacilityConverter.getInstance(facilityData));
+        Object dataKey = Converters.register(Attributes.KEY.PLACE, ActivityFacilityConverter.getInstance(facilityData));
 
 //        RandomFacilityGenerator generator = new RandomFacilityGenerator(facilityData);
 //        LocalFacilityGenerator generator = new LocalFacilityGenerator(facilityData, random);

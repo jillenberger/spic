@@ -129,7 +129,7 @@ public class FileReader {
 		    * add an empty plan to each person
 		    */
             Episode episode = factory.newEpisode();
-            episode.setAttribute(CommonKeys.DATA_SOURCE, MiDValues.MID_TRIPS);
+            episode.setAttribute(Attributes.KEY.DATA_SOURCE, MiDValues.MID_TRIPS);
             person.addEpisode(episode);
 
             persons.put(person.getId(), person);
@@ -145,7 +145,7 @@ public class FileReader {
             Person person = persons.get(id);
 
             Episode episode = factory.newEpisode();
-            episode.setAttribute(CommonKeys.DATA_SOURCE, MiDValues.MID_JOUNREYS);
+            episode.setAttribute(Attributes.KEY.DATA_SOURCE, MiDValues.MID_JOUNREYS);
             for (EpisodeAttributeHandler handler : episodeAttHandlers) {
                 handler.handle(episode, attributes);
             }

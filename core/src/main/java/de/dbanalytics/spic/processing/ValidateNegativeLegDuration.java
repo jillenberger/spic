@@ -19,10 +19,7 @@
 
 package de.dbanalytics.spic.processing;
 
-import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.CommonValues;
-import de.dbanalytics.spic.data.Episode;
+import de.dbanalytics.spic.data.*;
 
 /**
  * @author johannes
@@ -33,15 +30,15 @@ public class ValidateNegativeLegDuration implements EpisodeTask {
 	@Override
 	public void apply(Episode episode) {
 		for(Attributable leg : episode.getLegs()) {
-			String start = leg.getAttribute(CommonKeys.DEPARTURE_TIME);
-			String end = leg.getAttribute(CommonKeys.ARRIVAL_TIME);
+			String start = leg.getAttribute(Attributes.KEY.DEPARTURE_TIME);
+			String end = leg.getAttribute(Attributes.KEY.ARRIVAL_TIME);
 
 			if(start != null && end != null) {
 				int s = Integer.parseInt(start);
 				int e = Integer.parseInt(end);
 
 				if(s > e) {
-					episode.setAttribute(CommonKeys.DELETE, CommonValues.TRUE);
+					episode.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
 					return;
 				}
 			}

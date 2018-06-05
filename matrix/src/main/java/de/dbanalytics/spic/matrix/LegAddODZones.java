@@ -1,6 +1,6 @@
 package de.dbanalytics.spic.matrix;
 
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 import de.dbanalytics.spic.gis.Feature;
 import de.dbanalytics.spic.gis.Place;
@@ -31,8 +31,8 @@ public class LegAddODZones implements SegmentTask {
         Segment prev = segment.previous();
         Segment next = segment.next();
 
-        Place from = placeIndex.get(prev.getAttribute(CommonKeys.PLACE));
-        Place to = placeIndex.get(next.getAttribute(CommonKeys.PLACE));
+        Place from = placeIndex.get(prev.getAttribute(Attributes.KEY.PLACE));
+        Place to = placeIndex.get(next.getAttribute(Attributes.KEY.PLACE));
 
         Feature fromZone = zones.get(from.getGeometry().getCoordinate());
         Feature toZone = zones.get(to.getGeometry().getCoordinate());

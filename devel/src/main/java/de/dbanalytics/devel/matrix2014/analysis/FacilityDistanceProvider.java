@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.spic.analysis.ValueProvider;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
@@ -60,7 +60,7 @@ public class FacilityDistanceProvider implements ValueProvider<Double, Segment> 
     }
 
     private ActivityFacility getFacility(Segment act) {
-        String facilityId = act.getAttribute(CommonKeys.PLACE);
+        String facilityId = act.getAttribute(Attributes.KEY.PLACE);
         Id<ActivityFacility> facilityObjId = Id.create(facilityId, ActivityFacility.class);
         ActivityFacility fac = facilities.getFacilities().get(facilityObjId);
         return  fac;

@@ -23,10 +23,7 @@ import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.analysis.StatsContainer;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.Segment;
+import de.dbanalytics.spic.data.*;
 import gnu.trove.iterator.TObjectDoubleIterator;
 import gnu.trove.map.TObjectDoubleMap;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
@@ -81,14 +78,14 @@ public class CountVolumes implements AnalyzerTask<Collection<? extends Person>> 
             for (Episode episode : person.getEpisodes()) {
                 if (episodePredicate == null || episodePredicate.test(episode)) {
 
-                    String weightString = episode.getPerson().getAttribute(CommonKeys.WEIGHT);
+                    String weightString = episode.getPerson().getAttribute(Attributes.KEY.WEIGHT);
                     if (weightString != null) {
                         double weight = Double.parseDouble(weightString);
 
                         for (Segment leg : episode.getLegs()) {
                             if (legPredicate == null || legPredicate.test(leg)) {
 
-                                String route = leg.getAttribute(CommonKeys.LEG_ROUTE);
+                                String route = leg.getAttribute(Attributes.KEY.LEG_ROUTE);
                                 if (route != null) {
                                     String[] tokens = route.split("\\s");
                                     int ids[] = toIntIds(tokens);

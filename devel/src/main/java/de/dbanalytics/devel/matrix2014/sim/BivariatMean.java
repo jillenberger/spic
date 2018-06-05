@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.sim;
 
 import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.sim.AttributeObserver;
 import de.dbanalytics.spic.sim.Hamiltonian;
 import de.dbanalytics.spic.sim.data.CachedElement;
@@ -78,7 +78,7 @@ public class BivariatMean implements Hamiltonian, AttributeObserver {
         this.xDataDiscr = xDataDiscr;
         this.useWeights = useWeights;
 
-        if(useWeights) weightKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
+        if(useWeights) weightKey = Converters.register(Attributes.KEY.WEIGHT, DoubleConverter.getInstance());
 
         initReferenceValues(refElements, xAttrKey, yAttrKey, useWeights);
         initSimulationValues(simElements, xAttrKey, yAttrKey, useWeights);
@@ -95,7 +95,7 @@ public class BivariatMean implements Hamiltonian, AttributeObserver {
         this.xDataDiscr = xDataDiscr;
         this.useWeights = useWeights;
 
-        if(useWeights) weightKey = Converters.register(CommonKeys.WEIGHT, DoubleConverter.getInstance());
+        if(useWeights) weightKey = Converters.register(Attributes.KEY.WEIGHT, DoubleConverter.getInstance());
 
 //        initReferenceValues(refElements, xAttrKey, yAttrKey, useWeights);
         referenceValues = new DynamicDoubleArray(1, Double.NaN);
@@ -158,7 +158,7 @@ public class BivariatMean implements Hamiltonian, AttributeObserver {
 
                 double weight = 1.0;
                 if(useWeights) {
-                    weight = Double.parseDouble(element.getAttribute(CommonKeys.WEIGHT));
+                    weight = Double.parseDouble(element.getAttribute(Attributes.KEY.WEIGHT));
                     yVal = yVal * weight;
                 }
 

@@ -22,8 +22,8 @@ package de.dbanalytics.devel.matrix2014.analysis;
 import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.StatsContainer;
-import de.dbanalytics.spic.data.CommonKeys;
 import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.mid2008.MiDKeys;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import org.matsim.contrib.common.stats.Correlations;
@@ -51,8 +51,8 @@ public class AgeIncomeCorrelation implements AnalyzerTask<Collection<? extends P
 		TDoubleArrayList incomes = new TDoubleArrayList();
 
 		for(Person person : persons) {
-			String aStr = person.getAttribute(CommonKeys.PERSON_AGE);
-			String iStr = person.getAttribute(CommonKeys.HH_INCOME);
+			String aStr = person.getAttribute(MiDKeys.PERSON_AGE);
+			String iStr = person.getAttribute(MiDKeys.HH_INCOME);
 			if(aStr != null && iStr != null) {
 				double age = Double.parseDouble(aStr);
 				double income = Double.parseDouble(iStr);

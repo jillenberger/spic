@@ -21,10 +21,7 @@ package de.dbanalytics.devel.matrix2014.source.mid2008;
 
 import de.dbanalytics.devel.matrix2014.sim.Simulator;
 import de.dbanalytics.spic.analysis.*;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.CommonValues;
-import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.data.PlainFactory;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.processing.Route2GeoDistance;
 import de.dbanalytics.spic.processing.TaskRunner;
@@ -63,16 +60,16 @@ public class Analyzer {
 //		persons = PersonCloner.weightedClones((Collection<PlainPerson>) persons, 1000000, random);
 //		logger.info(String.format("Generated %s persons.", persons.size()));
 
-		TaskRunner.validatePersons(new ValidateMissingAttribute(CommonKeys.WEIGHT), persons);
+		TaskRunner.validatePersons(new ValidateMissingAttribute(Attributes.KEY.WEIGHT), persons);
 		TaskRunner.validatePersons(new ValidatePersonWeight(), persons);
 		TaskRunner.run(new Route2GeoDistance(new Simulator.Route2GeoDistFunction()), persons);
 
 		FileIOContext ioContext = new FileIOContext(output);
-		Predicate predicate = new ModePredicate(CommonValues.LEG_MODE_CAR);
+		Predicate predicate = new ModePredicate(Attributes.MODE.CAR);
 		HistogramWriter hWriter = new HistogramWriter(ioContext, new PassThroughDiscretizerBuilder(new
 				LinearDiscretizer(50000), "linear"));
 
-		AnalyzerTask task = NumericLegAnalyzer.create(CommonKeys.BEELINE_DISTANCE, true, predicate, "car", hWriter);
+		AnalyzerTask task = NumericLegAnalyzer.create(Attributes.KEY.BEELINE_DISTANCE, true, predicate, "car", hWriter);
 		AnalyzerTaskRunner.run(persons, task, ioContext);
 	}
 

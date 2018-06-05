@@ -22,10 +22,7 @@ package de.dbanalytics.devel.matrix2014.analysis;
 import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.StatsContainer;
-import de.dbanalytics.spic.data.Attributable;
-import de.dbanalytics.spic.data.CommonKeys;
-import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.data.Person;
+import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.mid2008.MiDKeys;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
@@ -57,7 +54,7 @@ public class GeoDistLau2ClassTask implements AnalyzerTask<Collection<? extends P
             for (Episode plan : person.getEpisodes()) {
                 for (Attributable leg : plan.getLegs()) {
 
-                    String yStr = leg.getAttribute(CommonKeys.BEELINE_DISTANCE);
+                    String yStr = leg.getAttribute(Attributes.KEY.BEELINE_DISTANCE);
 
                     if (xStr != null && yStr != null) {
                         xVals.add(Double.parseDouble(xStr));
