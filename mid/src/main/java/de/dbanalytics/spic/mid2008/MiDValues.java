@@ -43,4 +43,14 @@ public interface MiDValues {
     String MID_TRIPS = "midtrips";
     String ABROAD = "abroad";
     String DOMESTIC = "domestic";
+
+    String MALE = "male";
+
+    String FEMALE = "female";
+
+    String ALWAYS = "always";
+
+    String SOMETIMES = "sometimes";
+
+    String NEVER = "never";
 }

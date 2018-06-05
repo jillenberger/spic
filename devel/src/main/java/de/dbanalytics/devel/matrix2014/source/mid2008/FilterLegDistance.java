@@ -34,7 +34,7 @@ public class FilterLegDistance implements EpisodeTask {
             if(value != null) {
                 double d = Double.parseDouble(value);
                 if(d > 400000) {
-                    episode.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
+                    episode.setAttribute(Attributes.KEY.DELETE, Attributes.MISC.TRUE);
                     break;
                 }
             }

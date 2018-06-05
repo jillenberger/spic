@@ -21,7 +21,6 @@ package de.dbanalytics.spic.processing;
 
 
 import de.dbanalytics.spic.data.Attributes;
-import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.data.Episode;
 
 /**
@@ -41,7 +40,7 @@ public class ValidateOverlappingLegs implements EpisodeTask {
 				double e = Double.parseDouble(endTime);
 
 				if(s < e) {
-					episode.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
+					episode.setAttribute(Attributes.KEY.DELETE, Attributes.MISC.TRUE);
 					return;
 				}
 			}

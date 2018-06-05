@@ -21,7 +21,6 @@ package de.dbanalytics.spic.processing;
 
 import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.Attributes;
-import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.data.Person;
 
 /**
@@ -37,6 +36,6 @@ public class ValidatePerson implements PersonTask {
 
     @Override
     public void apply(Person person) {
-        if (!predicate.test(person)) person.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
+        if (!predicate.test(person)) person.setAttribute(Attributes.KEY.DELETE, Attributes.MISC.TRUE);
     }
 }

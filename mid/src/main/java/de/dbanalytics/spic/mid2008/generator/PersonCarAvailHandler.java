@@ -19,9 +19,9 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
-import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MiDValues;
 
 import java.util.Map;
 
@@ -35,10 +35,10 @@ public class PersonCarAvailHandler implements PersonAttributeHandler {
         String val = attributes.get(VariableNames.PERSON_CARAVAIL);
 
         if(val != null) {
-            if(val.equalsIgnoreCase("1")) person.setAttribute(MiDKeys.PERSON_CARAVAIL, CommonValues.ALWAYS);
-            if(val.equalsIgnoreCase("2")) person.setAttribute(MiDKeys.PERSON_CARAVAIL, CommonValues.SOMETIMES);
-            if(val.equalsIgnoreCase("3")) person.setAttribute(MiDKeys.PERSON_CARAVAIL, CommonValues.NEVER);
-            if(val.equalsIgnoreCase("4")) person.setAttribute(MiDKeys.PERSON_CARAVAIL, CommonValues.NEVER);
+            if(val.equalsIgnoreCase("1")) person.setAttribute(MiDKeys.PERSON_CARAVAIL, MiDValues.ALWAYS);
+            if(val.equalsIgnoreCase("2")) person.setAttribute(MiDKeys.PERSON_CARAVAIL, MiDValues.SOMETIMES);
+            if(val.equalsIgnoreCase("3")) person.setAttribute(MiDKeys.PERSON_CARAVAIL, MiDValues.NEVER);
+            if(val.equalsIgnoreCase("4")) person.setAttribute(MiDKeys.PERSON_CARAVAIL, MiDValues.NEVER);
         }
     }
 }

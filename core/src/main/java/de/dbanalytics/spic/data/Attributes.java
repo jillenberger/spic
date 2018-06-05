@@ -28,6 +28,7 @@ public class Attributes {
 
         public static final String PLACE = "place";
 
+        /** @deprecated */
         public static final String DELETE = "delete";
 
         public static final String WEEKDAY = "weekday";
@@ -66,4 +67,10 @@ public class Attributes {
         public static final String SUNDAY = "sun";
     }
 
+    /** @deprecated */
+    public static final class MISC {
+
+        public static final String TRUE = "true";
+
+    }
 }

@@ -19,7 +19,6 @@
 package de.dbanalytics.spic.processing;
 
 import de.dbanalytics.spic.data.Attributes;
-import de.dbanalytics.spic.data.CommonValues;
 import de.dbanalytics.spic.data.Person;
 
 /**
@@ -36,7 +35,7 @@ public class ValidatePersonWeight implements PersonTask {
         else if(w == 0) valid = false;
 
         if(!valid) {
-            person.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
+            person.setAttribute(Attributes.KEY.DELETE, Attributes.MISC.TRUE);
         }
     }
 }

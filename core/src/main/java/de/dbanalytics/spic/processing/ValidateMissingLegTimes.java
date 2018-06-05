@@ -34,7 +34,7 @@ public class ValidateMissingLegTimes implements EpisodeTask {
 			String end = leg.getAttribute(Attributes.KEY.ARRIVAL_TIME);
 
 			if(start == null || end == null) {
-				episode.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
+				episode.setAttribute(Attributes.KEY.DELETE, Attributes.MISC.TRUE);
 				return;
 			}
 		}

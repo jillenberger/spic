@@ -109,7 +109,7 @@ public class TaskRunner {
         run(task, persons);
 
         for (Person person : persons) {
-            if (CommonValues.TRUE.equalsIgnoreCase(person.getAttribute(Attributes.KEY.DELETE))) {
+            if (Attributes.MISC.TRUE.equalsIgnoreCase(person.getAttribute(Attributes.KEY.DELETE))) {
                 delete.add(person);
             }
         }
@@ -133,7 +133,7 @@ public class TaskRunner {
         for (Person person : persons) {
             List<Episode> remove = new ArrayList<>();
             for (Episode plan : person.getEpisodes()) {
-                if (CommonValues.TRUE.equalsIgnoreCase(plan.getAttribute(Attributes.KEY.DELETE))) {
+                if (Attributes.MISC.TRUE.equalsIgnoreCase(plan.getAttribute(Attributes.KEY.DELETE))) {
                     remove.add(plan);
                     cnt++;
                 }

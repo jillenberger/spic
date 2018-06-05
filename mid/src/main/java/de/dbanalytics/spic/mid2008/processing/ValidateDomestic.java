@@ -33,7 +33,7 @@ public class ValidateDomestic implements EpisodeTask {
     public void apply(Episode episode) {
         for(Segment leg : episode.getLegs()) {
             if(!MiDValues.DOMESTIC.equalsIgnoreCase(leg.getAttribute(MiDKeys.LEG_DESTINATION))) {
-                episode.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
+                episode.setAttribute(Attributes.KEY.DELETE, Attributes.MISC.TRUE);
             }
         }
     }

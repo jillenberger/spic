@@ -38,7 +38,7 @@ public class ValidateNegativeLegDuration implements EpisodeTask {
 				int e = Integer.parseInt(end);
 
 				if(s > e) {
-					episode.setAttribute(Attributes.KEY.DELETE, CommonValues.TRUE);
+					episode.setAttribute(Attributes.KEY.DELETE, Attributes.MISC.TRUE);
 					return;
 				}
 			}
