@@ -22,6 +22,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.graphhopper</groupId>
+            <artifactId>graphhopper-core</artifactId>
+            <version>0.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphhopper</groupId>
+            <artifactId>graphhopper-reader-osm</artifactId>
+            <version>0.10.0</version>
+        </dependency>
+        <dependency>
             <groupId>de.topobyte</groupId>
             <artifactId>osm4j-core</artifactId>
             <version>0.0.20</version>

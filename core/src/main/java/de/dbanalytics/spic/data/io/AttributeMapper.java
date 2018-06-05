@@ -1,4 +1,4 @@
-package de.dbanalytics.spic.data.io.flattable;
+package de.dbanalytics.spic.data.io;
 
 import de.dbanalytics.spic.data.CommonKeys;
 
@@ -21,7 +21,7 @@ public class AttributeMapper {
         keyMap.put("purpose", CommonKeys.TRAVEL_PURPOSE);
         keyMap.put("routeDistance", CommonKeys.TRIP_DISTANCE);
         keyMap.put("geoDistance", CommonKeys.BEELINE_DISTANCE);
-        keyMap.put("startTime", CommonKeys.START_TIME);
+//        keyMap.put("startTime", CommonKeys.START_TIME); // Ambiguous
         keyMap.put("endTime", CommonKeys.END_TIME);
         keyMap.put("activityFacility", CommonKeys.PLACE);
         keyMap.put("datasource", CommonKeys.DATA_SOURCE);

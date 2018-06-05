@@ -21,7 +21,6 @@ package de.dbanalytics.spic.data.io;
 
 import com.fasterxml.aalto.stax.InputFactoryImpl;
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.data.io.flattable.AttributeMapper;
 import de.dbanalytics.spic.util.IOUtils;
 import de.dbanalytics.spic.util.ProgressLogger;
 import org.apache.log4j.Logger;
@@ -163,6 +162,14 @@ public class PopulationIOv2 {
                     attributable = person;
                 } else if (localName.equals(ACTIVITY_ELEMENT)) {
                     attributable = episode;
+                    //TODO: remove when stable
+                    // replace departure_time with start_time
+                    String value = attributable.getAttribute(CommonKeys.DEPARTURE_TIME);
+                    if (value != null) {
+                        attributable.setAttribute(CommonKeys.START_TIME, value);
+                        attributable.removeAttribute(CommonKeys.DEPARTURE_TIME);
+                    }
+                    //TODO: remove when stable
                 } else if (localName.equals(LEG_ELEMENT)) {
                     attributable = episode;
                 }
