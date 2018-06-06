@@ -28,7 +28,7 @@ import java.util.Map;
  * @author johannes
  *
  */
-public class PersonLau2ClassHandler implements PersonAttributeHandler {
+public class PersonLau2CategoryHandler implements PersonAttributeHandler {
 
     @Override
     public void handle(Person person, Map<String, String> attributes) {

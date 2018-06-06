@@ -64,7 +64,7 @@ public class Generator {
         fileReader.addPersonAttributeHandler(new PersonHHIncomeHandler());
         fileReader.addPersonAttributeHandler(new PersonHHMembersHandler());
         fileReader.addPersonAttributeHandler(new PersonMonthHandler());
-        fileReader.addPersonAttributeHandler(new PersonLau2ClassHandler());
+        fileReader.addPersonAttributeHandler(new PersonLau2CategoryHandler());
         fileReader.addPersonAttributeHandler(new PersonSexHandler());
         fileReader.addPersonAttributeHandler(new PersonNuts1Handler());
         fileReader.addPersonAttributeHandler(new PersonWeightHandler());

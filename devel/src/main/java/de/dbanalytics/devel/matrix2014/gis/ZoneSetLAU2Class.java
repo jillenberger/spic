@@ -42,7 +42,7 @@ public class ZoneSetLAU2Class {
     }
 
     public static String inhabitants2Class(double inhabitants) {
-        int idx = categories.index(inhabitants); //TODO: synchronize with PersonLau2ClassHandler
+        int idx = categories.index(inhabitants); //TODO: synchronize with PersonLau2CategoryHandler
         return String.valueOf(idx);
     }
 
