@@ -125,7 +125,7 @@ public class JobExecutor {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    String file = String.format("%s/persons.xml.gz", dir);
+                    String file = String.format("%s/population.xml.gz", dir);
                     PopulationIO.writeToXML(file, persons);
                 }
             }
