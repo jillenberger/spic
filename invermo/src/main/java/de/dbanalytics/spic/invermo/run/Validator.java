@@ -20,6 +20,8 @@
 package de.dbanalytics.spic.invermo.run;
 
 
+import de.dbanalytics.spic.analysis.AttributePredicate;
+import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
@@ -27,10 +29,7 @@ import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.invermo.processing.CalcGeoDistance;
 import de.dbanalytics.spic.invermo.processing.GeocodeLocationsTask;
 import de.dbanalytics.spic.invermo.processing.ValidateNoLegs;
-import de.dbanalytics.spic.processing.TaskRunner;
-import de.dbanalytics.spic.processing.ValidateMissingAttribute;
-import de.dbanalytics.spic.processing.ValidateNoPlans;
-import de.dbanalytics.spic.processing.ValidatePersonWeight;
+import de.dbanalytics.spic.processing.*;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -49,10 +48,21 @@ public class Validator {
 
         Set<Person> persons = PopulationIO.loadFromXML(inFile, new PlainFactory());
 
-        TaskRunner.validatePersons(new ValidateMissingAttribute(Attributes.KEY.WEIGHT), persons);
-        TaskRunner.validatePersons(new ValidatePersonWeight(), persons);
+        Filter.persons(persons, person -> (person.getAttribute(Attributes.KEY.WEIGHT) != null));
+//        TaskRunner.validatePersons(new ValidatePersonWeight(), persons);
+        Filter.persons(persons, person -> {
+            double w = Double.parseDouble(person.getAttribute(Attributes.KEY.WEIGHT));
+            boolean valid = true;
+            if (Double.isInfinite(w)) valid = false;
+            else if (Double.isNaN(w)) valid = false;
+            else if (w == 0) valid = false;
+
+            return valid;
+
+        });
         TaskRunner.validatePersons(new ValidateNoLegs(), persons);
-        TaskRunner.validatePersons(new ValidateNoPlans(), persons);
+//        TaskRunner.validatePersons(new ValidateNoPlans(), persons);
+        Filter.persons(persons, person -> (!person.getEpisodes().isEmpty()));
 
         logger.setLevel(Level.INFO);
         GeocodeLocationsTask geoTask = new GeocodeLocationsTask("localhost", 3128);
