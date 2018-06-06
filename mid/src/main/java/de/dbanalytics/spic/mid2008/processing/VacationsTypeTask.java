@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.processing;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
@@ -33,7 +33,7 @@ public class VacationsTypeTask implements EpisodeTask {
 	public void apply(Episode plan) {
 		for (Attributable act : plan.getActivities()) {
 			if (act.getAttribute(Attributes.KEY.TYPE).equalsIgnoreCase(ActivityTypes.LEISURE)) {
-				String val = plan.getAttribute(MiDKeys.JOURNEY_DAYS);
+				String val = plan.getAttribute(MidAttributes.KEY.JOURNEY_DAYS);
 				int days = 0;
 
 				if (val != null)

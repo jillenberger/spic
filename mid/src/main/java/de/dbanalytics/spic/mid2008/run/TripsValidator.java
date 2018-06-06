@@ -24,7 +24,7 @@ import de.dbanalytics.spic.data.Factory;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.mid2008.processing.ResolveReturnTrips;
 import de.dbanalytics.spic.mid2008.processing.ResolveRoundTripsTask;
 import de.dbanalytics.spic.mid2008.processing.SetFirstActivityTypeTask;
@@ -38,6 +38,7 @@ import java.util.Set;
 
 /**
  * @author johannes
+ * @deprecated
  */
 public class TripsValidator {
 
@@ -49,7 +50,7 @@ public class TripsValidator {
 
 
 
-        TaskRunner.run(new SortLegsTask(MiDKeys.LEG_INDEX, new SortLegsTask.IntComparator()), persons);
+        TaskRunner.run(new SortLegsTask(MidAttributes.KEY.INDEX, new SortLegsTask.IntComparator()), persons);
         TaskRunner.validateEpisodes(new ValidateMissingLegTimes(), persons);
         TaskRunner.validateEpisodes(new ValidateNegativeLegDuration(), persons);
         TaskRunner.validateEpisodes(new ValidateOverlappingLegs(), persons);

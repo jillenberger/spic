@@ -23,8 +23,7 @@ import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import gnu.trove.iterator.TObjectDoubleIterator;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 
@@ -41,8 +40,8 @@ public class DaySeasonTask implements de.dbanalytics.spic.analysis.AnalyzerTask<
     @Override
     public void analyze(Collection<? extends Person> persons, List<StatsContainer> containers) {
         Collector<String> dayCollector = new LegPersonCollector<>(new AttributeProvider<Person>(Attributes.KEY.WEEKDAY));
-        Collector<String> seasonCollector = new LegPersonCollector<>(new AttributeProvider<Person>(MiDKeys
-                .PERSON_MONTH));
+        Collector<String> seasonCollector = new LegPersonCollector<>(new AttributeProvider<Person>(MidAttributes.KEY
+                .MONTH));
         Collector<String> purposeCollector = new LegCollector<>(new AttributeProvider<Segment>(Attributes.KEY.TRAVEL_PURPOSE));
 
         List<String> days = dayCollector.collect(persons);
@@ -58,11 +57,11 @@ public class DaySeasonTask implements de.dbanalytics.spic.analysis.AnalyzerTask<
 
             if(day != null && month != null) {
                 String season = "S";
-                if(month.equalsIgnoreCase(MiDValues.NOVEMBER) ||
-                        month.equalsIgnoreCase(MiDValues.DECEMBER) ||
-                        month.equalsIgnoreCase(MiDValues.JANUARY) ||
-                        month.equalsIgnoreCase(MiDValues.FEBRUARY) ||
-                        month.equalsIgnoreCase(MiDValues.MARCH)) {
+                if(month.equalsIgnoreCase(MidAttributes.MONTH.NOVEMBER) ||
+                        month.equalsIgnoreCase(MidAttributes.MONTH.DECEMBER) ||
+                        month.equalsIgnoreCase(MidAttributes.MONTH.JANUARY) ||
+                        month.equalsIgnoreCase(MidAttributes.MONTH.FEBRUARY) ||
+                        month.equalsIgnoreCase(MidAttributes.MONTH.MARCH)) {
                     season = "W";
                 }
 

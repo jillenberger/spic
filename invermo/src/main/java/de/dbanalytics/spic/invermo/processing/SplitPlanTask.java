@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.invermo.processing;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.PersonTask;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -79,7 +79,7 @@ public class SplitPlanTask implements PersonTask {
 			
 //			if (current.dayOfYear().get() != prev.dayOfYear().get()) {
 			if (nights > 0) {
-				subPlan.setAttribute(MiDKeys.JOURNEY_DAYS, String.valueOf(nights + 1));
+				subPlan.setAttribute(MidAttributes.KEY.JOURNEY_DAYS, String.valueOf(nights + 1));
 
 				subPlan.addActivity(((PlainSegment)act).clone());
 				newPlans.add(subPlan);
@@ -88,7 +88,7 @@ public class SplitPlanTask implements PersonTask {
 				subPlan.addActivity(((PlainSegment)act).clone());
 				subPlan.addLeg(((PlainSegment)leg).clone());
 			} else {
-				subPlan.setAttribute(MiDKeys.JOURNEY_DAYS, String.valueOf(nights + 1));
+				subPlan.setAttribute(MidAttributes.KEY.JOURNEY_DAYS, String.valueOf(nights + 1));
 				
 				subPlan.addActivity(((PlainSegment)act).clone());
 				subPlan.addLeg(((PlainSegment)leg).clone());

@@ -20,8 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -34,8 +33,8 @@ public class PersonSexHandler implements PersonAttributeHandler {
         String val = attributes.get(VariableNames.PERSON_SEX);
 
         if(val != null) {
-            if(val.equalsIgnoreCase("1")) person.setAttribute(MiDKeys.PERSON_SEX, MiDValues.MALE);
-            if(val.equalsIgnoreCase("2")) person.setAttribute(MiDKeys.PERSON_SEX, MiDValues.FEMALE);
+            if(val.equalsIgnoreCase("1")) person.setAttribute(MidAttributes.KEY.GENDER, MidAttributes.GENDER.MALE);
+            if(val.equalsIgnoreCase("2")) person.setAttribute(MidAttributes.KEY.GENDER, MidAttributes.GENDER.FEMALE);
         }
     }
 }

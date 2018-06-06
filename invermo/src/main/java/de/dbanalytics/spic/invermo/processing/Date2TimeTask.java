@@ -22,7 +22,7 @@ package de.dbanalytics.spic.invermo.processing;
 import de.dbanalytics.spic.data.Attributable;
 import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Seconds;
@@ -50,7 +50,7 @@ public class Date2TimeTask implements EpisodeTask {
 				Seconds secs = Seconds.secondsBetween(reference, startDate);
 				
 				leg.setAttribute(Attributes.KEY.DEPARTURE_TIME, String.valueOf(secs.getSeconds()));
-				if(!leg.keys().contains(MiDKeys.PERSON_MONTH)) {
+				if(!leg.keys().contains(MidAttributes.KEY.MONTH)) {
 					setPlanDate(startDate, plan);
 				}
 			}
@@ -66,7 +66,7 @@ public class Date2TimeTask implements EpisodeTask {
 				
 				leg.setAttribute(Attributes.KEY.ARRIVAL_TIME, String.valueOf(secs.getSeconds()));
 				
-				if(!leg.keys().contains(MiDKeys.PERSON_MONTH)) {
+				if(!leg.keys().contains(MidAttributes.KEY.MONTH)) {
 					setPlanDate(endDate, plan);
 				}
 			}
@@ -80,7 +80,7 @@ public class Date2TimeTask implements EpisodeTask {
 	}
 	
 	private void setPlanDate(LocalDateTime dateTime, Episode plan) {
-		plan.setAttribute(MiDKeys.PERSON_MONTH, dateTime.monthOfYear().getAsShortText(Locale.US));
+		plan.setAttribute(MidAttributes.KEY.MONTH, dateTime.monthOfYear().getAsShortText(Locale.US));
 		plan.setAttribute(Attributes.KEY.WEEKDAY, dateTime.dayOfWeek().getAsShortText(Locale.US));
 	}
 

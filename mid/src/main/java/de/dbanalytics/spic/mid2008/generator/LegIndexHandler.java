@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class LegIndexHandler implements LegAttributeHandler {
 	@Override
 	public void handle(Segment leg, Map<String, String> attributes) {
 		String sid = attributes.get(VariableNames.LEG_INDEX);
-		leg.setAttribute(MiDKeys.LEG_INDEX, sid);
+		leg.setAttribute(MidAttributes.KEY.INDEX, sid);
 	}
 
 }

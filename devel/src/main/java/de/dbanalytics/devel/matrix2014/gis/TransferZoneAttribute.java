@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.gis;
 
 import com.vividsolutions.jts.index.strtree.STRtree;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class TransferZoneAttribute {
         ZoneCollection source = ZoneGeoJsonIO.readFromGeoJSON("/home/johannes/gsv/gis/zones/geojson/de.lau2.gk3.geojson", "ID", null);
         ZoneCollection target = ZoneGeoJsonIO.readFromGeoJSON("/home/johannes/gsv/gis/zones/geojson/modena.de.gk3.geojson", "NO", null);
         new ZoneSetLAU2Class().apply(source);
-        new TransferZoneAttribute().apply(source, target, MiDKeys.PERSON_LAU2_CLASS);
+        new TransferZoneAttribute().apply(source, target, MidAttributes.KEY.LAU2_CAT);
         String data = ZoneGeoJsonIO.toJson(target.getZones());
         Files.write(Paths.get("/home/johannes/gsv/matrix2014/gis/modena.geojson"), data.getBytes(), StandardOpenOption
                 .CREATE);

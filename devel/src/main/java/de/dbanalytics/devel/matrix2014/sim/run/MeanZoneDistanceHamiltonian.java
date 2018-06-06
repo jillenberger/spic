@@ -24,7 +24,7 @@ import de.dbanalytics.devel.matrix2014.data.DataPool;
 import de.dbanalytics.devel.matrix2014.gis.*;
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.CopyPersonAttToLeg;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
@@ -76,7 +76,7 @@ public class MeanZoneDistanceHamiltonian {
 //        /*
 //        Copy the lau2 class attribute from the person element to the corresponding leg elements.
 //         */
-//        TaskRunner.run(new CopyPersonAttToLeg(MiDKeys.PERSON_LAU2_CLASS), engine.getRefPersons());
+//        TaskRunner.run(new CopyPersonAttToLeg(MiDKeys.LAU2_CAT), engine.getRefPersons());
         TaskRunner.run(new CopyPersonAttToLeg(PERSON_ZONE_IDX), engine.getSimPersons());
         /*
         Get the legs.
@@ -86,7 +86,7 @@ public class MeanZoneDistanceHamiltonian {
         /*
         Build and add the hamiltonian.
          */
-        Converters.register(MiDKeys.PERSON_LAU2_CLASS, DoubleConverter.getInstance());
+        Converters.register(MidAttributes.KEY.LAU2_CAT, DoubleConverter.getInstance());
         Converters.register(PERSON_ZONE_IDX, DoubleConverter.getInstance());
 
         BivariatMean hamiltonian = new BivariatMean(
@@ -159,7 +159,7 @@ public class MeanZoneDistanceHamiltonian {
         TIntDoubleMap meanDistances = new TIntDoubleHashMap();
 
         for (int klass = 0; klass < 6; klass++) {
-            Predicate<Segment> lauPred = new LegPersonAttributePredicate(MiDKeys.PERSON_LAU2_CLASS, String.valueOf(klass));
+            Predicate<Segment> lauPred = new LegPersonAttributePredicate(MidAttributes.KEY.LAU2_CAT, String.valueOf(klass));
             Predicate<Segment> predicate = PredicateAndComposite.create(engine.getLegPredicate(), lauPred);
 
             NumericAnalyzer analyzer = NumericLegAnalyzer.create(
@@ -206,7 +206,7 @@ public class MeanZoneDistanceHamiltonian {
 //                values.put(idx, dummyMean);
 //            } else {
 //                Zone zone = it.key();
-//                int klass = Integer.parseInt(zone.getAttribute(MiDKeys.PERSON_LAU2_CLASS));
+//                int klass = Integer.parseInt(zone.getAttribute(MiDKeys.LAU2_CAT));
 //                double mean = meanDistances.get(klass);
 //
 //                values.put(idx, mean);

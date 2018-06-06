@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ import java.util.Map;
  * @author johannes
  *
  */
-public class PersonNUTS1Handler implements PersonAttributeHandler {
+public class PersonNuts1Handler implements PersonAttributeHandler {
 
 	private static Map<String, String> labels = new HashMap<>();
 
@@ -56,7 +56,7 @@ public class PersonNUTS1Handler implements PersonAttributeHandler {
 	public void handle(Person person, Map<String, String> attributes) {
 		String val = attributes.get(VariableNames.PERSON_STATE);
 		if(val != null) {
-			person.setAttribute(MiDKeys.PERSON_NUTS1, labels.get(val));
+			person.setAttribute(MidAttributes.KEY.NUTS1, labels.get(val));
 		}
 
 	}

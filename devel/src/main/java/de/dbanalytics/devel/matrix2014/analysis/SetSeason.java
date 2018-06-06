@@ -20,8 +20,7 @@
 package de.dbanalytics.devel.matrix2014.analysis;
 
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.PersonTask;
 
 /**
@@ -37,14 +36,14 @@ public class SetSeason implements PersonTask {
 
     @Override
     public void apply(Person person) {
-        String month = person.getAttribute(MiDKeys.PERSON_MONTH);
+        String month = person.getAttribute(MidAttributes.KEY.MONTH);
         if(month != null) {
             String season = SUMMER;
-            if (MiDValues.NOVEMBER.equalsIgnoreCase(month) ||
-                    MiDValues.DECEMBER.equalsIgnoreCase(month) ||
-                    MiDValues.JANUARY.equalsIgnoreCase(month) ||
-                    MiDValues.FEBRUARY.equalsIgnoreCase(month) ||
-                    MiDValues.MARCH.equalsIgnoreCase(month)) {
+            if (MidAttributes.MONTH.NOVEMBER.equalsIgnoreCase(month) ||
+                    MidAttributes.MONTH.DECEMBER.equalsIgnoreCase(month) ||
+                    MidAttributes.MONTH.JANUARY.equalsIgnoreCase(month) ||
+                    MidAttributes.MONTH.FEBRUARY.equalsIgnoreCase(month) ||
+                    MidAttributes.MONTH.MARCH.equalsIgnoreCase(month)) {
                 season = WINTER;
             }
 

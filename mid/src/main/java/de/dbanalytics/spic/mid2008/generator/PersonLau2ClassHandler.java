@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -35,7 +35,7 @@ public class PersonLau2ClassHandler implements PersonAttributeHandler {
         String val = attributes.get(VariableNames.PERSON_LAU2_CLASS);
         if (val != null) {
             int cat = Integer.parseInt(val);
-            person.setAttribute(MiDKeys.PERSON_LAU2_CLASS, String.valueOf(cat));
+            person.setAttribute(MidAttributes.KEY.LAU2_CAT, String.valueOf(cat));
         }
     }
 }

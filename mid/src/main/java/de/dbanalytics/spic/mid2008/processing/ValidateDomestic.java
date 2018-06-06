@@ -20,8 +20,7 @@
 package de.dbanalytics.spic.mid2008.processing;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
@@ -32,7 +31,7 @@ public class ValidateDomestic implements EpisodeTask {
     @Override
     public void apply(Episode episode) {
         for(Segment leg : episode.getLegs()) {
-            if(!MiDValues.DOMESTIC.equalsIgnoreCase(leg.getAttribute(MiDKeys.LEG_DESTINATION))) {
+            if(!MidAttributes.DESTINATION.DOMESTIC.equalsIgnoreCase(leg.getAttribute(MidAttributes.KEY.DESTINATION))) {
                 episode.setAttribute(Attributes.KEY.DELETE, Attributes.MISC.TRUE);
             }
         }

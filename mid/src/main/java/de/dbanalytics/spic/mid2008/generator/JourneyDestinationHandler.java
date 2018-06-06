@@ -20,8 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -36,11 +35,11 @@ public class JourneyDestinationHandler implements LegAttributeHandler {
 		String value = attributes.get(VariableNames.JOURNEY_DESTINATION);
 
 		if("1".equals(value)) {
-			leg.setAttribute(MiDKeys.LEG_DESTINATION, MiDValues.DOMESTIC);
+			leg.setAttribute(MidAttributes.KEY.DESTINATION, MidAttributes.DESTINATION.DOMESTIC);
 		} else if("2".equals(value)) {
-			leg.setAttribute(MiDKeys.LEG_DESTINATION, MiDValues.ABROAD);
+			leg.setAttribute(MidAttributes.KEY.DESTINATION, MidAttributes.DESTINATION.ABROAD);
 		} else if("3".equals(value)) {
-			leg.setAttribute(MiDKeys.LEG_DESTINATION, MiDValues.ABROAD);
+			leg.setAttribute(MidAttributes.KEY.DESTINATION, MidAttributes.DESTINATION.ABROAD);
 		}
 	}
 

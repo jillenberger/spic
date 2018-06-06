@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Episode;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class JourneyDaysHandler implements EpisodeAttributeHandler {
 			int nights = Integer.parseInt(value);
 
 			if (nights < 95)
-				plan.setAttribute(MiDKeys.JOURNEY_DAYS, String.valueOf(nights + 1));
+				plan.setAttribute(MidAttributes.KEY.JOURNEY_DAYS, String.valueOf(nights + 1));
 		}
 	}
 

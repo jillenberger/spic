@@ -20,8 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -129,7 +128,7 @@ public class FileReader {
 		    * add an empty plan to each person
 		    */
             Episode episode = factory.newEpisode();
-            episode.setAttribute(Attributes.KEY.DATA_SOURCE, MiDValues.MID_TRIPS);
+            episode.setAttribute(Attributes.KEY.DATA_SOURCE, MidAttributes.DATA_SOURCE.MID_TRIPS);
             person.addEpisode(episode);
 
             persons.put(person.getId(), person);
@@ -145,7 +144,7 @@ public class FileReader {
             Person person = persons.get(id);
 
             Episode episode = factory.newEpisode();
-            episode.setAttribute(Attributes.KEY.DATA_SOURCE, MiDValues.MID_JOUNREYS);
+            episode.setAttribute(Attributes.KEY.DATA_SOURCE, MidAttributes.DATA_SOURCE.MID_JOURNEYS);
             for (EpisodeAttributeHandler handler : episodeAttHandlers) {
                 handler.handle(episode, attributes);
             }
@@ -154,7 +153,7 @@ public class FileReader {
 
             Segment leg = factory.newSegment();
             episode.addLeg(leg);
-            leg.setAttribute(MiDKeys.LEG_ORIGIN, ActivityTypes.HOME);
+            leg.setAttribute(MidAttributes.KEY.ORIGIN, ActivityTypes.HOME);
             for (LegAttributeHandler handler : journeyAttHandlers) {
                 handler.handle(leg, attributes);
             }

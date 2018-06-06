@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.processing;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.PersonTask;
 import org.apache.log4j.Logger;
 
@@ -64,7 +64,7 @@ public class ReturnEpisodeTask implements PersonTask {
 
 			for(int i = episode.getLegs().size() - 1; i >= 0; i--) {
 				Segment clone = PersonUtils.shallowCopy(episode.getLegs().get(i), factory);
-				clone.removeAttribute(MiDKeys.LEG_ORIGIN);
+				clone.removeAttribute(MidAttributes.KEY.ORIGIN);
 				returnEpisode.addLeg(clone);
 			}
 

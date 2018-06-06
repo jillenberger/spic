@@ -25,7 +25,7 @@ import de.dbanalytics.spic.analysis.Predicate;
 import de.dbanalytics.spic.analysis.TripsCounter;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.EpisodeTask;
 import de.dbanalytics.spic.processing.RemoveLegAttribute;
 import de.dbanalytics.spic.processing.TaskRunner;
@@ -78,12 +78,12 @@ public class SimPopulationBuilder {
                 ZoneCollection modenaZones = ((ZoneData) dataPool.get(ZoneDataLoader.KEY)).getLayer("modena");
 
                 ZoneMobilityRate zoneMobilityRate = new ZoneMobilityRate(
-                        MiDKeys.PERSON_LAU2_CLASS,
+                        MidAttributes.KEY.LAU2_CAT,
                         lau2Zones,
                         engine.getLegPredicate());
                 zoneMobilityRate.analyze(engine.getRefPersons(), null);
 
-                new TransferZoneAttribute().apply(lau2Zones, modenaZones, MiDKeys.PERSON_LAU2_CLASS);
+                new TransferZoneAttribute().apply(lau2Zones, modenaZones, MidAttributes.KEY.LAU2_CAT);
                 setHomeFacilities.setZoneWeights(zoneMobilityRate.getMobilityRatePerZone(modenaZones));
             }
 

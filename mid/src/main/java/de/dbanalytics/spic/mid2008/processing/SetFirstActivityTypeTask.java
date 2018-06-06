@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.processing;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.EpisodeTask;
 
 /**
@@ -34,7 +34,7 @@ public class SetFirstActivityTypeTask implements EpisodeTask {
             Attributable firstLeg = episode.getLegs().get(0);
             Attributable firstAct = episode.getActivities().get(0);
 
-            String origin = firstLeg.getAttribute(MiDKeys.LEG_ORIGIN);
+            String origin = firstLeg.getAttribute(MidAttributes.KEY.ORIGIN);
             if (ActivityTypes.HOME.equals(origin) || ActivityTypes.WORK.equals(origin)) {
                 firstAct.setAttribute(Attributes.KEY.TYPE, origin);
             }

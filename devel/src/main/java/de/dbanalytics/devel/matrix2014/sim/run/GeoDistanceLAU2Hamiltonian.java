@@ -20,7 +20,7 @@ package de.dbanalytics.devel.matrix2014.sim.run;
 
 import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.sim.AnnealingHamiltonian;
 import de.dbanalytics.spic.sim.HamiltonianLogger;
 import de.dbanalytics.devel.matrix2014.sim.UnivariatFrequency;
@@ -65,7 +65,7 @@ public class GeoDistanceLAU2Hamiltonian {
             Predicate<Segment> predicate = PredicateAndComposite.create(
                     engine.getLegPredicate(),
                     new LegPersonAttributePredicate(
-                            MiDKeys.PERSON_LAU2_CLASS,
+                            MidAttributes.KEY.LAU2_CAT,
                             String.valueOf(classIdx)));
 
             Set<Attributable> refLegs = getCarLegs(engine.getRefPersons(), predicate);

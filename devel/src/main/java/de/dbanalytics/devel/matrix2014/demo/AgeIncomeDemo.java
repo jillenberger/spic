@@ -26,7 +26,7 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.PersonUtils;
 import de.dbanalytics.spic.data.PlainFactory;
 import de.dbanalytics.spic.data.io.PopulationIO;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.PersonTask;
 import de.dbanalytics.spic.processing.TaskRunner;
 import de.dbanalytics.spic.sim.*;
@@ -72,7 +72,7 @@ public class AgeIncomeDemo {
             @Override
             public void apply(Person person) {
                 Double val = (Double)ageGenerator.newValue(null);
-                person.setAttribute(MiDKeys.PERSON_AGE, val.toString());
+                person.setAttribute(MidAttributes.KEY.AGE, val.toString());
             }
         }, simPersons);
 
@@ -81,7 +81,7 @@ public class AgeIncomeDemo {
             @Override
             public void apply(Person person) {
                 Double val = (Double)incomeGenerator.newValue(null);
-                person.setAttribute(MiDKeys.HH_INCOME, val.toString());
+                person.setAttribute(MidAttributes.KEY.HH_INCOME, val.toString());
             }
         }, simPersons);
         /*
@@ -93,14 +93,14 @@ public class AgeIncomeDemo {
         DiscretizerBuilder ageDiscretizerBuilder = new PassThroughDiscretizerBuilder(new LinearDiscretizer(1), "linear");
         HistogramWriter ageHWriter = new HistogramWriter(ioContext, ageDiscretizerBuilder);
         NumericAnalyzer ageAnalyzer = new NumericAnalyzer(
-                new PersonCollector<>(new NumericAttributeProvider<Person>(MiDKeys.PERSON_AGE)), MiDKeys.PERSON_AGE, ageHWriter);
+                new PersonCollector<>(new NumericAttributeProvider<Person>(MidAttributes.KEY.AGE)), MidAttributes.KEY.AGE, ageHWriter);
 
-        PersonCollector<Double> incomeCollector = new PersonCollector<>(new NumericAttributeProvider<Person>(MiDKeys.HH_INCOME));
+        PersonCollector<Double> incomeCollector = new PersonCollector<>(new NumericAttributeProvider<Person>(MidAttributes.KEY.HH_INCOME));
         double[] incomeValues = org.matsim.contrib.common.collections.CollectionUtils.toNativeArray(incomeCollector.collect(refPersons));
         Discretizer incomeDiscretizer = new InterpolatingDiscretizer(incomeValues);
         HistogramWriter incomeHWriter = new HistogramWriter(ioContext, new PassThroughDiscretizerBuilder(incomeDiscretizer, "linear"));
         NumericAnalyzer incomeAnalyzer = new NumericAnalyzer(
-                new PersonCollector<>(new NumericAttributeProvider<Person>(MiDKeys.HH_INCOME)), MiDKeys.HH_INCOME, incomeHWriter);
+                new PersonCollector<>(new NumericAttributeProvider<Person>(MidAttributes.KEY.HH_INCOME)), MidAttributes.KEY.HH_INCOME, incomeHWriter);
 
         AgeIncomeCorrelation ageIncomeCorrelation = new AgeIncomeCorrelation(ioContext);
 
@@ -117,13 +117,13 @@ public class AgeIncomeDemo {
          */
         logger.info("Setting up hamiltonian...");
         Discretizer ageDiscretizer = new LinearDiscretizer(1);
-        UnivariatFrequency ageTerm = new UnivariatFrequency(refPersons, simPersons, MiDKeys.PERSON_AGE, ageDiscretizer);
+        UnivariatFrequency ageTerm = new UnivariatFrequency(refPersons, simPersons, MidAttributes.KEY.AGE, ageDiscretizer);
 
 
 //        Discretizer incomeDiscretizer = new LinearDiscretizer(500);
-        UnivariatFrequency incomeTerm = new UnivariatFrequency(refPersons, simPersons, MiDKeys.HH_INCOME, incomeDiscretizer);
+        UnivariatFrequency incomeTerm = new UnivariatFrequency(refPersons, simPersons, MidAttributes.KEY.HH_INCOME, incomeDiscretizer);
 
-        BivariatMean ageIncomeTerm = new BivariatMean(refPersons, simPersons, MiDKeys.PERSON_AGE, MiDKeys.HH_INCOME, ageDiscretizer);
+        BivariatMean ageIncomeTerm = new BivariatMean(refPersons, simPersons, MidAttributes.KEY.AGE, MidAttributes.KEY.HH_INCOME, ageDiscretizer);
 
         HamiltonianComposite hamiltonian = new HamiltonianComposite();
         hamiltonian.addComponent(ageTerm, 10);

@@ -26,6 +26,18 @@ public class AttributeMapper {
         keyMap.put("activityFacility", Attributes.KEY.PLACE);
         keyMap.put("datasource", Attributes.KEY.DATA_SOURCE);
         keyMap.put("day", Attributes.KEY.WEEKDAY);
+        keyMap.put("lau2class", "lau2_cat");
+        keyMap.put("journeydays", "journey_days");
+        keyMap.put("legpersons", "travel_fellows");
+        keyMap.put("hhincome", "hh_income");
+        keyMap.put("hhmembers", "hh_members");
+        keyMap.put("sex", "gender");
+        keyMap.put("caravail", "car_availability");
+        keyMap.put("midjourneys", "mid08_journeys");
+        keyMap.put("midtrips", "mid08_trips");
+        keyMap.put("inTown", "in_town");
+        keyMap.put("outOfTown", "out_of_town");
+        keyMap.put("roundTrip", "round_trip");
 
         valueMap = new HashMap<>();
     }

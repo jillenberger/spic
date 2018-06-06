@@ -19,7 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.demo;
 
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.sim.data.CachedPerson;
 import de.dbanalytics.spic.sim.data.Converters;
@@ -45,7 +45,7 @@ public class AgeMutatorBuilder implements MutatorBuilder<CachedPerson> {
         this.random = random;
         generator = new RandomIntGenerator(random, 0, 100);
 
-        ageDataKey = Converters.register(MiDKeys.PERSON_AGE, DoubleConverter.getInstance());
+        ageDataKey = Converters.register(MidAttributes.KEY.AGE, DoubleConverter.getInstance());
     }
 
     @Override

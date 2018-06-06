@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -35,21 +35,21 @@ public class PersonHHIncomeHandler implements PersonAttributeHandler {
 		String val = attributes.get(VariableNames.HH_INCOME);
 		
 		if(val != null) {
-			if(val.equalsIgnoreCase("1")) person.setAttribute(MiDKeys.HH_INCOME, "250");
-			else if(val.equalsIgnoreCase("2")) person.setAttribute(MiDKeys.HH_INCOME, "700");
-			else if(val.equalsIgnoreCase("3")) person.setAttribute(MiDKeys.HH_INCOME, "1200");
-			else if(val.equalsIgnoreCase("4")) person.setAttribute(MiDKeys.HH_INCOME, "1750");
-			else if(val.equalsIgnoreCase("5")) person.setAttribute(MiDKeys.HH_INCOME, "2300");
-			else if(val.equalsIgnoreCase("6")) person.setAttribute(MiDKeys.HH_INCOME, "2800");
-			else if(val.equalsIgnoreCase("7")) person.setAttribute(MiDKeys.HH_INCOME, "3300");
-			else if(val.equalsIgnoreCase("8")) person.setAttribute(MiDKeys.HH_INCOME, "3800");
-			else if(val.equalsIgnoreCase("9")) person.setAttribute(MiDKeys.HH_INCOME, "4300");
-			else if(val.equalsIgnoreCase("10")) person.setAttribute(MiDKeys.HH_INCOME, "4800");
-			else if(val.equalsIgnoreCase("11")) person.setAttribute(MiDKeys.HH_INCOME, "5300");
-			else if(val.equalsIgnoreCase("12")) person.setAttribute(MiDKeys.HH_INCOME, "5800");
-			else if(val.equalsIgnoreCase("13")) person.setAttribute(MiDKeys.HH_INCOME, "6300");
-			else if(val.equalsIgnoreCase("14")) person.setAttribute(MiDKeys.HH_INCOME, "6800");
-			else if(val.equalsIgnoreCase("15")) person.setAttribute(MiDKeys.HH_INCOME, "7300");
+			if(val.equalsIgnoreCase("1")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "250");
+			else if(val.equalsIgnoreCase("2")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "700");
+			else if(val.equalsIgnoreCase("3")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "1200");
+			else if(val.equalsIgnoreCase("4")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "1750");
+			else if(val.equalsIgnoreCase("5")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "2300");
+			else if(val.equalsIgnoreCase("6")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "2800");
+			else if(val.equalsIgnoreCase("7")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "3300");
+			else if(val.equalsIgnoreCase("8")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "3800");
+			else if(val.equalsIgnoreCase("9")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "4300");
+			else if(val.equalsIgnoreCase("10")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "4800");
+			else if(val.equalsIgnoreCase("11")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "5300");
+			else if(val.equalsIgnoreCase("12")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "5800");
+			else if(val.equalsIgnoreCase("13")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "6300");
+			else if(val.equalsIgnoreCase("14")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "6800");
+			else if(val.equalsIgnoreCase("15")) person.setAttribute(MidAttributes.KEY.HH_INCOME, "7300");
 		}
 	}
 }

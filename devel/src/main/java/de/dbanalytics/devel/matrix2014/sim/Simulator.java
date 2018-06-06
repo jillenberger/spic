@@ -28,8 +28,7 @@ import de.dbanalytics.spic.analysis.*;
 import de.dbanalytics.spic.data.*;
 import de.dbanalytics.spic.data.io.PopulationIO;
 import de.dbanalytics.spic.matrix.ODCalibrator;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.*;
 import de.dbanalytics.spic.sim.*;
 import de.dbanalytics.spic.sim.data.Converters;
@@ -226,7 +225,7 @@ public class Simulator {
 
         ZoneCollection lau2Zones = ((ZoneData) dataPool.get(ZoneDataLoader.KEY)).getLayer("lau2");
 
-        ZoneMobilityRate zoneMobilityRate = new ZoneMobilityRate(MiDKeys.PERSON_LAU2_CLASS, lau2Zones, DEFAULT_LEG_PREDICATE, ioContext);
+        ZoneMobilityRate zoneMobilityRate = new ZoneMobilityRate(MidAttributes.KEY.LAU2_CAT, lau2Zones, DEFAULT_LEG_PREDICATE, ioContext);
         task.addComponent(zoneMobilityRate);
         task.addComponent(new NumericAnalyzer(new PersonCollector<>(
                 new NumericAttributeProvider<Person>(Attributes.KEY.WEIGHT)),
@@ -253,10 +252,10 @@ public class Simulator {
             ZoneCollection lau2Zones = ((ZoneData) dataPool.get(ZoneDataLoader.KEY)).getLayer("lau2");
             ZoneCollection modenaZones = ((ZoneData) dataPool.get(ZoneDataLoader.KEY)).getLayer("modena");
 
-            ZoneMobilityRate zoneMobilityRate = new ZoneMobilityRate(MiDKeys.PERSON_LAU2_CLASS, lau2Zones, DEFAULT_LEG_PREDICATE);
+            ZoneMobilityRate zoneMobilityRate = new ZoneMobilityRate(MidAttributes.KEY.LAU2_CAT, lau2Zones, DEFAULT_LEG_PREDICATE);
             zoneMobilityRate.analyze(refPersons, null);
 
-            new TransferZoneAttribute().apply(lau2Zones, modenaZones, MiDKeys.PERSON_LAU2_CLASS);
+            new TransferZoneAttribute().apply(lau2Zones, modenaZones, MidAttributes.KEY.LAU2_CAT);
 
             SetHomeFacilities setHomeFacilities = new SetHomeFacilities(dataPool, "modena", random);
             setHomeFacilities.setZoneWeights(zoneMobilityRate.getMobilityRatePerZone(modenaZones));
@@ -386,14 +385,14 @@ public class Simulator {
     }
 
     private static BivariatMean buildMeanDistLau2Term(Set<Person> refPersons, Set<Person> simPersons) {
-        TaskRunner.run(new CopyPersonAttToLeg(MiDKeys.PERSON_LAU2_CLASS), refPersons);
-        TaskRunner.run(new CopyPersonAttToLeg(MiDKeys.PERSON_LAU2_CLASS), simPersons);
+        TaskRunner.run(new CopyPersonAttToLeg(MidAttributes.KEY.LAU2_CAT), refPersons);
+        TaskRunner.run(new CopyPersonAttToLeg(MidAttributes.KEY.LAU2_CAT), simPersons);
 
         Set<Attributable> refLegs = getCarLegs(refPersons);
         Set<Attributable> simLegs = getCarLegs(simPersons);
 
-        Converters.register(MiDKeys.PERSON_LAU2_CLASS, DoubleConverter.getInstance());
-        BivariatMean bm = new BivariatMean(refLegs, simLegs, MiDKeys.PERSON_LAU2_CLASS, Attributes.KEY.BEELINE_DISTANCE,
+        Converters.register(MidAttributes.KEY.LAU2_CAT, DoubleConverter.getInstance());
+        BivariatMean bm = new BivariatMean(refLegs, simLegs, MidAttributes.KEY.LAU2_CAT, Attributes.KEY.BEELINE_DISTANCE,
                 new LinearDiscretizer(1.0), USE_WEIGTHS);
 
         return bm;
@@ -419,20 +418,20 @@ public class Simulator {
                 histogramWriter));
 
         for (int klass = 0; klass < 6; klass++) {
-            Predicate<Segment> lauPred = new LegPersonAttributePredicate(MiDKeys.PERSON_LAU2_CLASS, String.valueOf(klass));
+            Predicate<Segment> lauPred = new LegPersonAttributePredicate(MidAttributes.KEY.LAU2_CAT, String.valueOf(klass));
             Predicate<Segment> predicate = PredicateAndComposite.create(DEFAULT_LEG_PREDICATE, lauPred);
             String label = String.format("car.lau%s", klass);
             composite.addComponent(NumericLegAnalyzer.create(Attributes.KEY.BEELINE_DISTANCE, USE_WEIGTHS, predicate, label,
                     histogramWriter));
         }
 
-        Predicate<Segment> inTown = new LegAttributePredicate(MiDKeys.LEG_DESTINATION, MiDValues.IN_TOWN);
+        Predicate<Segment> inTown = new LegAttributePredicate(MidAttributes.KEY.DESTINATION, MidAttributes.DESTINATION.IN_TOWN);
         Predicate<Segment> predicate = PredicateAndComposite.create(DEFAULT_LEG_PREDICATE, inTown);
         composite.addComponent(NumericLegAnalyzer.create(Attributes.KEY.BEELINE_DISTANCE, USE_WEIGTHS, predicate,
                 DEFAULT_LEG_PREDICATE_NAME + ".inTown",
                 histogramWriter));
 
-        Predicate<Segment> outOfTown = new LegAttributePredicate(MiDKeys.LEG_DESTINATION, MiDValues.OUT_OF_TOWN);
+        Predicate<Segment> outOfTown = new LegAttributePredicate(MidAttributes.KEY.DESTINATION, MidAttributes.DESTINATION.OUT_OF_TOWN);
         predicate = PredicateAndComposite.create(DEFAULT_LEG_PREDICATE, outOfTown);
         composite.addComponent(NumericLegAnalyzer.create(Attributes.KEY.BEELINE_DISTANCE, USE_WEIGTHS, predicate,
                 DEFAULT_LEG_PREDICATE_NAME + ".outOfTown", histogramWriter));

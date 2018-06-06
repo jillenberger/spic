@@ -21,8 +21,7 @@ package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.ActivityTypes;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -37,13 +36,13 @@ public class LegOriginHandler implements LegAttributeHandler {
 		String origin = attributes.get(VariableNames.LEG_ORIGIN);
 
 		if(origin.equalsIgnoreCase("1"))
-			leg.setAttribute(MiDKeys.LEG_ORIGIN, ActivityTypes.HOME);
+			leg.setAttribute(MidAttributes.KEY.ORIGIN, ActivityTypes.HOME);
 		else if(origin.equalsIgnoreCase("2"))
-			leg.setAttribute(MiDKeys.LEG_ORIGIN, ActivityTypes.WORK);
+			leg.setAttribute(MidAttributes.KEY.ORIGIN, ActivityTypes.WORK);
 		else if(origin.equalsIgnoreCase("3"))
-			leg.setAttribute(MiDKeys.LEG_ORIGIN, MiDValues.IN_TOWN);
+			leg.setAttribute(MidAttributes.KEY.ORIGIN, MidAttributes.DESTINATION.IN_TOWN);
 		else if(origin.equalsIgnoreCase("4"))
-			leg.setAttribute(MiDKeys.LEG_ORIGIN, MiDValues.OUT_OF_TOWN);
+			leg.setAttribute(MidAttributes.KEY.ORIGIN, MidAttributes.DESTINATION.OUT_OF_TOWN);
 
 	}
 }

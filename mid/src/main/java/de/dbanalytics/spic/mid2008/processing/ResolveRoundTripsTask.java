@@ -20,8 +20,7 @@
 package de.dbanalytics.spic.mid2008.processing;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.EpisodeTask;
 
 import java.util.ArrayList;
@@ -44,8 +43,8 @@ public class ResolveRoundTripsTask implements EpisodeTask {
 
         for (int i = 0; i < episode.getLegs().size(); i++) {
             Attributable leg = episode.getLegs().get(i);
-            String dest = leg.getAttribute(MiDKeys.LEG_DESTINATION);
-            if (MiDValues.ROUND_TRIP.equals(dest)) {
+            String dest = leg.getAttribute(MidAttributes.KEY.DESTINATION);
+            if (MidAttributes.DESTINATION.ROUND_TRIP.equals(dest)) {
                 insertPoints.add(i + 2);
             }
         }

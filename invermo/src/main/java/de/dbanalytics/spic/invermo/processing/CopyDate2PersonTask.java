@@ -22,7 +22,7 @@ package de.dbanalytics.spic.invermo.processing;
 import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Episode;
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.PersonTask;
 
 
@@ -38,7 +38,7 @@ public class CopyDate2PersonTask implements PersonTask {
 			Episode plan = person.getEpisodes().get(0);
 
 			person.setAttribute(Attributes.KEY.WEEKDAY, plan.getAttribute(Attributes.KEY.WEEKDAY));
-			person.setAttribute(MiDKeys.PERSON_MONTH, plan.getAttribute(MiDKeys.PERSON_MONTH));
+			person.setAttribute(MidAttributes.KEY.MONTH, plan.getAttribute(MidAttributes.KEY.MONTH));
 		}
 	}
 

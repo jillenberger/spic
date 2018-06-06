@@ -20,7 +20,7 @@
 package de.dbanalytics.devel.matrix2014.source.mid2008;
 
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import de.dbanalytics.spic.processing.PersonTask;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -98,7 +98,7 @@ public class InputeDaysTask implements PersonTask {
         String day = person.getAttribute(Attributes.KEY.WEEKDAY);
         if(day == null) {
             Episode episode = person.getEpisodes().get(0);
-            if(MiDValues.MID_JOUNREYS.equalsIgnoreCase(episode.getAttribute(Attributes.KEY.DATA_SOURCE))) {
+            if(MidAttributes.DATA_SOURCE.MID_JOURNEYS.equalsIgnoreCase(episode.getAttribute(Attributes.KEY.DATA_SOURCE))) {
                 Segment leg = episode.getLegs().get(0);
                 String purpose = leg.getAttribute(Attributes.KEY.TRAVEL_PURPOSE);
 

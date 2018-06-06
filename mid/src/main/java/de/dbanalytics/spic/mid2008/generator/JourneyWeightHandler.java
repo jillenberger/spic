@@ -19,8 +19,9 @@
 
 package de.dbanalytics.spic.mid2008.generator;
 
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.data.Segment;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class JourneyWeightHandler implements LegAttributeHandler {
         String value = attributes.get(FIELD_NAME);
         if (value != null) {
             Double w = Double.parseDouble(value);
-            leg.setAttribute(MiDKeys.JOURNEY_WEIGHT, String.valueOf(w));
+            leg.setAttribute(Attributes.KEY.WEIGHT, String.valueOf(w));
         }
     }
 }

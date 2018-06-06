@@ -23,7 +23,7 @@ import de.dbanalytics.spic.analysis.AnalyzerTask;
 import de.dbanalytics.spic.analysis.FileIOContext;
 import de.dbanalytics.spic.analysis.StatsContainer;
 import de.dbanalytics.spic.data.*;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TDoubleDoubleHashMap;
 import org.matsim.contrib.common.stats.Correlations;
@@ -50,7 +50,7 @@ public class GeoDistLau2ClassTask implements AnalyzerTask<Collection<? extends P
         TDoubleArrayList yVals = new TDoubleArrayList();
 
         for (Person person : persons) {
-            String xStr = person.getAttribute(MiDKeys.PERSON_LAU2_CLASS);
+            String xStr = person.getAttribute(MidAttributes.KEY.LAU2_CAT);
             for (Episode plan : person.getEpisodes()) {
                 for (Attributable leg : plan.getLegs()) {
 

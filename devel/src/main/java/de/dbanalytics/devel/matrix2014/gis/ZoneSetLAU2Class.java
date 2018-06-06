@@ -19,7 +19,7 @@
 
 package de.dbanalytics.devel.matrix2014.gis;
 
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 import org.matsim.contrib.common.stats.Discretizer;
 import org.matsim.contrib.common.stats.FixedBordersDiscretizer;
 
@@ -52,7 +52,7 @@ public class ZoneSetLAU2Class {
             if(inhabitantsVal != null) {
                 double inhabitants = Double.parseDouble(inhabitantsVal);
                 String category = inhabitants2Class(inhabitants);
-                zone.setAttribute(MiDKeys.PERSON_LAU2_CLASS, category);
+                zone.setAttribute(MidAttributes.KEY.LAU2_CAT, category);
             }
         }
     }

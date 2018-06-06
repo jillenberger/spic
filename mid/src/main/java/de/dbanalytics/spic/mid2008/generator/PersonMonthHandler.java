@@ -20,8 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.mid2008.MiDKeys;
-import de.dbanalytics.spic.mid2008.MiDValues;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -36,29 +35,29 @@ public class PersonMonthHandler implements PersonAttributeHandler {
 		String val = attributes.get(VariableNames.SURVEY_MONTH);
 		if(val != null) {
 			if(val.equalsIgnoreCase("1")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.JANUARY);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.JANUARY);
 			} else if(val.equalsIgnoreCase("2")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.FEBRUARY);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.FEBRUARY);
 			} else if(val.equalsIgnoreCase("3")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.MARCH);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.MARCH);
 			} else if(val.equalsIgnoreCase("4")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.APRIL);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.APRIL);
 			} else if(val.equalsIgnoreCase("5")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.MAY);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.MAY);
 			} else if(val.equalsIgnoreCase("6")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.JUNE);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.JUNE);
 			} else if(val.equalsIgnoreCase("7")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.JULY);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.JULY);
 			} else if(val.equalsIgnoreCase("8")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.AUGUST);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.AUGUST);
 			} else if(val.equalsIgnoreCase("9")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.SEPTEMBER);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.SEPTEMBER);
 			} else if(val.equalsIgnoreCase("10")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.OCTOBER);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.OCTOBER);
 			} else if(val.equalsIgnoreCase("11")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.NOVEMBER);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.NOVEMBER);
 			} else if(val.equalsIgnoreCase("12")) {
-				person.setAttribute(MiDKeys.PERSON_MONTH, MiDValues.DECEMBER);
+				person.setAttribute(MidAttributes.KEY.MONTH, MidAttributes.MONTH.DECEMBER);
 			}
 		}
 

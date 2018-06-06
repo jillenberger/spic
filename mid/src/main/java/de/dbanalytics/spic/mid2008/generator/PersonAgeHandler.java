@@ -20,7 +20,7 @@
 package de.dbanalytics.spic.mid2008.generator;
 
 import de.dbanalytics.spic.data.Person;
-import de.dbanalytics.spic.mid2008.MiDKeys;
+import de.dbanalytics.spic.mid2008.MidAttributes;
 
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class PersonAgeHandler implements PersonAttributeHandler {
 		if(val != null) {
 			Integer age = Integer.parseInt(val);
 			if(age > 0 && age < 102) {
-				person.setAttribute(MiDKeys.PERSON_AGE, String.valueOf(age));
+				person.setAttribute(MidAttributes.KEY.AGE, String.valueOf(age));
 			}
 		}
 	}
