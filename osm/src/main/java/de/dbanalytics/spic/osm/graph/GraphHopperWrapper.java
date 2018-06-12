@@ -65,8 +65,16 @@ public class GraphHopperWrapper implements RoutingService {
 
     private Graph graph;
 
-    public GraphHopperWrapper(String osmFile, String ghStorage) {
-        FlagEncoder encoder = new CarFlagEncoder();
+    public GraphHopperWrapper(String osmFile, String ghStorage, String mode) {
+        FlagEncoder encoder = null;
+        if (mode.equalsIgnoreCase("car")) {
+            encoder = new CarFlagEncoder();
+        } else if (mode.equalsIgnoreCase("foot")) {
+            encoder = new FootFlagEncoder();
+        } else {
+            throw new IllegalArgumentException(String.format("Mode %s unknown.", mode));
+        }
+
         EncodingManager em = new EncodingManager(encoder);
 
         hopper = new InternalGraphHopper();
@@ -82,7 +90,7 @@ public class GraphHopperWrapper implements RoutingService {
                 build();
 
         hintsMap = new HintsMap();
-        hintsMap.setVehicle("car");
+        hintsMap.setVehicle(mode);
         hintsMap.setWeighting("fastest");
 
         GraphBuilder builder = new GraphBuilder();

@@ -39,7 +39,7 @@ public class PathTest {
         String tmpDir = args[1];
         int samples = Integer.parseInt(args[2]);
 
-        GraphHopperWrapper router = new GraphHopperWrapper(osmFile, tmpDir);
+        GraphHopperWrapper router = new GraphHopperWrapper(osmFile, tmpDir, "car");
         List<Node> towerList = router.getGraph().getNodes();
 
 

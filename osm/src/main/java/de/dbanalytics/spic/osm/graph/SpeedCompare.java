@@ -35,7 +35,7 @@ public class SpeedCompare {
         String outFile = "/Users/johannesillenberger/work/sim-scratch/router-compare/results.csv";
 
         OsrmRouter osrmRouter = new OsrmRouter(osrmFile);
-        GraphHopperWrapper ghRouter = new GraphHopperWrapper(osmFile, storageDir);
+        GraphHopperWrapper ghRouter = new GraphHopperWrapper(osmFile, storageDir, "car");
         Graph graph = ghRouter.getGraph();
 
         if (!new File(refFile).exists()) {
