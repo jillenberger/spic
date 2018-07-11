@@ -65,7 +65,10 @@ public class GraphHopperWrapper implements RoutingService {
 
     private Graph graph;
 
+    private final String mode;
+
     public GraphHopperWrapper(String osmFile, String ghStorage, String mode) {
+        this.mode = mode;
         FlagEncoder encoder = null;
         if (mode.equalsIgnoreCase("car")) {
             encoder = new CarFlagEncoder();
@@ -93,9 +96,9 @@ public class GraphHopperWrapper implements RoutingService {
         hintsMap.setVehicle(mode);
         hintsMap.setWeighting("fastest");
 
-        GraphBuilder builder = new GraphBuilder();
-        graph = builder.build(osmFile);
-        initEdgeMapping(graph);
+//        GraphBuilder builder = new GraphBuilder();
+//        graph = builder.build(osmFile);
+//        initEdgeMapping(graph);
     }
 
     private void initEdgeMapping(Graph graph) {
@@ -231,7 +234,7 @@ public class GraphHopperWrapper implements RoutingService {
         return theNode;
     }
 
-    public GhRoute query(double fromLon, double fromLat, double toLon, double toLat) {
+    public GhRoute query(double fromLon, double fromLat, double toLon, double toLat, Map<String, Object> parameters) {
         LocationIndex index = hopper.getLocationIndex();
         GraphHopperStorage graph = hopper.getGraphHopperStorage();
 
@@ -251,7 +254,7 @@ public class GraphHopperWrapper implements RoutingService {
         Path path = algorithm.calcPath(fromNodeId, toNodeId);
 
         if (path.isFound()) {
-            return new GhRoute(path, ghEdge2Nodes);
+            return new GhRoute(path, ghEdge2Nodes, mode);
         } else {
             return null;
         }

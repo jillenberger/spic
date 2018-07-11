@@ -57,7 +57,7 @@ public class PathTest {
             Node target = towerList.get(random.nextInt(towerList.size() - 1));
             if (source != target) {
 
-                GhRoute result = router.query(source.getLongitude(), source.getLatitude(), target.getLongitude(), target.getLatitude());
+                GhRoute result = router.query(source.getLongitude(), source.getLatitude(), target.getLongitude(), target.getLatitude(), null);
 
                 if (result != null) {
                     List<Node> nodes = result.getPath();

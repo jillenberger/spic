@@ -8,6 +8,7 @@ import com.google.maps.model.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GoogleRoutingService implements RoutingService {
 
@@ -18,7 +19,7 @@ public class GoogleRoutingService implements RoutingService {
     }
 
     @Override
-    public Route query(double fromLon, double fromLat, double toLon, double toLat) {
+    public Route query(double fromLon, double fromLat, double toLon, double toLat, Map<String, Object> parameters) {
         try {
             DirectionsResult result = DirectionsApi.newRequest(context).
                     origin(new LatLng(fromLat, fromLon)).
@@ -30,7 +31,7 @@ public class GoogleRoutingService implements RoutingService {
 
             if (result.routes.length > 0) {
                 DirectionsRoute route = result.routes[0];
-                return new GoogleRoute(route.legs);
+                return new GoogleRoute(route.legs, "car");
             } else {
                 return null;
             }
@@ -54,13 +55,13 @@ public class GoogleRoutingService implements RoutingService {
 
         private final List<RouteLeg> routeLegs;
 
-        private GoogleRoute(DirectionsLeg legs[]) {
+        private GoogleRoute(DirectionsLeg legs[], String mode) {
             double tmptt = 0;
             double tmpdist = 0;
 
             routeLegs = new ArrayList<>(legs.length);
             for (DirectionsLeg leg : legs) {
-                routeLegs.add(new GoogleRouteLeg(leg.duration.inSeconds, leg.distance.inMeters));
+                routeLegs.add(new GoogleRouteLeg(leg.duration.inSeconds, leg.distance.inMeters, mode));
                 tmpdist += leg.distance.inMeters;
                 tmptt += leg.duration.inSeconds;
             }
@@ -91,9 +92,12 @@ public class GoogleRoutingService implements RoutingService {
 
         private final double distance;
 
-        private GoogleRouteLeg(double traveltime, double distance) {
+        private final String mode;
+
+        private GoogleRouteLeg(double traveltime, double distance, String mode) {
             this.traveltime = traveltime;
             this.distance = distance;
+            this.mode = mode;
         }
 
         @Override
@@ -104,6 +108,16 @@ public class GoogleRoutingService implements RoutingService {
         @Override
         public double distance() {
             return distance;
+        }
+
+        @Override
+        public String mode() {
+            return mode;
+        }
+
+        @Override
+        public String getAttribute(String key) {
+            return null;
         }
 
         @Override
