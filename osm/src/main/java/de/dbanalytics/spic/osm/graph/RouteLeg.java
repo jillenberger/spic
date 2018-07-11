@@ -6,6 +6,10 @@ public interface RouteLeg {
 
     double distance();
 
+    String mode();
+
+    String getAttribute(String key);
+
     long[] nodes();
 
 }

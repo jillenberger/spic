@@ -43,10 +43,13 @@ public class GhRoute implements Route, RouteLeg {
 
     private long[] nodes;
 
-    public GhRoute(Path ghPath, TIntObjectMap<List<Node>> ghEdge2Nodes) {
+    private final String mode;
+
+    public GhRoute(Path ghPath, TIntObjectMap<List<Node>> ghEdge2Nodes, String mode) {
         this.ghPath = ghPath;
         this.ghEdge2Nodes = ghEdge2Nodes;
         routeLegs.add(this);
+        this.mode = mode;
     }
 
     public double getDistance() {
@@ -55,6 +58,11 @@ public class GhRoute implements Route, RouteLeg {
 
     public double distance() {
         return ghPath.getDistance();
+    }
+
+    @Override
+    public String mode() {
+        return mode;
     }
 
     public double getTraveltime() {

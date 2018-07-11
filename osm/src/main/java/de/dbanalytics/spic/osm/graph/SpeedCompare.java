@@ -53,7 +53,7 @@ public class SpeedCompare {
             double toLat = Double.parseDouble(table.get(row, "to_lat"));
             /** osrm */
             long time = System.currentTimeMillis();
-            Route route = osrmRouter.query(fromLon, fromLat, toLon, toLat);
+            Route route = osrmRouter.query(fromLon, fromLat, toLon, toLat, null);
             time = System.currentTimeMillis() - time;
             if (route != null) {
                 table.put(row, "tt_osrm", String.valueOf(route.traveltime()));
@@ -62,7 +62,7 @@ public class SpeedCompare {
             }
             /** graphhopper */
             time = System.currentTimeMillis();
-            route = ghRouter.query(fromLon, fromLat, toLon, toLat);
+            route = ghRouter.query(fromLon, fromLat, toLon, toLat, null);
             time = System.currentTimeMillis() - time;
             if (route != null) {
                 table.put(row, "tt_gh", String.valueOf(route.traveltime()));
@@ -115,7 +115,7 @@ public class SpeedCompare {
             writer.write(SEPARATOR);
 
             long time = System.currentTimeMillis();
-            Route route = router.query(from.getLongitude(), from.getLatitude(), to.getLongitude(), to.getLatitude());
+            Route route = router.query(from.getLongitude(), from.getLatitude(), to.getLongitude(), to.getLatitude(), null);
             time = System.currentTimeMillis() - time;
 
             if (route != null) {

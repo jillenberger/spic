@@ -7,6 +7,7 @@ import com.sun.jna.Structure;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class OsrmRouter implements RoutingService {
 
@@ -34,7 +35,7 @@ public class OsrmRouter implements RoutingService {
 //    }
 
     @Override
-    public Route query(double fromLon, double fromLat, double toLon, double toLat) {
+    public Route query(double fromLon, double fromLat, double toLon, double toLat, Map<String, Object> parameters) {
         RouteStruct struct = route(pointer, fromLon, fromLat, toLon, toLat, true);
         if (struct.valid) {
             return new OsrmRoute(struct);
@@ -68,6 +69,16 @@ public class OsrmRouter implements RoutingService {
         @Override
         public double distance() {
             return distance;
+        }
+
+        @Override
+        public String mode() {
+            return null;
+        }
+
+        @Override
+        public String getAttribute(String key) {
+            return null;
         }
 
         @Override
