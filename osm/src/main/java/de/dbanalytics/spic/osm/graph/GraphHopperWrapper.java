@@ -68,6 +68,10 @@ public class GraphHopperWrapper implements RoutingService {
     private final String mode;
 
     public GraphHopperWrapper(String osmFile, String ghStorage, String mode) {
+        this(osmFile, ghStorage, mode, true);
+    }
+
+    public GraphHopperWrapper(String osmFile, String ghStorage, String mode, boolean buildGraph) {
         this.mode = mode;
         FlagEncoder encoder = null;
         if (mode.equalsIgnoreCase("car")) {
@@ -96,9 +100,11 @@ public class GraphHopperWrapper implements RoutingService {
         hintsMap.setVehicle(mode);
         hintsMap.setWeighting("fastest");
 
-//        GraphBuilder builder = new GraphBuilder();
-//        graph = builder.build(osmFile);
-//        initEdgeMapping(graph);
+        if (buildGraph) {
+            GraphBuilder builder = new GraphBuilder();
+            graph = builder.build(osmFile);
+            initEdgeMapping(graph);
+        }
     }
 
     private void initEdgeMapping(Graph graph) {
