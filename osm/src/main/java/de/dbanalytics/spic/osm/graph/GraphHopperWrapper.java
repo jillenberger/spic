@@ -38,6 +38,7 @@ import com.graphhopper.storage.index.QueryResult;
 import com.graphhopper.util.BitUtil;
 import com.graphhopper.util.Parameters;
 import com.graphhopper.util.PointList;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.util.ProgressLogger;
 import gnu.trove.iterator.TLongObjectIterator;
 import gnu.trove.map.TIntObjectMap;
@@ -73,11 +74,14 @@ public class GraphHopperWrapper implements RoutingService {
 
     public GraphHopperWrapper(String osmFile, String ghStorage, String mode, boolean buildGraph) {
         this.mode = mode;
+        String ghMode = null;
         FlagEncoder encoder = null;
-        if (mode.equalsIgnoreCase("car")) {
+        if (mode.equalsIgnoreCase(Attributes.MODE.CAR)) {
             encoder = new CarFlagEncoder();
-        } else if (mode.equalsIgnoreCase("foot")) {
+            ghMode = "car";
+        } else if (mode.equalsIgnoreCase(Attributes.MODE.WALK)) {
             encoder = new FootFlagEncoder();
+            ghMode = "foot";
         } else {
             throw new IllegalArgumentException(String.format("Mode %s unknown.", mode));
         }
@@ -97,7 +101,7 @@ public class GraphHopperWrapper implements RoutingService {
                 build();
 
         hintsMap = new HintsMap();
-        hintsMap.setVehicle(mode);
+        hintsMap.setVehicle(ghMode);
         hintsMap.setWeighting("fastest");
 
         if (buildGraph) {

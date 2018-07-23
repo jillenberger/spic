@@ -9,23 +9,41 @@ import java.lang.reflect.InvocationTargetException;
 public class ConfigUtils {
 
     public static Object createInstance(String klass, HierarchicalConfiguration config) {
+        return createInstance(klass, config, null);
+    }
+
+    public static Object createInstance(String klass, HierarchicalConfiguration config, String subConfigName) {
+        Class<? extends Configurator> clazz = null;
+        try {
+            /** if argument is a qualified class name */
+            clazz = Class.forName(klass).asSubclass(Configurator.class);
+        } catch (ClassNotFoundException e) {
+            /** if class cannot be initialized, look up config pool */
+            Object instance = ConfiguratorPool.getInstance(klass);
+            if (instance == null) {
+                throw new RuntimeException(String.format("Cannot initialize class %s.", klass));
+            } else {
+                return instance;
+            }
+        }
+
         try {
             /** create instance */
-            Class<? extends Configurator> clazz = Class.forName(klass).asSubclass(Configurator.class);
             Constructor<? extends Configurator> ctor = clazz.getConstructor();
             Configurator configurator = ctor.newInstance();
 
             /** configure if config node found */
             HierarchicalConfiguration subConfig = null;
             try {
-                subConfig = config.configurationAt(configurator.getClass().getSimpleName());
+                if (subConfigName == null) {
+                    subConfigName = configurator.getClass().getSimpleName();
+                }
+                subConfig = config.configurationAt(subConfigName);
             } catch (ConfigurationRuntimeException e) {
 
             }
             return configurator.configure(subConfig);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
