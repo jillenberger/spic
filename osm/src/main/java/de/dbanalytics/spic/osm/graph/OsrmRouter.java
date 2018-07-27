@@ -15,8 +15,13 @@ public class OsrmRouter implements RoutingService {
         Native.register("osrmwrapper");
     }
 
-    public OsrmRouter(String filename) {
+    private final String mode;
+
+    private boolean annotate;
+
+    public OsrmRouter(String filename, String mode) {
         pointer = createRouter(filename);
+        this.mode = mode;
     }
 
     private static native Pointer createRouter(String filename);
@@ -25,18 +30,13 @@ public class OsrmRouter implements RoutingService {
 
     private static native RouteStruct route(Pointer pointer, double fromLon, double fromLat, double toLon, double toLat, boolean annotate);
 
-//    public Pair<Double, Double> getTravelTime(double fromLon, double fromLat, double toLon, double toLat, boolean annotate) {
-//        RouteStruct stuct = route(pointer, fromLon, fromLat, toLon, toLat, annotate);
-//        if (stuct.valid) {
-//            return new ImmutablePair<>(stuct.distance, stuct.duration);
-//        } else {
-//            return null;
-//        }
-//    }
+    public void enableAnnotation(boolean annotate) {
+        this.annotate = annotate;
+    }
 
     @Override
     public Route query(double fromLon, double fromLat, double toLon, double toLat, Map<String, Object> parameters) {
-        RouteStruct struct = route(pointer, fromLon, fromLat, toLon, toLat, true);
+        RouteStruct struct = route(pointer, fromLon, fromLat, toLon, toLat, annotate);
         if (struct.valid) {
             return new OsrmRoute(struct);
         } else {
@@ -44,7 +44,7 @@ public class OsrmRouter implements RoutingService {
         }
     }
 
-    public static class OsrmRoute implements Route, RouteLeg {
+    public class OsrmRoute implements Route, RouteLeg {
 
         private final List<RouteLeg> routeLegs = new ArrayList<>(1);
 
@@ -59,6 +59,7 @@ public class OsrmRouter implements RoutingService {
             traveltime = struct.duration;
             nodes = new long[struct.numNodes];
             for (int i = 0; i < struct.numNodes; i++) nodes[i] = struct.nodes[i].longValue();
+            routeLegs.add(this);
         }
 
         @Override
@@ -73,7 +74,7 @@ public class OsrmRouter implements RoutingService {
 
         @Override
         public String mode() {
-            return null;
+            return mode;
         }
 
         @Override

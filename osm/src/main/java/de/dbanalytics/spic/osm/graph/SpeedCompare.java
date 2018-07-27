@@ -3,6 +3,7 @@ package de.dbanalytics.spic.osm.graph;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.io.Files;
+import de.dbanalytics.spic.data.Attributes;
 import de.dbanalytics.spic.util.ProgressLogger;
 import de.dbanalytics.spic.util.TableIO;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -34,7 +35,7 @@ public class SpeedCompare {
         String refFile = "/Users/johannesillenberger/work/sim-scratch/router-compare/reference.csv";
         String outFile = "/Users/johannesillenberger/work/sim-scratch/router-compare/results.csv";
 
-        OsrmRouter osrmRouter = new OsrmRouter(osrmFile);
+        OsrmRouter osrmRouter = new OsrmRouter(osrmFile, Attributes.MODE.CAR);
         GraphHopperWrapper ghRouter = new GraphHopperWrapper(osmFile, storageDir, "car");
         Graph graph = ghRouter.getGraph();
 
