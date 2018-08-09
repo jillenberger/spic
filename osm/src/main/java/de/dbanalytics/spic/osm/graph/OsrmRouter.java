@@ -4,12 +4,15 @@ import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class OsrmRouter implements RoutingService {
+
+    private static final Logger logger = Logger.getLogger(OsrmRouter.class);
 
     static {
         Native.register("osrmwrapper");
@@ -44,6 +47,37 @@ public class OsrmRouter implements RoutingService {
         }
     }
 
+    public static class RouteStruct extends Structure implements Structure.ByValue {
+
+        public final static int MAX_NUM_NODES = 10000;
+
+        private static List<String> fieldNames;
+
+        static {
+            fieldNames = new ArrayList<>(5);
+            fieldNames.add("valid");
+            fieldNames.add("distance");
+            fieldNames.add("duration");
+            fieldNames.add("numNodes");
+            fieldNames.add("nodes");
+        }
+
+        public boolean valid;
+
+        public double distance;
+
+        public double duration;
+
+        public int numNodes;
+
+        public NativeLong nodes[] = new NativeLong[MAX_NUM_NODES];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return fieldNames;
+        }
+    }
+
     public class OsrmRoute implements Route, RouteLeg {
 
         private final List<RouteLeg> routeLegs = new ArrayList<>(1);
@@ -57,8 +91,13 @@ public class OsrmRouter implements RoutingService {
         public OsrmRoute(RouteStruct struct) {
             distance = struct.distance;
             traveltime = struct.duration;
-            nodes = new long[struct.numNodes];
-            for (int i = 0; i < struct.numNodes; i++) nodes[i] = struct.nodes[i].longValue();
+            if (struct.numNodes < RouteStruct.MAX_NUM_NODES) {
+                nodes = new long[struct.numNodes];
+                for (int i = 0; i < struct.numNodes; i++) nodes[i] = struct.nodes[i].longValue();
+            } else {
+                nodes = new long[0];
+                logger.warn("Number of nodes exceeded limit.");
+            }
             routeLegs.add(this);
         }
 
@@ -90,35 +129,6 @@ public class OsrmRouter implements RoutingService {
         @Override
         public List<RouteLeg> routeLegs() {
             return routeLegs;
-        }
-    }
-
-    public static class RouteStruct extends Structure implements Structure.ByValue {
-
-        private static List<String> fieldNames;
-
-        static {
-            fieldNames = new ArrayList<>(5);
-            fieldNames.add("valid");
-            fieldNames.add("distance");
-            fieldNames.add("duration");
-            fieldNames.add("numNodes");
-            fieldNames.add("nodes");
-        }
-
-        public boolean valid;
-
-        public double distance;
-
-        public double duration;
-
-        public int numNodes;
-
-        public NativeLong nodes[] = new NativeLong[10000];
-
-        @Override
-        protected List<String> getFieldOrder() {
-            return fieldNames;
         }
     }
 
