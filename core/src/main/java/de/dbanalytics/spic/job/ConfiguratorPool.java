@@ -2,6 +2,7 @@ package de.dbanalytics.spic.job;
 
 import org.apache.commons.configuration2.HierarchicalConfiguration;
 import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ConfiguratorPool {
+
+    private static final Logger logger = Logger.getLogger(ConfiguratorPool.class);
 
     private static Map<String, Configurator> configurators;
 
@@ -22,33 +25,37 @@ public class ConfiguratorPool {
         instances = new HashMap<>();
         configurators = new HashMap<>();
 
-        HierarchicalConfiguration poolConfig = parent.configurationAt("configPool");
+        if (parent.containsKey("configPool")) {
+            HierarchicalConfiguration poolConfig = parent.configurationAt("configPool");
 
-        List<HierarchicalConfiguration> configs = poolConfig.configurationsAt("config");
-        for (int i = 0; i < configs.size(); i++) {
-            String name = poolConfig.getString(String.format("config(%s)[@name]", i));
-            String clazzName = configs.get(i).getString("class");
+            List<HierarchicalConfiguration> configs = poolConfig.configurationsAt("config");
+            for (int i = 0; i < configs.size(); i++) {
+                String name = poolConfig.getString(String.format("config(%s)[@name]", i));
+                String clazzName = configs.get(i).getString("class");
 
-            try {
-                Class<? extends Configurator> clazz = Class.forName(clazzName).asSubclass(Configurator.class);
-                Constructor<? extends Configurator> ctor = clazz.getConstructor();
-                Configurator configurator = ctor.newInstance();
-                configurators.put(name, configurator);
+                try {
+                    Class<? extends Configurator> clazz = Class.forName(clazzName).asSubclass(Configurator.class);
+                    Constructor<? extends Configurator> ctor = clazz.getConstructor();
+                    Configurator configurator = ctor.newInstance();
+                    configurators.put(name, configurator);
 
-                HierarchicalConfiguration config = configs.get(i).configurationAt(clazz.getSimpleName());
-                ConfiguratorPool.configs.put(name, config);
+                    HierarchicalConfiguration config = configs.get(i).configurationAt(clazz.getSimpleName());
+                    ConfiguratorPool.configs.put(name, config);
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            logger.warn("No config node \"configPool\" found.");
         }
     }
 
