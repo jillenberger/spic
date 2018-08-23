@@ -25,7 +25,7 @@ public class ConfiguratorPool {
         instances = new HashMap<>();
         configurators = new HashMap<>();
 
-        if (parent.containsKey("configPool")) {
+        if (!parent.configurationsAt("configPool").isEmpty()) {
             HierarchicalConfiguration poolConfig = parent.configurationAt("configPool");
 
             List<HierarchicalConfiguration> configs = poolConfig.configurationsAt("config");

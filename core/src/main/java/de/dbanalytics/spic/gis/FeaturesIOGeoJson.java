@@ -65,20 +65,45 @@ public class FeaturesIOGeoJson {
             FeatureCollection jsonFeatures = (FeatureCollection) jsonData;
 
             if (verbose) progressLogger.start("Loading features", jsonFeatures.getFeatures().length);
+
             for (org.wololo.geojson.Feature jsonFeature : jsonFeatures.getFeatures()) {
+                /** read attributes */
                 Map<String, String> attributes = new HashMap<>();
                 for (Map.Entry<String, Object> prop : jsonFeature.getProperties().entrySet()) {
                     Object value = prop.getValue();
-                    //TODO: Should attribute keys be always lower case?
-                    if (value != null) attributes.put(prop.getKey().toLowerCase(), prop.getValue().toString());
+
+                    /** convert attribute keys to lower case*/
+                    if (value != null) {
+                        attributes.put(prop.getKey().toLowerCase(), prop.getValue().toString());
+                    }
                 }
 
-                Feature feature = new Feature(attributes.get("id"), reader.read(jsonFeature.getGeometry()));
-                attributes.remove("id");
-                for (Map.Entry<String, String> entry : attributes.entrySet()) {
-                    feature.setAttribute(entry.getKey(), entry.getValue().toString());
+                /** allow for backwards compatibility "id" as identified key */
+                String idKey = "uid";
+                if (!attributes.containsKey(idKey)) {
+                    if (attributes.containsKey("id")) {
+                        idKey = "id";
+                        logger.warn("Deprecated \"id\" attribute found. Rename to \"uid\"!");
+                    } else {
+                        logger.warn("Neither \"uid\" nor \"id\" attribute found.");
+                        return null;
+                    }
                 }
+
+                /** create feature */
+                Feature feature = new Feature(attributes.get(idKey), reader.read(jsonFeature.getGeometry()));
+
+                /** remove id key from attributes */
+                attributes.remove(idKey);
+
+                /** set remaining attributes */
+                for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                    feature.setAttribute(entry.getKey(), entry.getValue());
+                }
+
+                /** transform coordinates */
                 transformer.forward(feature.getGeometry());
+
                 features.add(feature);
 
                 if (verbose) progressLogger.step();
