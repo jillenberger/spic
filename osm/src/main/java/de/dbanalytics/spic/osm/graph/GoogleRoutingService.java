@@ -20,6 +20,14 @@ public class GoogleRoutingService implements RoutingService {
 
     @Override
     public Route query(double fromLon, double fromLat, double toLon, double toLat, Map<String, Object> parameters) {
+        if (fromLon == toLon && fromLat == toLat) {
+            /** return a null route here, rather than a zero-distance route because
+             * -- 0 dist/travtime is a valid result but probably not intended
+             * -- safe some computing overhead
+             */
+            return null;
+        }
+        
         try {
             DirectionsResult result = DirectionsApi.newRequest(context).
                     origin(new LatLng(fromLat, fromLon)).

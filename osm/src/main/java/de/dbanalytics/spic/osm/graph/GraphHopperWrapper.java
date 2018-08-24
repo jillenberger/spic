@@ -245,6 +245,14 @@ public class GraphHopperWrapper implements RoutingService {
     }
 
     public GhRoute query(double fromLon, double fromLat, double toLon, double toLat, Map<String, Object> parameters) {
+        if (fromLon == toLon && fromLat == toLat) {
+            /** return a null route here, rather than a zero-distance route because
+             * -- 0 dist/travtime is a valid result but probably not intended
+             * -- safe some computing overhead
+             */
+            return null;
+        }
+
         LocationIndex index = hopper.getLocationIndex();
         GraphHopperStorage graph = hopper.getGraphHopperStorage();
 
@@ -252,9 +260,6 @@ public class GraphHopperWrapper implements RoutingService {
         QueryResult toQR = index.findClosest(toLat, toLon, EdgeFilter.ALL_EDGES);
 
         if (!fromQR.isValid() || !toQR.isValid()) return null;
-
-//        QueryGraph queryGraph = new QueryGraph(graph.getGraph(CHGraphImpl.class));
-//        queryGraph.lookup(fromQR, toQR);
 
         com.graphhopper.storage.Graph queryGraph = graph.getGraph(CHGraphImpl.class);
         RoutingAlgorithm algorithm = hopper.getAlgorithmFactory(hintsMap).createAlgo(queryGraph, algoOpts);
