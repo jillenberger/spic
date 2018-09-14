@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2017 Johannes Illenberger
+ * (c) Copyright 2018 Johannes Illenberger
  *
  * Project de.dbanalytics.spic.*
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.dbanalytics.spic.util;
+package de.dbanalytics.devel.gis;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
