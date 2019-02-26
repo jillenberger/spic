@@ -24,9 +24,9 @@ import de.dbanalytics.spic.data.Person;
 import de.dbanalytics.spic.data.Segment;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by johannesillenberger on 05.04.17.
@@ -44,7 +44,7 @@ public class PopulationWriter {
         /*
         Write episodes.
          */
-        Set<Episode> episodes = new HashSet<>(persons.size());
+        List<Episode> episodes = new ArrayList<>(persons.size());
         for(Person p : persons) {
             episodes.addAll(p.getEpisodes());
         }
@@ -52,7 +52,7 @@ public class PopulationWriter {
         /*
         Write activities.
          */
-        Set<Segment> activities = new HashSet<>(episodes.size() * 5);
+        List<Segment> activities = new ArrayList<>(episodes.size() * 5);
         for(Episode episode : episodes) {
             activities.addAll(episode.getActivities());
         }
@@ -62,7 +62,7 @@ public class PopulationWriter {
         /*
         Write legs.
          */
-        Set<Segment> legs = new HashSet<>(activities.size());
+        List<Segment> legs = new ArrayList<>(activities.size());
         for(Episode episode : episodes) {
             legs.addAll(episode.getLegs());
         }
@@ -83,13 +83,13 @@ public class PopulationWriter {
         }
     }
 
-    static private void addPersonId(Set<? extends Segment> segments) {
+    static private void addPersonId(Collection<? extends Segment> segments) {
         for(Segment s : segments) {
             s.setAttribute("personId", s.getEpisode().getPerson().getId());
         }
     }
 
-    static private void removePersonId(Set<? extends Segment> segments) {
+    static private void removePersonId(Collection<? extends Segment> segments) {
         for(Segment s : segments) {
             s.removeAttribute("personId");
         }
