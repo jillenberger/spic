@@ -45,5 +45,12 @@
             <artifactId>aalto-xml</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <!-- required for class loading with configurator -->
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+            <scope>RUNTIME</scope>
+        </dependency>
     </dependencies>
 </project>
