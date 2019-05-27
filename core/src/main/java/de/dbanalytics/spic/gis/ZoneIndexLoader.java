@@ -15,11 +15,17 @@ public class ZoneIndexLoader implements DataLoader {
         this.epsg = epsg;
     }
 
+    public ZoneIndexLoader() {
+        epsg = 0;
+    }
+
     @Override
     public Object load(String filename) {
         try {
             FeaturesIO featuresIO = new FeaturesIO();
-            featuresIO.setTransformer(GeoTransformer.WGS84toX(epsg));
+            if(epsg > 0) {
+                featuresIO.setTransformer(GeoTransformer.WGS84toX(epsg));
+            }
             Set<Feature> features = featuresIO.read(filename);
 
             return new ZoneIndex(features);

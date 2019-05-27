@@ -19,11 +19,17 @@ public class PlaceIndexLoader implements DataLoader {
         this.epsg = epsg;
     }
 
+    public PlaceIndexLoader() {
+        epsg = 0;
+    }
+
     @Override
     public Object load(String filename) {
         try {
             PlacesIO placesIO = new PlacesIO();
-            placesIO.setGeoTransformer(GeoTransformer.WGS84toX(epsg));
+            if(epsg > 0) {
+                placesIO.setGeoTransformer(GeoTransformer.WGS84toX(epsg));
+            }
             Set<Place> places = placesIO.read(filename);
 
             return new PlaceIndex(places);
