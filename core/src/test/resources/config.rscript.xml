@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<configuration>
+
+    <jobExecutor>
+        <jobs>
+          <job dump="false">de.dbanalytics.spic.job.RscriptJob</job>
+        </jobs>
+
+        <RscriptJob>
+            <rscriptFile>TestScript.R</rscriptFile>
+            <arguments>
+                <argument>2</argument>
+            </arguments>
+        </RscriptJob>
+
+    </jobExecutor>
+
+</configuration>

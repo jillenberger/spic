@@ -12,6 +12,17 @@
 
     <artifactId>spic-core</artifactId>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/test/R</directory>
+                <includes>
+                    <include>*.R</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
     <dependencies>
         <!-- internal dependencies -->
         <!-- external dependencies -->
