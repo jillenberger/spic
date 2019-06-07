@@ -86,7 +86,7 @@ public class GraphHopperWrapper implements RoutingService {
             throw new IllegalArgumentException(String.format("Mode %s unknown.", mode));
         }
 
-        EncodingManager em = new EncodingManager(encoder);
+        EncodingManager em = EncodingManager.create(encoder);
 
         hopper = new InternalGraphHopper();
         hopper.setDataReaderFile(osmFile);
@@ -118,7 +118,7 @@ public class GraphHopperWrapper implements RoutingService {
         ProgressLogger plogger = new ProgressLogger(logger);
         ghEdge2Nodes = new TIntObjectHashMap<>();
         AllEdgesIterator edgesIterator = hopper.getGraphHopperStorage().getAllEdges();
-        plogger.start("Mapping edges...", edgesIterator.getMaxId());
+        plogger.start("Mapping edges...", edgesIterator.length());
 
         int numOneNode = 0;
         int numNoNode = 0;
