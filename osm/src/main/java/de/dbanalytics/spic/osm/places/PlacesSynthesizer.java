@@ -24,14 +24,14 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Location;
-import de.dbanalytics.spic.gis.GeoTransformer;
-import de.dbanalytics.spic.gis.RTreeWrapper;
-import de.dbanalytics.spic.gis.SpatialIndex;
+import de.dbanalytics.spic.gis.*;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.matsim.contrib.common.util.ProgressLogger;
 import org.matsim.contrib.common.util.XORShiftRandom;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -74,7 +74,7 @@ public class PlacesSynthesizer {
         this.random = random;
     }
 
-    public void synthesize(Set<OsmFeature> features, String filename) throws IOException {
+    public void synthesize(Set<OsmFeature> features, String filename) throws IOException, XMLStreamException {
         logger.info("Transforming coordinates to cartesian...");
         for (OsmFeature feature : features) transformer.forward(feature.getGeometry());
         logger.info("Removing too small features...");
@@ -105,10 +105,14 @@ public class PlacesSynthesizer {
         logger.info(String.format("Removed %s features with area below threshold.", remove.size()));
     }
 
-    private void writePlaces(Set<OsmFeature> features, String filename) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-        writer.write("Lon\tLat\tType");
-        writer.newLine();
+    private void writePlaces(Set<OsmFeature> features, String filename) throws IOException, XMLStreamException {
+        BufferedWriter txtWriter = new BufferedWriter(new FileWriter(String.format(
+                "%s.txt",
+                FilenameUtils.removeExtension(filename))));
+        txtWriter.write("Lon\tLat\tType");
+        txtWriter.newLine();
+
+        Set<Place> places = new LinkedHashSet<>();
 
         int cnt = 0;
         for (OsmFeature feature : features) {
@@ -118,18 +122,23 @@ public class PlacesSynthesizer {
             double lat = coord.y;
 
             for (String type : feature.getPlaceTypes()) {
-                writer.write(String.valueOf(lon));
-                writer.write("\t");
-                writer.write(String.valueOf(lat));
-                writer.write("\t");
-                writer.write(type);
-                writer.newLine();
+                txtWriter.write(String.valueOf(lon));
+                txtWriter.write("\t");
+                txtWriter.write(String.valueOf(lat));
+                txtWriter.write("\t");
+                txtWriter.write(type);
+                txtWriter.newLine();
 
-                cnt++;
+                Place place = new Place(String.valueOf(cnt++), feature.getGeometry().getCentroid());
+                place.setAttribute("type", type);
+                places.add(place);
             }
         }
 
-        writer.close();
+        txtWriter.close();
+
+        PlacesIO xmlWriter = new PlacesIO();
+        xmlWriter.write(places, filename);
 
         logger.info(String.format("Wrote %s places.", cnt));
     }
