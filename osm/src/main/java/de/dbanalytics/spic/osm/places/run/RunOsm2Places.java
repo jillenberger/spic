@@ -27,6 +27,7 @@ import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.pbf.seq.PbfIterator;
 import de.topobyte.osm4j.xml.dynsax.OsmXmlIterator;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +38,7 @@ import java.util.Set;
  */
 public class RunOsm2Places {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, XMLStreamException {
         String osmFile = args[0];
         String placesFile = args[1];
         String tag2placeType = args[2];
