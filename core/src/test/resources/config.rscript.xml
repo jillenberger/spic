@@ -3,15 +3,16 @@
 
     <jobExecutor>
         <jobs>
-          <job dump="false">de.dbanalytics.spic.job.RscriptJob</job>
+          <job dump="false">de.dbanalytics.spic.job.InterpreterScriptJob</job>
         </jobs>
 
-        <RscriptJob>
-            <rscriptFile>TestScript.R</rscriptFile>
+        <InterpreterScriptJob>
+            <interpreter>Rscript</interpreter>
+            <scriptFile>TestScript.R</scriptFile>
             <arguments>
                 <argument>2</argument>
             </arguments>
-        </RscriptJob>
+        </InterpreterScriptJob>
 
     </jobExecutor>
 

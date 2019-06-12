@@ -13,16 +13,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/*
-TODO: Make this class abstract? It is always subclassed.
- */
-public class ShellScriptJob extends ShellCommandJob {
+public class InterpreterScriptJob extends ShellCommandJob {
 
-    private static final Logger logger = Logger.getLogger(ShellScriptJob.class);
+    private static final Logger logger = Logger.getLogger(InterpreterScriptJob.class);
+
+    private static final String INTERPRETER = "interpreter";
 
     private static final String SCRIPTFIlE = "scriptFile";
 
     public static final String ARGUMENTS = "arguments.argument";
+
+    private String interpreter;
 
     private String scriptFile;
 
@@ -30,11 +31,16 @@ public class ShellScriptJob extends ShellCommandJob {
 
     @Override
     public void configure(HierarchicalConfiguration config) {
+        setInterpreter(config.getString(INTERPRETER));
         setScriptFile(config.getString(SCRIPTFIlE));
 
         List<String> tmpArguments = config.getList(String.class, ARGUMENTS);
         if(tmpArguments == null) tmpArguments = new ArrayList<>(0);
         setArguments(tmpArguments);
+    }
+
+    protected void setInterpreter(String interpreter) {
+        this.interpreter = interpreter;
     }
 
     protected void setArguments(List<String> args) {
@@ -59,20 +65,24 @@ public class ShellScriptJob extends ShellCommandJob {
             return null;
         }
 
-        String newRscripFile = null;
+        String newScripFile = null;
         try {
             logger.info(String.format("Copying %s to %s.", scriptFile, tempDir));
-            newRscripFile = String.format("%s/%s", tempDir, scriptFile);
+            newScripFile = String.format("%s/%s", tempDir, scriptFile);
             Files.copy(stream, Paths.get(String.format("%s/%s", tempDir, scriptFile)), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         StringBuilder builder = new StringBuilder();
-        builder.append(newRscripFile);
-        for(String arg : arguments) {
-            builder.append(" ");
-            builder.append(arg);
+        builder.append(interpreter);
+        builder.append(" ");
+        builder.append(newScripFile);
+        if(arguments != null) {
+            for(String arg : arguments) {
+                builder.append(" ");
+                builder.append(arg);
+            }
         }
         setCommand(builder.toString());
 

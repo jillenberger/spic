@@ -138,6 +138,7 @@ public class PlacesSynthesizer {
         txtWriter.close();
 
         PlacesIO xmlWriter = new PlacesIO();
+        xmlWriter.setGeoTransformer(transformer);
         xmlWriter.write(places, filename);
 
         logger.info(String.format("Wrote %s places.", cnt));
