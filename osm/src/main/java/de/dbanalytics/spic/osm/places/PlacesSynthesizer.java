@@ -79,7 +79,7 @@ public class PlacesSynthesizer {
         for (OsmFeature feature : features) transformer.forward(feature.getGeometry());
         logger.info("Removing too small features...");
         removeSmall(features);
-        logger.info("Initializing feature hierarchy...");
+//        logger.info("Initializing feature hierarchy...");
         initFeatureTree(features);
         logger.info("Processing unclassified buildings...");
         processMissingTypes(features);
@@ -87,7 +87,7 @@ public class PlacesSynthesizer {
         cleanFeatures(features);
         logger.info("Processing land-use...");
         processLanduse(features);
-        logger.info("Writing places...");
+
         writePlaces(features, filename);
     }
 
@@ -140,8 +140,6 @@ public class PlacesSynthesizer {
         PlacesIO xmlWriter = new PlacesIO();
         xmlWriter.setGeoTransformer(transformer);
         xmlWriter.write(places, filename);
-
-        logger.info(String.format("Wrote %s places.", cnt));
     }
 
     private void processLanduse(Set<OsmFeature> features) {
@@ -294,15 +292,16 @@ public class PlacesSynthesizer {
         SpatialIndex<OsmFeature> areaIndex = new RTreeWrapper<>(areas);
         SpatialIndex<OsmFeature> buildingIndex = new RTreeWrapper<>(buildings);
 
-        ProgressLogger.init(pois.size() + buildings.size(), 2, 10);
-        linkFeatures(pois, buildingIndex);
-        linkFeatures(buildings, areaIndex);
-        ProgressLogger.terminate();
+
+        de.dbanalytics.spic.util.ProgressLogger progressLogger = new de.dbanalytics.spic.util.ProgressLogger(logger);
+        progressLogger.start("Initializing feature hierachy...", pois.size() + buildings.size());
+        linkFeatures(pois, buildingIndex, progressLogger);
+        linkFeatures(buildings, areaIndex, progressLogger);
+        progressLogger.stop();
     }
 
-    private void linkFeatures(Collection<OsmFeature> features, SpatialIndex<OsmFeature> index) {
+    private void linkFeatures(Collection<OsmFeature> features, SpatialIndex<OsmFeature> index, de.dbanalytics.spic.util.ProgressLogger progressLogger) {
         for (OsmFeature feature : features) {
-//            List<OsmFeature> candidates = index.query(feature.getGeometry().getEnvelopeInternal());
             List<OsmFeature> candidates = index.queryContains(feature.getGeometry().getCoordinate());
             for (OsmFeature candidate : candidates) {
                 if (candidate.getGeometry().contains(feature.getGeometry())) {
@@ -311,7 +310,7 @@ public class PlacesSynthesizer {
                     break;
                 }
             }
-            ProgressLogger.step();
+            progressLogger.step();
         }
     }
 }

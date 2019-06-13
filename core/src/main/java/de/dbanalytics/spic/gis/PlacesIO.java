@@ -29,6 +29,7 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.*;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -58,6 +59,8 @@ public class PlacesIO {
     private static final String NAME_ATTRIBUTE = "name";
 
     private static final String TYPE_ATTRIBUTE = "type";
+
+    private static final String SIZE = "size";
 
     private static final String EMPTY = "";
 
@@ -100,8 +103,17 @@ public class PlacesIO {
                     /*
                     Init places set.
                      */
-                    places = new LinkedHashSet<>();
-                    if (verbose) progressLogger.startAbs("Loading places...", 5000);
+                    Attribute attribute = startElement.getAttributeByName(new QName(SIZE));
+                    if (attribute != null) {
+                        int size = Integer.parseInt(attribute.getValue());
+                        places = new LinkedHashSet<>(size);
+                        progressLogger = new ProgressLogger(logger);
+                        if (verbose) progressLogger.start("Loading population...", size);
+                    } else {
+                        places = new LinkedHashSet<>();
+                        progressLogger = new ProgressLogger(logger);
+                        if (verbose) progressLogger.startAbs("Loading population...", 5000);
+                    }
 
                 } else if (localName.equals(PLACE_ELEMENT)) {
                     /*
@@ -161,6 +173,11 @@ public class PlacesIO {
     }
 
     public void write(Collection<? extends Place> places, String filename) throws IOException, XMLStreamException {
+        ProgressLogger progressLogger = null;
+        if (verbose) progressLogger = new ProgressLogger(logger);
+        long time = System.currentTimeMillis();
+        if (verbose) progressLogger.start("Writing places...", places.size());
+
         XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
         OutputStream stream = IOUtils.createOutputStream(filename);
         XMLStreamWriter writer = outputFactory.createXMLStreamWriter(stream);
@@ -168,6 +185,7 @@ public class PlacesIO {
         writer.writeStartDocument();
         writer.writeCharacters(NEW_LINE);
         writer.writeStartElement(PLACES_ELEMENT);
+        writer.writeAttribute(SIZE, String.valueOf(places.size()));
         writer.writeCharacters(NEW_LINE);
 
         for (Place place : places) {
@@ -203,6 +221,8 @@ public class PlacesIO {
             writer.writeCharacters(SPACES);
             writer.writeEndElement();
             writer.writeCharacters(NEW_LINE);
+
+            if(verbose) progressLogger.step();
         }
 
         writer.writeEndElement();
@@ -212,5 +232,13 @@ public class PlacesIO {
         writer.flush();
         writer.close();
         stream.close();
+
+        if (verbose) {
+            progressLogger.stop(String.format(
+                    Locale.US,
+                    "%s places in %.2f secs.",
+                    places.size(),
+                    (System.currentTimeMillis() - time) / 1000.0));
+        }
     }
 }
