@@ -21,10 +21,18 @@ package de.dbanalytics.spic.analysis;
 
 import org.matsim.contrib.common.collections.Composite;
 
+import java.util.List;
+
 /**
  * Created by johannesillenberger on 10.05.17.
  */
 public class PredicateOrComposite<T> extends Composite<Predicate<T>> implements Predicate<T> {
+
+    public static <T> PredicateOrComposite<T> create(List<Predicate<T>> predicates) {
+        PredicateOrComposite<T> composite = new PredicateOrComposite<>();
+        for (Predicate<T> pred : predicates) if (pred != null) composite.addComponent(pred);
+        return composite;
+    }
 
     public static <T> PredicateOrComposite<T> create(Predicate<T>... predicates) {
         PredicateOrComposite<T> composite = new PredicateOrComposite<>();

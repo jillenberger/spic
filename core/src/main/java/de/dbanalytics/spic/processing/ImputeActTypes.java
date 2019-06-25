@@ -22,8 +22,10 @@ package de.dbanalytics.spic.processing;
 import de.dbanalytics.spic.data.*;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import org.apache.log4j.Logger;
+
 import org.matsim.contrib.common.collections.ChoiceSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Random;
@@ -33,7 +35,7 @@ import java.util.Random;
  */
 public class ImputeActTypes implements PersonsTask {
 
-    private final static Logger logger = Logger.getLogger(ImputeActTypes.class);
+    private final static Logger logger = LoggerFactory.getLogger(ImputeActTypes.class);
 
     private final Random random;
 
@@ -65,10 +67,13 @@ public class ImputeActTypes implements PersonsTask {
 
         int countHome = 0;
         int countNonHome = 0;
+        int countTotal = 0;
 
         for (Person p : persons) {
             for (Episode e : p.getEpisodes()) {
                 for (int i = 0; i < e.getActivities().size(); i++) {
+                    countTotal++;
+
                     Segment act = e.getActivities().get(i);
                     String type = act.getAttribute(Attributes.KEY.TYPE);
                     if (type == null) {
@@ -104,7 +109,7 @@ public class ImputeActTypes implements PersonsTask {
             }
         }
 
-        logger.info(String.format("Inserted %s home activity types.", countHome));
-        logger.info(String.format("Inserted %s non-home activity types.", countNonHome));
+        logger.info("Inserted {} home activity types ({} total).", countHome, countTotal);
+        logger.info("Inserted {} non-home activity types ({} total).", countNonHome, countTotal);
     }
 }

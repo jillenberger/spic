@@ -34,6 +34,14 @@ public class ResolveReturnTrips implements EpisodeTask {
 
     private static final String RETURN_TYPE = "return";
 
+    private boolean verbose = true;
+
+    private int errors = 0;
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
     @Override
     public void apply(Episode episode) {
         for (int i = 0; i < episode.getActivities().size(); i++) {
@@ -43,10 +51,15 @@ public class ResolveReturnTrips implements EpisodeTask {
                     Segment startAct = episode.getActivities().get(i - 2);
                     act.setAttribute(Attributes.KEY.TYPE, startAct.getAttribute(Attributes.KEY.TYPE));
                 } else {
-                    logger.warn("Detected return trip without outward trip.");
+                    if(verbose) logger.warn("Detected return trip without outward trip.");
                     act.setAttribute(Attributes.KEY.TYPE, null);
+                    errors++;
                 }
             }
         }
+    }
+
+    public int getErrors() {
+        return errors;
     }
 }
