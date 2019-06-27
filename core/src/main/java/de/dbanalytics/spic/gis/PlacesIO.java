@@ -108,11 +108,11 @@ public class PlacesIO {
                         int size = Integer.parseInt(attribute.getValue());
                         places = new LinkedHashSet<>(size);
                         progressLogger = new ProgressLogger(logger);
-                        if (verbose) progressLogger.start("Loading population...", size);
+                        if (verbose) progressLogger.start("Loading places...", size);
                     } else {
                         places = new LinkedHashSet<>();
                         progressLogger = new ProgressLogger(logger);
-                        if (verbose) progressLogger.startAbs("Loading population...", 5000);
+                        if (verbose) progressLogger.startAbs("Loading places...", 5000);
                     }
 
                 } else if (localName.equals(PLACE_ELEMENT)) {
