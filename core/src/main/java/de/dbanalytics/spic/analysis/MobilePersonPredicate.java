@@ -29,11 +29,10 @@ public class MobilePersonPredicate<T extends Person> implements Predicate<T> {
 
     @Override
     public boolean test(T t) {
-        boolean result = true;
         for (Episode episode : t.getEpisodes()) {
-            if (episode.getLegs().isEmpty()) result = false;
+           if (!episode.getLegs().isEmpty()) return true;
         }
 
-        return result;
+        return false;
     }
 }
