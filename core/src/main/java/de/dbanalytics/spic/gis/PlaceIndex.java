@@ -75,6 +75,11 @@ public class PlaceIndex {
         return new LinkedHashSet<>(queryInside(geometry, spatialIndex));
     }
 
+    public List<Place> get(Coordinate center, double r_min, double r_max) {
+        if (spatialIndex == null) initSpatialIndex();
+        return new ArrayList<>(spatialIndex.getRing(center.x, center.y, r_min, r_max));
+    }
+
     public List<Place> getForActivity(Coordinate center, double r_min, double r_max, String activity) {
         QuadTree<Place> tree = spatialActivityIndex.get(activity);
         if (tree == null) tree = initSpatialActivityIndex(activity);
