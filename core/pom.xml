@@ -61,7 +61,7 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
-            <scope>RUNTIME</scope>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>
