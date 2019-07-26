@@ -13,9 +13,9 @@ import de.dbanalytics.spic.processing.SegmentTask;
  */
 public class LegAddODZones implements SegmentTask {
 
-    public static final String FROM_ZONE_ID = "fromZone";
+    public static final String FROM_ZONE_ID = "from_zone";
 
-    public static final String TO_ZONE_ID = "toZone";
+    public static final String TO_ZONE_ID = "to_zone";
 
     private final PlaceIndex placeIndex;
 

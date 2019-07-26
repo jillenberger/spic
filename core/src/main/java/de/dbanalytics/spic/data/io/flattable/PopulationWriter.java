@@ -73,25 +73,25 @@ public class PopulationWriter {
 
     static private void addId(Collection<? extends Person> persons) {
         for(Person p : persons) {
-            p.setAttribute("personId", p.getId());
+            p.setAttribute("uid", p.getId());
         }
     }
 
     static private void removeId(Collection<? extends Person> persons) {
         for(Person p : persons) {
-            p.removeAttribute("personId");
+            p.removeAttribute("uid");
         }
     }
 
     static private void addPersonId(Collection<? extends Segment> segments) {
         for(Segment s : segments) {
-            s.setAttribute("personId", s.getEpisode().getPerson().getId());
+            s.setAttribute("person_uid", s.getEpisode().getPerson().getId());
         }
     }
 
     static private void removePersonId(Collection<? extends Segment> segments) {
         for(Segment s : segments) {
-            s.removeAttribute("personId");
+            s.removeAttribute("person_uid");
         }
     }
 }
